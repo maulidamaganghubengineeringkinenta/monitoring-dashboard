@@ -547,6 +547,29 @@ body.login-locked .sidebar-overlay { display:none !important; }
 #monitoring .monitor-timeline-step.done:not(:last-child)::after{background:linear-gradient(90deg,#22c55e,#60a5fa);}
 #monitoring .monitor-timeline-note{padding:11px 13px;border-radius:10px;background:#f3f8ff;color:#587087;}
 
+/* ---------- COLORFUL / DEDUPLICATED ATTENTION STRIPS ---------- */
+#monitoring .monitor-card-open{background:linear-gradient(135deg,#2563eb,#38bdf8)!important;}
+#monitoring .monitor-card-start{background:linear-gradient(135deg,#7c3aed,#a78bfa)!important;}
+#monitoring .monitor-card-bottle{background:linear-gradient(135deg,#f59e0b,#fb7185)!important;}
+#monitoring .monitor-card-problem{background:linear-gradient(135deg,#dc2626,#f43f5e)!important;}
+.monitor-quick-strip,.stage6-quick-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0 18px;padding:10px 12px;border:1px solid #e1e8f2;border-radius:14px;background:linear-gradient(90deg,#f8fbff,#fff8fb,#fffaf2);box-shadow:0 5px 16px rgba(45,65,95,.05);}
+.monitor-quick-title,.stage6-quick-strip>span{font-size:10px;font-weight:900;letter-spacing:.7px;color:#66758a;margin-right:3px;}
+.monitor-quick-chip,.stage6-quick-strip button{border:1px solid #dfe6ef;border-radius:999px;background:#fff;padding:7px 11px;font-size:11px;font-weight:800;cursor:pointer;color:#42546a;transition:.16s ease;}
+.monitor-quick-chip b{margin-left:4px;}
+.monitor-quick-chip:hover,.stage6-quick-strip button:hover{transform:translateY(-1px);box-shadow:0 5px 12px rgba(50,65,90,.10);}
+.monitor-quick-chip.chip-danger{color:#b4232d;background:#fff1f2;border-color:#fecdd3;}
+.monitor-quick-chip.chip-warning{color:#a15c00;background:#fff7df;border-color:#f8d98a;}
+.monitor-quick-chip.chip-purple{color:#6541a8;background:#f4efff;border-color:#ddd0ff;}
+#meeting .stage6-quick-strip{margin-top:0;background:linear-gradient(90deg,#f4f0ff,#eff8ff,#fff7ed);}
+#meeting .stage6-quick-strip button:nth-child(2){color:#b4232d;background:#fff1f2;border-color:#fecdd3;}
+#meeting .stage6-quick-strip button:nth-child(3){color:#a15c00;background:#fff7df;border-color:#f8d98a;}
+#meeting .stage6-quick-strip button:nth-child(4){color:#6541a8;background:#f4efff;border-color:#ddd0ff;}
+#report .stage6-quick-strip{margin-top:0;background:linear-gradient(90deg,#eef7ff,#f6f0ff,#fff8ee);}
+#report .stage6-quick-strip button:nth-child(2){color:#b4232d;background:#fff1f2;border-color:#fecdd3;}
+#report .stage6-quick-strip button:nth-child(3){color:#a15c00;background:#fff7df;border-color:#f8d98a;}
+#report .stage6-quick-strip button:nth-child(4){color:#6541a8;background:#f4efff;border-color:#ddd0ff;}
+@media(max-width:700px){.monitor-quick-strip,.stage6-quick-strip{align-items:stretch}.monitor-quick-title,.stage6-quick-strip>span{width:100%}.monitor-quick-chip,.stage6-quick-strip button{flex:1 1 auto;text-align:center;}}
+
 /* ---------- MEETING MODE ---------- */
 #meeting{
   background:linear-gradient(180deg,#fff8f2 0%,#f7f3ff 45%,#f2fbff 100%);
@@ -1686,18 +1709,24 @@ body.login-locked .sidebar-overlay { display:none !important; }
             </div>
 
             <div class="monitor-grid">
-                <div class="monitor-card" onclick="monitorFilter('etd3')">
-                    <div class="mc-label">ETD ≤ 3 HARI</div><div class="mc-value" id="monitorEtd3">0</div><div class="mc-desc">Order OPEN yang mendekati deadline</div>
+                <div class="monitor-card monitor-card-open" onclick="monitorFilter('open')">
+                    <div class="mc-label">OPEN ORDERS</div><div class="mc-value" id="monitorOpen">0</div><div class="mc-desc">Total order yang masih berjalan</div>
                 </div>
-                <div class="monitor-card" onclick="monitorFilter('overdue')">
-                    <div class="mc-label">OVERDUE</div><div class="mc-value" id="monitorOverdue">0</div><div class="mc-desc">Order OPEN melewati ETD</div>
+                <div class="monitor-card monitor-card-start" onclick="monitorFilter('notstarted')">
+                    <div class="mc-label">NOT STARTED</div><div class="mc-value" id="monitorNotStarted">0</div><div class="mc-desc">OPEN tanpa Actual Start</div>
                 </div>
-                <div class="monitor-card" onclick="monitorFilter('reschedule')">
-                    <div class="mc-label">RESCHEDULE</div><div class="mc-value" id="monitorReschedule">0</div><div class="mc-desc">Order OPEN dengan perubahan ETD</div>
+                <div class="monitor-card monitor-card-bottle" onclick="monitorProcessBottleneck()">
+                    <div class="mc-label">BOTTLENECK QTY</div><div class="mc-value" id="monitorBottleneckQty">0</div><div class="mc-desc" id="monitorBottleneckDesc">Process dengan workload OPEN terbesar</div>
                 </div>
-                <div class="monitor-card" onclick="monitorFilter('notstarted')">
-                    <div class="mc-label">NOT STARTED</div><div class="mc-value" id="monitorNotStarted">0</div><div class="mc-desc">Order OPEN belum mulai</div>
+                <div class="monitor-card monitor-card-problem" onclick="stage6OpenProblem()">
+                    <div class="mc-label">PROBLEM OPEN</div><div class="mc-value" id="monitorProblemOpen">0</div><div class="mc-desc">Problem yang masih berjalan</div>
                 </div>
+            </div>
+            <div class="monitor-quick-strip" aria-label="Quick attention filters">
+                <span class="monitor-quick-title">ATTENTION QUICK FILTER</span>
+                <button type="button" class="monitor-quick-chip chip-danger" onclick="monitorFilter('overdue')">🔴 Overdue <b id="monitorQuickOverdue">0</b></button>
+                <button type="button" class="monitor-quick-chip chip-warning" onclick="monitorFilter('etd3')">🟠 ETD ≤ 3 Hari <b id="monitorQuickEtd3">0</b></button>
+                <button type="button" class="monitor-quick-chip chip-purple" onclick="monitorFilter('reschedule')">🟣 Reschedule <b id="monitorQuickReschedule">0</b></button>
             </div>
 
             <div class="monitor-section">
@@ -1798,10 +1827,16 @@ body.login-locked .sidebar-overlay { display:none !important; }
                 </div>
 
                 <div class="stage6-kpi-grid">
-                    <div class="stage6-kpi" onclick="stage6OpenFilter('open')"><div class="label">OPEN</div><div class="value" id="meetingOpen">0</div></div>
-                    <div class="stage6-kpi" onclick="stage6OpenFilter('overdue')"><div class="label">OVERDUE</div><div class="value" id="meetingOverdue">0</div></div>
-                    <div class="stage6-kpi" onclick="stage6OpenFilter('etd3')"><div class="label">ETD ≤ 3 HARI</div><div class="value" id="meetingEtd3">0</div></div>
+                    <div class="stage6-kpi" onclick="stage6OpenFilter('open')"><div class="label">OPEN ORDERS</div><div class="value" id="meetingOpen">0</div></div>
                     <div class="stage6-kpi" onclick="stage6OpenProblem()"><div class="label">PROBLEM OPEN</div><div class="value" id="meetingProblemOpen">0</div></div>
+                    <div class="stage6-kpi" onclick="monitorProcessBottleneck()"><div class="label">BOTTLENECK QTY</div><div class="value" id="meetingBottleneckQty">0</div></div>
+                    <div class="stage6-kpi"><div class="label">JOB TO DISCUSS</div><div class="value" id="meetingJobsKpi">0</div></div>
+                </div>
+                <div class="stage6-quick-strip">
+                    <span>MEETING QUICK FILTER</span>
+                    <button type="button" onclick="stage6OpenFilter('overdue')">🔴 Overdue</button>
+                    <button type="button" onclick="stage6OpenFilter('etd3')">🟠 ETD ≤ 3 Hari</button>
+                    <button type="button" onclick="monitorFilter('reschedule')">🟣 Reschedule</button>
                 </div>
 
                 <div class="stage6-grid">
@@ -1844,10 +1879,16 @@ body.login-locked .sidebar-overlay { display:none !important; }
                 </div>
 
                 <div class="stage6-kpi-grid">
-                    <div class="stage6-kpi" onclick="stage6OpenFilter('open')"><div class="label">OPEN</div><div class="value" id="reportOpen">0</div></div>
-                    <div class="stage6-kpi" onclick="stage6OpenFilter('overdue')"><div class="label">OVERDUE</div><div class="value" id="reportOverdue">0</div></div>
-                    <div class="stage6-kpi" onclick="stage6OpenFilter('etd3')"><div class="label">ETD ≤ 3 HARI</div><div class="value" id="reportEtd3">0</div></div>
+                    <div class="stage6-kpi" onclick="stage6OpenFilter('open')"><div class="label">OPEN ORDERS</div><div class="value" id="reportOpen">0</div></div>
+                    <div class="stage6-kpi"><div class="label">CLOSE ORDERS</div><div class="value" id="reportClose">0</div></div>
                     <div class="stage6-kpi" onclick="stage6OpenProblem()"><div class="label">PROBLEM OPEN</div><div class="value" id="reportProblemOpen">0</div></div>
+                    <div class="stage6-kpi"><div class="label">AVG LEAD TIME</div><div class="value" id="reportAvgLead">0</div></div>
+                </div>
+                <div class="stage6-quick-strip report-quick-strip">
+                    <span>REPORT QUICK FILTER</span>
+                    <button type="button" onclick="stage6OpenFilter('overdue')">🔴 Detail Overdue</button>
+                    <button type="button" onclick="stage6OpenFilter('etd3')">🟠 Detail ETD ≤ 3 Hari</button>
+                    <button type="button" onclick="monitorFilter('reschedule')">🟣 Detail Reschedule</button>
                 </div>
 
                 <div class="stage6-report-section stage6-report-process">
@@ -8678,12 +8719,20 @@ function renderMonitoringStage2() {
 
 function renderMonitoringCenter() {
     const m = monitoringMetrics();
+    const problemOpen = stage6ProblemOpenRows().length;
+    const processData = monitoringProcessWorkload().sort((a,b)=>b.qty-a.qty);
+    const topProcess = processData[0];
     const map = {
-        monitorEtd3: m.etd3,
-        monitorOverdue: m.overdue,
-        monitorReschedule: m.reschedule,
-        monitorNotStarted: m.notStarted
+        monitorOpen: m.rows.length,
+        monitorNotStarted: m.notStarted,
+        monitorBottleneckQty: topProcess ? topProcess.qty : 0,
+        monitorProblemOpen: problemOpen,
+        monitorQuickOverdue: m.overdue,
+        monitorQuickEtd3: m.etd3,
+        monitorQuickReschedule: m.reschedule
     };
+    const desc = document.getElementById("monitorBottleneckDesc");
+    if (desc) desc.textContent = topProcess ? `${topProcess.name} · workload OPEN terbesar` : "Belum ada workload process OPEN";
     Object.keys(map).forEach(id => { const el = document.getElementById(id); if (el) el.textContent = map[id]; });
     renderMonitoringAlerts();
     renderMonitoringCalendar();
@@ -8700,6 +8749,17 @@ function refreshMonitoringCenter() {
 
 function monitorFilter(type) {
     const m = monitoringMetrics();
+    if (type === "open") {
+        const detail = document.getElementById("monitorDayDetail");
+        const title = document.getElementById("monitorDayTitle");
+        const list = document.getElementById("monitorDayList");
+        if (!detail || !title || !list) return;
+        title.textContent = `Detail — OPEN (${m.rows.length} job)`;
+        list.innerHTML = m.rows.length ? m.rows.map(row => `<div class="monitor-alert" onclick="openProgressRowFromMonitoring(${allProgressRows.indexOf(row)})"><div class="monitor-alert-main"><div class="monitor-alert-title">${escapeHTML(monitoringRowLabel(row))}</div><div class="monitor-alert-sub">ETD: ${escapeHTML(getCellValue(row,7)||"-")} · QTY: ${escapeHTML(getCellValue(row,5)||"-")}</div></div><span class="monitor-badge">OPEN</span></div>`).join("") : `<div class="monitor-empty">Tidak ada OPEN order.</div>`;
+        detail.style.display = "block";
+        detail.scrollIntoView({behavior:"smooth",block:"nearest"});
+        return;
+    }
     const sets = {
         etd3: m.etd3Rows,
         overdue: m.overdueRows,
@@ -9016,9 +9076,15 @@ function renderStage6Pages() {
     stage6SetText("stage6ReportSubtitle", `Tanggal laporan: ${dateLabel} • Sumber: Google Sheets`);
 
     ["meetingOpen","reportOpen"].forEach(id => stage6SetText(id, openRows.length.toLocaleString("id-ID")));
-    ["meetingOverdue","reportOverdue"].forEach(id => stage6SetText(id, metrics.overdue.toLocaleString("id-ID")));
-    ["meetingEtd3","reportEtd3"].forEach(id => stage6SetText(id, metrics.etd3.toLocaleString("id-ID")));
     ["meetingProblemOpen","reportProblemOpen"].forEach(id => stage6SetText(id, problemOpen.length.toLocaleString("id-ID")));
+    const topProcess = processes[0];
+    const bottleneckQty = topProcess ? topProcess.qty : 0;
+    stage6SetText("meetingBottleneckQty", bottleneckQty.toLocaleString("id-ID"));
+    const leadValues = openRows.map(r => monitoringNumber(getCellValue(r,11))).filter(v => v !== null && v >= 0);
+    const avgLead = leadValues.length ? leadValues.reduce((a,b)=>a+b,0)/leadValues.length : 0;
+    stage6SetText("reportAvgLead", leadValues.length ? avgLead.toFixed(1) + " hari" : "0");
+    const closeRows = (allProgressRows || []).filter(row => getRowStatus(row) === "CLOSE");
+    stage6SetText("reportClose", closeRows.length.toLocaleString("id-ID"));
 
     const bottleneck = document.getElementById("meetingBottleneck");
     if (bottleneck) {
@@ -9047,6 +9113,7 @@ function renderStage6Pages() {
     if (jobs) {
         const top = attention.length ? attention.slice(0,10).map(x => x.row) : openRows.slice(0,10);
         stage6SetText("meetingJobCount", `${top.length} job ditampilkan`);
+        stage6SetText("meetingJobsKpi", top.length.toLocaleString("id-ID"));
         jobs.innerHTML = top.length ? top.map(row => `
             <div class="stage6-row" onclick="openMonitoringJob(allProgressRows[${allProgressRows.indexOf(row)}])" style="cursor:pointer">
                 <div><strong>${escapeHTML(monitoringAssy(row))}</strong><small>${escapeHTML(monitoringCustomer(row))} · WP ${escapeHTML(monitoringWp(row))}</small></div>
