@@ -995,7 +995,7 @@ body.login-locked .sidebar-overlay { display:none !important; }
         <button
             type="button"
             class="logout-button"
-            onclick="logoutDashboard()">
+            onclick="confirmLogout()">
             <span class="menu-icon">↪</span>
             <span>Logout</span>
         </button>
@@ -9590,6 +9590,11 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
             if(error) error.textContent="Username atau password salah.";
             if(password){password.value="";password.focus();}
             return false;
+        };
+
+        window.confirmLogout=function(){
+            const ok=window.confirm("Apakah kamu yakin ingin logout?");
+            if(ok && typeof window.logoutDashboard === "function") window.logoutDashboard();
         };
 
         window.logoutDashboard=function(){
