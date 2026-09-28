@@ -7029,13 +7029,23 @@ function applyProblemFilters() {
 ========================================================= */
 
 function problemAgeDays(row) {
-    if (getProblemStatus(row) !== "OPEN") return null;
-    const received = parseReadingDate(getProblemValue(row, PROBLEM_COLUMNS.DATE_RECEIVED));
+    const status = String(getProblemStatus(row) || "").trim().toUpperCase();
+    if (status !== "OPEN") return null;
+
+    // DATE_RECEIVED pada sheet Problem memakai format tanggal yang
+    // ditangani khusus oleh parseProblemDate (termasuk DD-MM-YY dan MM/DD/YY).
+    const received = parseProblemDate(
+        getProblemValue(row, PROBLEM_COLUMNS.DATE_RECEIVED)
+    );
     if (!received) return null;
+
     const today = new Date();
-    const a = new Date(received.getFullYear(),received.getMonth(),received.getDate());
-    const b = new Date(today.getFullYear(),today.getMonth(),today.getDate());
-    return Math.max(0,Math.floor((b-a)/86400000));
+    const a = new Date(received.getFullYear(), received.getMonth(), received.getDate());
+    const b = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const days = Math.floor((b - a) / 86400000);
+
+    // Tanggal di masa depan tidak boleh menghasilkan umur negatif.
+    return Number.isFinite(days) ? Math.max(0, days) : null;
 }
 
 function updateProblemKPIs(rows) {
@@ -8847,9 +8857,37 @@ function monitoringNumber(value) {
     return Number.isFinite(n) ? n : null;
 }
 
+function monitoringCalculatedLeadTime(row) {
+    // Lead Time Monitoring dihitung dari ACTUAL START -> ACTUAL FINISH.
+    // Kolom LEAD TIME di sheet tetap dipakai sebagai fallback jika nilainya
+    // memang sudah tersedia, tetapi nilai 0 dari sheet tidak lagi dianggap
+    // sebagai lead time yang valid ketika kedua tanggal tersedia.
+    const start = monitoringDateOnly(getCellValue(row, 9));
+    const finish = monitoringDateOnly(getCellValue(row, 10));
+
+    if (start && finish) {
+        const a = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+        const b = new Date(finish.getFullYear(), finish.getMonth(), finish.getDate());
+        const days = Math.round((b - a) / 86400000);
+        if (Number.isFinite(days) && days >= 0) return days;
+    }
+
+    const sourceLead = monitoringNumber(getCellValue(row, 11));
+    return sourceLead !== null && sourceLead > 0 ? sourceLead : null;
+}
+
+function monitoringCompletedRows() {
+    return (allProgressRows || []).filter(row => {
+        const status = getRowStatus(row);
+        const start = monitoringDateOnly(getCellValue(row, 9));
+        const finish = monitoringDateOnly(getCellValue(row, 10));
+        return status === "CLOSE" && start && finish;
+    });
+}
+
 function monitoringLeadMetrics() {
-    const rows = monitoringOpenRows();
-    const values = rows.map(r => monitoringNumber(getCellValue(r, 11))).filter(v => v !== null && v >= 0);
+    const rows = monitoringCompletedRows();
+    const values = rows.map(monitoringCalculatedLeadTime).filter(v => v !== null && v >= 0);
     const avg = values.length ? values.reduce((a,b) => a+b, 0) / values.length : 0;
     const min = values.length ? Math.min(...values) : 0;
     const max = values.length ? Math.max(...values) : 0;
@@ -8859,17 +8897,20 @@ function monitoringLeadMetrics() {
         ["8–14", values.filter(v => v >= 8 && v <= 14).length],
         [">14", values.filter(v => v > 14).length]
     ];
-    return {values, avg, min, max, buckets};
+    return {values, avg, min, max, buckets, rows};
 }
 
 function monitoringLeadBreakdown(groupIndex) {
-    const rows = monitoringOpenRows();
+    const rows = monitoringCompletedRows();
     const map = new Map();
     rows.forEach(row => {
         const name = String(getCellValue(row, groupIndex) || "Tanpa Data").trim() || "Tanpa Data";
-        const lead = monitoringNumber(getCellValue(row, 11));
+        const lead = monitoringCalculatedLeadTime(row);
         if (lead === null || lead < 0) return;
-        const x = map.get(name) || {sum:0,count:0}; x.sum += lead; x.count++; map.set(name,x);
+        const x = map.get(name) || {sum:0,count:0};
+        x.sum += lead;
+        x.count++;
+        map.set(name,x);
     });
     return [...map.entries()].map(([name,x]) => ({name,avg:x.sum/x.count,count:x.count})).sort((a,b)=>b.avg-a.avg);
 }
@@ -9519,15 +9560,15 @@ function monitorLeadBucketFilter(label) {
     const ranges = {"0–3":[0,3],"4–7":[4,7],"8–14":[8,14],">14":[15,Infinity]};
     const range = ranges[label];
     if (label !== "all" && !range) return;
-    const rows = monitoringOpenRows().filter(row => {
+    const rows = monitoringCompletedRows().filter(row => {
         if (label === "all") return true;
-        const n = monitoringNumber(getCellValue(row,11));
+        const n = monitoringCalculatedLeadTime(row);
         return n !== null && n >= range[0] && n <= range[1];
     });
     const detail = document.getElementById("monitorDayDetail"), title = document.getElementById("monitorDayTitle"), list = document.getElementById("monitorDayList");
     if (!detail || !title || !list) return;
-    title.textContent = label === "all" ? `Semua OPEN — Lead Time` : `Lead Time ${label} hari — ${rows.length} OPEN`;
-    list.innerHTML = rows.map(row => `<div class="monitor-alert" onclick="openMonitoringJob(allProgressRows[${allProgressRows.indexOf(row)}])"><div class="monitor-alert-main"><div class="monitor-alert-title">${escapeHTML(monitoringRowLabel(row))}</div><div class="monitor-alert-sub">Lead Time: ${escapeHTML(getCellValue(row,11)||"-")} · ETD: ${escapeHTML(getCellValue(row,7)||"-")}</div></div><span class="monitor-badge">DETAIL</span></div>`).join("") || `<div class="monitor-empty">Tidak ada data pada bucket ini.</div>`;
+    title.textContent = label === "all" ? `Semua order selesai — Lead Time` : `Lead Time ${label} hari — ${rows.length} order selesai`;
+    list.innerHTML = rows.map(row => `<div class="monitor-alert" onclick="openMonitoringJob(allProgressRows[${allProgressRows.indexOf(row)}])"><div class="monitor-alert-main"><div class="monitor-alert-title">${escapeHTML(monitoringRowLabel(row))}</div><div class="monitor-alert-sub">Lead Time: ${escapeHTML(String(monitoringCalculatedLeadTime(row) ?? "-"))} hari · Actual Finish: ${escapeHTML(getCellValue(row,10)||"-")}</div></div><span class="monitor-badge">DETAIL</span></div>`).join("") || `<div class="monitor-empty">Tidak ada data pada bucket ini.</div>`;
     detail.style.display = "block";
     detail.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
