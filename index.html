@@ -317,7 +317,24 @@
 .stage6-popup-empty{padding:20px;text-align:center;color:#7b8790;border:1px dashed #dce5ea;border-radius:10px;}
 @media(max-width:600px){.stage6-inline-modal{padding:10px}.stage6-inline-modal-card{width:100%;max-height:90vh;padding:15px}.stage6-popup-item{grid-template-columns:1fr}.stage6-popup-badge{justify-self:start}}
 
-</style>
+
+/* ===== VISIBLE CUTE MONITORING HUB ===== */
+.cute-control-hub{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(150px,.8fr) auto auto;gap:10px;margin:0 0 14px;align-items:stretch}
+.cute-status-card,.cute-clock-card,.cute-notification-btn{border:1px solid #d5e5eb;background:#fff;border-radius:16px;box-shadow:0 5px 18px rgba(42,75,90,.08)}
+.cute-status-card{display:flex;align-items:center;gap:12px;padding:12px 15px;cursor:pointer;transition:.2s}
+.cute-status-card:hover{transform:translateY(-1px);box-shadow:0 9px 22px rgba(42,75,90,.12)}
+.cute-status-icon{width:42px;height:42px;border-radius:13px;background:#eaf6ef;display:grid;place-items:center;font-size:24px;flex:0 0 42px}
+.cute-status-label,.cute-kicker{font-size:9px;letter-spacing:.08em;font-weight:900;color:#80919a}
+.cute-status-title{font-size:13px;font-weight:950;color:#29404b;margin-top:2px}.cute-status-sub{font-size:10px;color:#788991;margin-top:2px}
+.cute-clock-card{padding:10px 15px;text-align:center;display:flex;flex-direction:column;justify-content:center}.cute-clock{font-size:18px;font-weight:950;color:#29404b;font-variant-numeric:tabular-nums}.cute-date{font-size:9px;color:#83929a;margin-top:2px}
+.cute-notification-btn{position:relative;width:58px;min-width:58px;cursor:pointer;font-size:22px;color:#334c58}.cute-notification-btn b{position:absolute;right:6px;top:5px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:#ef6f6f;color:#fff;font-size:9px;display:grid;place-items:center}.cute-quick-wrap{position:relative}.cute-quick-main{width:58px;height:100%;min-height:58px;border:0;border-radius:16px;background:#294e5d;color:#fff;font-size:28px;cursor:pointer;box-shadow:0 8px 20px rgba(42,75,90,.2);transition:.2s}.cute-quick-main.open{transform:rotate(45deg)}
+.cute-quick-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:8100;width:190px;padding:7px;background:#fff;border:1px solid #d5e5eb;border-radius:14px;box-shadow:0 15px 35px rgba(42,75,90,.16);display:none}.cute-quick-menu.open{display:grid;animation:quickIn .18s ease both}.cute-quick-menu button{border:0;background:transparent;text-align:left;padding:10px 11px;border-radius:9px;cursor:pointer;font-size:11px;color:#40545d}.cute-quick-menu button:hover{background:#f1f7f9}@keyframes quickIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+.cute-focus-section{margin:0 0 18px;padding:15px 16px;border:1px solid #d8e7ed;border-radius:17px;background:linear-gradient(135deg,#fbfeff,#f3f9fb)}.cute-focus-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.cute-focus-head h2{margin:3px 0 0;font-size:15px;color:#29404b}.cute-focus-head button{border:1px solid #cddfe7;background:#fff;border-radius:8px;padding:7px 10px;font-size:10px;font-weight:800;cursor:pointer;color:#526873}.cute-focus-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}.cute-focus-item{padding:10px;border-radius:12px;background:#fff;border:1px solid #e0ebef;cursor:pointer}.cute-focus-item:hover{border-color:#bcd3dc;transform:translateY(-1px)}.cute-focus-item .icon{font-size:17px}.cute-focus-item .label{font-size:9px;color:#7c8d95;font-weight:800;margin-top:4px}.cute-focus-item .value{font-size:17px;font-weight:950;color:#29404b;margin-top:1px}.cute-focus-item .note{font-size:8px;color:#8a989e;margin-top:2px}.cute-focus-loading{font-size:10px;color:#809099;padding:8px}
+.cute-modal{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;padding:16px}.cute-modal.open{display:flex}.cute-modal-backdrop{position:absolute;inset:0;background:rgba(25,43,52,.38);backdrop-filter:blur(3px)}.cute-modal-card{position:relative;width:min(620px,94vw);max-height:82vh;overflow:auto;background:#fff;border-radius:20px;border:1px solid #d8e6eb;box-shadow:0 25px 70px rgba(25,43,52,.22);padding:18px}.cute-modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:13px}.cute-modal-head h2{font-size:17px;margin:3px 0 0;color:#29404b}.cute-close{width:34px;height:34px;border:1px solid #d6e3e8;background:#fff;border-radius:9px;font-size:20px;color:#61737c;cursor:pointer}.cute-notif-item{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:11px;border:1px solid #e1ebef;border-radius:12px;margin-top:8px}.cute-notif-item .ni{font-size:18px}.cute-notif-item strong{display:block;font-size:11px;color:#304650}.cute-notif-item small{display:block;font-size:9px;color:#7d8c93;margin-top:2px}.cute-notif-item b{font-size:12px;color:#29404b}.cute-empty-state{padding:25px 15px;text-align:center;color:#71828a}.cute-empty-state .big{font-size:29px}.cute-empty-state strong{display:block;color:#334751;margin-top:5px;font-size:12px}.cute-empty-state span{font-size:10px}
+@media(max-width:850px){.cute-control-hub{grid-template-columns:1fr 1fr auto auto}.cute-status-card{grid-column:1/-1}.cute-focus-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.cute-control-hub{grid-template-columns:1fr auto auto}.cute-clock-card{display:none}.cute-focus-grid{grid-template-columns:repeat(2,1fr)}.cute-status-sub{display:none}}
+
+.secret-monitor-mode .cute-status-card{animation:secretPulse .55s ease-in-out infinite alternate}.secret-monitor-mode .cute-status-icon{transform:scale(1.12)}@keyframes secretPulse{from{box-shadow:0 0 0 rgba(120,180,200,0)}to{box-shadow:0 0 25px rgba(120,180,200,.45)}}</style>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
@@ -765,6 +782,57 @@ body.login-locked .sidebar-overlay { display:none !important; }
         <div id="dashboardGreeting" class="dashboard-greeting" aria-live="polite">
             <div class="dashboard-greeting-main"><div class="dashboard-greeting-icon" id="dashboardGreetingIcon">☀️</div><div><div class="dashboard-greeting-title" id="dashboardGreetingTitle">Good Morning! 👋</div><div class="dashboard-greeting-sub" id="dashboardGreetingSub">Semoga monitoring hari ini berjalan lancar.</div></div></div>
             <div class="dashboard-greeting-status">LIVE MONITORING</div>
+        </div>
+
+
+        <!-- CUTE CONTROL HUB -->
+        <section id="cuteControlHub" class="cute-control-hub" aria-label="Monitoring quick controls">
+            <div class="cute-status-card" id="cuteStatusCard">
+                <div class="cute-status-icon" id="cuteStatusIcon">😊</div>
+                <div class="cute-status-copy">
+                    <div class="cute-status-label">MONITORING STATUS</div>
+                    <div class="cute-status-title" id="cuteStatusTitle">SYSTEM NORMAL</div>
+                    <div class="cute-status-sub" id="cuteStatusSub">Semua sistem siap dipantau.</div>
+                </div>
+            </div>
+            <div class="cute-clock-card">
+                <div class="cute-clock" id="cuteClock">--:--:--</div>
+                <div class="cute-date" id="cuteDate">--</div>
+            </div>
+            <button type="button" class="cute-notification-btn" id="cuteNotificationBtn" title="Smart Notification">
+                <span>🔔</span><b id="cuteNotificationCount">0</b>
+            </button>
+            <div class="cute-quick-wrap">
+                <button type="button" class="cute-quick-main" id="cuteQuickMain" title="Quick Actions">＋</button>
+                <div class="cute-quick-menu" id="cuteQuickMenu" aria-hidden="true">
+                    <button type="button" data-action="assistant">🤖 Assistant</button>
+                    <button type="button" data-action="focus">🎯 Focus Today</button>
+                    <button type="button" data-action="progress">📊 Progress</button>
+                    <button type="button" data-action="problem">⚠️ Problem</button>
+                    <button type="button" data-action="report">🖨️ Report</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="cuteFocusToday" class="cute-focus-section" aria-label="Focus Today">
+            <div class="cute-focus-head"><div><span class="cute-kicker">TODAY'S MONITORING</span><h2>🎯 Focus Today</h2></div><button type="button" id="cuteFocusRefresh">↻ Refresh</button></div>
+            <div class="cute-focus-grid" id="cuteFocusGrid"><div class="cute-focus-loading">Membaca data monitoring...</div></div>
+        </section>
+
+        <div id="cuteNotificationPanel" class="cute-modal" aria-hidden="true">
+            <div class="cute-modal-backdrop" data-close-cute></div>
+            <div class="cute-modal-card" role="dialog" aria-modal="true" aria-labelledby="cuteNotificationTitle">
+                <div class="cute-modal-head"><div><div class="cute-kicker">SMART NOTIFICATION</div><h2 id="cuteNotificationTitle">🔔 Attention Center</h2></div><button type="button" class="cute-close" data-close-cute>×</button></div>
+                <div id="cuteNotificationBody"></div>
+            </div>
+        </div>
+
+        <div id="cuteFocusPanel" class="cute-modal" aria-hidden="true">
+            <div class="cute-modal-backdrop" data-close-cute></div>
+            <div class="cute-modal-card" role="dialog" aria-modal="true" aria-labelledby="cuteFocusTitle">
+                <div class="cute-modal-head"><div><div class="cute-kicker">TODAY</div><h2 id="cuteFocusTitle">🎯 Focus Today</h2></div><button type="button" class="cute-close" data-close-cute>×</button></div>
+                <div id="cuteFocusBody"></div>
+            </div>
         </div>
 
         <!-- =================================================
@@ -8978,51 +9046,28 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
     })();
     </script>
 
-\n<style id="fun-features-v2-css">
-.fun-v2-greeting{position:fixed;top:18px;right:18px;z-index:8000;background:rgba(255,255,255,.96);border:1px solid #dce7ee;border-radius:14px;padding:10px 14px;box-shadow:0 10px 28px rgba(20,35,45,.12);font-size:12px;color:#52636e;backdrop-filter:blur(8px)}
-.fun-v2-greeting strong{display:block;color:#17212b;font-size:13px}.fun-v2-clock{font-variant-numeric:tabular-nums;margin-top:3px;color:#7a8790}
-.fun-v2-fab{position:fixed;right:20px;bottom:20px;z-index:8100;width:52px;height:52px;border:0;border-radius:50%;background:#173b52;color:#fff;font-size:24px;cursor:pointer;box-shadow:0 10px 25px rgba(20,35,45,.24)}
-.fun-v2-menu{position:fixed;right:20px;bottom:82px;z-index:8099;display:none;grid-template-columns:1fr 1fr;gap:8px;width:210px;padding:10px;background:#fff;border:1px solid #dce7ee;border-radius:14px;box-shadow:0 16px 35px rgba(20,35,45,.18)}.fun-v2-menu.open{display:grid}.fun-v2-menu button{border:1px solid #e0e8ed;background:#f8fafb;border-radius:10px;padding:10px 7px;cursor:pointer;font-size:11px;color:#34454f}.fun-v2-menu button:hover{background:#eef5f8}
-.fun-v2-modal{position:fixed;inset:0;z-index:10050;display:none;align-items:center;justify-content:center;padding:18px}.fun-v2-modal.open{display:flex}.fun-v2-backdrop{position:absolute;inset:0;background:rgba(11,25,35,.46);backdrop-filter:blur(3px)}.fun-v2-card{position:relative;width:min(560px,94vw);max-height:82vh;overflow:auto;background:#fff;border-radius:18px;padding:22px;box-shadow:0 25px 70px rgba(0,0,0,.24)}.fun-v2-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.fun-v2-head h3{margin:0;font-size:19px;color:#17212b}.fun-v2-close{border:1px solid #d8e2e8;background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:20px}.fun-v2-list{display:grid;gap:8px;margin-top:14px}.fun-v2-item{padding:11px 12px;border:1px solid #e2e9ed;border-radius:11px;background:#fafcfd}.fun-v2-item strong{display:block;color:#26343d}.fun-v2-item small{display:block;color:#78858e;margin-top:3px;line-height:1.4}.fun-v2-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);z-index:10060;background:#173b52;color:#fff;border-radius:12px;padding:12px 16px;box-shadow:0 12px 30px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:.28s;font-size:12px}.fun-v2-toast.show{opacity:1;transform:translate(-50%,0)}
-.fun-v2-status{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-weight:700}.fun-v2-dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:#36a269}.fun-v2-dot.warn{background:#d59b25}.fun-v2-dot.critical{background:#d64c4c}.fun-v2-assistant-bubble{text-align:center;font-size:42px;margin:4px 0 10px}.fun-v2-progress{height:5px;background:#edf2f4;border-radius:99px;overflow:hidden;margin-top:14px}.fun-v2-progress span{display:block;height:100%;width:72%;background:#5a8ca6;animation:funPulse 1.8s ease-in-out infinite alternate}@keyframes funPulse{from{width:45%}to{width:92%}}
-.fun-v2-easter{display:none;text-align:center;padding:22px}.fun-v2-easter.open{display:block}.fun-v2-easter .emoji{font-size:58px}.fun-v2-focus-title{font-weight:800;color:#52636e;font-size:11px;letter-spacing:.08em}.fun-v2-big{font-size:27px;font-weight:900;color:#173b52;margin:5px 0}
-@media(max-width:700px){.fun-v2-greeting{top:10px;right:10px;max-width:210px}.fun-v2-fab{right:14px;bottom:14px}.fun-v2-menu{right:14px;bottom:76px}.fun-v2-card{padding:17px}}
-</style>\n\n<div id="funV2Greeting" class="fun-v2-greeting" aria-live="polite"><strong id="funV2GreetingText">Good Morning! 👋</strong><div id="funV2Clock" class="fun-v2-clock">--:--:-- WIB</div><div id="funV2SystemStatus" class="fun-v2-status"><span class="fun-v2-dot"></span> SYSTEM NORMAL</div></div>
-<button id="funV2Fab" class="fun-v2-fab" type="button" aria-label="Quick actions">＋</button>
-<div id="funV2Menu" class="fun-v2-menu" aria-label="Quick actions">
-<button type="button" data-fun-action="assistant">🤖 Assistant</button><button type="button" data-fun-action="search">🔍 Search</button><button type="button" data-fun-action="progress">📊 Progress</button><button type="button" data-fun-action="problem">⚠️ Problem</button><button type="button" data-fun-action="report">🖨️ Report</button><button type="button" data-fun-action="focus">🎯 Focus Today</button>
-</div>
-<div id="funV2Modal" class="fun-v2-modal" aria-hidden="true"><div class="fun-v2-backdrop"></div><div class="fun-v2-card"><div class="fun-v2-head"><div><h3 id="funV2ModalTitle">Monitoring Assistant</h3><small id="funV2ModalSub" style="color:#7b8790">Live dashboard insight</small></div><button id="funV2Close" class="fun-v2-close" type="button">×</button></div><div id="funV2ModalBody"></div></div></div>
-<div id="funV2Toast" class="fun-v2-toast" role="status" aria-live="polite"></div>
-<div id="funV2Easter" class="fun-v2-easter"><div class="emoji">🎉👀🚀</div><h3>SECRET MONITORING MODE!</h3><p>You found the hidden dashboard easter egg.</p></div>
-<script id="fun-features-v2-js">
+
+<script>
 (function(){
-  if(window.__funV2Loaded)return; window.__funV2Loaded=true;
-  const $=id=>document.getElementById(id);
-  const safeRows=()=>Array.isArray(window.allProgressRows)?window.allProgressRows:[];
-  const problemRows=()=>Array.isArray(window.allProblemRows)?window.allProblemRows:[];
-  function status(row){try{return String(window.getRowStatus?window.getRowStatus(row):row?.[23]||'').trim().toUpperCase()}catch(e){return String(row?.[23]||'').trim().toUpperCase()}}
-  function num(v){const n=parseFloat(String(v??'').replace(/,/g,''));return Number.isFinite(n)?n:0}
-  function openRows(){return safeRows().filter(r=>status(r)==='OPEN')}
-  function overdueRows(){const now=new Date();return openRows().filter(r=>{const d=new Date(String(r?.[7]||'').trim());return !isNaN(d)&&d<new Date(now.getFullYear(),now.getMonth(),now.getDate())})}
-  function etd3Rows(){const now=new Date();const end=new Date(now.getFullYear(),now.getMonth(),now.getDate()+3,23,59,59);return openRows().filter(r=>{const d=new Date(String(r?.[7]||'').trim());return !isNaN(d)&&d>=new Date(now.getFullYear(),now.getMonth(),now.getDate())&&d<=end})}
-  function reschedRows(){return openRows().filter(r=>String(r?.[8]||'').trim()!=='')}
-  function processTop(){const rows=openRows();const cols=Array.isArray(window.PROCESS_COLUMNS)?window.PROCESS_COLUMNS:[];let best={name:'-',qty:0};cols.forEach(p=>{const q=rows.reduce((a,r)=>a+Math.max(0,num(r?.[p.index])),0);if(q>best.qty)best={name:p.name,qty:q}});return best}
-  function stats(){const o=openRows(), p=problemRows().filter(r=>String(r?.[8]||'').trim().toUpperCase()==='OPEN'||String(r?.[7]||'').trim().toUpperCase()==='OPEN');return {open:o.length,overdue:overdueRows().length,etd3:etd3Rows().length,resched:reschedRows().length,problem:p.length,top:processTop()}}
-  function updateGreeting(){const h=new Date().getHours();const t=h<11?'Good Morning! 👋':h<15?'Good Afternoon! 🌤️':h<19?'Good Evening! 🌆':'Good Evening! 🌙';if($('funV2GreetingText'))$('funV2GreetingText').textContent=t;if($('funV2Clock'))$('funV2Clock').textContent=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZone:'Asia/Jakarta'}).format(new Date())+' WIB'}
-  function updateStatus(){const s=stats(), el=$('funV2SystemStatus');if(!el)return;let label='SYSTEM NORMAL',c='';if(s.overdue>=10||s.problem>=50){label='CRITICAL ATTENTION';c='critical'}else if(s.overdue>0||s.problem>0){label='NEEDS ATTENTION';c='warn'}el.innerHTML='<span class="fun-v2-dot '+c+'"></span> '+label}
-  function showModal(title,sub,body){$('funV2ModalTitle').textContent=title;$('funV2ModalSub').textContent=sub||'';$('funV2ModalBody').innerHTML=body;$('funV2Modal').classList.add('open');$('funV2Modal').setAttribute('aria-hidden','false')}
-  function closeModal(){$('funV2Modal').classList.remove('open');$('funV2Modal').setAttribute('aria-hidden','true')}
-  function assistant(){const s=stats();const mood=s.overdue>=10?'😰':s.overdue>0||s.problem>0?'😐':'😊';showModal('Monitoring Assistant','Live insight from current dashboard','<div class="fun-v2-assistant-bubble">🤖 '+mood+'</div><div class="fun-v2-list"><div class="fun-v2-item"><strong>📦 '+s.open+' OPEN orders</strong><small>Current production workload.</small></div><div class="fun-v2-item"><strong>⏰ '+s.overdue+' overdue</strong><small>Orders whose ETD has passed.</small></div><div class="fun-v2-item"><strong>📅 '+s.etd3+' ETD ≤ 3 days</strong><small>Upcoming orders that need attention.</small></div><div class="fun-v2-item"><strong>🔄 '+s.resched+' reschedule</strong><small>OPEN orders with rescheduled ETD.</small></div><div class="fun-v2-item"><strong>⚠️ '+s.problem+' problem OPEN</strong><small>Open problem records detected.</small></div><div class="fun-v2-item"><strong>🏭 '+s.top.name+' · '+s.top.qty+' OPEN QTY</strong><small>Highest process workload.</small></div></div><div class="fun-v2-progress"><span></span></div>')}
-  function focus(){const s=stats();showModal('🎯 Focus Today','Things worth checking','<div class="fun-v2-list"><div class="fun-v2-item"><strong>⏰ '+s.overdue+' Overdue</strong><small>Review overdue OPEN jobs.</small></div><div class="fun-v2-item"><strong>📅 '+s.etd3+' ETD ≤ 3 days</strong><small>Review upcoming delivery dates.</small></div><div class="fun-v2-item"><strong>🔄 '+s.resched+' Reschedule</strong><small>Check changed ETD records.</small></div><div class="fun-v2-item"><strong>⚠️ '+s.problem+' Problem OPEN</strong><small>Review active problems.</small></div><div class="fun-v2-item"><strong>🏭 '+s.top.name+' · '+s.top.qty+'</strong><small>Current highest process workload.</small></div></div>')}
-  function toast(msg){const t=$('funV2Toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.__funToast);window.__funToast=setTimeout(()=>t.classList.remove('show'),3200)}
-  function action(a){$('funV2Menu').classList.remove('open');if(a==='assistant')return assistant();if(a==='focus')return focus();if(a==='progress'){if(window.showPage)window.showPage('progress');else toast('Buka menu Progress dari sidebar.')}if(a==='problem'){if(window.showPage)window.showPage('problem');else toast('Buka menu Problem dari sidebar.')}if(a==='report'){if(window.showPage)window.showPage('report');else toast('Buka Monitoring Report dari sidebar.')}if(a==='search'){const el=document.querySelector('#globalSearch,#progressGlobalSearch,#monitorGlobalSearch,input[type="search"]');if(el){el.focus();el.scrollIntoView({behavior:'smooth',block:'center'})}else toast('Kolom search tersedia di halaman Progress/Monitoring.')}}
-  function achievement(){const s=stats();if(s.open===0){toast('🎉 ALL CLEAR! Tidak ada order OPEN.')}else if(s.overdue===0&&s.problem===0){toast('🏆 Great! Tidak ada overdue dan problem OPEN.')}else if(s.overdue===0){toast('🎉 NO OVERDUE! Semua ETD masih aman.')}}
-  $('funV2Fab').addEventListener('click',()=>{$('funV2Menu').classList.toggle('open')});document.querySelectorAll('[data-fun-action]').forEach(b=>b.addEventListener('click',()=>action(b.dataset.funAction)));$('funV2Close').addEventListener('click',closeModal);$('funV2Modal').querySelector('.fun-v2-backdrop').addEventListener('click',closeModal);
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
-  let secretClicks=0,secretTimer;const g=$('funV2Greeting');g.addEventListener('click',()=>{secretClicks++;clearTimeout(secretTimer);secretTimer=setTimeout(()=>secretClicks=0,1100);if(secretClicks>=5){secretClicks=0;showModal('🎉 SECRET MODE','You found it!','<div class="fun-v2-easter open"><div class="emoji">🎉👀🚀</div><h3>SECRET MONITORING MODE!</h3><p>Nice! You found the hidden dashboard easter egg.</p></div>')}});
-  updateGreeting();updateStatus();setInterval(updateGreeting,1000);setInterval(updateStatus,5000);setTimeout(achievement,2200);setTimeout(()=>{try{const k='prototypeMonitoringVisitStreak',d=new Date().toISOString().slice(0,10),old=JSON.parse(localStorage.getItem(k)||'{}');let streak=Number(old.streak||0);if(old.last!==d){streak=old.last?streak+1:1;localStorage.setItem(k,JSON.stringify({last:d,streak}));}toast('🔥 Monitoring streak: '+streak+' day'+(streak===1?'':'s'));}catch(e){}},3500);
+  const q=id=>document.getElementById(id);
+  function nums(){
+    let open=0,overdue=0,etd3=0,reschedule=0,problemOpen=0,bottleneck='-',bottleneckQty=0;
+    try{open=typeof monitoringOpenRows==='function'?monitoringOpenRows().length:0}catch(e){}
+    try{const m=typeof monitoringMetrics==='function'?monitoringMetrics():{};overdue=+m.overdue||0;etd3=+m.etd3||0;reschedule=+m.reschedule||0}catch(e){}
+    try{problemOpen=(typeof allProblemRows!=='undefined'?allProblemRows:[]).filter(r=>typeof getProblemValue==='function'&&typeof PROBLEM_COLUMNS!=='undefined'&&String(getProblemValue(r,PROBLEM_COLUMNS.STATUS)||'').trim().toUpperCase()==='OPEN').length}catch(e){}
+    try{const a=(typeof monitoringProcessWorkload==='function'?monitoringProcessWorkload():[]).sort((x,y)=>(+y.qty||0)-(+x.qty||0))[0];if(a){bottleneck=a.name;bottleneckQty=+a.qty||0}}catch(e){}
+    return {open,overdue,etd3,reschedule,problemOpen,bottleneck,bottleneckQty};
+  }
+  function updateClock(){const d=new Date();q('cuteClock')&&(q('cuteClock').textContent=d.toLocaleTimeString('id-ID',{hour12:false,timeZone:'Asia/Jakarta'}));q('cuteDate')&&(q('cuteDate').textContent=d.toLocaleDateString('id-ID',{weekday:'long',day:'2-digit',month:'long',year:'numeric',timeZone:'Asia/Jakarta'}));}
+  function updateStatus(){const n=nums(),icon=q('cuteStatusIcon'),title=q('cuteStatusTitle'),sub=q('cuteStatusSub');let type='normal';if(n.overdue>=10||n.problemOpen>=20)type='critical';else if(n.overdue>0||n.etd3>0||n.problemOpen>0)type='attention';const map={normal:['😊','SYSTEM NORMAL','Semua sistem siap dipantau.'],attention:['😐','NEEDS ATTENTION',`${n.overdue} overdue · ${n.problemOpen} problem OPEN perlu dicek.`],critical:['😰','CRITICAL ATTENTION',`${n.overdue} overdue dan ${n.problemOpen} problem OPEN terdeteksi.`]};[icon,title,sub].forEach((x,i)=>x&&(x.textContent=map[type][i]));}
+  function focusHTML(){const n=nums();return `<div class="cute-focus-item" data-focus="overdue"><div class="icon">⏰</div><div class="label">OVERDUE</div><div class="value">${n.overdue}</div><div class="note">OPEN melewati ETD</div></div><div class="cute-focus-item" data-focus="etd3"><div class="icon">📅</div><div class="label">ETD ≤ 3 HARI</div><div class="value">${n.etd3}</div><div class="note">Segera dipantau</div></div><div class="cute-focus-item" data-focus="reschedule"><div class="icon">🔄</div><div class="label">RESCHEDULE</div><div class="value">${n.reschedule}</div><div class="note">Perubahan ETD</div></div><div class="cute-focus-item" data-focus="problem"><div class="icon">⚠️</div><div class="label">PROBLEM OPEN</div><div class="value">${n.problemOpen}</div><div class="note">Perlu perhatian</div></div><div class="cute-focus-item" data-focus="bottleneck"><div class="icon">👀</div><div class="label">BOTTLENECK</div><div class="value">${n.bottleneckQty}</div><div class="note">${n.bottleneck}</div></div>`}
+  function updateFocus(){const g=q('cuteFocusGrid');if(g)g.innerHTML=focusHTML();const n=nums();if(q('cuteNotificationCount'))q('cuteNotificationCount').textContent=Math.min(99,n.overdue+n.etd3+n.reschedule+n.problemOpen);}
+  function notifications(){const n=nums(),arr=[['⏰','Overdue',`${n.overdue} order OPEN melewati ETD.`,n.overdue],['📅','ETD ≤ 3 Hari',`${n.etd3} order perlu dipantau.`,n.etd3],['🔄','Reschedule',`${n.reschedule} order mengalami perubahan ETD.`,n.reschedule],['⚠️','Problem OPEN',`${n.problemOpen} problem masih OPEN.`,n.problemOpen],['👀','Process Bottleneck',`${n.bottleneck} memiliki ${n.bottleneckQty} OPEN QTY.`,n.bottleneckQty]];const body=q('cuteNotificationBody');if(body)body.innerHTML=arr.map(x=>`<div class="cute-notif-item"><div class="ni">${x[0]}</div><div><strong>${x[1]}</strong><small>${x[2]}</small></div><b>${x[3]}</b></div>`).join('')+(arr.every(x=>!x[3])?'<div class="cute-empty-state"><div class="big">🎉</div><strong>All clear!</strong><span>Tidak ada attention yang perlu ditampilkan.</span></div>':'');}
+  function openModal(id){const x=q(id);if(x){x.classList.add('open');x.setAttribute('aria-hidden','false')}}function closeAll(){document.querySelectorAll('.cute-modal').forEach(x=>{x.classList.remove('open');x.setAttribute('aria-hidden','true')})}
+  function init(){updateClock();updateStatus();updateFocus();setInterval(updateClock,1000);setInterval(()=>{updateStatus();updateFocus()},5000);q('cuteNotificationBtn')?.addEventListener('click',()=>{notifications();openModal('cuteNotificationPanel')});q('cuteFocusRefresh')?.addEventListener('click',()=>{updateStatus();updateFocus()});q('cuteQuickMain')?.addEventListener('click',()=>{q('cuteQuickMain').classList.toggle('open');q('cuteQuickMenu').classList.toggle('open')});document.querySelectorAll('[data-close-cute]').forEach(x=>x.addEventListener('click',closeAll));document.querySelectorAll('#cuteQuickMenu button').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.action;q('cuteQuickMain').classList.remove('open');q('cuteQuickMenu').classList.remove('open');if(a==='assistant')q('monitorAssistantButton')?.click();if(a==='focus')openModal('cuteFocusPanel');if(a==='progress')typeof showPage==='function'&&showPage('progress');if(a==='problem')typeof showPage==='function'&&showPage('problem');if(a==='report')typeof showPage==='function'&&showPage('report')}));q('cuteFocusGrid')?.addEventListener('click',e=>{const item=e.target.closest('.cute-focus-item');if(!item)return;const f=item.dataset.focus;if(f==='bottleneck'&&typeof monitorProcessBottleneck==='function')monitorProcessBottleneck();else if(f==='problem'&&typeof stage6OpenProblem==='function')stage6OpenProblem();else if(f==='overdue'&&typeof monitorFilter==='function')monitorFilter('overdue');else if(f==='etd3'&&typeof monitorFilter==='function')monitorFilter('etd3');else if(f==='reschedule'&&typeof monitorFilter==='function')monitorFilter('reschedule')});let clicks=0,last=0;q('dashboardGreeting')?.addEventListener('click',()=>{const now=Date.now();clicks=now-last<800?clicks+1:1;last=now;if(clicks>=5){clicks=0;document.body.classList.add('secret-monitor-mode');setTimeout(()=>document.body.classList.remove('secret-monitor-mode'),4000);alert('🎉 SECRET MONITORING MODE UNLOCKED! 🚀')}});}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
-</script>\n</body>
+</script>
+</body>
 
 </html>
