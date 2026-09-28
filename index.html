@@ -9099,8 +9099,8 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
 })();
 </script>
 <style id="interactionAnimationFix">
-  .ui-action-busy{position:relative!important;pointer-events:none!important;opacity:.78!important;}
-  .ui-action-busy::after{content:"";display:inline-block;width:13px;height:13px;margin-left:8px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;vertical-align:-2px;animation:uiSpin .65s linear infinite;}
+  .ui-action-busy{position:relative!important;pointer-events:none!important;opacity:.82!important;min-width:110px!important;}
+  .ui-action-busy .ui-inline-spinner{display:inline-block;width:13px;height:13px;margin-right:7px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;vertical-align:-2px;animation:uiSpin .65s linear infinite;}
   .ui-action-success{animation:uiPulse .45s ease both;}
   .ui-refresh-flash{position:fixed;top:76px;right:22px;z-index:15000;background:#fff;border:1px solid #cfe1e8;border-radius:13px;padding:10px 14px;box-shadow:0 10px 30px rgba(35,60,72,.16);font-size:11px;font-weight:800;color:#304650;display:flex;align-items:center;gap:8px;animation:uiToastIn .25s ease both;}
   .ui-refresh-flash .spin{width:14px;height:14px;border:2px solid #8eabb8;border-right-color:transparent;border-radius:50%;animation:uiSpin .65s linear infinite;}
@@ -9114,23 +9114,36 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
 </style>
 <script id="interactionAnimationFixJS">
 (function(){
-  function toast(message){
+  function toast(message,doneMessage){
     document.querySelectorAll('.ui-refresh-flash').forEach(x=>x.remove());
     const el=document.createElement('div'); el.className='ui-refresh-flash';
-    el.innerHTML='<span class="spin"></span><span>'+message+'</span>';
+    el.innerHTML='<span class="spin"></span><span class="ui-refresh-text">'+message+'</span>';
     document.body.appendChild(el);
-    setTimeout(()=>{el.style.opacity='0';el.style.transform='translateY(-6px)';el.style.transition='.2s';setTimeout(()=>el.remove(),220)},650);
+    return {
+      done:function(){
+        const spin=el.querySelector('.spin');
+        if(spin) spin.style.animation='none';
+        if(spin) spin.textContent='✓';
+        if(spin){spin.style.border='0';spin.style.width='16px';spin.style.height='16px';spin.style.fontSize='14px';spin.style.fontWeight='900';spin.style.display='inline-flex';spin.style.alignItems='center';spin.style.justifyContent='center';}
+        const text=el.querySelector('.ui-refresh-text');
+        if(text) text.textContent=doneMessage||'Selesai';
+        setTimeout(()=>{el.style.opacity='0';el.style.transform='translateY(-6px)';el.style.transition='.25s';setTimeout(()=>el.remove(),260)},700);
+      }
+    };
   }
   function busy(btn,label){
     if(!btn||btn.dataset.uiBusy==='1') return;
-    btn.dataset.uiBusy='1'; btn.classList.add('ui-action-busy');
+    btn.dataset.uiBusy='1';
     const original=btn.innerHTML;
     btn.dataset.uiOriginal=original;
-    toast(label);
+    btn.classList.add('ui-action-busy');
+    btn.innerHTML='<span class="ui-inline-spinner" aria-hidden="true"></span><span>'+label+'</span>';
+    const notice=toast(label,label.includes('Mereset')?'Filter berhasil direset ✓':'Data berhasil diperbarui ✓');
     setTimeout(()=>{
       btn.classList.remove('ui-action-busy'); btn.classList.add('ui-action-success'); btn.innerHTML=original; btn.dataset.uiBusy='0';
+      notice.done();
       setTimeout(()=>btn.classList.remove('ui-action-success'),500);
-    },700);
+    },1200);
   }
   function bind(){
     document.addEventListener('click',function(e){
