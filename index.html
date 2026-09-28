@@ -407,6 +407,26 @@ body.login-locked .sidebar-overlay { display:none !important; }
 .login-button:hover{background:#1b2b38;}
 .login-error{min-height:18px;margin-top:5px;text-align:center;color:#c94c4c;font-size:11px;font-weight:700;}
 .login-hint{text-align:center;margin-top:16px;color:#777;font-size:10px;}
+
+/* Welcome animation after successful login */
+.login-welcome-overlay{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;background:rgba(226,242,249,.82);backdrop-filter:blur(5px);}
+.login-welcome-overlay.show{display:flex;}
+.login-welcome-card{position:relative;width:min(430px,100%);padding:34px 28px 30px;background:#fff;border:1px solid #c7dfe9;border-radius:24px;box-shadow:0 22px 60px rgba(37,67,82,.22);text-align:center;overflow:hidden;animation:welcomePop .55s cubic-bezier(.2,.8,.2,1) both;}
+.login-welcome-icon{width:74px;height:74px;margin:0 auto 12px;border-radius:22px;display:flex;align-items:center;justify-content:center;background:#d8eef8;font-size:38px;animation:welcomeBounce .9s ease .15s both;}
+.login-welcome-kicker{font-size:10px;font-weight:900;letter-spacing:1.8px;color:#527080;margin-bottom:7px;}
+.login-welcome-title{margin:0;color:#182a35;font-size:30px;line-height:1.1;font-weight:900;}
+.login-welcome-text{margin:10px 0 0;color:#647680;font-size:13px;line-height:1.6;}
+.login-welcome-text strong{color:#263746;}
+.login-welcome-progress{height:5px;margin:22px auto 0;width:150px;border-radius:999px;background:#e7f0f4;overflow:hidden;}
+.login-welcome-progress span{display:block;height:100%;width:0;border-radius:999px;background:#79aac0;animation:welcomeProgress 1.7s linear both;}
+.login-welcome-spark{position:absolute;font-size:20px;animation:sparkFloat 1.7s ease-out both;pointer-events:none;}
+.login-welcome-spark.s1{left:13%;top:22%;animation-delay:.05s}.login-welcome-spark.s2{right:14%;top:19%;animation-delay:.16s}.login-welcome-spark.s3{left:20%;bottom:18%;animation-delay:.28s}.login-welcome-spark.s4{right:20%;bottom:16%;animation-delay:.38s}
+@keyframes welcomePop{0%{opacity:0;transform:scale(.72) translateY(18px)}70%{opacity:1;transform:scale(1.035) translateY(0)}100%{opacity:1;transform:scale(1)}}
+@keyframes welcomeBounce{0%{opacity:0;transform:scale(.4) rotate(-12deg)}65%{opacity:1;transform:scale(1.15) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes welcomeProgress{from{width:0}to{width:100%}}
+@keyframes sparkFloat{0%{opacity:0;transform:translateY(16px) scale(.4) rotate(-15deg)}25%{opacity:1}100%{opacity:0;transform:translateY(-42px) scale(1.15) rotate(18deg)}}
+@media(prefers-reduced-motion:reduce){.login-welcome-card,.login-welcome-icon,.login-welcome-spark,.login-welcome-progress span{animation:none}.login-welcome-progress span{width:100%}}
+
 </style>
 
 </head>
@@ -437,6 +457,23 @@ body.login-locked .sidebar-overlay { display:none !important; }
             <div class="login-hint">Username: <strong>admin</strong></div>
         </div>
     </section>
+
+    <!-- =====================================================
+         WELCOME ANIMATION AFTER LOGIN
+    ====================================================== -->
+    <div id="loginWelcomeOverlay" class="login-welcome-overlay" aria-hidden="true">
+        <div class="login-welcome-card" role="status" aria-live="polite">
+            <span class="login-welcome-spark s1">✨</span>
+            <span class="login-welcome-spark s2">⭐</span>
+            <span class="login-welcome-spark s3">✨</span>
+            <span class="login-welcome-spark s4">💫</span>
+            <div class="login-welcome-icon">📊</div>
+            <div class="login-welcome-kicker">PROTOTYPE MONITORING</div>
+            <h2 class="login-welcome-title">WELCOME! 👋</h2>
+            <p class="login-welcome-text">Selamat datang di <strong>Dashboard Monitoring</strong>.<br>Dashboard siap digunakan 🚀</p>
+            <div class="login-welcome-progress" aria-hidden="true"><span></span></div>
+        </div>
+    </div>
 
 
     <!-- =====================================================
@@ -8850,11 +8887,25 @@ function printStage6Report() {
         const LOGIN_PASSWORD = "12345";
         const LOGIN_SESSION_KEY = "prototypeMonitoringLoggedIn";
 
-        function showDashboard(){
+        function showWelcomeAnimation(){
+            const overlay=document.getElementById("loginWelcomeOverlay");
+            if(!overlay) return;
+            overlay.classList.remove("show");
+            void overlay.offsetWidth;
+            overlay.classList.add("show");
+            overlay.setAttribute("aria-hidden","false");
+            window.setTimeout(function(){
+                overlay.classList.remove("show");
+                overlay.setAttribute("aria-hidden","true");
+            },1800);
+        }
+
+        function showDashboard(showWelcome){
             document.body.classList.remove("login-locked");
             const screen=document.getElementById("loginScreen");
             if(screen) screen.style.display="none";
             try{sessionStorage.setItem(LOGIN_SESSION_KEY,"1");}catch(e){}
+            if(showWelcome) showWelcomeAnimation();
         }
 
         function showLogin(){
@@ -8871,7 +8922,7 @@ function printStage6Report() {
             const pass=String(password ? password.value : "");
             if(user===LOGIN_USERNAME && pass===LOGIN_PASSWORD){
                 if(error) error.textContent="";
-                showDashboard();
+                showDashboard(true);
                 return true;
             }
             if(error) error.textContent="Username atau password salah.";
@@ -8893,7 +8944,7 @@ function printStage6Report() {
         function init(){
             let logged=false;
             try{logged=sessionStorage.getItem(LOGIN_SESSION_KEY)==="1";}catch(e){}
-            if(logged){showDashboard();}else{showLogin();}
+            if(logged){showDashboard(false);}else{showLogin();}
             const form=document.getElementById("loginForm");
             if(form && !form.dataset.loginBound){
                 form.dataset.loginBound="1";
