@@ -9045,9 +9045,21 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
                 form.addEventListener("keydown",function(e){
                     if(e.key === "Enter") {
                         e.preventDefault();
+                        e.stopPropagation();
                         window.loginDashboard();
                     }
                 });
+                // Fallback: Enter anywhere inside the login screen also submits.
+                document.addEventListener("keydown",function(e){
+                    if(e.key !== "Enter" || e.isComposing) return;
+                    const screen=document.getElementById("loginScreen");
+                    if(!screen || screen.style.display === "none" || !document.body.classList.contains("login-locked")) return;
+                    const target=e.target;
+                    if(target && target.closest && !target.closest("#loginForm")) return;
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    window.loginDashboard();
+                },true);
             }
         }
 
