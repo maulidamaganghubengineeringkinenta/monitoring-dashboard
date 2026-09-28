@@ -339,6 +339,7 @@
 .secret-monitor-mode .cute-status-card{animation:secretPulse .55s ease-in-out infinite alternate}.secret-monitor-mode .cute-status-icon{transform:scale(1.12)}@keyframes secretPulse{from{box-shadow:0 0 0 rgba(120,180,200,0)}to{box-shadow:0 0 25px rgba(120,180,200,.45)}}</style>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 .searchable-filter{width:100%;box-sizing:border-box;min-height:38px;padding:9px 11px;border:1px solid #b9c8d2;border-radius:7px;background:#fff;font-size:13px;}
 .searchable-filter:focus{outline:2px solid rgba(37,99,235,.18);border-color:#2563eb;}
@@ -453,6 +454,9 @@ body.login-locked .sidebar-overlay { display:none !important; }
 .cute-notif-intro{padding:11px 12px;margin-bottom:10px;border-radius:12px;background:#f6fafc;border:1px solid #e3edf1}.cute-notif-intro strong{display:block;font-size:12px;color:#243943}.cute-notif-intro small{display:block;margin-top:3px;font-size:10px;color:#72828a;line-height:1.4}
 </style>
 
+<style id="downloadDataCSS">
+.download-page{width:100%;max-width:1180px;margin:0 auto;box-sizing:border-box}.download-hero{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:20px 22px;margin-bottom:16px;border:1px solid #d8e8ee;border-radius:18px;background:linear-gradient(135deg,#f8fcfe,#eef8fb)}.download-hero h2{margin:5px 0 5px;font-size:22px;color:#1e313b}.download-hero p{margin:0;color:#70818a;font-size:12px;line-height:1.5}.download-live-badge{font-size:10px;font-weight:900;color:#507687;white-space:nowrap}.download-live-badge span{display:inline-block;width:7px;height:7px;border-radius:50%;background:#67b78a;margin-right:6px}.download-layout{display:grid;grid-template-columns:minmax(330px,.9fr) minmax(420px,1.1fr);gap:16px;align-items:start}.download-filter-card,.download-preview-card{background:#fff;border:1px solid #d9e7ec;border-radius:18px;padding:18px;box-sizing:border-box}.download-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}.download-card-head strong{display:block;font-size:14px;color:#243741}.download-card-head small{display:block;margin-top:4px;color:#7a8a91;font-size:10px;line-height:1.4}.download-reset{border:1px solid #cfdfe5;background:#f7fafb;color:#526872;border-radius:9px;padding:8px 10px;font-size:10px;font-weight:800;cursor:pointer}.download-field{min-width:0;margin-bottom:12px}.download-field label{display:block;font-size:10px;font-weight:900;color:#52636b;margin-bottom:5px}.download-field input,.download-field select{width:100%;height:38px;padding:8px 10px;border:1px solid #d2e1e6;border-radius:9px;background:#fff;box-sizing:border-box;font-size:11px;color:#344851;outline:none}.download-field input:focus,.download-field select:focus{border-color:#86b4c5;box-shadow:0 0 0 3px rgba(134,180,197,.12)}.download-filter-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 10px}.download-filter-grid .download-field:first-child{grid-column:1/-1}.download-chip-grid{display:flex;flex-wrap:wrap;gap:7px}.download-chip{border:1px solid #d2e3e9;background:#f8fbfc;color:#4b616a;border-radius:999px;padding:8px 11px;font-size:10px;font-weight:800;cursor:pointer;transition:.15s ease}.download-chip:hover{transform:translateY(-1px);border-color:#a9c8d3}.download-chip.active{background:#dff1f8;border-color:#91bdcc;color:#294957}.download-count{padding:7px 10px;border-radius:999px;background:#eef8fb;color:#426676;font-size:10px;font-weight:900;white-space:nowrap}.download-preview-table-wrap{width:100%;overflow:auto;border:1px solid #e1ebef;border-radius:12px}.download-preview-table{width:100%;min-width:650px;border-collapse:collapse;font-size:10px}.download-preview-table th{background:#f5f9fa;color:#536770;text-align:left;padding:9px;border-bottom:1px solid #dfe9ed;white-space:nowrap}.download-preview-table td{padding:9px;border-bottom:1px solid #edf2f4;color:#42545c;white-space:nowrap}.download-preview-table tr:last-child td{border-bottom:0}.download-empty{padding:28px 10px;text-align:center;color:#7c8b92;font-size:11px}.download-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:14px}.download-button{border:0;border-radius:10px;padding:11px 14px;font-size:10px;font-weight:900;cursor:pointer}.download-button.primary{background:#263746;color:#fff}.download-button.secondary{background:#eaf4f7;color:#355462;border:1px solid #cfe1e7}.download-button:disabled{opacity:.5;cursor:not-allowed}.download-note{margin-top:9px;color:#8a999f;font-size:9px;line-height:1.45}.download-filter-card .download-field:last-child{margin-bottom:0}@media(max-width:900px){.download-layout{grid-template-columns:1fr}.download-hero{align-items:flex-start;flex-direction:column}.download-filter-grid{grid-template-columns:1fr}.download-filter-grid .download-field:first-child{grid-column:auto}}@media(max-width:520px){.download-page{max-width:100%}.download-filter-card,.download-preview-card{padding:14px}.download-actions{justify-content:stretch}.download-button{width:100%}}
+</style>
 </head>
 
 <body class="login-locked">
@@ -648,6 +652,21 @@ body.login-locked .sidebar-overlay { display:none !important; }
             </button>
 
         </nav>
+
+
+        <button
+                class="menu" data-page="download"
+                onclick="showPage('download'); closeSidebar();">
+
+                <span class="menu-icon">
+                    📥
+                </span>
+
+                <span>
+                    Download Data
+                </span>
+
+            </button>
 
 
         <div class="sidebar-section-title sidebar-data-title">
@@ -2673,6 +2692,96 @@ body.login-locked .sidebar-overlay { display:none !important; }
 
             </div>
 
+        </section>
+
+        <!-- =================================================
+             DOWNLOAD DATA
+        ================================================== -->
+        <section id="download" class="page">
+            <div class="download-page">
+                <div class="download-hero">
+                    <div>
+                        <div class="panel-kicker">DATA EXPORT</div>
+                        <h2>📥 Download Data</h2>
+                        <p>Pilih sumber data, gunakan filter yang dibutuhkan, lihat preview hasilnya, lalu download hanya data yang sesuai.</p>
+                    </div>
+                    <div class="download-live-badge"><span></span> LIVE DATA</div>
+                </div>
+
+                <div class="download-layout">
+                    <div class="download-filter-card">
+                        <div class="download-card-head">
+                            <div><strong>Filter Data</strong><small>Gunakan Quick Filter atau kombinasi filter manual.</small></div>
+                            <button type="button" class="download-reset" id="downloadResetBtn">Reset Filter</button>
+                        </div>
+
+                        <div class="download-field">
+                            <label for="downloadSource">Data yang akan di-download</label>
+                            <select id="downloadSource">
+                                <option value="progress">Progress 2026</option>
+                                <option value="problem">Problem</option>
+                            </select>
+                        </div>
+
+                        <div class="download-field">
+                            <label>Quick Filter</label>
+                            <div class="download-chip-grid" id="downloadQuickFilters"></div>
+                        </div>
+
+                        <div id="downloadProgressFilters">
+                            <div class="download-filter-grid">
+                                <div class="download-field"><label>Status</label><select id="dlStatus"><option value="">Semua Status</option><option>OPEN</option><option>CLOSE</option></select></div>
+                                <div class="download-field"><label>Customer</label><input id="dlCustomer" list="dlCustomerList" placeholder="Semua customer"><datalist id="dlCustomerList"></datalist></div>
+                                <div class="download-field"><label>WP</label><input id="dlWp" list="dlWpList" placeholder="Semua WP"><datalist id="dlWpList"></datalist></div>
+                                <div class="download-field"><label>ASSY NO</label><input id="dlAssy" list="dlAssyList" placeholder="Semua ASSY NO"><datalist id="dlAssyList"></datalist></div>
+                                <div class="download-field"><label>CCT</label><input id="dlCct" list="dlCctList" placeholder="Semua CCT"><datalist id="dlCctList"></datalist></div>
+                                <div class="download-field"><label>Process</label><select id="dlProcess"><option value="">Semua Process</option></select></div>
+                                <div class="download-field"><label>QTY minimum</label><input id="dlQtyMin" type="number" min="0" placeholder="Contoh: 10"></div>
+                                <div class="download-field"><label>QTY maximum</label><input id="dlQtyMax" type="number" min="0" placeholder="Contoh: 100"></div>
+                                <div class="download-field"><label>ETD dari</label><input id="dlEtdFrom" type="date"></div>
+                                <div class="download-field"><label>ETD sampai</label><input id="dlEtdTo" type="date"></div>
+                                <div class="download-field"><label>Reschedule</label><select id="dlReschedule"><option value="">Semua</option><option value="yes">Ada Reschedule</option><option value="no">Tidak Reschedule</option></select></div>
+                                <div class="download-field"><label>Reschedule dari</label><input id="dlRescheduleFrom" type="date"></div>
+                                <div class="download-field"><label>Reschedule sampai</label><input id="dlRescheduleTo" type="date"></div>
+                                <div class="download-field"><label>Actual Start dari</label><input id="dlStartFrom" type="date"></div>
+                                <div class="download-field"><label>Actual Start sampai</label><input id="dlStartTo" type="date"></div>
+                                <div class="download-field"><label>Actual Finish dari</label><input id="dlFinishFrom" type="date"></div>
+                                <div class="download-field"><label>Actual Finish sampai</label><input id="dlFinishTo" type="date"></div>
+                                <div class="download-field"><label>Lead Time minimum</label><input id="dlLeadMin" type="number" min="0" placeholder="Hari"></div>
+                                <div class="download-field"><label>Lead Time maximum</label><input id="dlLeadMax" type="number" min="0" placeholder="Hari"></div>
+                            </div>
+                        </div>
+
+                        <div id="downloadProblemFilters" style="display:none">
+                            <div class="download-filter-grid">
+                                <div class="download-field"><label>Status</label><select id="dlProblemStatus"><option value="">Semua Status</option><option>OPEN</option><option>CLOSE</option></select></div>
+                                <div class="download-field"><label>Customer</label><input id="dlProblemCustomer" list="dlProblemCustomerList" placeholder="Semua customer"><datalist id="dlProblemCustomerList"></datalist></div>
+                                <div class="download-field"><label>PIC</label><input id="dlProblemPic" list="dlProblemPicList" placeholder="Semua PIC"><datalist id="dlProblemPicList"></datalist></div>
+                                <div class="download-field"><label>Part Name</label><input id="dlProblemPart" list="dlProblemPartList" placeholder="Semua part"><datalist id="dlProblemPartList"></datalist></div>
+                                <div class="download-field"><label>WIP</label><input id="dlProblemWip" list="dlProblemWipList" placeholder="Semua WIP"><datalist id="dlProblemWipList"></datalist></div>
+                                <div class="download-field"><label>Tanggal Problem dari</label><input id="dlProblemDateFrom" type="date"></div>
+                                <div class="download-field"><label>Tanggal Problem sampai</label><input id="dlProblemDateTo" type="date"></div>
+                                <div class="download-field"><label>Minus minimum</label><input id="dlProblemMinusMin" type="number" step="any" placeholder="Contoh: 1"></div>
+                                <div class="download-field"><label>Minus maximum</label><input id="dlProblemMinusMax" type="number" step="any" placeholder="Contoh: 100"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="download-preview-card">
+                        <div class="download-card-head">
+                            <div><strong>Download Preview</strong><small id="downloadFilterSummary">Semua data</small></div>
+                            <div class="download-count" id="downloadCount">0 data</div>
+                        </div>
+                        <div class="download-preview-table-wrap"><table class="download-preview-table"><thead id="downloadPreviewHead"></thead><tbody id="downloadPreviewBody"></tbody></table></div>
+                        <div class="download-empty" id="downloadEmpty" style="display:none">Tidak ada data yang sesuai dengan filter.</div>
+                        <div class="download-actions">
+                            <button type="button" class="download-button secondary" id="downloadCsvBtn">⬇️ Download CSV</button>
+                            <button type="button" class="download-button primary" id="downloadXlsxBtn">📊 Download Excel (.xlsx)</button>
+                        </div>
+                        <div class="download-note">Preview menampilkan maksimal 10 baris. File download tetap berisi seluruh data yang sesuai filter.</div>
+                    </div>
+                </div>
+            </div>
         </section>
 
     </main>
@@ -4992,7 +5101,8 @@ function showPage(pageName) {
         problem: ["Problem", "PROBLEM"],
         monitoring: ["Monitoring Center", "MONITORING CENTER"],
         meeting: ["Meeting Mode", "MEETING MODE"],
-        report: ["Monitoring Report", "MONITORING REPORT"]
+        report: ["Monitoring Report", "MONITORING REPORT"],
+        download: ["Download Data", "DOWNLOAD DATA"]
     };
     const meta = pageMeta[pageName] || [pageName, String(pageName).toUpperCase()];
     if (title) title.textContent = meta[0];
@@ -5007,6 +5117,7 @@ function showPage(pageName) {
     if (pageName === "meeting" || pageName === "report") {
         requestAnimationFrame(() => renderStage6Pages());
     }
+    if (pageName === "download") { requestAnimationFrame(() => window.refreshDownloadData && window.refreshDownloadData()); }
 }
 
 /* =========================================================
@@ -5360,6 +5471,8 @@ async function loadProblemData() {
 
         allProblemRows =
             dataRows;
+
+        if (typeof window.refreshDownloadData === "function") window.refreshDownloadData();
 
         filteredProblemRows =
             [...allProblemRows];
@@ -8965,6 +9078,143 @@ function greeting(){const h=new Date().getHours(),t=document.getElementById('das
 function assistant(){const b=document.getElementById('monitorAssistantBody');if(!b)return;const open=typeof monitoringOpenRows==='function'?monitoringOpenRows():[],probs=(typeof allProblemRows!=='undefined'?allProblemRows:[]).filter(r=>typeof getProblemValue==='function'&&typeof PROBLEM_COLUMNS!=='undefined'&&String(getProblemValue(r,PROBLEM_COLUMNS.STATUS)||'').trim().toUpperCase()==='OPEN');let overdue=0,etd3=0,res=0;if(typeof monitoringMetrics==='function'){const m=monitoringMetrics();overdue=+m.overdue||0;etd3=+m.etd3||0;res=+m.reschedule||0}const proc=typeof monitoringProcessWorkload==='function'?monitoringProcessWorkload().filter(x=>x.qty>0).sort((a,b)=>b.qty-a.qty)[0]:null;let a='🎯 Keep monitoring! Data masih memiliki pekerjaan yang perlu diperhatikan.';if(!open.length)a='🏆 ALL CLEAR! Tidak ada order OPEN saat ini.';else if(!probs.length)a='🏆 PROBLEM FREE! Tidak ada Problem OPEN saat ini.';else if(!overdue)a='✨ NO OVERDUE! Tidak ada order overdue saat ini.';b.innerHTML=`<div class="assistant-item">📦 <strong>${open.length.toLocaleString('id-ID')} order OPEN</strong> sedang dalam monitoring.</div><div class="assistant-item">⏰ <strong>${overdue.toLocaleString('id-ID')} overdue</strong> · ${etd3.toLocaleString('id-ID')} ETD ≤ 3 hari · ${res.toLocaleString('id-ID')} reschedule.</div><div class="assistant-item">⚠️ <strong>${probs.length.toLocaleString('id-ID')} problem OPEN</strong> terdeteksi.</div>${proc?`<div class="assistant-item">👀 Workload terbesar: <strong>${escapeHTML(proc.name)}</strong> (${(+proc.qty).toLocaleString('id-ID')} OPEN QTY).</div>`:''}<div class="assistant-achievement">${a}</div>`}
 function toast(){const x=document.getElementById('achievementToast'),tx=document.getElementById('achievementToastText');if(!x||!tx)return;const open=typeof monitoringOpenRows==='function'?monitoringOpenRows():[];const probs=(typeof allProblemRows!=='undefined'?allProblemRows:[]).filter(r=>typeof getProblemValue==='function'&&typeof PROBLEM_COLUMNS!=='undefined'&&String(getProblemValue(r,PROBLEM_COLUMNS.STATUS)||'').trim().toUpperCase()==='OPEN');tx.textContent=!open.length?'Semua order sudah aman — tidak ada OPEN job. 🏆':!probs.length?'Tidak ada Problem OPEN. Nice! 🏆':'Semua data live sudah siap dipantau. 🚀';x.classList.add('show');clearTimeout(window.__achievementTimer);window.__achievementTimer=setTimeout(()=>x.classList.remove('show'),3500)}
 function init(){greeting();const btn=document.getElementById('monitorAssistantButton'),p=document.getElementById('monitorAssistantPanel'),c=document.getElementById('monitorAssistantClose');btn&&btn.addEventListener('click',()=>{assistant();p.classList.toggle('open');btn.setAttribute('aria-expanded',p.classList.contains('open')?'true':'false')});c&&c.addEventListener('click',()=>{p.classList.remove('open');btn.setAttribute('aria-expanded','false')});document.addEventListener('click',e=>{if(p.classList.contains('open')&&!p.contains(e.target)&&e.target!==btn)p.classList.remove('open')});setInterval(greeting,60000);window.__cuteAchievement=toast;window.__cuteAssistant=assistant}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
+<script id="downloadDataEngine">
+/* =========================================================
+   DOWNLOAD DATA ENGINE
+========================================================= */
+(function(){
+    const progressHeaders = ["NO","CUSTOMER","ASSY NO","WP","CCT","QTY","TOTAL CCT","ETD","RESCHEDULE ETD","ACTUAL START","ACTUAL FINISH","LEAD TIME","REPAIR","CUTTING / CRIMPING","JOINTING / MVVS","MIDDLE","HOUSING","ASSEMBLING","BUZZER / CHECKER","VISUAL","TE-TA FINISHING","PREDEL","RFG","STATUS","OPEN QTY","KETERANGAN"];
+    const problemHeaders = ["NO","DATE PROBLEM","ASSY NO","CUSTOMER","WIP","PART NAME","PART NO BEI","PART NO BEE","QTY STD","QTY ACT","MINUS","SATUAN","PIC","DATE RECEIVED","STATUS","KETERANGAN","PROBLEM"];
+    const q = id => document.getElementById(id);
+    const norm = v => String(v ?? "").trim().toLowerCase();
+    const dateOnly = v => {
+        if (!v) return null;
+        if (typeof parseReadingDate === "function") return parseReadingDate(v);
+        if (typeof parseProblemDate === "function") return parseProblemDate(v);
+        const d = new Date(v); return Number.isNaN(d.getTime()) ? null : d;
+    };
+    const dateInput = v => {
+        const d = dateOnly(v); if (!d) return null;
+        return new Date(d.getFullYear(),d.getMonth(),d.getDate());
+    };
+    const number = v => {
+        if (v === null || v === undefined || String(v).trim()==="") return null;
+        const n = Number(String(v).replace(/,/g,"").replace(/\s/g,"").replace(/[^\d.-]/g,""));
+        return Number.isFinite(n) ? n : null;
+    };
+    const esc = v => typeof escapeHTML === "function" ? escapeHTML(String(v ?? "")) : String(v ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+    const progressRows = () => typeof allProgressRows !== "undefined" && Array.isArray(allProgressRows) ? allProgressRows : [];
+    const problemRows = () => typeof allProblemRows !== "undefined" && Array.isArray(allProblemRows) ? allProblemRows : [];
+
+    function uniqueValues(rows,index){
+        return [...new Set(rows.map(r=>String(r[index]??"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"id"));
+    }
+    function fillList(id, values){ const el=q(id); if(!el)return; el.innerHTML=values.map(v=>`<option value="${esc(v)}"></option>`).join(""); }
+    function fillProcess(){ const el=q("dlProcess"); if(!el)return; el.innerHTML='<option value="">Semua Process</option>'+((typeof PROCESS_COLUMNS !== "undefined" ? PROCESS_COLUMNS : []).map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join("")); }
+    function populateLists(){
+        fillList("dlCustomerList",uniqueValues(progressRows(),1)); fillList("dlWpList",uniqueValues(progressRows(),3)); fillList("dlAssyList",uniqueValues(progressRows(),2)); fillList("dlCctList",uniqueValues(progressRows(),4));
+        fillList("dlProblemCustomerList",uniqueValues(problemRows(),3)); fillList("dlProblemPicList",uniqueValues(problemRows(),12)); fillList("dlProblemPartList",uniqueValues(problemRows(),5)); fillList("dlProblemWipList",uniqueValues(problemRows(),4)); fillProcess();
+    }
+    function todayStart(){const d=new Date();return new Date(d.getFullYear(),d.getMonth(),d.getDate());}
+    function progressQuickMatch(row,quick){
+        if(!quick || quick==="all") return true;
+        const status=norm(row[23]);
+        if(quick==="open") return status==="open";
+        if(quick==="close") return status==="close";
+        if(quick==="reschedule") return Boolean(String(row[8]??"").trim());
+        const etd=dateInput(row[7]); const today=todayStart(); const in3=new Date(today); in3.setDate(in3.getDate()+3);
+        if(quick==="overdue") return status==="open" && etd && etd<today;
+        if(quick==="etd3") return status==="open" && etd && etd>=today && etd<=in3;
+        if(quick==="notstarted") return status==="open" && !String(row[9]??"").trim();
+        return true;
+    }
+    function inDateRange(value,from,to){
+        if(!from&&!to)return true; const d=dateInput(value); if(!d)return false;
+        const f=from?new Date(from+"T00:00:00"):null, t=to?new Date(to+"T23:59:59"):null;
+        return (!f||d>=f)&&(!t||d<=t);
+    }
+    function progressFiltered(){
+        const quick=document.querySelector('.download-chip.active')?.dataset.quick||"all";
+        const v=id=>q(id)?.value?.trim()||"";
+        const status=v("dlStatus"),customer=norm(v("dlCustomer")),wp=norm(v("dlWp")),assy=norm(v("dlAssy")),cct=norm(v("dlCct")),process=v("dlProcess");
+        const qmin=number(v("dlQtyMin")),qmax=number(v("dlQtyMax")),lmin=number(v("dlLeadMin")),lmax=number(v("dlLeadMax"));
+        return progressRows().filter(row=>{
+            if(!progressQuickMatch(row,quick))return false;
+            if(status&&norm(row[23])!==norm(status))return false;
+            if(customer&&!norm(row[1]).includes(customer))return false;
+            if(wp&&!norm(row[3]).includes(wp))return false;
+            if(assy&&!norm(row[2]).includes(assy))return false;
+            if(cct&&!norm(row[4]).includes(cct))return false;
+            const qty=number(row[5]); if(qmin!==null&&(qty===null||qty<qmin))return false; if(qmax!==null&&(qty===null||qty>qmax))return false;
+            if(!inDateRange(row[7],v("dlEtdFrom"),v("dlEtdTo")))return false;
+            const hasRes=Boolean(String(row[8]??"").trim()); if(v("dlReschedule")==="yes"&&!hasRes)return false; if(v("dlReschedule")==="no"&&hasRes)return false;
+            if(!inDateRange(row[8],v("dlRescheduleFrom"),v("dlRescheduleTo")))return false;
+            if(!inDateRange(row[9],v("dlStartFrom"),v("dlStartTo")))return false;
+            if(!inDateRange(row[10],v("dlFinishFrom"),v("dlFinishTo")))return false;
+            const lead=number(row[11]); if(lmin!==null&&(lead===null||lead<lmin))return false; if(lmax!==null&&(lead===null||lead>lmax))return false;
+            if(process){ const p=(typeof PROCESS_COLUMNS !== "undefined" ? PROCESS_COLUMNS : []).find(x=>x.name===process); if(!p||!(number(row[p.index])>0))return false; }
+            return true;
+        });
+    }
+    function problemFiltered(){
+        const quick=document.querySelector('.download-chip.active')?.dataset.quick||"all"; const v=id=>q(id)?.value?.trim()||"";
+        return problemRows().filter(row=>{
+            const status=norm(row[14]);
+            if(quick==="open"&&status!=="open")return false; if(quick==="close"&&status!=="close")return false; if(quick==="minus"&&(number(row[10])||0)<=0)return false;
+            if(v("dlProblemStatus")&&status!==norm(v("dlProblemStatus")))return false;
+            if(v("dlProblemCustomer")&&!norm(row[3]).includes(norm(v("dlProblemCustomer"))))return false;
+            if(v("dlProblemPic")&&!norm(row[12]).includes(norm(v("dlProblemPic"))))return false;
+            if(v("dlProblemPart")&&!norm(row[5]).includes(norm(v("dlProblemPart"))))return false;
+            if(v("dlProblemWip")&&!norm(row[4]).includes(norm(v("dlProblemWip"))))return false;
+            if(!inDateRange(row[1],v("dlProblemDateFrom"),v("dlProblemDateTo")))return false;
+            const mn=number(v("dlProblemMinusMin")),mx=number(v("dlProblemMinusMax")),minus=number(row[10]); if(mn!==null&&(minus===null||minus<mn))return false; if(mx!==null&&(minus===null||minus>mx))return false;
+            return true;
+        });
+    }
+    function currentData(){return q("downloadSource")?.value==="problem"?problemFiltered():progressFiltered();}
+    function quickOptions(){
+        const isProblem=q("downloadSource")?.value==="problem";
+        return isProblem?[ ["all","Semua"],["open","🔴 OPEN"],["close","🟢 CLOSE"],["minus","➖ Minus > 0"] ]:[ ["all","Semua"],["open","🔴 OPEN"],["close","🟢 CLOSE"],["reschedule","🔄 RESCHEDULE"],["overdue","⏰ OVERDUE"],["etd3","📅 ETD ≤ 3 HARI"],["notstarted","▶️ NOT STARTED"] ];
+    }
+    function renderQuick(){
+        const box=q("downloadQuickFilters");if(!box)return; const current=box.querySelector('.download-chip.active')?.dataset.quick||"all";
+        box.innerHTML=quickOptions().map(([key,label])=>`<button type="button" class="download-chip ${key===current?'active':''}" data-quick="${key}">${label}</button>`).join("");
+        if(!box.querySelector('.active'))box.firstElementChild?.classList.add('active');
+        box.querySelectorAll('.download-chip').forEach(b=>b.addEventListener('click',()=>{box.querySelectorAll('.download-chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');update();}));
+    }
+    function headers(){return q("downloadSource")?.value==="problem"?problemHeaders:progressHeaders;}
+    function renderPreview(rows){
+        const h=headers(), head=q("downloadPreviewHead"),body=q("downloadPreviewBody"),empty=q("downloadEmpty");
+        if(head)head.innerHTML='<tr>'+h.map(x=>`<th>${esc(x)}</th>`).join('')+'</tr>';
+        if(body)body.innerHTML=rows.slice(0,10).map(r=>'<tr>'+h.map((_,i)=>`<td>${esc(r[i]??"")}</td>`).join('')+'</tr>').join('');
+        if(empty)empty.style.display=rows.length?'none':'block';
+    }
+    function summary(){
+        const src=q("downloadSource")?.value==="problem"?"Problem":"Progress 2026"; const chips=[...document.querySelectorAll('.download-chip.active')]; const quick=chips[0]?.textContent?.trim()||"Semua"; return `${src} · ${quick} · filter manual diterapkan`;
+    }
+    function update(){
+        populateLists(); const isProblem=q("downloadSource")?.value==="problem"; q("downloadProgressFilters").style.display=isProblem?"none":"block";q("downloadProblemFilters").style.display=isProblem?"block":"none";renderQuick();
+        const rows=currentData(); q("downloadCount").textContent=`${rows.length.toLocaleString('id-ID')} data`;q("downloadFilterSummary").textContent=summary();renderPreview(rows);
+        const disabled=!rows.length;q("downloadCsvBtn").disabled=disabled;q("downloadXlsxBtn").disabled=disabled;
+    }
+    function safeFilePart(s){return String(s).replace(/[^a-z0-9_-]+/gi,"_").replace(/^_+|_+$/g,"").slice(0,80)||"DATA";}
+    function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);}
+    function downloadCSV(){const rows=currentData(),h=headers();if(!rows.length)return;const csv=[h,...rows].map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(',')).join('\r\n');downloadBlob(new Blob(["\\ufeff"+csv],{type:"text/csv;charset=utf-8"}),`Monitoring_${safeFilePart(q("downloadSource").value)}_${new Date().toISOString().slice(0,10)}.csv`);}
+    function downloadXLSX(){const rows=currentData(),h=headers();if(!rows.length)return; if(window.XLSX){const data=[h,...rows];const wb=XLSX.utils.book_new();const ws=XLSX.utils.aoa_to_sheet(data);XLSX.utils.book_append_sheet(wb,ws,q("downloadSource").value==="problem"?"Problem":"Progress");XLSX.writeFile(wb,`Monitoring_${safeFilePart(q("downloadSource").value)}_${new Date().toISOString().slice(0,10)}.xlsx`);}else{downloadCSV();}}
+    function reset(){
+        document.querySelectorAll('#download input,#download select').forEach(el=>el.value="");
+        renderQuick(); update();
+    }
+    function bind(){
+        q("downloadSource")?.addEventListener('change',()=>{renderQuick();update();}); q("downloadResetBtn")?.addEventListener('click',reset);q("downloadCsvBtn")?.addEventListener('click',downloadCSV);q("downloadXlsxBtn")?.addEventListener('click',downloadXLSX);
+        document.querySelectorAll('#download input,#download select').forEach(el=>{el.addEventListener('input',update);el.addEventListener('change',update);});
+        update();
+    }
+    window.refreshDownloadData=function(){populateLists();update();};
+    document.addEventListener('DOMContentLoaded',bind,{once:true});
 })();
 </script>
 
