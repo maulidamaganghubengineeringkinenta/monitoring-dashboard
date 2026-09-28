@@ -10016,43 +10016,100 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
   }
   function findCol(headers,terms){return headers.findIndex(h=>terms.some(t=>norm(h).includes(norm(t))));}
   function parseLive(text){
-    const rows=parseCsv(text);if(rows.length<2)return [];
-    let h1=rows[0]||[],h2=rows[1]||[];let combined=h1.map((h,i)=>`${h||''} ${h2[i]||''}`.trim());
-    const find=(terms)=>{let i=findCol(combined,terms);if(i<0)i=findCol(h1,terms);return i};
-    const iMonth=find(['BULAN','MONTH']),iWp=find(['WP']),iAssy=find(['ASSY']),iPcs=find(['PCS']),iCct=find(['CCT']),iStatus=find(['STATUS']);
-    if(iWp<0||iAssy<0||iPcs<0||iCct<0)return [];
-    function triplet(i,label){
-      const c=norm(combined[i]||h1[i]||'');
-      let base=i;
-      const explicit={in:-1,out:-1,balance:-1};
-      for(let j=Math.max(0,i-2);j<=Math.min(combined.length-1,i+2);j++){const x=norm(combined[j]);if(x.includes(label)&&x.includes('IN'))explicit.in=j;if(x.includes(label)&&x.includes('OUT'))explicit.out=j;if(x.includes(label)&&x.includes('BAL'))explicit.balance=j;}
-      return explicit.in>=0?explicit:[{},{},{}];
-    }
-    // Most exports use adjacent IN/OUT/BALANCE columns for each metric. Detect by header words.
-    const metric=(label,i)=>{
-      let a={in:-1,out:-1,bal:-1};
-      for(let j=Math.max(0,i-3);j<=Math.min(combined.length-1,i+5);j++){
-        const x=norm(combined[j]);
-        if(x.includes(label)){
-          if(x.includes('IN'))a.in=j;if(x.includes('OUT'))a.out=j;if(x.includes('BAL'))a.bal=j;
-        }
+    const rows=parseCsv(text);
+    if(rows.length<2)return [];
+
+    // IN OUT WP memakai header bertingkat: metric pada baris atas,
+    // lalu IN / OUT / BALANCE pada baris berikutnya. Karena sel metric
+    // dapat berupa merged-cell di Google Sheets, jangan bergantung pada
+    // satu baris header saja.
+    const clean=v=>String(v??'').replace(/\uFEFF/g,'').trim();
+    const H=Math.min(5,rows.length);
+    const headerRows=rows.slice(0,H).map(r=>r.map(clean));
+    const maxCols=Math.max(...headerRows.map(r=>r.length));
+    const colText=c=>headerRows.map(r=>clean(r[c]||'')).filter(Boolean).join(' ');
+    const findColumn=terms=>{
+      const ts=terms.map(norm);
+      for(let c=0;c<maxCols;c++){
+        const x=norm(colText(c));
+        if(ts.some(t=>x===t || x.includes(t)))return c;
       }
-      if(a.in<0||a.out<0||a.bal<0){
-        // fallback: assume the three cells immediately after the metric label column
-        a={in:i+1,out:i+2,bal:i+3};
-      }
-      return a;
+      return -1;
     };
-    const A=metric('ASSY',iAssy),P=metric('PCS',iPcs),C=metric('CCT',iCct);
+
+    const iMonth=findColumn(['BULAN','MONTH']);
+    const iWp=findColumn(['WP']);
+    const iStatus=findColumn(['STATUS']);
+    if(iWp<0)return [];
+
+    // Cari posisi awal masing-masing kelompok metric dari gabungan
+    // beberapa baris header. Prioritas pada label metric yang berdiri sendiri.
+    function findMetricStart(label){
+      const target=norm(label);
+      for(let c=0;c<maxCols;c++){
+        const values=headerRows.map(r=>norm(r[c]||''));
+        if(values.some(v=>v===target))return c;
+        const joined=norm(colText(c));
+        if(joined===target || joined.startsWith(target+' '))return c;
+      }
+      return -1;
+    }
+
+    function detectMetric(label){
+      const start=findMetricStart(label);
+      if(start<0)return {in:-1,out:-1,bal:-1};
+
+      // Pola utama sheet: [IN, OUT, BALANCE] berurutan setelah label metric.
+      const words=[];
+      for(let c=start;c<Math.min(maxCols,start+4);c++){
+        words.push(norm(colText(c)));
+      }
+      let a={in:-1,out:-1,bal:-1};
+      for(let c=start;c<Math.min(maxCols,start+4);c++){
+        const own=norm(colText(c));
+        const lower=own;
+        if(a.in<0 && (lower.includes(label+' IN') || (c===start && lower===norm(label))))a.in=c;
+        if(a.out<0 && (lower=== 'OUT' || lower.endsWith(' OUT') || lower.includes(label+' OUT')))a.out=c;
+        if(a.bal<0 && (lower==='BALANCE' || lower==='BAL' || lower.endsWith(' BALANCE') || lower.includes(label+' BALANCE')))a.bal=c;
+      }
+      // Jika merged-cell membuat label hanya muncul di kolom pertama,
+      // gunakan tiga kolom berurutan sebagai IN/OUT/BALANCE.
+      if(a.in<0)a.in=start;
+      if(a.out<0 && start+1<maxCols)a.out=start+1;
+      if(a.bal<0 && start+2<maxCols)a.bal=start+2;
+      return a;
+    }
+
+    const A=detectMetric('ASSY'), P=detectMetric('PCS'), C=detectMetric('CCT');
+    if(A.in<0||A.out<0||A.bal<0||P.in<0||P.out<0||P.bal<0||C.in<0||C.out<0||C.bal<0)return [];
+
+    // Baris data bisa dimulai setelah 2, 3, atau lebih baris header.
+    // Deteksi berdasarkan WP agar tidak salah membaca baris total/header.
+    let dataStart=2;
+    for(let r=1;r<Math.min(rows.length,6);r++){
+      const wp=clean(rows[r][iWp]||'');
+      if(/P\d{2}$/i.test(wp)){dataStart=r;break;}
+    }
+
+    const get=(row,i)=>num(row[i]);
     const out=[];
-    for(let r=2;r<rows.length;r++){
-      const row=rows[r];const wp=String(row[iWp]||'').trim();
+    for(let r=dataStart;r<rows.length;r++){
+      const row=rows[r]||[];
+      const wp=clean(row[iWp]||'');
       if(!/P\d{2}$/i.test(wp))continue;
-      const get=i=>num(row[i]);
-      out.push({month:String(row[iMonth]||'').trim().toUpperCase(),wp,assyIn:get(A.in),assyOut:get(A.out),assyBal:get(A.bal),pcsIn:get(P.in),pcsOut:get(P.out),pcsBal:get(P.bal),cctIn:get(C.in),cctOut:get(C.out),cctBal:get(C.bal),status:String(row[iStatus]||'').trim().toUpperCase()||((get(C.bal)>0||get(A.bal)>0||get(P.bal)>0)?'OPEN':'CLOSE'),source:'live'});
+
+      const month=iMonth>=0?clean(row[iMonth]||'').toUpperCase():'';
+      const assyIn=get(row,A.in), assyOut=get(row,A.out), assyBal=get(row,A.bal);
+      const pcsIn=get(row,P.in), pcsOut=get(row,P.out), pcsBal=get(row,P.bal);
+      const cctIn=get(row,C.in), cctOut=get(row,C.out), cctBal=get(row,C.bal);
+      const rawStatus=iStatus>=0?norm(row[iStatus]||''):'';
+      const status=rawStatus || ((assyBal||pcsBal||cctBal)>0?'OPEN':'CLOSE');
+
+      out.push({month,wp,assyIn,assyOut,assyBal,pcsIn,pcsOut,pcsBal,cctIn,cctOut,cctBal,status,source:'live'});
     }
     return out;
   }
+
   function filtered(){const m=q('wpFlowMonth')?.value||'ALL',w=q('wpFlowWp')?.value||'ALL';return wpFlowData.filter(x=>(m==='ALL'||x.month===m)&&(w==='ALL'||x.wp===w));}
   function fillFilters(){
     const ms=[...new Set(wpFlowData.map(x=>x.month).filter(Boolean))];const ws=[...new Set(wpFlowData.map(x=>x.wp).filter(Boolean))].sort();
@@ -10074,7 +10131,7 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
   function render(){const d=filtered();renderKpi(d);renderChart();renderTable(d);}
   async function refresh(force){
     const note=q('wpFlowNote');if(note&&force)note.textContent='Mengambil data terbaru dari Google Sheets…';
-    try{const res=await fetch(WP_FLOW_URL,{cache:'no-store'});if(!res.ok)throw new Error('HTTP '+res.status);const txt=await res.text();const live=parseLive(txt);if(live.length){wpFlowData=live;if(note)note.textContent='Data live dari sheet IN OUT WP. Jika struktur header berubah, sistem menggunakan snapshot terakhir yang tersedia.';}else throw new Error('Format data tidak terbaca');}
+    try{const res=await fetch(WP_FLOW_URL,{cache:'no-store'});if(!res.ok)throw new Error('HTTP '+res.status);const txt=await res.text();const live=parseLive(txt);if(live.length){wpFlowData=live;if(note)note.textContent='Data live dari sheet IN OUT WP berhasil dibaca ('+live.length.toLocaleString('id-ID')+' WP).';}else throw new Error('Format data IN OUT WP tidak dikenali.');}
     catch(e){wpFlowData=snapshot.slice();if(note)note.textContent='Data live belum dapat dibaca dari browser saat ini; monitoring menggunakan snapshot data IN OUT WP yang sudah dimasukkan sebagai fallback. '+(e.message||'');}
     fillFilters();render();
   }
