@@ -1,4 +1,88 @@
 /* =========================================================
+   SIMPLE DASHBOARD LOGIN
+========================================================= */
+
+const LOGIN_USERNAME = "admin";
+const LOGIN_PASSWORD = "12345";
+const LOGIN_SESSION_KEY = "prototypeMonitoringLoggedIn";
+
+let dashboardAuthenticated = false;
+
+function isDashboardAuthenticated() {
+    try {
+        return sessionStorage.getItem(LOGIN_SESSION_KEY) === "1";
+    } catch (error) {
+        return dashboardAuthenticated;
+    }
+}
+
+function unlockDashboard() {
+    dashboardAuthenticated = true;
+    document.body.classList.remove("login-locked");
+
+    const loginScreen = document.getElementById("loginScreen");
+    if (loginScreen) {
+        loginScreen.style.display = "none";
+    }
+
+    try {
+        sessionStorage.setItem(LOGIN_SESSION_KEY, "1");
+    } catch (error) {
+        console.warn("Session storage tidak tersedia.");
+    }
+}
+
+function logoutDashboard() {
+    try {
+        sessionStorage.removeItem(LOGIN_SESSION_KEY);
+    } catch (error) {
+        // Abaikan jika sessionStorage tidak tersedia.
+    }
+
+    dashboardAuthenticated = false;
+    window.location.reload();
+}
+
+function initializeLogin() {
+    const form = document.getElementById("loginForm");
+    const username = document.getElementById("loginUsername");
+    const password = document.getElementById("loginPassword");
+    const error = document.getElementById("loginError");
+
+    if (isDashboardAuthenticated()) {
+        unlockDashboard();
+        return true;
+    }
+
+    if (!form) return false;
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const user = String(username?.value || "").trim();
+        const pass = String(password?.value || "");
+
+        if (user === LOGIN_USERNAME && pass === LOGIN_PASSWORD) {
+            if (error) error.textContent = "";
+            unlockDashboard();
+
+            // Data baru dimuat setelah login berhasil.
+            loadProgressData();
+            initializeProblemDashboard();
+        } else {
+            if (error) {
+                error.textContent = "Username atau password salah.";
+            }
+            if (password) password.value = "";
+            password?.focus();
+        }
+    });
+
+    return false;
+}
+
+
+/* =========================================================
    GOOGLE SHEETS CONFIG
 ========================================================= */
 
@@ -2356,7 +2440,10 @@ document.addEventListener(
             }
         });
 
-        loadProgressData();
+        if (initializeLogin()) {
+            loadProgressData();
+            initializeProblemDashboard();
+        }
     }
 );
 
@@ -5436,7 +5523,9 @@ function initializeProblemDashboard() {
         );
     });
 
-    loadProblemData();
+    if (dashboardAuthenticated) {
+        loadProblemData();
+    }
 }
 
 
@@ -5459,6 +5548,7 @@ showPage =
         ) {
 
             if (
+                dashboardAuthenticated &&
                 !problemLoaded &&
                 !problemLoading
             ) {
