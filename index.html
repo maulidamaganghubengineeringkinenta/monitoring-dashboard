@@ -754,6 +754,35 @@ body.login-locked .sidebar-overlay { display:none !important; }
 /* Keep print clean */
 @media print{#monitoring,#meeting,#report{background:#fff!important;}#meeting .stage6-meeting-title,#meeting .stage6-kpi,#report .stage6-kpi{box-shadow:none!important;}}
 </style>
+
+<style id="wp-flow-monitoring-style">
+.wp-flow-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.wp-flow-head h2{margin:0;color:#334155}.wp-flow-head p{margin:5px 0 0;color:#78858f;font-size:13px}
+.wp-flow-actions{display:flex;gap:8px;flex-wrap:wrap}
+.wp-flow-btn{border:1px solid #d8e2ea;background:#fff;border-radius:10px;padding:9px 13px;cursor:pointer;color:#465563;font-weight:700}.wp-flow-btn:hover{background:#f7fafc}
+.wp-flow-filters{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.wp-flow-filter-card{background:#fff;border:1px solid #e5edf2;border-radius:16px;padding:14px}
+.wp-flow-filter-card label{display:block;font-size:11px;font-weight:800;color:#80909b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+.wp-flow-filter-card select{width:100%;padding:10px 11px;border:1px solid #dce6ed;border-radius:10px;background:#fff;color:#354553;outline:none}
+.wp-flow-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.wp-flow-kpi{background:#fff;border:1px solid #e5edf2;border-radius:16px;padding:15px;cursor:pointer;transition:.18s ease}
+.wp-flow-kpi:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(72,91,108,.08)}
+.wp-flow-kpi .label{font-size:11px;font-weight:800;color:#81909b;text-transform:uppercase}.wp-flow-kpi .value{font-size:27px;font-weight:900;color:#334155;margin-top:6px}.wp-flow-kpi .sub{font-size:11px;color:#91a0aa;margin-top:3px}
+.wp-flow-kpi.blue{background:#f2f9fd;border-color:#d5eaf5}.wp-flow-kpi.orange{background:#fff7f1;border-color:#f3dfd0}.wp-flow-kpi.green{background:#f2faf5;border-color:#d8ebdf}.wp-flow-kpi.purple{background:#f8f5fc;border-color:#e6dcf2}.wp-flow-kpi.pink{background:#fff6fa;border-color:#f1dce7}
+.wp-flow-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin-bottom:16px}
+.wp-flow-card{background:#fff;border:1px solid #e5edf2;border-radius:16px;padding:16px;min-width:0}.wp-flow-card h3{margin:0 0 13px;font-size:15px;color:#42515d}
+.wp-flow-chart{height:230px;display:flex;align-items:flex-end;gap:9px;padding:10px 4px 24px;border-bottom:1px solid #e7edf1;position:relative}
+.wp-flow-bar-group{flex:1;min-width:0;height:100%;display:flex;align-items:flex-end;gap:3px;justify-content:center;position:relative}
+.wp-flow-bar{width:31%;min-height:2px;border-radius:7px 7px 2px 2px}.wp-flow-bar.in{background:#b7ddf1}.wp-flow-bar.out{background:#b9dec9}.wp-flow-bar.balance{background:#d4c4eb}
+.wp-flow-month{position:absolute;bottom:-21px;left:0;right:0;text-align:center;font-size:10px;color:#7e8c96;font-weight:700}
+.wp-flow-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:11px;font-size:11px;color:#65747e}.wp-flow-legend span{display:flex;align-items:center;gap:5px}.wp-flow-dot{width:9px;height:9px;border-radius:3px;display:inline-block}
+.wp-flow-table-wrap{overflow:auto}.wp-flow-table{width:100%;border-collapse:collapse;min-width:850px}.wp-flow-table th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#7a8994;background:#f8fafb;padding:10px 9px;border-bottom:1px solid #e6edf1;text-align:left}.wp-flow-table td{padding:10px 9px;border-bottom:1px solid #edf2f5;font-size:12px;color:#4b5b67}.wp-flow-table tr:hover td{background:#fbfdfe}.wp-flow-badge{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800}.wp-flow-badge.open{background:#fff0e8;color:#b8653e}.wp-flow-badge.close{background:#edf8f1;color:#4f8a67}.wp-flow-badge.balance{background:#f3eef9;color:#7a5d9a}
+.wp-flow-insight{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.wp-flow-insight-box{border-radius:12px;padding:12px;background:#f8fafb;border:1px solid #e9eff3}.wp-flow-insight-box .small{font-size:10px;color:#84929c;font-weight:800;text-transform:uppercase}.wp-flow-insight-box strong{display:block;margin-top:4px;color:#3f4e59;font-size:14px}
+.wp-flow-note{font-size:11px;color:#87949d;line-height:1.55;background:#f8fafb;border-radius:11px;padding:11px 12px;margin-top:13px}
+.wp-flow-empty{padding:24px;text-align:center;color:#8997a0;font-size:13px}
+@media(max-width:1050px){.wp-flow-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.wp-flow-grid{grid-template-columns:1fr}}
+@media(max-width:680px){.wp-flow-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.wp-flow-filters{grid-template-columns:1fr}.wp-flow-insight{grid-template-columns:1fr}.wp-flow-kpi .value{font-size:23px}}
+</style>
 </head>
 
 <body class="login-locked">
@@ -914,6 +943,21 @@ body.login-locked .sidebar-overlay { display:none !important; }
 
                 <span>
                     Monitoring Center
+                </span>
+
+            </button>
+
+
+            <button
+                class="menu" data-page="wpmonitor"
+                onclick="showPage('wpmonitor'); closeSidebar();">
+
+                <span class="menu-icon">
+                    🔄
+                </span>
+
+                <span>
+                    WP Flow Monitoring
                 </span>
 
             </button>
@@ -1906,6 +1950,72 @@ body.login-locked .sidebar-overlay { display:none !important; }
                 <div id="monitorDayList" class="monitor-alert-list"></div>
             </div>
 
+        </section>
+
+
+        <!-- =================================================
+             WP FLOW MONITORING PAGE
+        ================================================== -->
+        <section id="wpmonitor" class="page">
+            <div class="wp-flow-head">
+                <div>
+                    <h2>WP Flow Monitoring</h2>
+                    <p>Monitoring aliran IN → OUT untuk ASSY, PCS, dan CCT berdasarkan sheet <b>IN OUT WP</b>.</p>
+                </div>
+                <div class="wp-flow-actions">
+                    <button type="button" class="wp-flow-btn" onclick="wpFlowRefresh(true)">↻ Refresh</button>
+                </div>
+            </div>
+
+            <div class="wp-flow-filters">
+                <div class="wp-flow-filter-card">
+                    <label for="wpFlowMonth">Bulan</label>
+                    <select id="wpFlowMonth" onchange="wpFlowRender()"><option value="ALL">Semua Bulan</option></select>
+                </div>
+                <div class="wp-flow-filter-card">
+                    <label for="wpFlowWp">WP</label>
+                    <select id="wpFlowWp" onchange="wpFlowRender()"><option value="ALL">Semua WP</option></select>
+                </div>
+            </div>
+
+            <div class="wp-flow-kpis">
+                <div class="wp-flow-kpi blue"><div class="label">ASSY IN</div><div class="value" id="wpKpiAssyIn">0</div><div class="sub">Total ASSY masuk</div></div>
+                <div class="wp-flow-kpi green"><div class="label">ASSY OUT</div><div class="value" id="wpKpiAssyOut">0</div><div class="sub">Total ASSY keluar</div></div>
+                <div class="wp-flow-kpi purple"><div class="label">ASSY BALANCE</div><div class="value" id="wpKpiAssyBal">0</div><div class="sub">Masih tersisa</div></div>
+                <div class="wp-flow-kpi orange"><div class="label">PCS BALANCE</div><div class="value" id="wpKpiPcsBal">0</div><div class="sub">PCS belum OUT</div></div>
+                <div class="wp-flow-kpi pink"><div class="label">CCT BALANCE</div><div class="value" id="wpKpiCctBal">0</div><div class="sub">CCT belum OUT</div></div>
+            </div>
+
+            <div class="wp-flow-grid">
+                <div class="wp-flow-card">
+                    <h3>📊 Trend IN vs OUT — CCT</h3>
+                    <div id="wpFlowChart" class="wp-flow-chart"></div>
+                    <div class="wp-flow-legend">
+                        <span><i class="wp-flow-dot" style="background:#b7ddf1"></i> IN</span>
+                        <span><i class="wp-flow-dot" style="background:#b9dec9"></i> OUT</span>
+                        <span><i class="wp-flow-dot" style="background:#d4c4eb"></i> BALANCE</span>
+                    </div>
+                </div>
+                <div class="wp-flow-card">
+                    <h3>💡 Flow Insight</h3>
+                    <div class="wp-flow-insight">
+                        <div class="wp-flow-insight-box"><div class="small">WP Aktif</div><strong id="wpInsightActive">0</strong></div>
+                        <div class="wp-flow-insight-box"><div class="small">WP Balance</div><strong id="wpInsightBalance">0</strong></div>
+                        <div class="wp-flow-insight-box"><div class="small">Status</div><strong id="wpInsightStatus">-</strong></div>
+                    </div>
+                    <div class="wp-flow-note" id="wpFlowNote">Data akan mengikuti nilai IN, OUT, BALANCE pada sheet. Sistem tidak membuat nilai WP IN/OUT sendiri karena sumber yang diberikan hanya menyediakan jumlah WP pada summary bulanan.</div>
+                </div>
+            </div>
+
+            <div class="wp-flow-card">
+                <h3>🔎 Detail Flow per WP</h3>
+                <div class="wp-flow-table-wrap">
+                    <table class="wp-flow-table">
+                        <thead><tr><th>Bulan</th><th>WP</th><th>ASSY IN</th><th>ASSY OUT</th><th>ASSY BAL</th><th>PCS IN</th><th>PCS OUT</th><th>PCS BAL</th><th>CCT IN</th><th>CCT OUT</th><th>CCT BAL</th><th>Status</th></tr></thead>
+                        <tbody id="wpFlowTableBody"><tr><td colspan="12" class="wp-flow-empty">Memuat data...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
         </section>
 
 
@@ -5396,6 +5506,7 @@ function showPage(pageName) {
         progress: ["Progress 2026", "PROGRESS 2026"],
         problem: ["Problem", "PROBLEM"],
         monitoring: ["Monitoring Center", "MONITORING CENTER"],
+        wpmonitor: ["WP Flow Monitoring", "WP FLOW MONITORING"],
         meeting: ["Meeting Mode", "MEETING MODE"],
         report: ["Monitoring Report", "MONITORING REPORT"],
         download: ["Download Data", "DOWNLOAD DATA"]
@@ -5409,6 +5520,9 @@ function showPage(pageName) {
     }
     if (pageName === "monitoring") {
         requestAnimationFrame(() => refreshMonitoringCenter());
+    }
+    if (pageName === "wpmonitor") {
+        requestAnimationFrame(() => wpFlowRefresh(false));
     }
     if (pageName === "meeting" || pageName === "report") {
         requestAnimationFrame(() => renderStage6Pages());
@@ -9875,6 +9989,96 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
     if(typeof allProblemRows!=='undefined' && allProblemRows.length) renderDownload();
   }
   document.addEventListener('DOMContentLoaded',()=>{setTimeout(hookDataLoaders,1000);setTimeout(hookDataLoaders,3000);setInterval(hookDataLoaders,5000)});
+})();
+</script>
+
+<script id="wp-flow-monitoring-js">
+(function(){
+  const WP_FLOW_URL='https://docs.google.com/spreadsheets/d/1DtFGkVVCrOOSEgknMo7ywodKTJk7YvRg/export?format=csv&gid=1226595815';
+  const snapshot=[
+    ['JANUARY','01P01',11,11,0,17,17,0,1057,1057,0,'CLOSE'],['JANUARY','02P01',15,15,0,47,47,0,2060,2060,0,'CLOSE'],['JANUARY','03P01',7,7,0,9,9,0,937,937,0,'CLOSE'],['JANUARY','04P01',1,1,0,3,3,0,87,87,0,'CLOSE'],['JANUARY','05P01',2,2,0,6,6,0,378,378,0,'CLOSE'],['JANUARY','06P01',2,2,0,2,2,0,125,125,0,'CLOSE'],['JANUARY','07P01',2,2,0,2,2,0,92,92,0,'CLOSE'],['JANUARY','08P01',5,5,0,6,6,0,380,380,0,'CLOSE'],
+    ['FEBRUARY','01P02',1,1,0,4,4,0,780,780,0,'CLOSE'],['FEBRUARY','02P02',3,3,0,23,23,0,52,52,0,'CLOSE'],['FEBRUARY','03P02',2,2,0,4,4,0,343,343,0,'CLOSE'],['FEBRUARY','04P02',1,1,0,1,1,0,45,45,0,'CLOSE'],['FEBRUARY','05P02',2,2,0,8,8,0,59,59,0,'CLOSE'],['FEBRUARY','06P02',2,2,0,10,10,0,22,22,0,'CLOSE'],['FEBRUARY','07P02',1,1,0,3,3,0,456,456,0,'CLOSE'],
+    ['MARET','01P03',1,1,0,1,1,0,103,103,0,'CLOSE'],['MARET','02P03',1,1,0,1,1,0,303,303,0,'CLOSE'],['MARET','03P03',2,2,0,2,2,0,63,63,0,'CLOSE'],['MARET','04P03',2,2,0,2,2,0,528,528,0,'CLOSE'],['MARET','05P03',3,3,0,12,12,0,897,897,0,'CLOSE'],['MARET','06P03',2,2,0,7,7,0,38,38,0,'CLOSE'],['MARET','07P03',3,3,0,5,5,0,196,196,0,'CLOSE'],['MARET','08P03',2,2,0,2,2,0,54,54,0,'CLOSE'],['MARET','09P03',6,6,0,6,6,0,1326,1326,0,'CLOSE'],['MARET','10P03',6,6,0,10,10,0,1228,1228,0,'CLOSE'],
+    ['APRIL','01P04',5,5,0,27,27,0,710,710,0,'CLOSE'],['APRIL','02P04',9,9,0,18,18,0,444,444,0,'CLOSE'],['APRIL','03P04',3,3,0,9,9,0,268,268,0,'CLOSE'],['APRIL','04P04',9,9,0,43,43,0,638,638,0,'CLOSE'],['APRIL','05P04',7,7,0,49,49,0,328,328,0,'CLOSE'],['APRIL','06P04',4,4,0,8,8,0,802,802,0,'CLOSE'],['APRIL','07P04',5,5,0,17,17,0,1622,1622,0,'CLOSE'],['APRIL','08P04',12,12,0,14,14,0,215,215,0,'CLOSE'],['APRIL','09P04',8,8,0,10,10,0,3106,3106,0,'CLOSE'],['APRIL','10P04',11,11,0,18,18,0,2508,2508,0,'CLOSE'],['APRIL','11P04',1,1,0,1,1,0,15,15,0,'CLOSE'],
+    ['MEY','02P05',10,10,0,35,35,0,5028,5028,0,'CLOSE'],['MEY','03P05',1,1,0,1,1,0,316,316,0,'CLOSE'],['MEY','06P05',1,1,0,1,1,0,130,130,0,'CLOSE'],['MEY','07P05',13,13,0,47,47,0,1211,1211,0,'CLOSE'],['MEY','08P05',6,4,2,43,14,29,1859,610,1249,'OPEN'],['MEY','09P05',13,13,0,34,34,0,431,431,0,'CLOSE'],['MEY','10P05',1,1,0,1,1,0,470,470,0,'CLOSE'],
+    ['JUNI','02P06',21,21,0,68,68,0,223,223,0,'CLOSE'],['JUNI','03P06',4,3,1,13,13,0,825,825,0,'OPEN'],['JUNI','04P06',4,4,0,13,13,0,433,433,0,'CLOSE'],['JUNI','05P06',6,6,0,15,15,0,374,374,0,'CLOSE'],['JUNI','06P06',5,4,1,11,6,5,1176,251,925,'OPEN'],['JUNI','08P06',4,4,0,4,4,0,1385,1385,0,'CLOSE'],['JUNI','09P06',4,4,0,19,19,0,61,61,0,'CLOSE'],['JUNI','10P06',5,5,0,5,5,0,194,194,0,'CLOSE'],
+    ['JULY','01P07',2,2,0,3,3,0,526,526,0,'CLOSE'],['JULY','02P07',3,3,0,5,4,1,433,72,361,'OPEN'],['JULY','03P07',3,3,0,8,8,0,365,365,0,'CLOSE'],['JULY','04P07',0,0,0,0,0,0,0,0,0,'CLOSE'],['JULY','05P07',4,4,0,8,8,0,670,597,73,'OPEN'],['JULY','06P07',6,5,1,13,12,1,834,202,632,'OPEN'],['JULY','07P07',6,4,2,58,56,2,1583,682,901,'OPEN'],['JULY','08P07',3,3,0,13,13,0,163,163,0,'CLOSE'],['JULY','09P07',12,7,5,15,10,5,246,179,67,'OPEN'],['JULY','10P07',7,2,5,14,9,5,201,44,157,'OPEN'],
+    ['AGUSTUS','01P08',8,1,7,9,1,8,736,1,735,'OPEN'],['AGUSTUS','02P08',7,0,7,17,0,17,289,0,289,'OPEN'],['AGUSTUS','03P08',7,0,7,8,0,8,673,0,673,'OPEN'],['AGUSTUS','04P08',5,1,4,28,21,7,770,21,749,'OPEN'],['AGUSTUS','05P08',3,0,3,3,0,3,123,0,123,'OPEN'],['AGUSTUS','06P08',3,0,3,4,0,4,315,0,315,'OPEN'],['AGUSTUS','07P08',9,0,9,61,0,61,1331,0,1331,'OPEN'],['AGUSTUS','08P08',6,0,6,9,0,9,116,0,116,'OPEN']
+  ].map(r=>({month:r[0],wp:r[1],assyIn:r[2],assyOut:r[3],assyBal:r[4],pcsIn:r[5],pcsOut:r[6],pcsBal:r[7],cctIn:r[8],cctOut:r[9],cctBal:r[10],status:r[11],source:'snapshot'}));
+  let wpFlowData=snapshot.slice();
+  const months=['JANUARY','FEBRUARY','MARET','APRIL','MEY','JUNI','JULY','AGUSTUS','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+  const q=id=>document.getElementById(id);
+  const num=v=>{const n=parseFloat(String(v??'').replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n:0};
+  const norm=v=>String(v??'').trim().toUpperCase();
+  function parseCsv(text){
+    const rows=[];let row=[],cell='',quote=false;
+    for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];if(c==='"'){if(quote&&n==='"'){cell+='"';i++;}else quote=!quote;}else if(c===','&&!quote){row.push(cell);cell='';}else if((c==='\n'||c==='\r')&&!quote){if(c==='\r'&&n==='\n')i++;row.push(cell);if(row.some(x=>String(x).trim()!==''))rows.push(row);row=[];cell='';}else cell+=c;}if(cell!==''||row.length){row.push(cell);rows.push(row);}return rows;
+  }
+  function findCol(headers,terms){return headers.findIndex(h=>terms.some(t=>norm(h).includes(norm(t))));}
+  function parseLive(text){
+    const rows=parseCsv(text);if(rows.length<2)return [];
+    let h1=rows[0]||[],h2=rows[1]||[];let combined=h1.map((h,i)=>`${h||''} ${h2[i]||''}`.trim());
+    const find=(terms)=>{let i=findCol(combined,terms);if(i<0)i=findCol(h1,terms);return i};
+    const iMonth=find(['BULAN','MONTH']),iWp=find(['WP']),iAssy=find(['ASSY']),iPcs=find(['PCS']),iCct=find(['CCT']),iStatus=find(['STATUS']);
+    if(iWp<0||iAssy<0||iPcs<0||iCct<0)return [];
+    function triplet(i,label){
+      const c=norm(combined[i]||h1[i]||'');
+      let base=i;
+      const explicit={in:-1,out:-1,balance:-1};
+      for(let j=Math.max(0,i-2);j<=Math.min(combined.length-1,i+2);j++){const x=norm(combined[j]);if(x.includes(label)&&x.includes('IN'))explicit.in=j;if(x.includes(label)&&x.includes('OUT'))explicit.out=j;if(x.includes(label)&&x.includes('BAL'))explicit.balance=j;}
+      return explicit.in>=0?explicit:[{},{},{}];
+    }
+    // Most exports use adjacent IN/OUT/BALANCE columns for each metric. Detect by header words.
+    const metric=(label,i)=>{
+      let a={in:-1,out:-1,bal:-1};
+      for(let j=Math.max(0,i-3);j<=Math.min(combined.length-1,i+5);j++){
+        const x=norm(combined[j]);
+        if(x.includes(label)){
+          if(x.includes('IN'))a.in=j;if(x.includes('OUT'))a.out=j;if(x.includes('BAL'))a.bal=j;
+        }
+      }
+      if(a.in<0||a.out<0||a.bal<0){
+        // fallback: assume the three cells immediately after the metric label column
+        a={in:i+1,out:i+2,bal:i+3};
+      }
+      return a;
+    };
+    const A=metric('ASSY',iAssy),P=metric('PCS',iPcs),C=metric('CCT',iCct);
+    const out=[];
+    for(let r=2;r<rows.length;r++){
+      const row=rows[r];const wp=String(row[iWp]||'').trim();
+      if(!/P\d{2}$/i.test(wp))continue;
+      const get=i=>num(row[i]);
+      out.push({month:String(row[iMonth]||'').trim().toUpperCase(),wp,assyIn:get(A.in),assyOut:get(A.out),assyBal:get(A.bal),pcsIn:get(P.in),pcsOut:get(P.out),pcsBal:get(P.bal),cctIn:get(C.in),cctOut:get(C.out),cctBal:get(C.bal),status:String(row[iStatus]||'').trim().toUpperCase()||((get(C.bal)>0||get(A.bal)>0||get(P.bal)>0)?'OPEN':'CLOSE'),source:'live'});
+    }
+    return out;
+  }
+  function filtered(){const m=q('wpFlowMonth')?.value||'ALL',w=q('wpFlowWp')?.value||'ALL';return wpFlowData.filter(x=>(m==='ALL'||x.month===m)&&(w==='ALL'||x.wp===w));}
+  function fillFilters(){
+    const ms=[...new Set(wpFlowData.map(x=>x.month).filter(Boolean))];const ws=[...new Set(wpFlowData.map(x=>x.wp).filter(Boolean))].sort();
+    const sm=q('wpFlowMonth'),sw=q('wpFlowWp');if(!sm||!sw)return;const oldm=sm.value,oldw=sw.value;sm.innerHTML='<option value="ALL">Semua Bulan</option>'+ms.map(m=>`<option value="${m}">${m}</option>`).join('');sw.innerHTML='<option value="ALL">Semua WP</option>'+ws.map(w=>`<option value="${w}">${w}</option>`).join('');if(ms.includes(oldm))sm.value=oldm;if(ws.includes(oldw))sw.value=oldw;
+  }
+  function fmt(n){return Number(n||0).toLocaleString('id-ID',{maximumFractionDigits:0});}
+  function renderKpi(data){
+    const sum=k=>data.reduce((a,x)=>a+num(x[k]),0);q('wpKpiAssyIn').textContent=fmt(sum('assyIn'));q('wpKpiAssyOut').textContent=fmt(sum('assyOut'));q('wpKpiAssyBal').textContent=fmt(sum('assyBal'));q('wpKpiPcsBal').textContent=fmt(sum('pcsBal'));q('wpKpiCctBal').textContent=fmt(sum('cctBal'));
+    q('wpInsightActive').textContent=fmt(data.filter(x=>num(x.assyBal)||num(x.pcsBal)||num(x.cctBal)).length);
+    q('wpInsightBalance').textContent=fmt(data.filter(x=>num(x.assyBal)||num(x.pcsBal)||num(x.cctBal)).reduce((a,x)=>a+num(x.assyBal)+num(x.pcsBal)+num(x.cctBal),0));
+    const open=data.filter(x=>x.status==='OPEN').length,close=data.filter(x=>x.status==='CLOSE').length;q('wpInsightStatus').textContent=open?`${open} OPEN / ${close} CLOSE`:'CLOSE';
+  }
+  function renderChart(){
+    const el=q('wpFlowChart');if(!el)return;const by={};wpFlowData.filter(x=>!q('wpFlowMonth')||q('wpFlowMonth').value==='ALL'||x.month===q('wpFlowMonth').value).forEach(x=>{const m=x.month;if(!by[m])by[m]={in:0,out:0,bal:0};by[m].in+=x.cctIn;by[m].out+=x.cctOut;by[m].bal+=x.cctBal;});
+    const arr=Object.entries(by);if(!arr.length){el.innerHTML='<div class="wp-flow-empty">Belum ada data.</div>';return;}const max=Math.max(1,...arr.flatMap(([,v])=>[v.in,v.out,v.bal]));
+    el.innerHTML=arr.map(([m,v])=>`<div class="wp-flow-bar-group"><div class="wp-flow-bar in" title="${m} IN: ${fmt(v.in)}" style="height:${Math.max(2,v.in/max*88)}%"></div><div class="wp-flow-bar out" title="${m} OUT: ${fmt(v.out)}" style="height:${Math.max(2,v.out/max*88)}%"></div><div class="wp-flow-bar balance" title="${m} BALANCE: ${fmt(v.bal)}" style="height:${Math.max(2,v.bal/max*88)}%"></div><div class="wp-flow-month">${m.slice(0,3)}</div></div>`).join('');
+  }
+  function renderTable(data){const b=q('wpFlowTableBody');if(!b)return;if(!data.length){b.innerHTML='<tr><td colspan="12" class="wp-flow-empty">Tidak ada data sesuai filter.</td></tr>';return;}b.innerHTML=data.map(x=>`<tr><td>${x.month}</td><td><b>${x.wp}</b></td><td>${fmt(x.assyIn)}</td><td>${fmt(x.assyOut)}</td><td><span class="wp-flow-badge ${x.assyBal?'balance':''}">${fmt(x.assyBal)}</span></td><td>${fmt(x.pcsIn)}</td><td>${fmt(x.pcsOut)}</td><td><span class="wp-flow-badge ${x.pcsBal?'balance':''}">${fmt(x.pcsBal)}</span></td><td>${fmt(x.cctIn)}</td><td>${fmt(x.cctOut)}</td><td><span class="wp-flow-badge ${x.cctBal?'balance':''}">${fmt(x.cctBal)}</span></td><td><span class="wp-flow-badge ${x.status==='OPEN'?'open':'close'}">${x.status||'-'}</span></td></tr>`).join('');}
+  function render(){const d=filtered();renderKpi(d);renderChart();renderTable(d);}
+  async function refresh(force){
+    const note=q('wpFlowNote');if(note&&force)note.textContent='Mengambil data terbaru dari Google Sheets…';
+    try{const res=await fetch(WP_FLOW_URL,{cache:'no-store'});if(!res.ok)throw new Error('HTTP '+res.status);const txt=await res.text();const live=parseLive(txt);if(live.length){wpFlowData=live;if(note)note.textContent='Data live dari sheet IN OUT WP. Jika struktur header berubah, sistem menggunakan snapshot terakhir yang tersedia.';}else throw new Error('Format data tidak terbaca');}
+    catch(e){wpFlowData=snapshot.slice();if(note)note.textContent='Data live belum dapat dibaca dari browser saat ini; monitoring menggunakan snapshot data IN OUT WP yang sudah dimasukkan sebagai fallback. '+(e.message||'');}
+    fillFilters();render();
+  }
+  window.wpFlowRefresh=refresh;window.wpFlowRender=render;
 })();
 </script>
 </body>
