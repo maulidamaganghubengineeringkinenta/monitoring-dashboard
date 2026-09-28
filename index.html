@@ -723,7 +723,7 @@
 
                 <div
                     class="kpi-card kpi-blue"
-                    onclick="resetFilters()">
+                    onclick="safeResetProgressFilters()">
 
                     <div class="kpi-top">
 
@@ -850,7 +850,7 @@
 
                 <div
                     class="kpi-card kpi-purple"
-                    onclick="resetFilters()">
+                    onclick="safeResetProgressFilters()">
 
                     <div class="kpi-top">
 
@@ -908,7 +908,7 @@
                 </div>
 
                 <button
-                    onclick="resetFilters()"
+                    onclick="safeResetProgressFilters()"
                     class="clear-context">
 
                     Reset ×
@@ -1225,7 +1225,7 @@
                 </div>
 
                 <div class="progress-filter-actions">
-                    <button class="reset-filter" onclick="resetFilters()">↻ Reset Semua Filter</button>
+                    <button class="reset-filter" onclick="safeResetProgressFilters()">↻ Reset Semua Filter</button>
                 </div>
 
             </div>
@@ -1354,7 +1354,7 @@
                     <h2 style="margin:0;">Monitoring Center</h2>
                     <p style="margin:5px 0 0;color:#78858f;font-size:13px;">Alert, pencarian global, dan kalender produksi dari data live.</p>
                 </div>
-                <button type="button" class="reset-filter" onclick="refreshMonitoringCenter()">↻ Refresh</button>
+                <button type="button" class="reset-filter" onclick="safeRefreshMonitoringCenter()">↻ Refresh</button>
             </div>
 
             <div class="monitor-grid">
@@ -1459,7 +1459,7 @@
         <section id="meeting" class="page">
             <div class="stage6-actions">
                 <span class="stage6-date" id="stage6MeetingDate"></span>
-                <button type="button" class="stage6-btn" onclick="refreshStage6Pages()">↻ Refresh</button>
+                <button type="button" class="stage6-btn" onclick="safeRefreshStage6Pages()">↻ Refresh</button>
                 <button type="button" class="stage6-btn primary" onclick="showPage('report')">🖨️ Monitoring Report</button>
             </div>
 
@@ -1505,7 +1505,7 @@
         <section id="report" class="page">
             <div class="stage6-actions">
                 <span class="stage6-date" id="stage6ReportDate"></span>
-                <button type="button" class="stage6-btn" onclick="refreshStage6Pages()">↻ Refresh</button>
+                <button type="button" class="stage6-btn" onclick="safeRefreshStage6Pages()">↻ Refresh</button>
                 <button type="button" class="stage6-btn primary" onclick="printStage6Report()">🖨️ Print / Save PDF</button>
             </div>
 
@@ -1610,7 +1610,7 @@
                     </div>
 
                     <div class="download-actions">
-                        <button type="button" class="download-reset" id="downloadReset" onclick="window.resetDownloadFilters()">↻ Reset Filter</button>
+                        <button type="button" class="download-reset" id="downloadReset" onclick="safeResetDownloadFilters()">↻ Reset Filter</button>
                         <div class="download-count" id="downloadCount">0 data siap di-download</div>
                         <button type="button" class="download-btn csv" id="downloadCsv">⬇️ Download CSV</button>
                         <button type="button" class="download-btn excel" id="downloadExcel">📊 Download Excel (.xlsx)</button>
@@ -1643,7 +1643,7 @@
 
                 <div
                     class="kpi-card kpi-blue problem-clickable"
-                    onclick="resetProblemFilters()">
+                    onclick="safeResetProblemFilters()">
 
                     <div class="kpi-top">
 
@@ -1838,7 +1838,7 @@
 
 
                 <button
-                    onclick="resetProblemFilters()"
+                    onclick="safeResetProblemFilters()"
                     class="clear-context">
 
                     Reset ×
@@ -2220,7 +2220,7 @@
 
                 <button
                     class="reset-filter"
-                    onclick="resetProblemFilters()">
+                    onclick="safeResetProblemFilters()">
 
                     ↻
                     Reset
@@ -8988,21 +8988,21 @@ function inDate(v,from,to){
 }
 function opts(id,values){const dl=q(id);if(!dl)return;dl.innerHTML=[...new Set(values.filter(Boolean).map(String))].sort((a,b)=>a.localeCompare(b,'id')).map(v=>`<option value="${escapeHTML(v)}"></option>`).join('')}
 function escapeD(v){return typeof escapeHTML==='function'?escapeHTML(String(v??'')):String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function progressFiltered(){const rows=Array.isArray(allProgressRows)?allProgressRows:[];const get=id=>q(id)?.value?.trim()||'';const quick=get('downloadProgressQuick'), cust=get('downloadProgressCustomer').toLowerCase(),wp=get('downloadProgressWp').toLowerCase(),assy=get('downloadProgressAssy').toLowerCase(),cct=get('downloadProgressCct').toLowerCase(),proc=+get('downloadProgressProcess');const qmin=dNum(get('downloadProgressQtyMin')),qmax=dNum(get('downloadProgressQtyMax')),lf=dNum(get('downloadProgressLeadMin')),lh=dNum(get('downloadProgressLeadMax'));const ef=get('downloadProgressEtdFrom'),et=get('downloadProgressEtdTo'),rf=get('downloadProgressRescheduleFrom'),rt=get('downloadProgressRescheduleTo'),sf=get('downloadProgressStart'),st=get('downloadProgressFinish'),rs=get('downloadProgressReschedule');const today=new Date();today.setHours(0,0,0,0);const plus3=new Date(today);plus3.setDate(today.getDate()+3);return rows.filter(r=>{const status=getRowStatus(r), etd=dDate(getCellValue(r,7)), res=getCellValue(r,8), qty=dNum(getCellValue(r,5)), lead=dNum(getCellValue(r,11));if(quick==='OPEN'&&status!=='OPEN')return false;if(quick==='CLOSE'&&status!=='CLOSE')return false;if(quick==='RESCHEDULE'&&!res)return false;if(quick==='OVERDUE'&&!(status==='OPEN'&&etd&&etd<today))return false;if(quick==='ETD3'&&!(status==='OPEN'&&etd&&etd>=today&&etd<=plus3))return false;if(quick==='NOT_STARTED'&&!(status==='OPEN'&&!getCellValue(r,9)))return false;if(cust&&!getCellValue(r,1).toLowerCase().includes(cust))return false;if(wp&&!getCellValue(r,3).toLowerCase().includes(wp))return false;if(assy&&!getCellValue(r,2).toLowerCase().includes(assy))return false;if(cct&&!getCellValue(r,4).toLowerCase().includes(cct))return false;if(proc&&!(dNum(getCellValue(r,proc))>0))return false;if(qmin!==null&&(qty===null||qty<qmin))return false;if(qmax!==null&&(qty===null||qty>qmax))return false;if(!inDate(getCellValue(r,7),ef,et))return false;if(rs==='YES'&&!res)return false;if(rs==='NO'&&res)return false;if(!inDate(res,rf,rt))return false;if(!inDate(getCellValue(r,9),sf,sf))return false;if(!inDate(getCellValue(r,10),st,st))return false;if(lf!==null&&(lead===null||lead<lf))return false;if(lh!==null&&(lead===null||lead>lh))return false;return true})}
-function problemFiltered(){const rows=Array.isArray(allProblemRows)?allProblemRows:[];const get=id=>q(id)?.value?.trim()||'';const status=get('downloadProblemStatus'),cust=get('downloadProblemCustomer').toLowerCase(),pic=get('downloadProblemPic').toLowerCase(),part=get('downloadProblemPart').toLowerCase(),wip=get('downloadProblemWip').toLowerCase(),df=get('downloadProblemDateFrom'),dt=get('downloadProblemDateTo'),mn=dNum(get('downloadProblemMinusMin')),mx=dNum(get('downloadProblemMinusMax'));return rows.filter(r=>{if(status&&getProblemStatus(r)!==status)return false;if(cust&&!getProblemValue(r,3).toLowerCase().includes(cust))return false;if(pic&&!getProblemValue(r,12).toLowerCase().includes(pic))return false;if(part&&!getProblemValue(r,5).toLowerCase().includes(part))return false;if(wip&&!getProblemValue(r,4).toLowerCase().includes(wip))return false;if(!inDate(getProblemValue(r,0),df,dt))return false;const minus=dNum(getProblemValue(r,10));if(mn!==null&&(minus===null||minus<mn))return false;if(mx!==null&&(minus===null||minus>mx))return false;return true})}
+function progressFiltered(){const rows=Array.isArray(allProgressRows)?allProgressRows:[];const txt=id=>String(q(id)?.value??'').trim();const cell=(r,i)=>String(getCellValue(r,i)??'').trim();const get=id=>txt(id);const quick=get('downloadProgressQuick'), cust=get('downloadProgressCustomer').toLowerCase(),wp=get('downloadProgressWp').toLowerCase(),assy=get('downloadProgressAssy').toLowerCase(),cct=get('downloadProgressCct').toLowerCase(),proc=+get('downloadProgressProcess');const qmin=dNum(get('downloadProgressQtyMin')),qmax=dNum(get('downloadProgressQtyMax')),lf=dNum(get('downloadProgressLeadMin')),lh=dNum(get('downloadProgressLeadMax'));const ef=get('downloadProgressEtdFrom'),et=get('downloadProgressEtdTo'),rf=get('downloadProgressRescheduleFrom'),rt=get('downloadProgressRescheduleTo'),sf=get('downloadProgressStart'),st=get('downloadProgressFinish'),rs=get('downloadProgressReschedule');const today=new Date();today.setHours(0,0,0,0);const plus3=new Date(today);plus3.setDate(today.getDate()+3);return rows.filter(r=>{const status=getRowStatus(r), etd=dDate(getCellValue(r,7)), res=getCellValue(r,8), qty=dNum(getCellValue(r,5)), lead=dNum(getCellValue(r,11));if(quick==='OPEN'&&status!=='OPEN')return false;if(quick==='CLOSE'&&status!=='CLOSE')return false;if(quick==='RESCHEDULE'&&!res)return false;if(quick==='OVERDUE'&&!(status==='OPEN'&&etd&&etd<today))return false;if(quick==='ETD3'&&!(status==='OPEN'&&etd&&etd>=today&&etd<=plus3))return false;if(quick==='NOT_STARTED'&&!(status==='OPEN'&&!cell(r,9)))return false;if(cust&&!cell(r,1).toLowerCase().includes(cust))return false;if(wp&&!cell(r,3).toLowerCase().includes(wp))return false;if(assy&&!cell(r,2).toLowerCase().includes(assy))return false;if(cct&&!cell(r,4).toLowerCase().includes(cct))return false;if(proc&&!(dNum(getCellValue(r,proc))>0))return false;if(qmin!==null&&(qty===null||qty<qmin))return false;if(qmax!==null&&(qty===null||qty>qmax))return false;if(!inDate(getCellValue(r,7),ef,et))return false;if(rs==='YES'&&!String(res||'').trim())return false;if(rs==='NO'&&String(res||'').trim())return false;if(!inDate(res,rf,rt))return false;if(!inDate(getCellValue(r,9),sf,sf))return false;if(!inDate(getCellValue(r,10),st,st))return false;if(lf!==null&&(lead===null||lead<lf))return false;if(lh!==null&&(lead===null||lead>lh))return false;return true})}
+function problemFiltered(){const rows=Array.isArray(allProblemRows)?allProblemRows:[];const get=id=>String(q(id)?.value??'').trim();const pcell=(r,i)=>String(getProblemValue(r,i)??'').trim();const status=get('downloadProblemStatus'),cust=get('downloadProblemCustomer').toLowerCase(),pic=get('downloadProblemPic').toLowerCase(),part=get('downloadProblemPart').toLowerCase(),wip=get('downloadProblemWip').toLowerCase(),df=get('downloadProblemDateFrom'),dt=get('downloadProblemDateTo'),mn=dNum(get('downloadProblemMinusMin')),mx=dNum(get('downloadProblemMinusMax'));return rows.filter(r=>{if(status&&getProblemStatus(r)!==status)return false;if(cust&&!pcell(r,3).toLowerCase().includes(cust))return false;if(pic&&!pcell(r,12).toLowerCase().includes(pic))return false;if(part&&!pcell(r,5).toLowerCase().includes(part))return false;if(wip&&!pcell(r,4).toLowerCase().includes(wip))return false;if(!inDate(getProblemValue(r,0),df,dt))return false;const minus=dNum(getProblemValue(r,10));if(mn!==null&&(minus===null||minus<mn))return false;if(mx!==null&&(minus===null||minus>mx))return false;return true})}
 function filtered(){return downloadSource==='progress'?progressFiltered():problemFiltered()}
 function headers(){return downloadSource==='progress'?progressHeaders:problemHeaders}
 function vals(r){return downloadSource==='progress'?r: r.slice(0,17)}
-function render(){const rows=filtered(),h=headers();if(!q('downloadCount')||!q('downloadPreviewBody'))return;q('downloadCount').textContent=`${rows.length.toLocaleString('id-ID')} data siap di-download`;q('downloadPreviewTitle').textContent=`Preview ${downloadSource==='progress'?'Progress 2026':'Problem'}`;q('downloadPreviewMeta').textContent=`Menampilkan ${rows.length.toLocaleString('id-ID')} baris`;q('downloadPreviewHead').innerHTML=`<tr>${h.map(x=>`<th>${escapeD(x)}</th>`).join('')}</tr>`;const shown=rows.slice(0,100);q('downloadPreviewBody').innerHTML=shown.length?shown.map(r=>`<tr>${vals(r).map(v=>`<td>${escapeD(v)}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${h.length}" class="download-empty">Tidak ada data yang sesuai filter.</td></tr>`;if(rows.length>100)q('downloadPreviewBody').insertAdjacentHTML('beforeend',`<tr><td colspan="${h.length}" class="download-more">Preview dibatasi 100 baris. Download tetap berisi semua ${rows.length.toLocaleString('id-ID')} baris hasil filter.</td></tr>`)}
+function render(){const h=headers();if(!q('downloadCount')||!q('downloadPreviewBody'))return;const sourceRows=downloadSource==='progress'?allProgressRows:allProblemRows;if(!Array.isArray(sourceRows)||sourceRows.length===0){q('downloadCount').textContent='Menunggu data Google Sheets...';q('downloadPreviewTitle').textContent=`Preview ${downloadSource==='progress'?'Progress 2026':'Problem'}`;q('downloadPreviewMeta').textContent='Data sedang dimuat';q('downloadPreviewHead').innerHTML=`<tr>${h.map(x=>`<th>${escapeD(x)}</th>`).join('')}</tr>`;q('downloadPreviewBody').innerHTML=`<tr><td colspan="${h.length}" class="download-empty">⏳ Data sedang dimuat dari Google Sheets...</td></tr>`;return}let rows=[];try{rows=filtered()}catch(err){console.error('Download filter error:',err);q('downloadCount').textContent='Filter belum dapat diproses';q('downloadPreviewMeta').textContent='Periksa filter yang dipilih';q('downloadPreviewBody').innerHTML=`<tr><td colspan="${h.length}" class="download-empty">Terjadi kesalahan saat memproses filter.</td></tr>`;return}q('downloadCount').textContent=`${rows.length.toLocaleString('id-ID')} data siap di-download`;q('downloadPreviewTitle').textContent=`Preview ${downloadSource==='progress'?'Progress 2026':'Problem'}`;q('downloadPreviewMeta').textContent=`Menampilkan ${rows.length.toLocaleString('id-ID')} baris`;q('downloadPreviewHead').innerHTML=`<tr>${h.map(x=>`<th>${escapeD(x)}</th>`).join('')}</tr>`;const shown=rows.slice(0,100);q('downloadPreviewBody').innerHTML=shown.length?shown.map(r=>`<tr>${vals(r).map(v=>`<td>${escapeD(v)}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${h.length}" class="download-empty">Tidak ada data yang sesuai filter.</td></tr>`;if(rows.length>100)q('downloadPreviewBody').insertAdjacentHTML('beforeend',`<tr><td colspan="${h.length}" class="download-more">Preview dibatasi 100 baris. Download tetap berisi semua ${rows.length.toLocaleString('id-ID')} baris hasil filter.</td></tr>`)}
 function populate(){if(Array.isArray(allProgressRows)){opts('downloadProgressCustomerList',allProgressRows.map(r=>getCellValue(r,1)));opts('downloadProgressWpList',allProgressRows.map(r=>getCellValue(r,3)));opts('downloadProgressAssyList',allProgressRows.map(r=>getCellValue(r,2)));}if(Array.isArray(allProblemRows)){opts('downloadProblemCustomerList',allProblemRows.map(r=>getProblemValue(r,3)));opts('downloadProblemPicList',allProblemRows.map(r=>getProblemValue(r,12)));opts('downloadProblemPartList',allProblemRows.map(r=>getProblemValue(r,5)));opts('downloadProblemWipList',allProblemRows.map(r=>getProblemValue(r,4)));}const ps=q('downloadProgressProcess');if(ps&&ps.options.length===1&&Array.isArray(PROCESS_COLUMNS))PROCESS_COLUMNS.forEach(p=>ps.insertAdjacentHTML('beforeend',`<option value="${p.index}">${escapeD(p.name)}</option>`));}
 function csvCell(v){const x=String(v??'');return /[",\n\r]/.test(x)?`"${x.replace(/"/g,'""')}"`:x}
 function downloadBlob(name,type,data){const blob=new Blob([data],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function downloadCsv(){const rows=filtered(),h=headers(),csv='\ufeff'+[h, ...rows.map(vals)].map(r=>r.map(csvCell).join(',')).join('\r\n');downloadBlob(`${downloadSource==='progress'?'progress-2026':'problem'}-filtered.csv`,'text/csv;charset=utf-8',csv)}
 async function downloadExcel(){const rows=filtered(),h=headers();if(typeof XLSX==='undefined'){alert('Library Excel belum siap. Coba klik lagi beberapa detik kemudian.');return}const wb=XLSX.utils.book_new(),ws=XLSX.utils.aoa_to_sheet([h,...rows.map(vals)]);XLSX.utils.book_append_sheet(wb,ws,downloadSource==='progress'?'Progress 2026':'Problem');XLSX.writeFile(wb,`${downloadSource==='progress'?'progress-2026':'problem'}-filtered.xlsx`)}
-function reset(){document.querySelectorAll('#download input,#download select').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=''});populate();render()}
+function reset(){const box=document.getElementById('download');if(!box)return;box.querySelectorAll('input,select').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=''});populate();render();}
 window.resetDownloadFilters=function(){reset();const btn=q('downloadReset');if(btn){btn.classList.add('ui-action-success');setTimeout(()=>btn.classList.remove('ui-action-success'),450)}}
 function switchSource(src){downloadSource=src;document.querySelectorAll('.download-source').forEach(b=>b.classList.toggle('active',b.dataset.source===src));q('downloadProgressFilters').style.display=src==='progress'?'grid':'none';q('downloadProblemFilters').style.display=src==='problem'?'grid':'none';populate();render()}
-function bind(){document.querySelectorAll('.download-source').forEach(b=>b.addEventListener('click',()=>switchSource(b.dataset.source)));q('downloadReset')?.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();window.resetDownloadFilters();});q('downloadCsv')?.addEventListener('click',downloadCsv);q('downloadExcel')?.addEventListener('click',downloadExcel);document.querySelectorAll('#download input,#download select').forEach(el=>el.addEventListener('input',render));document.querySelectorAll('#download select').forEach(el=>el.addEventListener('change',render));setInterval(()=>{if(q('download')?.classList.contains('active-page')){populate();render()}},5000)}
+function bind(){document.querySelectorAll('.download-source').forEach(b=>b.addEventListener('click',()=>switchSource(b.dataset.source)));q('downloadCsv')?.addEventListener('click',downloadCsv);q('downloadExcel')?.addEventListener('click',downloadExcel);document.querySelectorAll('#download input,#download select').forEach(el=>el.addEventListener('input',render));document.querySelectorAll('#download select').forEach(el=>el.addEventListener('change',render));setInterval(()=>{if(q('download')?.classList.contains('active-page')){populate();render()}},5000)}
 window.refreshDownloadData=function(){
   try{populate();render();}catch(err){
     console.error('Download Data refresh error:',err);
@@ -9013,10 +9013,27 @@ window.refreshDownloadData=function(){
   }
 };
 document.addEventListener('DOMContentLoaded',()=>{bind();setTimeout(()=>{try{window.refreshDownloadData()}catch(e){console.error(e)}},300)});
+
 })();
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script id="dashboardActionSafetyFix">
+(function(){
+  function flash(msg){
+    let el=document.getElementById('actionSafetyToast');
+    if(!el){el=document.createElement('div');el.id='actionSafetyToast';el.style.cssText='position:fixed;right:18px;top:76px;z-index:20000;background:#ffffff;border:1px solid #d8e5ea;border-radius:12px;padding:10px 14px;box-shadow:0 10px 28px rgba(35,60,72,.15);font:800 12px Arial;color:#3d5661';document.body.appendChild(el)}
+    el.textContent=msg;el.style.display='block';clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',1400);
+  }
+  function busy(btn){if(!btn)return;btn.disabled=true;btn.dataset.oldText=btn.textContent;btn.textContent='↻ Memproses...';setTimeout(()=>{btn.disabled=false;btn.textContent=btn.dataset.oldText||btn.textContent},500)}
+  window.safeResetProgressFilters=function(){try{const btn=document.querySelector('#progress .reset-filter');busy(btn);if(typeof resetFilters==='function')resetFilters();else throw new Error('resetFilters tidak tersedia');}catch(e){console.error(e);document.querySelectorAll('#progress input,#progress select').forEach(el=>el.value='');if(typeof applyFilters==='function')try{applyFilters()}catch(_){ }flash('Filter Progress direset');}};
+  window.safeResetProblemFilters=function(){try{const btn=document.querySelector('#problem .reset-filter');busy(btn);if(typeof resetProblemFilters==='function')resetProblemFilters();else throw new Error('resetProblemFilters tidak tersedia');}catch(e){console.error(e);document.querySelectorAll('#problem input,#problem select').forEach(el=>el.value='');if(typeof applyProblemFilters==='function')try{applyProblemFilters()}catch(_){ }flash('Filter Problem direset');}};
+  window.safeRefreshMonitoringCenter=function(){try{const btn=document.querySelector('#monitoring .page-header .reset-filter');busy(btn);if(typeof refreshMonitoringCenter==='function')refreshMonitoringCenter();else throw new Error('refreshMonitoringCenter tidak tersedia');if(typeof window.refreshDownloadData==='function')window.refreshDownloadData();flash('Monitoring Center diperbarui');}catch(e){console.error(e);try{if(typeof renderMonitoringCenter==='function')renderMonitoringCenter()}catch(_){}flash('Monitoring Center diperbarui');}};
+  window.safeRefreshStage6Pages=function(){try{const btn=document.querySelector('.stage6-actions .stage6-btn');busy(btn);if(typeof refreshStage6Pages==='function')refreshStage6Pages();else throw new Error('refreshStage6Pages tidak tersedia');flash('Data Meeting/Report diperbarui');}catch(e){console.error(e);try{if(typeof renderStage6Pages==='function')renderStage6Pages()}catch(_){}flash('Data Meeting/Report diperbarui');}};
+  window.safeResetDownloadFilters=function(){try{const btn=document.getElementById('downloadReset');busy(btn);if(typeof window.resetDownloadFilters==='function')window.resetDownloadFilters();else throw new Error('resetDownloadFilters tidak tersedia');flash('Semua filter Download Data direset');}catch(e){console.error(e);try{document.querySelectorAll('#download input,#download select').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=''});if(typeof window.refreshDownloadData==='function')window.refreshDownloadData()}catch(_){}flash('Filter Download Data direset');}};
+})();
+</script>
 </body>
 
 </html>
