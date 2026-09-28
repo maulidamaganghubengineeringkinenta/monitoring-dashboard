@@ -318,6 +318,30 @@
 @media(max-width:600px){.stage6-inline-modal{padding:10px}.stage6-inline-modal-card{width:100%;max-height:90vh;padding:15px}.stage6-popup-item{grid-template-columns:1fr}.stage6-popup-badge{justify-self:start}}
 
 </style>
+<style id="stage6-colorful-refresh">
+#monitoring .page-header h2{background:linear-gradient(90deg,#285b8f,#2a8f8f,#6b4aa0);-webkit-background-clip:text;background-clip:text;color:transparent!important;}
+#monitoring .monitor-card{position:relative;overflow:hidden;border:0!important;background:linear-gradient(135deg,#ffffff,#f4fbff)!important;box-shadow:0 8px 22px rgba(38,82,111,.10)!important;}
+#monitoring .monitor-card:nth-child(1){background:linear-gradient(135deg,#eff9ff,#dff3ff)!important;border-left:5px solid #3a91c7!important;}
+#monitoring .monitor-card:nth-child(2){background:linear-gradient(135deg,#fff4f4,#ffe2e4)!important;border-left:5px solid #e25d67!important;}
+#monitoring .monitor-card:nth-child(3){background:linear-gradient(135deg,#fffaf0,#ffedc7)!important;border-left:5px solid #e7a63a!important;}
+#monitoring .monitor-card:nth-child(4){background:linear-gradient(135deg,#f5f0ff,#e9e0ff)!important;border-left:5px solid #8061c9!important;}
+#monitoring .monitor-card .mc-value{color:#1f4054;}
+#monitoring .monitor-section,#monitoring .monitor-stage2-card{border-radius:16px!important;box-shadow:0 8px 24px rgba(38,68,88,.07);}
+#monitoring .monitor-stage2-card{background:linear-gradient(145deg,#ffffff,#f7fbfd)!important;border-color:#dceaf0!important;}
+#meeting .stage6-meeting-title h2,#report .stage6-report-header h2{background:linear-gradient(90deg,#285b8f,#2c9b8f,#7651a7);-webkit-background-clip:text;background-clip:text;color:transparent!important;}
+#meeting .stage6-kpi,#report .stage6-kpi{border:0!important;box-shadow:0 9px 24px rgba(39,67,87,.10)!important;overflow:hidden;background:linear-gradient(135deg,#fff,#f5fbff)!important;}
+#meeting .stage6-kpi:nth-child(1),#report .stage6-kpi:nth-child(1){background:linear-gradient(135deg,#eef8ff,#dff2ff)!important;border-top:4px solid #3d8fc3!important;}
+#meeting .stage6-kpi:nth-child(2),#report .stage6-kpi:nth-child(2){background:linear-gradient(135deg,#fff2f2,#ffe0e3)!important;border-top:4px solid #df5b66!important;}
+#meeting .stage6-kpi:nth-child(3),#report .stage6-kpi:nth-child(3){background:linear-gradient(135deg,#fff9ed,#ffedc9)!important;border-top:4px solid #e2a23a!important;}
+#meeting .stage6-kpi:nth-child(4),#report .stage6-kpi:nth-child(4){background:linear-gradient(135deg,#f5f0ff,#e8ddff)!important;border-top:4px solid #805dc4!important;}
+#meeting .stage6-card{border:1px solid #dce9ef!important;background:linear-gradient(145deg,#ffffff,#f7fbfd)!important;box-shadow:0 8px 22px rgba(39,67,87,.07)!important;}
+#meeting .stage6-card h3{color:#2b5266;}
+#report .stage6-report{border:1px solid #d7e6ed!important;background:linear-gradient(145deg,#ffffff,#f8fcfe)!important;box-shadow:0 10px 30px rgba(39,67,87,.09)!important;}
+#report .stage6-report-section{border:1px solid #e0ebf0;border-radius:14px;padding:15px;background:#fff;box-shadow:0 5px 16px rgba(39,67,87,.045);}
+#report .stage6-report-section h3{color:#2c5569;}
+#report .stage6-report-table th{background:linear-gradient(90deg,#eef7fb,#f4f1fb)!important;color:#355565!important;}
+#meeting .stage6-btn.primary,#report .stage6-btn.primary{background:linear-gradient(135deg,#dff2ff,#e9ddff)!important;border-color:#b9d9e8!important;color:#31546a!important;}
+</style>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
@@ -1586,7 +1610,7 @@
                     </div>
 
                     <div class="download-actions">
-                        <button type="button" class="download-reset" id="downloadReset">↻ Reset Filter</button>
+                        <button type="button" class="download-reset" id="downloadReset" onclick="window.resetDownloadFilters()">↻ Reset Filter</button>
                         <div class="download-count" id="downloadCount">0 data siap di-download</div>
                         <button type="button" class="download-btn csv" id="downloadCsv">⬇️ Download CSV</button>
                         <button type="button" class="download-btn excel" id="downloadExcel">📊 Download Excel (.xlsx)</button>
@@ -2937,6 +2961,8 @@ async function loadProgressData() {
             "Data Progress berhasil dimuat:",
             allProgressRows.length
         );
+
+        if (typeof window.refreshDownloadData === "function") window.refreshDownloadData();
 
     } catch (error) {
         console.error(error);
@@ -4908,6 +4934,9 @@ function showPage(pageName) {
     if (pageName === "problem") {
         requestAnimationFrame(() => resizeProblemCharts());
     }
+    if (pageName === "download" && typeof window.refreshDownloadData === "function") {
+        requestAnimationFrame(() => window.refreshDownloadData());
+    }
     if (pageName === "monitoring") {
         requestAnimationFrame(() => refreshMonitoringCenter());
     }
@@ -5284,6 +5313,8 @@ async function loadProblemData() {
             "Problem berhasil dimuat:",
             allProblemRows.length
         );
+
+        if (typeof window.refreshDownloadData === "function") window.refreshDownloadData();
 
     } catch (error) {
         console.error(
@@ -8876,8 +8907,7 @@ const problemHeaders=["DATE PROBLEM","ASSY NO","CUSTOMER","WIP","PART NAME","PAR
 let downloadSource='progress';
 const q=id=>document.getElementById(id);
 function dNum(v){const n=Number(String(v??'').replace(/,/g,'').replace(/[^\d.-]/g,''));return Number.isFinite(n)?n:null}
-function dDate(v){if(!v)return null;const t=String(v).trim();let m=t.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})$/);if(!m)return null;let a=+m[1],b=+m[2],y=+m[3];if(y<100)y+=2000;let day,mon;if(t.includes('/')){mon=a-1;day=b}else{day=b;mon=a-1}const x=new Date(y,mon,day);return x.getFullYear()===y&&x.getMonth()===mon&&x.getDate()===day?x:null}
-function iso(v){const d=dDate(v);return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`:''}
+function dDate(v){if(v===null||v===undefined||v==='')return null;if(v instanceof Date&&!isNaN(v))return new Date(v.getFullYear(),v.getMonth(),v.getDate());const t=String(v).trim();let m=t.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})(?:[T\s].*)?$/);if(m){const y=+m[1],mon=+m[2]-1,day=+m[3],x=new Date(y,mon,day);return x.getFullYear()===y&&x.getMonth()===mon&&x.getDate()===day?x:null}m=t.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/);if(!m)return null;let a=+m[1],b=+m[2],y=+m[3];if(y<100)y+=2000;let day,mon;if(a>12){day=a;mon=b-1}else if(b>12){mon=a-1;day=b}else if(t.includes('/')){mon=a-1;day=b}else{day=a;mon=b-1}const x=new Date(y,mon,day);return x.getFullYear()===y&&x.getMonth()===mon&&x.getDate()===day?x:null}
 function inDate(v,from,to){const x=iso(v);if(!x)return !from&&!to;return (!from||x>=from)&&(!to||x<=to)}
 function opts(id,values){const dl=q(id);if(!dl)return;dl.innerHTML=[...new Set(values.filter(Boolean).map(String))].sort((a,b)=>a.localeCompare(b,'id')).map(v=>`<option value="${escapeHTML(v)}"></option>`).join('')}
 function escapeD(v){return typeof escapeHTML==='function'?escapeHTML(String(v??'')):String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -8886,15 +8916,16 @@ function problemFiltered(){const rows=Array.isArray(allProblemRows)?allProblemRo
 function filtered(){return downloadSource==='progress'?progressFiltered():problemFiltered()}
 function headers(){return downloadSource==='progress'?progressHeaders:problemHeaders}
 function vals(r){return downloadSource==='progress'?r: r.slice(0,17)}
-function render(){const rows=filtered(),h=headers();q('downloadCount').textContent=`${rows.length.toLocaleString('id-ID')} data siap di-download`;q('downloadPreviewTitle').textContent=`Preview ${downloadSource==='progress'?'Progress 2026':'Problem'}`;q('downloadPreviewMeta').textContent=`Menampilkan ${rows.length.toLocaleString('id-ID')} baris`;q('downloadPreviewHead').innerHTML=`<tr>${h.map(x=>`<th>${escapeD(x)}</th>`).join('')}</tr>`;const shown=rows.slice(0,100);q('downloadPreviewBody').innerHTML=shown.length?shown.map(r=>`<tr>${vals(r).map(v=>`<td>${escapeD(v)}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${h.length}" class="download-empty">Tidak ada data yang sesuai filter.</td></tr>`;if(rows.length>100)q('downloadPreviewBody').insertAdjacentHTML('beforeend',`<tr><td colspan="${h.length}" class="download-more">Preview dibatasi 100 baris. Download tetap berisi semua ${rows.length.toLocaleString('id-ID')} baris hasil filter.</td></tr>`)}
-function populate(){if(!Array.isArray(allProgressRows)||!Array.isArray(allProblemRows))return;opts('downloadProgressCustomerList',allProgressRows.map(r=>getCellValue(r,1)));opts('downloadProgressWpList',allProgressRows.map(r=>getCellValue(r,3)));opts('downloadProgressAssyList',allProgressRows.map(r=>getCellValue(r,2)));opts('downloadProblemCustomerList',allProblemRows.map(r=>getProblemValue(r,3)));opts('downloadProblemPicList',allProblemRows.map(r=>getProblemValue(r,12)));opts('downloadProblemPartList',allProblemRows.map(r=>getProblemValue(r,5)));opts('downloadProblemWipList',allProblemRows.map(r=>getProblemValue(r,4)));const ps=q('downloadProgressProcess');if(ps&&ps.options.length===1)PROCESS_COLUMNS.forEach(p=>ps.insertAdjacentHTML('beforeend',`<option value="${p.index}">${escapeD(p.name)}</option>`));}
+function render(){const rows=filtered(),h=headers();if(!q('downloadCount')||!q('downloadPreviewBody'))return;q('downloadCount').textContent=`${rows.length.toLocaleString('id-ID')} data siap di-download`;q('downloadPreviewTitle').textContent=`Preview ${downloadSource==='progress'?'Progress 2026':'Problem'}`;q('downloadPreviewMeta').textContent=`Menampilkan ${rows.length.toLocaleString('id-ID')} baris`;q('downloadPreviewHead').innerHTML=`<tr>${h.map(x=>`<th>${escapeD(x)}</th>`).join('')}</tr>`;const shown=rows.slice(0,100);q('downloadPreviewBody').innerHTML=shown.length?shown.map(r=>`<tr>${vals(r).map(v=>`<td>${escapeD(v)}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${h.length}" class="download-empty">Tidak ada data yang sesuai filter.</td></tr>`;if(rows.length>100)q('downloadPreviewBody').insertAdjacentHTML('beforeend',`<tr><td colspan="${h.length}" class="download-more">Preview dibatasi 100 baris. Download tetap berisi semua ${rows.length.toLocaleString('id-ID')} baris hasil filter.</td></tr>`)}
+function populate(){if(Array.isArray(allProgressRows)){opts('downloadProgressCustomerList',allProgressRows.map(r=>getCellValue(r,1)));opts('downloadProgressWpList',allProgressRows.map(r=>getCellValue(r,3)));opts('downloadProgressAssyList',allProgressRows.map(r=>getCellValue(r,2)));}if(Array.isArray(allProblemRows)){opts('downloadProblemCustomerList',allProblemRows.map(r=>getProblemValue(r,3)));opts('downloadProblemPicList',allProblemRows.map(r=>getProblemValue(r,12)));opts('downloadProblemPartList',allProblemRows.map(r=>getProblemValue(r,5)));opts('downloadProblemWipList',allProblemRows.map(r=>getProblemValue(r,4)));}const ps=q('downloadProgressProcess');if(ps&&ps.options.length===1&&Array.isArray(PROCESS_COLUMNS))PROCESS_COLUMNS.forEach(p=>ps.insertAdjacentHTML('beforeend',`<option value="${p.index}">${escapeD(p.name)}</option>`));}
 function csvCell(v){const x=String(v??'');return /[",\n\r]/.test(x)?`"${x.replace(/"/g,'""')}"`:x}
 function downloadBlob(name,type,data){const blob=new Blob([data],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function downloadCsv(){const rows=filtered(),h=headers(),csv='\ufeff'+[h, ...rows.map(vals)].map(r=>r.map(csvCell).join(',')).join('\r\n');downloadBlob(`${downloadSource==='progress'?'progress-2026':'problem'}-filtered.csv`,'text/csv;charset=utf-8',csv)}
 async function downloadExcel(){const rows=filtered(),h=headers();if(typeof XLSX==='undefined'){alert('Library Excel belum siap. Coba klik lagi beberapa detik kemudian.');return}const wb=XLSX.utils.book_new(),ws=XLSX.utils.aoa_to_sheet([h,...rows.map(vals)]);XLSX.utils.book_append_sheet(wb,ws,downloadSource==='progress'?'Progress 2026':'Problem');XLSX.writeFile(wb,`${downloadSource==='progress'?'progress-2026':'problem'}-filtered.xlsx`)}
-function reset(){document.querySelectorAll('#download input,#download select').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=''});render()}
+function reset(){document.querySelectorAll('#download input,#download select').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=''});populate();render()}
+window.resetDownloadFilters=function(){reset();const btn=q('downloadReset');if(btn){btn.classList.add('ui-action-success');setTimeout(()=>btn.classList.remove('ui-action-success'),450)}}
 function switchSource(src){downloadSource=src;document.querySelectorAll('.download-source').forEach(b=>b.classList.toggle('active',b.dataset.source===src));q('downloadProgressFilters').style.display=src==='progress'?'grid':'none';q('downloadProblemFilters').style.display=src==='problem'?'grid':'none';populate();render()}
-function bind(){document.querySelectorAll('.download-source').forEach(b=>b.addEventListener('click',()=>switchSource(b.dataset.source)));q('downloadReset')?.addEventListener('click',reset);q('downloadCsv')?.addEventListener('click',downloadCsv);q('downloadExcel')?.addEventListener('click',downloadExcel);document.querySelectorAll('#download input,#download select').forEach(el=>el.addEventListener('input',render));document.querySelectorAll('#download select').forEach(el=>el.addEventListener('change',render));setInterval(()=>{if(q('download')?.classList.contains('active-page')){populate();render()}},5000)}
+function bind(){document.querySelectorAll('.download-source').forEach(b=>b.addEventListener('click',()=>switchSource(b.dataset.source)));q('downloadReset')?.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();window.resetDownloadFilters();});q('downloadCsv')?.addEventListener('click',downloadCsv);q('downloadExcel')?.addEventListener('click',downloadExcel);document.querySelectorAll('#download input,#download select').forEach(el=>el.addEventListener('input',render));document.querySelectorAll('#download select').forEach(el=>el.addEventListener('change',render));setInterval(()=>{if(q('download')?.classList.contains('active-page')){populate();render()}},5000)}
 window.refreshDownloadData=function(){populate();render()};
 document.addEventListener('DOMContentLoaded',bind);
 })();
