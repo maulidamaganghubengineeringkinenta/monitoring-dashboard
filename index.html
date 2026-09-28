@@ -427,6 +427,10 @@ body.login-locked .sidebar-overlay { display:none !important; }
 @keyframes sparkFloat{0%{opacity:0;transform:translateY(16px) scale(.4) rotate(-15deg)}25%{opacity:1}100%{opacity:0;transform:translateY(-42px) scale(1.15) rotate(18deg)}}
 @media(prefers-reduced-motion:reduce){.login-welcome-card,.login-welcome-icon,.login-welcome-spark,.login-welcome-progress span{animation:none}.login-welcome-progress span{width:100%}}
 
+/* Cute dashboard features */
+.dashboard-greeting{margin:0 0 18px;padding:14px 18px;border:1px solid #d7e8ef;border-radius:16px;background:linear-gradient(135deg,#f7fcfe,#eef8fb);display:flex;align-items:center;justify-content:space-between;gap:14px;box-sizing:border-box;animation:greetingIn .5s ease both}.dashboard-greeting-main{display:flex;align-items:center;gap:12px;min-width:0}.dashboard-greeting-icon{width:40px;height:40px;flex:0 0 40px;border-radius:13px;background:#d9eef7;display:flex;align-items:center;justify-content:center;font-size:21px}.dashboard-greeting-title{font-size:14px;font-weight:900;color:#20323d}.dashboard-greeting-sub{font-size:11px;color:#6a7c84;margin-top:3px}.dashboard-greeting-status{font-size:10px;font-weight:900;color:#4e7889;white-space:nowrap}@keyframes greetingIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.monitor-assistant-button{position:fixed;right:22px;bottom:22px;z-index:8000;width:56px;height:56px;border:1px solid #c6e0ea;border-radius:18px;background:#fff;box-shadow:0 10px 30px rgba(42,75,90,.18);font-size:25px;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}.monitor-assistant-button:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(42,75,90,.22)}.monitor-assistant-panel{position:fixed;right:22px;bottom:88px;z-index:8001;width:min(340px,calc(100vw - 30px));background:#fff;border:1px solid #c9e0e8;border-radius:20px;box-shadow:0 18px 50px rgba(42,75,90,.2);padding:18px;display:none;box-sizing:border-box}.monitor-assistant-panel.open{display:block;animation:assistantIn .25s ease both}@keyframes assistantIn{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}.assistant-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.assistant-title{font-size:14px;font-weight:900;color:#20323d}.assistant-close{border:0;background:transparent;font-size:20px;color:#71828a;cursor:pointer}.assistant-sub{font-size:10px;color:#7a8a91;margin:3px 0 12px}.assistant-item{padding:10px 11px;border-radius:12px;background:#f6fafc;margin-top:8px;font-size:11px;color:#455861;line-height:1.45}.assistant-item strong{color:#20323d}.assistant-achievement{margin-top:12px;padding:11px;border-radius:13px;background:#fff8df;border:1px solid #f0df9c;color:#735d1b;font-size:11px;font-weight:800}.cute-empty-state{padding:28px 16px!important;text-align:center!important;color:#71828a!important}.cute-empty-icon{font-size:28px;display:block;margin-bottom:7px}.cute-empty-title{display:block;color:#334751;font-weight:900;font-size:12px;margin-bottom:4px}.cute-empty-text{display:block;font-size:10px}.achievement-toast{position:fixed;top:88px;right:22px;z-index:9000;width:min(320px,calc(100vw - 30px));padding:13px 15px;border:1px solid #d8e9b7;border-radius:16px;background:#fbfff5;box-shadow:0 14px 35px rgba(65,90,40,.16);display:none;box-sizing:border-box}.achievement-toast.show{display:block;animation:achievementIn .45s ease both}.achievement-toast-title{font-size:12px;font-weight:900;color:#456127}.achievement-toast-text{font-size:10px;color:#69785d;margin-top:3px;line-height:1.4}@keyframes achievementIn{from{opacity:0;transform:translateY(-10px) scale(.96)}to{opacity:1;transform:none}}@media(max-width:700px){.dashboard-greeting{align-items:flex-start}.dashboard-greeting-status{display:none}.monitor-assistant-button{right:14px;bottom:14px}.monitor-assistant-panel{right:14px;bottom:78px}.achievement-toast{right:14px;top:76px}}
+
 </style>
 
 </head>
@@ -758,6 +762,10 @@ body.login-locked .sidebar-overlay { display:none !important; }
 
         </header>
 
+        <div id="dashboardGreeting" class="dashboard-greeting" aria-live="polite">
+            <div class="dashboard-greeting-main"><div class="dashboard-greeting-icon" id="dashboardGreetingIcon">☀️</div><div><div class="dashboard-greeting-title" id="dashboardGreetingTitle">Good Morning! 👋</div><div class="dashboard-greeting-sub" id="dashboardGreetingSub">Semoga monitoring hari ini berjalan lancar.</div></div></div>
+            <div class="dashboard-greeting-status">LIVE MONITORING</div>
+        </div>
 
         <!-- =================================================
              PROGRESS PAGE
@@ -2951,6 +2959,8 @@ async function loadProgressData() {
             "Data Progress berhasil dimuat:",
             allProgressRows.length
         );
+        if(window.__cuteAchievement) setTimeout(window.__cuteAchievement,500);
+        if(window.__cuteAssistant) window.__cuteAssistant();
 
     } catch (error) {
         console.error(error);
@@ -2989,10 +2999,7 @@ function displayProgressData(rows) {
     if (!rows.length) {
         table.innerHTML = `
             <tr>
-                <td colspan="15">
-                    Tidak ada data yang sesuai
-                    dengan filter.
-                </td>
+                <td colspan="15" class="cute-empty-state"><span class="cute-empty-icon">🔍</span><span class="cute-empty-title">Hmm... data tidak ditemukan</span><span class="cute-empty-text">Coba ubah filter atau kata pencarian.</span></td>
             </tr>
         `;
 
@@ -5297,6 +5304,8 @@ async function loadProblemData() {
             "Problem berhasil dimuat:",
             allProblemRows.length
         );
+        if(window.__cuteAchievement) setTimeout(window.__cuteAchievement,700);
+        if(window.__cuteAssistant) window.__cuteAssistant();
 
     } catch (error) {
         console.error(
@@ -7363,16 +7372,7 @@ function renderProblemTable(rows) {
 
         table.innerHTML = `
             <tr>
-                <td
-                    colspan="17"
-                    style="
-                        text-align:center;
-                        padding:30px;
-                    "
-                >
-                    Tidak ada Problem
-                    yang sesuai filter.
-                </td>
+                <td colspan="17" class="cute-empty-state"><span class="cute-empty-icon">🫧</span><span class="cute-empty-title">Tidak ada problem di filter ini</span><span class="cute-empty-text">Coba pilih filter lain untuk melihat data.</span></td>
             </tr>
         `;
 
@@ -8877,6 +8877,23 @@ function printStage6Report() {
                 </div>
             </div>
 
+
+    <!-- CUTE MONITORING ASSISTANT -->
+    <button type="button" id="monitorAssistantButton" class="monitor-assistant-button" aria-label="Buka Monitoring Assistant" title="Monitoring Assistant">🤖</button>
+    <div id="monitorAssistantPanel" class="monitor-assistant-panel" role="dialog" aria-label="Monitoring Assistant">
+        <div class="assistant-head"><div><div class="assistant-title">🤖 Monitoring Assistant</div><div class="assistant-sub">Ringkasan singkat dari data monitoring.</div></div><button type="button" class="assistant-close" id="monitorAssistantClose" aria-label="Tutup">×</button></div>
+        <div id="monitorAssistantBody"></div>
+    </div>
+    <div id="achievementToast" class="achievement-toast" role="status" aria-live="polite"><div class="achievement-toast-title">🎉 DATA BERHASIL DIMUAT</div><div class="achievement-toast-text" id="achievementToastText">Dashboard siap digunakan.</div></div>
+
+<script>
+(function(){
+function greeting(){const h=new Date().getHours(),t=document.getElementById('dashboardGreetingTitle'),i=document.getElementById('dashboardGreetingIcon'),s=document.getElementById('dashboardGreetingSub');if(!t||!i||!s)return;if(h>=5&&h<11){i.textContent='☀️';t.textContent='Good Morning! 👋';s.textContent='Semoga monitoring hari ini berjalan lancar.'}else if(h<17){i.textContent='🌤️';t.textContent='Good Afternoon! 👋';s.textContent='Yuk, cek progress dan pekerjaan yang perlu perhatian.'}else{i.textContent='🌙';t.textContent='Good Evening! 👋';s.textContent='Saatnya memastikan semua pekerjaan tetap terpantau.'}}
+function assistant(){const b=document.getElementById('monitorAssistantBody');if(!b)return;const open=typeof monitoringOpenRows==='function'?monitoringOpenRows():[],probs=(typeof allProblemRows!=='undefined'?allProblemRows:[]).filter(r=>typeof getProblemValue==='function'&&typeof PROBLEM_COLUMNS!=='undefined'&&String(getProblemValue(r,PROBLEM_COLUMNS.STATUS)||'').trim().toUpperCase()==='OPEN');let overdue=0,etd3=0,res=0;if(typeof monitoringMetrics==='function'){const m=monitoringMetrics();overdue=+m.overdue||0;etd3=+m.etd3||0;res=+m.reschedule||0}const proc=typeof monitoringProcessWorkload==='function'?monitoringProcessWorkload().filter(x=>x.qty>0).sort((a,b)=>b.qty-a.qty)[0]:null;let a='🎯 Keep monitoring! Data masih memiliki pekerjaan yang perlu diperhatikan.';if(!open.length)a='🏆 ALL CLEAR! Tidak ada order OPEN saat ini.';else if(!probs.length)a='🏆 PROBLEM FREE! Tidak ada Problem OPEN saat ini.';else if(!overdue)a='✨ NO OVERDUE! Tidak ada order overdue saat ini.';b.innerHTML=`<div class="assistant-item">📦 <strong>${open.length.toLocaleString('id-ID')} order OPEN</strong> sedang dalam monitoring.</div><div class="assistant-item">⏰ <strong>${overdue.toLocaleString('id-ID')} overdue</strong> · ${etd3.toLocaleString('id-ID')} ETD ≤ 3 hari · ${res.toLocaleString('id-ID')} reschedule.</div><div class="assistant-item">⚠️ <strong>${probs.length.toLocaleString('id-ID')} problem OPEN</strong> terdeteksi.</div>${proc?`<div class="assistant-item">👀 Workload terbesar: <strong>${escapeHTML(proc.name)}</strong> (${(+proc.qty).toLocaleString('id-ID')} OPEN QTY).</div>`:''}<div class="assistant-achievement">${a}</div>`}
+function toast(){const x=document.getElementById('achievementToast'),tx=document.getElementById('achievementToastText');if(!x||!tx)return;const open=typeof monitoringOpenRows==='function'?monitoringOpenRows():[];const probs=(typeof allProblemRows!=='undefined'?allProblemRows:[]).filter(r=>typeof getProblemValue==='function'&&typeof PROBLEM_COLUMNS!=='undefined'&&String(getProblemValue(r,PROBLEM_COLUMNS.STATUS)||'').trim().toUpperCase()==='OPEN');tx.textContent=!open.length?'Semua order sudah aman — tidak ada OPEN job. 🏆':!probs.length?'Tidak ada Problem OPEN. Nice! 🏆':'Semua data live sudah siap dipantau. 🚀';x.classList.add('show');clearTimeout(window.__achievementTimer);window.__achievementTimer=setTimeout(()=>x.classList.remove('show'),3500)}
+function init(){greeting();const btn=document.getElementById('monitorAssistantButton'),p=document.getElementById('monitorAssistantPanel'),c=document.getElementById('monitorAssistantClose');btn&&btn.addEventListener('click',()=>{assistant();p.classList.toggle('open')});c&&c.addEventListener('click',()=>p.classList.remove('open'));document.addEventListener('click',e=>{if(p.classList.contains('open')&&!p.contains(e.target)&&e.target!==btn)p.classList.remove('open')});setInterval(greeting,60000);window.__cuteAchievement=toast;window.__cuteAssistant=assistant}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
 
     <!-- =====================================================
          LOGIN CONTROL
