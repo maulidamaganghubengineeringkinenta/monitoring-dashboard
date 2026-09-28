@@ -389,7 +389,33 @@
 </style>
 </head>
 
-<body>
+<body class="login-locked">
+
+    <!-- =====================================================
+         LOGIN SCREEN
+    ====================================================== -->
+    <section id="loginScreen" class="login-screen" aria-label="Login dashboard">
+        <div class="login-card">
+            <div class="login-brand-icon">📊</div>
+            <div class="login-kicker">PROTOTYPE MONITORING</div>
+            <h1>Dashboard Login</h1>
+            <p class="login-subtitle">Masuk untuk mengakses dashboard monitoring.</p>
+
+            <form id="loginForm" class="login-form" autocomplete="on">
+                <label for="loginUsername">Username</label>
+                <input id="loginUsername" name="username" type="text" autocomplete="username" placeholder="Masukkan username" required>
+
+                <label for="loginPassword">Password</label>
+                <input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="Masukkan password" required>
+
+                <button type="submit" class="login-button">LOGIN</button>
+                <div id="loginError" class="login-error" role="alert" aria-live="polite"></div>
+            </form>
+
+            <div class="login-hint">Username: <strong>admin</strong></div>
+        </div>
+    </section>
+
 
     <!-- =====================================================
          HAMBURGER
@@ -585,6 +611,14 @@
 
         </nav>
 
+
+        <button
+            type="button"
+            class="logout-button"
+            onclick="logoutDashboard()">
+            <span class="menu-icon">↪</span>
+            <span>Logout</span>
+        </button>
 
         <div class="sidebar-bottom">
 
