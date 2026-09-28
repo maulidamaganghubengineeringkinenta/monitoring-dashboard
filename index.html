@@ -474,7 +474,7 @@ body.login-locked .sidebar-overlay { display:none !important; }
                 <label for="loginPassword">Password</label>
                 <input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="Masukkan password" required>
 
-                <button type="button" class="login-button" onclick="loginDashboard()">LOGIN</button>
+                <button type="submit" class="login-button">LOGIN</button>
                 <div id="loginError" class="login-error" role="alert" aria-live="polite"></div>
             </form>
 
@@ -9041,6 +9041,12 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
                 form.addEventListener("submit",function(e){
                     e.preventDefault();
                     window.loginDashboard();
+                });
+                form.addEventListener("keydown",function(e){
+                    if(e.key === "Enter") {
+                        e.preventDefault();
+                        window.loginDashboard();
+                    }
                 });
             }
         }
