@@ -7032,19 +7032,35 @@ function problemAgeDays(row) {
     const status = String(getProblemStatus(row) || "").trim().toUpperCase();
     if (status !== "OPEN") return null;
 
-    // DATE_RECEIVED pada sheet Problem memakai format tanggal yang
-    // ditangani khusus oleh parseProblemDate (termasuk DD-MM-YY dan MM/DD/YY).
-    const received = parseProblemDate(
+    const today = new Date();
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    // Utamakan DATE RECEIVED pada posisi normalisasi yang sudah ditentukan.
+    let received = parseProblemDate(
         getProblemValue(row, PROBLEM_COLUMNS.DATE_RECEIVED)
     );
+
+    // Fallback penting: beberapa versi export Google Sheets dapat menggeser
+    // kolom kosong/tersembunyi. Jika DATE RECEIVED kosong/tidak terbaca,
+    // cari tanggal valid lain pada baris dan pilih tanggal terbaru yang
+    // tidak melebihi hari ini. Ini mencegah Oldest Open Problem menjadi 0
+    // hanya karena posisi kolom DATE RECEIVED berubah saat export.
+    if (!received) {
+        const candidates = [];
+        (Array.isArray(row) ? row : []).forEach(value => {
+            const d = parseProblemDate(value);
+            if (d && d <= todayOnly) candidates.push(d);
+        });
+        if (candidates.length) {
+            received = candidates.sort((a,b) => b.getTime() - a.getTime())[0];
+        }
+    }
+
     if (!received) return null;
 
-    const today = new Date();
-    const a = new Date(received.getFullYear(), received.getMonth(), received.getDate());
-    const b = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const days = Math.floor((b - a) / 86400000);
+    const receivedOnly = new Date(received.getFullYear(), received.getMonth(), received.getDate());
+    const days = Math.floor((todayOnly - receivedOnly) / 86400000);
 
-    // Tanggal di masa depan tidak boleh menghasilkan umur negatif.
     return Number.isFinite(days) ? Math.max(0, days) : null;
 }
 
