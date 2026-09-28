@@ -759,6 +759,15 @@ body.login-locked .sidebar-overlay { display:none !important; }
 
 /* Keep print clean */
 @media print{#monitoring,#meeting,#report{background:#fff!important;}#meeting .stage6-meeting-title,#meeting .stage6-kpi,#report .stage6-kpi{box-shadow:none!important;}}
+        .monitor-lead-breakdown-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+        .monitor-lead-breakdown{border:1px solid #e7edf1;border-radius:10px;background:#fbfcfd;padding:10px;min-width:0;}
+        .monitor-lead-breakdown-title{font-size:11px;font-weight:800;color:#65747e;margin-bottom:8px;}
+        .monitor-breakdown-list{max-height:230px;overflow:auto;display:grid;gap:6px;}
+        .monitor-breakdown-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:7px;align-items:center;padding:7px 8px;border-radius:7px;background:#fff;border:1px solid #edf1f3;font-size:11px;}
+        .monitor-breakdown-row span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#46545d;font-weight:700;}
+        .monitor-breakdown-row strong{color:#3e5968;white-space:nowrap;}
+        .monitor-breakdown-row small{color:#8a969e;white-space:nowrap;}
+        @media(max-width:700px){.monitor-lead-breakdown-grid{grid-template-columns:1fr;}}
 </style>
 
 <style id="wp-flow-monitoring-style">
@@ -1351,6 +1360,9 @@ body.login-locked .sidebar-overlay { display:none !important; }
 
                 </div>
 
+                <div class="kpi-card kpi-green"><div class="kpi-top"><div class="kpi-label">ON-TIME DELIVERY</div><div class="kpi-icon">🎯</div></div><div class="kpi-value" id="progressOnTimeDelivery">0%</div><div class="kpi-description">CLOSE order selesai sesuai ETD</div></div>
+                <div class="kpi-card kpi-orange"><div class="kpi-top"><div class="kpi-label">RESCHEDULE RATE</div><div class="kpi-icon">🔄</div></div><div class="kpi-value" id="progressRescheduleRate">0%</div><div class="kpi-description">Order dengan perubahan ETD</div></div>
+
             </div>
 
 
@@ -1880,6 +1892,7 @@ body.login-locked .sidebar-overlay { display:none !important; }
                         <div class="monitor-mini-stat" onclick="monitorLeadBucketFilter('all')"><div class="label">Maximum</div><div class="value" id="monitorLeadMax">0</div></div>
                     </div>
                     <div id="monitorLeadBuckets"></div>
+                    <div class="monitor-lead-breakdown-grid"><div class="monitor-lead-breakdown"><div class="monitor-lead-breakdown-title">Rata-rata Lead Time per Customer</div><div id="monitorLeadCustomer" class="monitor-breakdown-list"></div></div><div class="monitor-lead-breakdown"><div class="monitor-lead-breakdown-title">Rata-rata Lead Time per WP</div><div id="monitorLeadWp" class="monitor-breakdown-list"></div></div></div>
                 </div>
 
                 <div class="monitor-stage2-card">
@@ -2298,6 +2311,8 @@ body.login-locked .sidebar-overlay { display:none !important; }
                     </div>
 
                 </div>
+
+                <div class="kpi-card kpi-purple"><div class="kpi-top"><div class="kpi-label">OLDEST OPEN PROBLEM</div><div class="kpi-icon">⏳</div></div><div class="kpi-value" id="problemOldestAge">0 hari</div><div class="kpi-description">Umur problem OPEN terlama</div></div>
 
             </div>
 
@@ -2994,6 +3009,8 @@ body.login-locked .sidebar-overlay { display:none !important; }
 
                                 <th>TANGGAL DITERIMA</th>
 
+                                <th>UMUR (HARI)</th>
+
                                 <th>STATUS</th>
 
                                 <th>KETERANGAN</th>
@@ -3009,7 +3026,7 @@ body.login-locked .sidebar-overlay { display:none !important; }
 
                             <tr>
 
-                                <td colspan="17">
+                                <td colspan="18">
                                     Memuat data Problem...
                                 </td>
 
@@ -3935,6 +3952,25 @@ function updateKPIValues(
                 "id-ID"
             );
     }
+
+    const onTimeEl = document.getElementById("progressOnTimeDelivery");
+    const rescheduleRateEl = document.getElementById("progressRescheduleRate");
+    const closeRows = rows.filter(r => getRowStatus(r) === "CLOSE");
+    let onTimeEligible = 0, onTimeCount = 0, rescheduleCount = 0;
+    rows.forEach(r => {
+        const etd = monitoringDateOnly(getCellValue(r, 7));
+        const revised = monitoringDateOnly(getCellValue(r, 8));
+        if (etd && revised && etd.getTime() !== revised.getTime()) rescheduleCount++;
+    });
+    closeRows.forEach(r => {
+        const etd = monitoringDateOnly(getCellValue(r, 7));
+        const revised = monitoringDateOnly(getCellValue(r, 8));
+        const finish = monitoringDateOnly(getCellValue(r, 10));
+        const due = revised || etd;
+        if (due && finish) { onTimeEligible++; if (finish <= due) onTimeCount++; }
+    });
+    if (onTimeEl) onTimeEl.textContent = onTimeEligible ? `${((onTimeCount/onTimeEligible)*100).toFixed(1)}%` : "0%";
+    if (rescheduleRateEl) rescheduleRateEl.textContent = rows.length ? `${((rescheduleCount/rows.length)*100).toFixed(1)}%` : "0%";
 
     const totalDataLabel =
         document.getElementById(
@@ -6992,6 +7028,16 @@ function applyProblemFilters() {
    PROBLEM KPI
 ========================================================= */
 
+function problemAgeDays(row) {
+    if (getProblemStatus(row) !== "OPEN") return null;
+    const received = parseReadingDate(getProblemValue(row, PROBLEM_COLUMNS.DATE_RECEIVED));
+    if (!received) return null;
+    const today = new Date();
+    const a = new Date(received.getFullYear(),received.getMonth(),received.getDate());
+    const b = new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    return Math.max(0,Math.floor((b-a)/86400000));
+}
+
 function updateProblemKPIs(rows) {
 
     const total =
@@ -7092,6 +7138,9 @@ function updateProblemKPIs(rows) {
                 "id-ID"
             );
     }
+    const ages = rows.map(problemAgeDays).filter(v => v !== null);
+    const oldest = document.getElementById("problemOldestAge");
+    if (oldest) oldest.textContent = ages.length ? `${Math.max(...ages)} hari` : "0 hari";
 }
 
 
@@ -7963,7 +8012,7 @@ function renderProblemTable(rows) {
 
         table.innerHTML = `
             <tr>
-                <td colspan="17" class="cute-empty-state"><span class="cute-empty-icon">🫧</span><span class="cute-empty-title">Tidak ada problem di filter ini</span><span class="cute-empty-text">Coba pilih filter lain untuk melihat data.</span></td>
+                <td colspan="18" class="cute-empty-state"><span class="cute-empty-icon">🫧</span><span class="cute-empty-title">Tidak ada problem di filter ini</span><span class="cute-empty-text">Coba pilih filter lain untuk melihat data.</span></td>
             </tr>
         `;
 
@@ -8150,6 +8199,8 @@ function renderProblemTable(rows) {
                                 )
                             )}
                         </td>
+
+                        <td>${problemAgeDays(row) === null ? "-" : `${problemAgeDays(row)} hari`}</td>
 
                         <td>
                             ${
@@ -8811,6 +8862,22 @@ function monitoringLeadMetrics() {
     return {values, avg, min, max, buckets};
 }
 
+function monitoringLeadBreakdown(groupIndex) {
+    const rows = monitoringOpenRows();
+    const map = new Map();
+    rows.forEach(row => {
+        const name = String(getCellValue(row, groupIndex) || "Tanpa Data").trim() || "Tanpa Data";
+        const lead = monitoringNumber(getCellValue(row, 11));
+        if (lead === null || lead < 0) return;
+        const x = map.get(name) || {sum:0,count:0}; x.sum += lead; x.count++; map.set(name,x);
+    });
+    return [...map.entries()].map(([name,x]) => ({name,avg:x.sum/x.count,count:x.count})).sort((a,b)=>b.avg-a.avg);
+}
+function renderMonitoringLeadBreakdowns() {
+    const render=(id,data,empty)=>{const el=document.getElementById(id);if(!el)return;if(!data.length){el.innerHTML=`<div class="monitor-empty">${empty}</div>`;return;}el.innerHTML=data.map(x=>`<div class="monitor-breakdown-row"><span title="${escapeHTML(x.name)}">${escapeHTML(x.name)}</span><strong>${x.avg.toFixed(1)} hari</strong><small>${x.count} order</small></div>`).join("");};
+    render("monitorLeadCustomer",monitoringLeadBreakdown(1),"Belum ada data customer.");
+    render("monitorLeadWp",monitoringLeadBreakdown(3),"Belum ada data WP.");
+}
 function renderMonitoringLeadTime() {
     const m = monitoringLeadMetrics();
     const avg = document.getElementById("monitorLeadAvg");
@@ -8828,6 +8895,7 @@ function renderMonitoringLeadTime() {
             <div class="monitor-bucket-track"><div class="monitor-bucket-fill" style="width:${(count/maxBucket)*100}%"></div></div>
             <div class="monitor-bucket-value">${count}</div>
         </div>`).join("");
+    renderMonitoringLeadBreakdowns();
 }
 
 function monitoringProcessWorkload() {
