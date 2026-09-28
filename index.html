@@ -387,6 +387,28 @@
   #stage6ReportContent{padding:15px !important;}
 }
 </style>
+
+<style id="loginFixCSS">
+body.login-locked .sidebar,
+body.login-locked .main,
+body.login-locked .menu-toggle,
+body.login-locked .sidebar-overlay { display:none !important; }
+.login-screen{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px;background:#dceef7;box-sizing:border-box;}
+.login-card{width:min(420px,100%);padding:34px;background:#fff;border:1px solid #bfd6e0;border-radius:22px;box-shadow:0 18px 50px rgba(45,75,90,.18);box-sizing:border-box;}
+.login-brand-icon{width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:16px;background:#b7ddf1;font-size:27px;margin:0 auto 14px;}
+.login-kicker{text-align:center;font-size:10px;font-weight:900;letter-spacing:1.5px;color:#263746;}
+.login-card h1{text-align:center;margin:7px 0 6px;font-size:26px;color:#000;}
+.login-subtitle{text-align:center;color:#555;font-size:12px;margin-bottom:24px;}
+.login-form{display:flex;flex-direction:column;gap:9px;}
+.login-form label{font-size:11px;font-weight:800;color:#222;margin-top:5px;}
+.login-form input{width:100%;padding:13px 14px;border:1px solid #bfd1da;border-radius:10px;font-size:14px;outline:none;box-sizing:border-box;}
+.login-form input:focus{border-color:#79aac0;box-shadow:0 0 0 3px rgba(121,170,192,.15);}
+.login-button{width:100%;margin-top:10px;padding:13px;border:0;border-radius:10px;background:#263746;color:#fff;font-size:13px;font-weight:900;letter-spacing:.5px;cursor:pointer;}
+.login-button:hover{background:#1b2b38;}
+.login-error{min-height:18px;margin-top:5px;text-align:center;color:#c94c4c;font-size:11px;font-weight:700;}
+.login-hint{text-align:center;margin-top:16px;color:#777;font-size:10px;}
+</style>
+
 </head>
 
 <body class="login-locked">
@@ -408,7 +430,7 @@
                 <label for="loginPassword">Password</label>
                 <input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="Masukkan password" required>
 
-                <button type="submit" class="login-button">LOGIN</button>
+                <button type="button" class="login-button" onclick="loginDashboard()">LOGIN</button>
                 <div id="loginError" class="login-error" role="alert" aria-live="polite"></div>
             </form>
 
@@ -8823,102 +8845,70 @@ function printStage6Report() {
          LOGIN CONTROL
     ====================================================== -->
     <script>
-    (function () {
+    (function(){
         const LOGIN_USERNAME = "admin";
         const LOGIN_PASSWORD = "12345";
         const LOGIN_SESSION_KEY = "prototypeMonitoringLoggedIn";
 
-        function unlockDashboard() {
+        function showDashboard(){
             document.body.classList.remove("login-locked");
-
-            const loginScreen = document.getElementById("loginScreen");
-            if (loginScreen) {
-                loginScreen.style.display = "none";
-            }
-
-            try {
-                sessionStorage.setItem(LOGIN_SESSION_KEY, "1");
-            } catch (error) {
-                // Abaikan jika sessionStorage tidak tersedia.
-            }
+            const screen=document.getElementById("loginScreen");
+            if(screen) screen.style.display="none";
+            try{sessionStorage.setItem(LOGIN_SESSION_KEY,"1");}catch(e){}
         }
 
-        function lockDashboard() {
+        function showLogin(){
             document.body.classList.add("login-locked");
-
-            const loginScreen = document.getElementById("loginScreen");
-            if (loginScreen) {
-                loginScreen.style.display = "flex";
-            }
+            const screen=document.getElementById("loginScreen");
+            if(screen) screen.style.display="flex";
         }
 
-        window.logoutDashboard = function () {
-            try {
-                sessionStorage.removeItem(LOGIN_SESSION_KEY);
-            } catch (error) {
-                // Abaikan jika sessionStorage tidak tersedia.
+        window.loginDashboard=function(){
+            const username=document.getElementById("loginUsername");
+            const password=document.getElementById("loginPassword");
+            const error=document.getElementById("loginError");
+            const user=String(username ? username.value : "").trim();
+            const pass=String(password ? password.value : "");
+            if(user===LOGIN_USERNAME && pass===LOGIN_PASSWORD){
+                if(error) error.textContent="";
+                showDashboard();
+                return true;
             }
-
-            lockDashboard();
-
-            const username = document.getElementById("loginUsername");
-            const password = document.getElementById("loginPassword");
-            const error = document.getElementById("loginError");
-
-            if (username) username.value = "";
-            if (password) password.value = "";
-            if (error) error.textContent = "";
+            if(error) error.textContent="Username atau password salah.";
+            if(password){password.value="";password.focus();}
+            return false;
         };
 
-        function initializeLogin() {
-            const form = document.getElementById("loginForm");
-            const username = document.getElementById("loginUsername");
-            const password = document.getElementById("loginPassword");
-            const error = document.getElementById("loginError");
+        window.logoutDashboard=function(){
+            try{sessionStorage.removeItem(LOGIN_SESSION_KEY);}catch(e){}
+            const username=document.getElementById("loginUsername");
+            const password=document.getElementById("loginPassword");
+            const error=document.getElementById("loginError");
+            if(username) username.value="";
+            if(password) password.value="";
+            if(error) error.textContent="";
+            showLogin();
+        };
 
-            let loggedIn = false;
-            try {
-                loggedIn = sessionStorage.getItem(LOGIN_SESSION_KEY) === "1";
-            } catch (storageError) {
-                loggedIn = false;
+        function init(){
+            let logged=false;
+            try{logged=sessionStorage.getItem(LOGIN_SESSION_KEY)==="1";}catch(e){}
+            if(logged){showDashboard();}else{showLogin();}
+            const form=document.getElementById("loginForm");
+            if(form && !form.dataset.loginBound){
+                form.dataset.loginBound="1";
+                form.addEventListener("submit",function(e){
+                    e.preventDefault();
+                    window.loginDashboard();
+                });
             }
-
-            if (loggedIn) {
-                unlockDashboard();
-                return;
-            }
-
-            lockDashboard();
-
-            if (!form) return;
-
-            form.addEventListener("submit", function (event) {
-                event.preventDefault();
-
-                const user = String(username ? username.value : "").trim();
-                const pass = String(password ? password.value : "");
-
-                if (user === LOGIN_USERNAME && pass === LOGIN_PASSWORD) {
-                    if (error) error.textContent = "";
-                    unlockDashboard();
-                } else {
-                    if (error) error.textContent = "Username atau password salah.";
-                    if (password) {
-                        password.value = "";
-                        password.focus();
-                    }
-                }
-            });
         }
 
-        if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", initializeLogin);
-        } else {
-            initializeLogin();
-        }
+        if(document.readyState==="loading"){
+            document.addEventListener("DOMContentLoaded",init,{once:true});
+        }else{init();}
     })();
     </script>
-
 
 </body>
 
