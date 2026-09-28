@@ -7032,35 +7032,24 @@ function problemAgeDays(row) {
     const status = String(getProblemStatus(row) || "").trim().toUpperCase();
     if (status !== "OPEN") return null;
 
-    const today = new Date();
-    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-    // Utamakan DATE RECEIVED pada posisi normalisasi yang sudah ditentukan.
-    let received = parseProblemDate(
+    // Oldest Open Problem HARUS memakai DATE RECEIVED pada kolom yang
+    // sudah dinormalisasi. Jangan menebak tanggal dari kolom lain karena
+    // itu dapat menghasilkan umur palsu (mis. ribuan hari).
+    const received = parseProblemDate(
         getProblemValue(row, PROBLEM_COLUMNS.DATE_RECEIVED)
     );
-
-    // Fallback penting: beberapa versi export Google Sheets dapat menggeser
-    // kolom kosong/tersembunyi. Jika DATE RECEIVED kosong/tidak terbaca,
-    // cari tanggal valid lain pada baris dan pilih tanggal terbaru yang
-    // tidak melebihi hari ini. Ini mencegah Oldest Open Problem menjadi 0
-    // hanya karena posisi kolom DATE RECEIVED berubah saat export.
-    if (!received) {
-        const candidates = [];
-        (Array.isArray(row) ? row : []).forEach(value => {
-            const d = parseProblemDate(value);
-            if (d && d <= todayOnly) candidates.push(d);
-        });
-        if (candidates.length) {
-            received = candidates.sort((a,b) => b.getTime() - a.getTime())[0];
-        }
-    }
-
     if (!received) return null;
 
+    const today = new Date();
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const receivedOnly = new Date(received.getFullYear(), received.getMonth(), received.getDate());
-    const days = Math.floor((todayOnly - receivedOnly) / 86400000);
 
+    // Data Problem dashboard berasal dari periode 2024+; tanggal yang
+    // terurai menjadi tahun lama akibat format/serial yang salah tidak
+    // boleh dianggap sebagai tanggal valid.
+    if (receivedOnly.getFullYear() < 2020 || receivedOnly > todayOnly) return null;
+
+    const days = Math.floor((todayOnly - receivedOnly) / 86400000);
     return Number.isFinite(days) ? Math.max(0, days) : null;
 }
 
