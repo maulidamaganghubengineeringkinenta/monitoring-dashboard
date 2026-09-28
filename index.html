@@ -10017,96 +10017,70 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
   function findCol(headers,terms){return headers.findIndex(h=>terms.some(t=>norm(h).includes(norm(t))));}
   function parseLive(text){
     const rows=parseCsv(text);
-    if(rows.length<2)return [];
+    if(!rows.length) return [];
 
     const clean=v=>String(v??'').replace(/\uFEFF/g,'').trim();
     const upper=v=>clean(v).toUpperCase();
-    const maxCols=Math.max(...rows.map(r=>r.length));
-    const headerLimit=Math.min(8,rows.length);
-    const headers=rows.slice(0,headerLimit).map(r=>r.map(clean));
-    const headerText=c=>headers.map(r=>clean(r[c]||'')).filter(Boolean).join(' ');
-
-    // Cari kolom WP dari header bertingkat. Jangan mencari ASSY/PCS/CCT
-    // lebih dulu karena pada sheet IN OUT WP label metric dapat berada
-    // pada merged-cell sehingga hanya muncul di kolom pertama grup.
-    let iWp=-1,iMonth=-1,iStatus=-1;
-    for(let c=0;c<maxCols;c++){
-      const h=upper(headerText(c));
-      if(iWp<0 && (h==='WP' || /(^|\s)WP(\s|$)/.test(h))) iWp=c;
-      if(iMonth<0 && (h==='BULAN' || h==='MONTH' || h.includes('BULAN'))) iMonth=c;
-      if(iStatus<0 && (h==='STATUS' || h.includes('STATUS'))) iStatus=c;
-    }
-
-    // Fallback: temukan kolom WP dari baris data jika label header berubah.
-    if(iWp<0){
-      for(let r=0;r<Math.min(rows.length,12)&&iWp<0;r++){
-        for(let c=0;c<rows[r].length;c++){
-          if(/^\d+P\d+$/i.test(clean(rows[r][c]))) { iWp=c; break; }
-        }
-      }
-    }
-    if(iWp<0)return [];
-
-    // Pada struktur aktual IN OUT WP, setelah WP terdapat tiga grup berurutan:
-    // ASSY = IN/OUT/BALANCE, PCS = IN/OUT/BALANCE, CCT = IN/OUT/BALANCE.
-    // Ini sengaja menjadi fallback utama agar merged-cell/header bertingkat
-    // tidak membuat parser salah memilih kolom.
-    let A={in:iWp+1,out:iWp+2,bal:iWp+3};
-    let P={in:iWp+4,out:iWp+5,bal:iWp+6};
-    let C={in:iWp+7,out:iWp+8,bal:iWp+9};
-
-    // Jika header eksplisit menyediakan kombinasi metric+subheader, validasi
-    // posisi tersebut. Namun jangan mengubah urutan aktual bila validasi gagal.
-    function findHeaderColumn(metric,sub){
-      const m=upper(metric), q=upper(sub);
-      for(let c=0;c<maxCols;c++){
-        const h=upper(headerText(c));
-        if(h.includes(m) && h.includes(q))return c;
-      }
-      return -1;
-    }
-    const explicit={
-      ai:findHeaderColumn('ASSY','IN'), ao:findHeaderColumn('ASSY','OUT'), ab:findHeaderColumn('ASSY','BALANCE'),
-      pi:findHeaderColumn('PCS','IN'),  po:findHeaderColumn('PCS','OUT'),  pb:findHeaderColumn('PCS','BALANCE'),
-      ci:findHeaderColumn('CCT','IN'),  co:findHeaderColumn('CCT','OUT'),  cb:findHeaderColumn('CCT','BALANCE')
+    const numCell=v=>{
+      const s=clean(v).replace(/\s/g,'').replace(/\.(?=\d{3}(?:\D|$))/g,'').replace(',', '.');
+      if(!s) return 0;
+      const n=Number(s);
+      return Number.isFinite(n)?n:0;
     };
-    if(explicit.ai>=0&&explicit.ao>=0&&explicit.ab>=0&&explicit.pi>=0&&explicit.po>=0&&explicit.pb>=0&&explicit.ci>=0&&explicit.co>=0&&explicit.cb>=0){
-      A={in:explicit.ai,out:explicit.ao,bal:explicit.ab};
-      P={in:explicit.pi,out:explicit.po,bal:explicit.pb};
-      C={in:explicit.ci,out:explicit.co,bal:explicit.cb};
+
+    // STRUKTUR ASLI SHEET IN OUT WP:
+    // A = BULAN
+    // B = WP
+    // C:E = ASSY  (IN, OUT, BALANCE)
+    // F:H = PCS   (IN, OUT, BALANCE)
+    // I:K = CCT   (IN, OUT, BALANCE)
+    // L = STATUS
+    // M = HKW, N = Cct/day, O = Pcs/day, P = Assy/day
+    // Header bertingkat/merged-cell tidak dijadikan dasar posisi data.
+    // Posisi WP ditentukan dari nilai WP aktual di seluruh CSV.
+
+    const maxCols=Math.max(...rows.map(r=>r.length),16);
+    const wpHits=[];
+    for(let r=0;r<rows.length;r++){
+      for(let c=0;c<Math.min(rows[r].length, maxCols);c++){
+        const v=clean(rows[r][c]);
+        if(/^\d{1,3}P\d{2,3}$/i.test(v)) wpHits.push({r,c,v});
+      }
     }
+    if(!wpHits.length) return [];
 
-    // Pastikan posisi metric tidak keluar dari lebar CSV.
-    if(C.bal>=maxCols)return [];
+    // Ambil kolom yang paling banyak berisi kode WP. Ini tahan terhadap
+    // tambahan judul/baris kosong di atas header.
+    const colCount={};
+    wpHits.forEach(x=>colCount[x.c]=(colCount[x.c]||0)+1);
+    const iWp=Number(Object.entries(colCount).sort((a,b)=>b[1]-a[1])[0][0]);
 
-    // Tentukan awal data berdasarkan WP. Bulan pada sheet dapat merged-cell,
-    // jadi bulan kosong pada baris berikutnya harus mewarisi bulan terakhir.
-    let dataStart=-1;
-    for(let r=1;r<rows.length;r++){
-      if(/^\d+P\d+$/i.test(clean(rows[r][iWp]||''))){dataStart=r;break;}
-    }
-    if(dataStart<0)return [];
+    // Pada sheet ini BULAN selalu satu kolom di kiri WP.
+    const iMonth=Math.max(0,iWp-1);
+    const A={in:iWp+1,out:iWp+2,bal:iWp+3};
+    const P={in:iWp+4,out:iWp+5,bal:iWp+6};
+    const C={in:iWp+7,out:iWp+8,bal:iWp+9};
+    const iStatus=iWp+10;
 
-    // Bila kolom status tidak terdeteksi, biasanya status berada tepat setelah
-    // grup CCT. Tetap gunakan header bila ada.
-    if(iStatus<0 && C.bal+1<maxCols)iStatus=C.bal+1;
+    if(C.bal>=maxCols) return [];
 
-    const get=(row,i)=>num(row[i]);
+    const dataStart=Math.min(...wpHits.filter(x=>x.c===iWp).map(x=>x.r));
     const out=[];
     let lastMonth='';
+
     for(let r=dataStart;r<rows.length;r++){
       const row=rows[r]||[];
       const wp=clean(row[iWp]||'');
-      if(!/^\d+P\d+$/i.test(wp))continue;
+      if(!/^\d{1,3}P\d{2,3}$/i.test(wp)) continue;
 
-      const rawMonth=iMonth>=0?upper(row[iMonth]||''):'';
-      if(rawMonth)lastMonth=rawMonth;
+      const month=upper(row[iMonth]||'');
+      if(month) lastMonth=month;
 
-      const assyIn=get(row,A.in), assyOut=get(row,A.out), assyBal=get(row,A.bal);
-      const pcsIn=get(row,P.in), pcsOut=get(row,P.out), pcsBal=get(row,P.bal);
-      const cctIn=get(row,C.in), cctOut=get(row,C.out), cctBal=get(row,C.bal);
-      const rawStatus=iStatus>=0?upper(row[iStatus]||''):'';
-      const status=rawStatus==='OPEN'||rawStatus==='CLOSE'
+      const assyIn=numCell(row[A.in]), assyOut=numCell(row[A.out]), assyBal=numCell(row[A.bal]);
+      const pcsIn=numCell(row[P.in]), pcsOut=numCell(row[P.out]), pcsBal=numCell(row[P.bal]);
+      const cctIn=numCell(row[C.in]), cctOut=numCell(row[C.out]), cctBal=numCell(row[C.bal]);
+      const rawStatus=upper(row[iStatus]||'');
+      const status=(rawStatus==='OPEN'||rawStatus==='CLOSE')
         ?rawStatus
         :((assyBal||pcsBal||cctBal)>0?'OPEN':'CLOSE');
 
