@@ -318,6 +318,30 @@
 @media(max-width:600px){.stage6-inline-modal{padding:10px}.stage6-inline-modal-card{width:100%;max-height:90vh;padding:15px}.stage6-popup-item{grid-template-columns:1fr}.stage6-popup-badge{justify-self:start}}
 
 </style>
+<style id="stage6-colorful-refresh">
+#monitoring .page-header h2{background:linear-gradient(90deg,#285b8f,#2a8f8f,#6b4aa0);-webkit-background-clip:text;background-clip:text;color:transparent!important;}
+#monitoring .monitor-card{position:relative;overflow:hidden;border:0!important;background:linear-gradient(135deg,#ffffff,#f4fbff)!important;box-shadow:0 8px 22px rgba(38,82,111,.10)!important;}
+#monitoring .monitor-card:nth-child(1){background:linear-gradient(135deg,#eff9ff,#dff3ff)!important;border-left:5px solid #3a91c7!important;}
+#monitoring .monitor-card:nth-child(2){background:linear-gradient(135deg,#fff4f4,#ffe2e4)!important;border-left:5px solid #e25d67!important;}
+#monitoring .monitor-card:nth-child(3){background:linear-gradient(135deg,#fffaf0,#ffedc7)!important;border-left:5px solid #e7a63a!important;}
+#monitoring .monitor-card:nth-child(4){background:linear-gradient(135deg,#f5f0ff,#e9e0ff)!important;border-left:5px solid #8061c9!important;}
+#monitoring .monitor-card .mc-value{color:#1f4054;}
+#monitoring .monitor-section,#monitoring .monitor-stage2-card{border-radius:16px!important;box-shadow:0 8px 24px rgba(38,68,88,.07);}
+#monitoring .monitor-stage2-card{background:linear-gradient(145deg,#ffffff,#f7fbfd)!important;border-color:#dceaf0!important;}
+#meeting .stage6-meeting-title h2,#report .stage6-report-header h2{background:linear-gradient(90deg,#285b8f,#2c9b8f,#7651a7);-webkit-background-clip:text;background-clip:text;color:transparent!important;}
+#meeting .stage6-kpi,#report .stage6-kpi{border:0!important;box-shadow:0 9px 24px rgba(39,67,87,.10)!important;overflow:hidden;background:linear-gradient(135deg,#fff,#f5fbff)!important;}
+#meeting .stage6-kpi:nth-child(1),#report .stage6-kpi:nth-child(1){background:linear-gradient(135deg,#eef8ff,#dff2ff)!important;border-top:4px solid #3d8fc3!important;}
+#meeting .stage6-kpi:nth-child(2),#report .stage6-kpi:nth-child(2){background:linear-gradient(135deg,#fff2f2,#ffe0e3)!important;border-top:4px solid #df5b66!important;}
+#meeting .stage6-kpi:nth-child(3),#report .stage6-kpi:nth-child(3){background:linear-gradient(135deg,#fff9ed,#ffedc9)!important;border-top:4px solid #e2a23a!important;}
+#meeting .stage6-kpi:nth-child(4),#report .stage6-kpi:nth-child(4){background:linear-gradient(135deg,#f5f0ff,#e8ddff)!important;border-top:4px solid #805dc4!important;}
+#meeting .stage6-card{border:1px solid #dce9ef!important;background:linear-gradient(145deg,#ffffff,#f7fbfd)!important;box-shadow:0 8px 22px rgba(39,67,87,.07)!important;}
+#meeting .stage6-card h3{color:#2b5266;}
+#report .stage6-report{border:1px solid #d7e6ed!important;background:linear-gradient(145deg,#ffffff,#f8fcfe)!important;box-shadow:0 10px 30px rgba(39,67,87,.09)!important;}
+#report .stage6-report-section{border:1px solid #e0ebf0;border-radius:14px;padding:15px;background:#fff;box-shadow:0 5px 16px rgba(39,67,87,.045);}
+#report .stage6-report-section h3{color:#2c5569;}
+#report .stage6-report-table th{background:linear-gradient(90deg,#eef7fb,#f4f1fb)!important;color:#355565!important;}
+#meeting .stage6-btn.primary,#report .stage6-btn.primary{background:linear-gradient(135deg,#dff2ff,#e9ddff)!important;border-color:#b9d9e8!important;color:#31546a!important;}
+</style>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
@@ -387,9 +411,56 @@
   #stage6ReportContent{padding:15px !important;}
 }
 </style>
+<style id="loginFixCSS">
+body.login-locked .sidebar,
+body.login-locked .main,
+body.login-locked .menu-toggle,
+body.login-locked .sidebar-overlay { display:none !important; }
+.login-screen{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px;background:#dceef7;box-sizing:border-box;}
+.login-card{width:min(420px,100%);padding:34px;background:#fff;border:1px solid #bfd6e0;border-radius:22px;box-shadow:0 18px 50px rgba(45,75,90,.18);box-sizing:border-box;}
+.login-brand-icon{width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:16px;background:#b7ddf1;font-size:27px;margin:0 auto 14px;}
+.login-kicker{text-align:center;font-size:10px;font-weight:900;letter-spacing:1.5px;color:#263746;}
+.login-card h1{text-align:center;margin:7px 0 6px;font-size:26px;color:#000;}
+.login-subtitle{text-align:center;color:#555;font-size:12px;margin-bottom:24px;}
+.login-form{display:flex;flex-direction:column;gap:9px;}
+.login-form label{font-size:11px;font-weight:800;color:#222;margin-top:5px;}
+.login-form input{width:100%;padding:13px 14px;border:1px solid #bfd1da;border-radius:10px;font-size:14px;outline:none;box-sizing:border-box;}
+.login-form input:focus{border-color:#79aac0;box-shadow:0 0 0 3px rgba(121,170,192,.15);}
+.login-button{width:100%;margin-top:10px;padding:13px;border:0;border-radius:10px;background:#263746;color:#fff;font-size:13px;font-weight:900;letter-spacing:.5px;cursor:pointer;}
+.login-button:hover{background:#1b2b38;}
+.login-error{min-height:18px;margin-top:5px;text-align:center;color:#c94c4c;font-size:11px;font-weight:700;}
+.login-hint{text-align:center;margin-top:16px;color:#777;font-size:10px;}
+</style>
 </head>
 
-<body>
+<body class="login-locked">
+
+
+    <!-- =====================================================
+         LOGIN SCREEN
+    ====================================================== -->
+    <section id="loginScreen" class="login-screen" aria-label="Login dashboard">
+        <div class="login-card">
+            <div class="login-brand-icon">📊</div>
+            <div class="login-kicker">PROTOTYPE MONITORING</div>
+            <h1>Dashboard Login</h1>
+            <p class="login-subtitle">Masuk untuk mengakses dashboard monitoring.</p>
+
+            <form id="loginForm" class="login-form" autocomplete="on">
+                <label for="loginUsername">Username</label>
+                <input id="loginUsername" name="username" type="text" autocomplete="username" placeholder="Masukkan username" required>
+
+                <label for="loginPassword">Password</label>
+                <input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="Masukkan password" required>
+
+                <button type="button" class="login-button" onclick="loginDashboard()">LOGIN</button>
+                <div id="loginError" class="login-error" role="alert" aria-live="polite"></div>
+            </form>
+
+            <div class="login-hint">Username: <strong>admin</strong></div>
+        </div>
+    </section>
+
 
     <!-- =====================================================
          HAMBURGER
@@ -579,26 +650,7 @@
                 </span>
 
             </a>
-
-
-            <a
-                class="menu menu-link"
-                href="https://docs.google.com/spreadsheets/d/1DtFGkVVCrOOSEgknMo7ywodKTJk7YvRg/export?format=xlsx"
-                target="_blank"
-                rel="noopener noreferrer"
-                onclick="closeSidebar();">
-
-                <span class="menu-icon">
-                    ⬇️
-                </span>
-
-                <span>
-                    Download Spreadsheet
-                </span>
-
-            </a>
-
-        </nav>
+</nav>
 
 
         <div class="sidebar-bottom">
@@ -718,7 +770,7 @@
 
                 <div
                     class="kpi-card kpi-blue"
-                    onclick="resetFilters()">
+                    onclick="safeResetProgressFilters()">
 
                     <div class="kpi-top">
 
@@ -845,7 +897,7 @@
 
                 <div
                     class="kpi-card kpi-purple"
-                    onclick="resetFilters()">
+                    onclick="safeResetProgressFilters()">
 
                     <div class="kpi-top">
 
@@ -903,7 +955,7 @@
                 </div>
 
                 <button
-                    onclick="resetFilters()"
+                    onclick="safeResetProgressFilters()"
                     class="clear-context">
 
                     Reset ×
@@ -1220,7 +1272,7 @@
                 </div>
 
                 <div class="progress-filter-actions">
-                    <button class="reset-filter" onclick="resetFilters()">↻ Reset Semua Filter</button>
+                    <button class="reset-filter" onclick="safeResetProgressFilters()">↻ Reset Semua Filter</button>
                 </div>
 
             </div>
@@ -1349,7 +1401,7 @@
                     <h2 style="margin:0;">Monitoring Center</h2>
                     <p style="margin:5px 0 0;color:#78858f;font-size:13px;">Alert, pencarian global, dan kalender produksi dari data live.</p>
                 </div>
-                <button type="button" class="reset-filter" onclick="refreshMonitoringCenter()">↻ Refresh</button>
+                <button type="button" class="reset-filter" onclick="safeRefreshMonitoringCenter()">↻ Refresh</button>
             </div>
 
             <div class="monitor-grid">
@@ -1454,7 +1506,7 @@
         <section id="meeting" class="page">
             <div class="stage6-actions">
                 <span class="stage6-date" id="stage6MeetingDate"></span>
-                <button type="button" class="stage6-btn" onclick="refreshStage6Pages()">↻ Refresh</button>
+                <button type="button" class="stage6-btn" onclick="safeRefreshStage6Pages()">↻ Refresh</button>
                 <button type="button" class="stage6-btn primary" onclick="showPage('report')">🖨️ Monitoring Report</button>
             </div>
 
@@ -1500,7 +1552,7 @@
         <section id="report" class="page">
             <div class="stage6-actions">
                 <span class="stage6-date" id="stage6ReportDate"></span>
-                <button type="button" class="stage6-btn" onclick="refreshStage6Pages()">↻ Refresh</button>
+                <button type="button" class="stage6-btn" onclick="safeRefreshStage6Pages()">↻ Refresh</button>
                 <button type="button" class="stage6-btn primary" onclick="printStage6Report()">🖨️ Print / Save PDF</button>
             </div>
 
@@ -1605,7 +1657,7 @@
                     </div>
 
                     <div class="download-actions">
-                        <button type="button" class="download-reset" id="downloadReset">↻ Reset Filter</button>
+                        <button type="button" class="download-reset" id="downloadReset" onclick="safeResetDownloadFilters()">↻ Reset Filter</button>
                         <div class="download-count" id="downloadCount">0 data siap di-download</div>
                         <button type="button" class="download-btn csv" id="downloadCsv">⬇️ Download CSV</button>
                         <button type="button" class="download-btn excel" id="downloadExcel">📊 Download Excel (.xlsx)</button>
@@ -1638,7 +1690,7 @@
 
                 <div
                     class="kpi-card kpi-blue problem-clickable"
-                    onclick="resetProblemFilters()">
+                    onclick="safeResetProblemFilters()">
 
                     <div class="kpi-top">
 
@@ -1833,7 +1885,7 @@
 
 
                 <button
-                    onclick="resetProblemFilters()"
+                    onclick="safeResetProblemFilters()"
                     class="clear-context">
 
                     Reset ×
@@ -2215,7 +2267,7 @@
 
                 <button
                     class="reset-filter"
-                    onclick="resetProblemFilters()">
+                    onclick="safeResetProblemFilters()">
 
                     ↻
                     Reset
@@ -2956,6 +3008,8 @@ async function loadProgressData() {
             "Data Progress berhasil dimuat:",
             allProgressRows.length
         );
+
+        if (typeof window.refreshDownloadData === "function") window.refreshDownloadData();
 
     } catch (error) {
         console.error(error);
@@ -4927,6 +4981,9 @@ function showPage(pageName) {
     if (pageName === "problem") {
         requestAnimationFrame(() => resizeProblemCharts());
     }
+    if (pageName === "download" && typeof window.refreshDownloadData === "function") {
+        requestAnimationFrame(() => window.refreshDownloadData());
+    }
     if (pageName === "monitoring") {
         requestAnimationFrame(() => refreshMonitoringCenter());
     }
@@ -5303,6 +5360,8 @@ async function loadProblemData() {
             "Problem berhasil dimuat:",
             allProblemRows.length
         );
+
+        if (typeof window.refreshDownloadData === "function") window.refreshDownloadData();
 
     } catch (error) {
         console.error(
@@ -8888,6 +8947,76 @@ function printStage6Report() {
 <style id="downloadDataStyles">
 .download-page{width:100%;max-width:1180px;margin:0 auto;padding-bottom:40px}.download-hero{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}.download-hero h2{margin:4px 0 5px;font-size:24px}.download-hero p{margin:0;color:#74828b;font-size:13px}.download-live-badge{background:#edf9f1;border:1px solid #cdebd7;color:#26734a;border-radius:999px;padding:9px 13px;font-size:11px;font-weight:800;white-space:nowrap}.download-live-badge span{display:inline-block;width:7px;height:7px;background:#31a05f;border-radius:50%;margin-right:5px}.download-card{background:#fff;border:1px solid #e0e9ed;border-radius:18px;padding:18px;margin-bottom:18px;box-shadow:0 8px 24px rgba(35,60,72,.06)}.download-source-tabs{display:flex;gap:8px;margin-bottom:18px}.download-source{border:1px solid #d6e2e7;background:#f8fbfc;color:#53656e;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}.download-source.active{background:#e8f4f7;border-color:#9bcbd5;color:#244f5a}.download-filter-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.download-filter{min-width:0}.download-filter.wide{grid-column:span 2}.download-filter label{display:block;font-size:10px;font-weight:900;color:#687a83;margin-bottom:6px}.download-filter input,.download-filter select{width:100%;box-sizing:border-box;border:1px solid #d8e3e7;border-radius:9px;padding:10px 11px;background:#fff;color:#263940;font-size:12px;outline:none}.download-filter input:focus,.download-filter select:focus{border-color:#87b9c5;box-shadow:0 0 0 3px rgba(87,153,169,.1)}.download-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:18px;padding-top:15px;border-top:1px solid #edf1f3}.download-reset,.download-btn{border:0;border-radius:10px;padding:10px 13px;font-weight:850;font-size:11px;cursor:pointer}.download-reset{background:#f1f5f6;color:#53656d}.download-btn{color:#fff}.download-btn.csv{background:#2f7180}.download-btn.excel{background:#287b55}.download-count{margin-right:auto;font-size:12px;font-weight:850;color:#52656d}.download-preview-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}.download-preview-head h3{margin:3px 0 0;font-size:17px}.download-preview-head span{font-size:11px;color:#75858c}.download-table-wrap{overflow:auto;border:1px solid #e5ecef;border-radius:12px;max-height:480px}.download-table{width:100%;border-collapse:collapse;font-size:11px;white-space:nowrap}.download-table th{position:sticky;top:0;background:#f4f8f9;color:#52646c;text-align:left;padding:9px;border-bottom:1px solid #dfe8eb}.download-table td{padding:8px 9px;border-bottom:1px solid #edf1f2;color:#33464d}.download-empty{text-align:center!important;padding:28px!important;color:#89969b!important}.download-more{text-align:center;padding:10px;color:#75858c;font-size:11px;background:#fafcfc}@media(max-width:900px){.download-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.download-filter.wide{grid-column:span 2}}@media(max-width:600px){.download-hero{display:block}.download-live-badge{display:inline-block;margin-top:12px}.download-filter-grid{grid-template-columns:1fr}.download-filter.wide{grid-column:span 1}.download-actions{align-items:stretch}.download-count{width:100%;order:-1}.download-reset,.download-btn{flex:1}}
 </style>
+
+<style id="colorfulStage6Upgrade">
+/* =========================
+   COLORFUL MONITORING CENTER
+   ========================= */
+#monitoring .page-header{background:linear-gradient(135deg,#eaf7ff 0%,#f8f1ff 52%,#fff8e9 100%);border:1px solid #d8e8f2;border-radius:20px;padding:18px 20px;box-shadow:0 10px 28px rgba(56,91,112,.08)}
+#monitoring .page-header h2{color:#234b68!important;font-weight:900}
+#monitoring .page-header p{color:#617c8c!important}
+#monitoring .monitor-grid{gap:15px}
+#monitoring .monitor-card{position:relative;overflow:hidden;border-radius:18px!important;border:1px solid #dbe8ee!important;box-shadow:0 10px 24px rgba(45,73,91,.08)!important;transition:.2s ease}
+#monitoring .monitor-card:before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:linear-gradient(180deg,#4c9dcc,#72c7d9)}
+#monitoring .monitor-card:nth-child(2):before{background:linear-gradient(180deg,#e56b6f,#f3a26b)}
+#monitoring .monitor-card:nth-child(3):before{background:linear-gradient(180deg,#e7ad42,#f3cf72)}
+#monitoring .monitor-card:nth-child(4):before{background:linear-gradient(180deg,#9b7bd8,#c6a6ee)}
+#monitoring .monitor-card:nth-child(1){background:linear-gradient(135deg,#effaff,#ffffff)}
+#monitoring .monitor-card:nth-child(2){background:linear-gradient(135deg,#fff1f0,#ffffff)}
+#monitoring .monitor-card:nth-child(3){background:linear-gradient(135deg,#fff8e7,#ffffff)}
+#monitoring .monitor-card:nth-child(4){background:linear-gradient(135deg,#f6efff,#ffffff)}
+#monitoring .monitor-card:hover{transform:translateY(-3px);box-shadow:0 15px 30px rgba(45,73,91,.13)!important}
+#monitoring .mc-label{font-weight:900}
+#monitoring .monitor-section,#monitoring .monitor-stage2-card{border-radius:18px!important;border-color:#dce8ed!important;box-shadow:0 8px 22px rgba(45,73,91,.06)!important}
+#monitoring .monitor-section h3,#monitoring .monitor-stage2-card h3{color:#31566b}
+#monitoring .monitor-stage2-card:nth-child(1){background:linear-gradient(135deg,#f0fbff,#ffffff)}
+#monitoring .monitor-stage2-card:nth-child(2){background:linear-gradient(135deg,#fff8ec,#ffffff)}
+#monitoring .monitor-stage3-grid .monitor-stage2-card:first-child{background:linear-gradient(135deg,#f5f0ff,#ffffff)}
+#monitoring .monitor-stage3-grid .monitor-stage2-card:last-child{background:linear-gradient(135deg,#eefbf4,#ffffff)}
+#monitoring .monitor-calendar-head{background:linear-gradient(135deg,#eaf5ff,#f4efff);border-radius:14px;padding:10px 14px}
+
+/* =========================
+   COLORFUL MEETING MODE
+   ========================= */
+#meeting{background:linear-gradient(180deg,#f7fbff 0%,#fff9f3 55%,#fbf7ff 100%);border-radius:22px;padding:8px}
+#meeting .stage6-actions{padding:8px 10px}
+#meeting .stage6-meeting-title{background:linear-gradient(135deg,#eaf7ff,#f5efff,#fff5e8);border:1px solid #dce7ee;border-radius:22px;padding:22px 18px;box-shadow:0 10px 26px rgba(56,78,96,.08)}
+#meeting .stage6-meeting-title h2{color:#315a73}
+#meeting .stage6-kpi{border:1px solid #dce8ed!important;box-shadow:0 8px 20px rgba(48,75,92,.07);overflow:hidden;position:relative;transition:.2s ease}
+#meeting .stage6-kpi:nth-child(1){background:linear-gradient(135deg,#edf8ff,#fff)}
+#meeting .stage6-kpi:nth-child(2){background:linear-gradient(135deg,#fff0f0,#fff)}
+#meeting .stage6-kpi:nth-child(3){background:linear-gradient(135deg,#fff8e6,#fff)}
+#meeting .stage6-kpi:nth-child(4){background:linear-gradient(135deg,#f5efff,#fff)}
+#meeting .stage6-kpi:nth-child(1):after,#meeting .stage6-kpi:nth-child(2):after,#meeting .stage6-kpi:nth-child(3):after,#meeting .stage6-kpi:nth-child(4):after{content:"";position:absolute;left:0;top:0;width:5px;height:100%}
+#meeting .stage6-kpi:nth-child(1):after{background:#4c9dcc}.stage6-kpi:nth-child(2):after{background:#e36d72}.stage6-kpi:nth-child(3):after{background:#e4b34d}.stage6-kpi:nth-child(4):after{background:#9b7bd8}
+#meeting .stage6-kpi:hover{transform:translateY(-3px);box-shadow:0 14px 28px rgba(48,75,92,.13)}
+#meeting .stage6-card{border-color:#dce7ed!important;box-shadow:0 8px 22px rgba(48,75,92,.06)!important}
+#meeting .stage6-grid .stage6-card:first-child{background:linear-gradient(135deg,#f0fbff,#fff)}
+#meeting .stage6-grid .stage6-card:last-child{background:linear-gradient(135deg,#fff3f0,#fff)}
+#meeting .stage6-meeting>.stage6-card:last-child{background:linear-gradient(135deg,#f5efff,#fff)}
+
+/* =========================
+   COLORFUL MONITORING REPORT
+   ========================= */
+#report{background:linear-gradient(180deg,#f8fbff 0%,#fff 40%,#fbf7ff 100%);border-radius:22px;padding:8px}
+#report .stage6-report{border:1px solid #dce7ed!important;box-shadow:0 12px 32px rgba(48,75,92,.08)!important;background:linear-gradient(180deg,#ffffff,#fbfdff)}
+#report .stage6-report-header{background:linear-gradient(135deg,#eaf7ff,#f5efff);border:1px solid #dce7ed;border-radius:16px;padding:18px;margin-bottom:18px;border-bottom:0}
+#report .stage6-report-header h2{color:#315a73}
+#report .stage6-kpi{border:1px solid #dce8ed!important;box-shadow:0 8px 20px rgba(48,75,92,.07);position:relative;overflow:hidden;transition:.2s ease}
+#report .stage6-kpi:nth-child(1){background:linear-gradient(135deg,#edf8ff,#fff)}
+#report .stage6-kpi:nth-child(2){background:linear-gradient(135deg,#fff0f0,#fff)}
+#report .stage6-kpi:nth-child(3){background:linear-gradient(135deg,#fff8e6,#fff)}
+#report .stage6-kpi:nth-child(4){background:linear-gradient(135deg,#f5efff,#fff)}
+#report .stage6-kpi:nth-child(1):after,#report .stage6-kpi:nth-child(2):after,#report .stage6-kpi:nth-child(3):after,#report .stage6-kpi:nth-child(4):after{content:"";position:absolute;left:0;top:0;width:5px;height:100%}
+#report .stage6-kpi:nth-child(1):after{background:#4c9dcc}#report .stage6-kpi:nth-child(2):after{background:#e36d72}#report .stage6-kpi:nth-child(3):after{background:#e4b34d}#report .stage6-kpi:nth-child(4):after{background:#9b7bd8}
+#report .stage6-kpi:hover{transform:translateY(-3px);box-shadow:0 14px 28px rgba(48,75,92,.13)}
+#report .stage6-report-section{border:1px solid #e1eaee;border-radius:16px;padding:16px;background:#fff;box-shadow:0 7px 18px rgba(48,75,92,.045)}
+#report .stage6-report-process{background:linear-gradient(135deg,#eefaff,#fff)}
+#report .stage6-report-attention{background:linear-gradient(135deg,#fff6ec,#fff)}
+#report .stage6-report-pic{background:linear-gradient(135deg,#f6f0ff,#fff)}
+#report .stage6-report-section h3{color:#31566b}
+</style>
+
 <script id="downloadDataLogic">
 (function(){
 const progressHeaders=["NO","CUSTOMER","ASSY NO","WP","CCT","QTY","TOTAL CCT","ETD","RESCHEDULE ETD","ACTUAL START","ACTUAL FINISH","LEAD TIME","REPAIR","CUTTING / CRIMPING","JOINTING / MVVS","MIDDLE","HOUSING","ASSEMBLING","BUZZER / CHECKER","VISUAL","TE-TA FINISHING","PREDEL","RFG","STATUS","OPEN QTY","KETERANGAN"];
@@ -8895,31 +9024,134 @@ const problemHeaders=["DATE PROBLEM","ASSY NO","CUSTOMER","WIP","PART NAME","PAR
 let downloadSource='progress';
 const q=id=>document.getElementById(id);
 function dNum(v){const n=Number(String(v??'').replace(/,/g,'').replace(/[^\d.-]/g,''));return Number.isFinite(n)?n:null}
-function dDate(v){if(!v)return null;const t=String(v).trim();let m=t.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})$/);if(!m)return null;let a=+m[1],b=+m[2],y=+m[3];if(y<100)y+=2000;let day,mon;if(t.includes('/')){mon=a-1;day=b}else{day=b;mon=a-1}const x=new Date(y,mon,day);return x.getFullYear()===y&&x.getMonth()===mon&&x.getDate()===day?x:null}
-function iso(v){const d=dDate(v);return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`:''}
-function inDate(v,from,to){const x=iso(v);if(!x)return !from&&!to;return (!from||x>=from)&&(!to||x<=to)}
+function dDate(v){if(v===null||v===undefined||v==='')return null;if(v instanceof Date&&!isNaN(v))return new Date(v.getFullYear(),v.getMonth(),v.getDate());const t=String(v).trim();let m=t.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})(?:[T\s].*)?$/);if(m){const y=+m[1],mon=+m[2]-1,day=+m[3],x=new Date(y,mon,day);return x.getFullYear()===y&&x.getMonth()===mon&&x.getDate()===day?x:null}m=t.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/);if(!m)return null;let a=+m[1],b=+m[2],y=+m[3];if(y<100)y+=2000;let day,mon;if(a>12){day=a;mon=b-1}else if(b>12){mon=a-1;day=b}else if(t.includes('/')){mon=a-1;day=b}else{day=a;mon=b-1}const x=new Date(y,mon,day);return x.getFullYear()===y&&x.getMonth()===mon&&x.getDate()===day?x:null}
+function inDate(v,from,to){
+  if(!from&&!to)return true;
+  const x=dDate(v);
+  if(!x)return false;
+  const key=d=>{if(!d)return null;const z=new Date(d);z.setHours(0,0,0,0);return z.getFullYear()+"-"+String(z.getMonth()+1).padStart(2,"0")+"-"+String(z.getDate()).padStart(2,"0")};
+  const k=key(x);
+  return (!from||k>=from)&&(!to||k<=to);
+}
 function opts(id,values){const dl=q(id);if(!dl)return;dl.innerHTML=[...new Set(values.filter(Boolean).map(String))].sort((a,b)=>a.localeCompare(b,'id')).map(v=>`<option value="${escapeHTML(v)}"></option>`).join('')}
 function escapeD(v){return typeof escapeHTML==='function'?escapeHTML(String(v??'')):String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function progressFiltered(){const rows=Array.isArray(allProgressRows)?allProgressRows:[];const get=id=>q(id)?.value?.trim()||'';const quick=get('downloadProgressQuick'), cust=get('downloadProgressCustomer').toLowerCase(),wp=get('downloadProgressWp').toLowerCase(),assy=get('downloadProgressAssy').toLowerCase(),cct=get('downloadProgressCct').toLowerCase(),proc=+get('downloadProgressProcess');const qmin=dNum(get('downloadProgressQtyMin')),qmax=dNum(get('downloadProgressQtyMax')),lf=dNum(get('downloadProgressLeadMin')),lh=dNum(get('downloadProgressLeadMax'));const ef=get('downloadProgressEtdFrom'),et=get('downloadProgressEtdTo'),rf=get('downloadProgressRescheduleFrom'),rt=get('downloadProgressRescheduleTo'),sf=get('downloadProgressStart'),st=get('downloadProgressFinish'),rs=get('downloadProgressReschedule');const today=new Date();today.setHours(0,0,0,0);const plus3=new Date(today);plus3.setDate(today.getDate()+3);return rows.filter(r=>{const status=getRowStatus(r), etd=dDate(getCellValue(r,7)), res=getCellValue(r,8), qty=dNum(getCellValue(r,5)), lead=dNum(getCellValue(r,11));if(quick==='OPEN'&&status!=='OPEN')return false;if(quick==='CLOSE'&&status!=='CLOSE')return false;if(quick==='RESCHEDULE'&&!res)return false;if(quick==='OVERDUE'&&!(status==='OPEN'&&etd&&etd<today))return false;if(quick==='ETD3'&&!(status==='OPEN'&&etd&&etd>=today&&etd<=plus3))return false;if(quick==='NOT_STARTED'&&!(status==='OPEN'&&!getCellValue(r,9)))return false;if(cust&&!getCellValue(r,1).toLowerCase().includes(cust))return false;if(wp&&!getCellValue(r,3).toLowerCase().includes(wp))return false;if(assy&&!getCellValue(r,2).toLowerCase().includes(assy))return false;if(cct&&!getCellValue(r,4).toLowerCase().includes(cct))return false;if(proc&&!(dNum(getCellValue(r,proc))>0))return false;if(qmin!==null&&(qty===null||qty<qmin))return false;if(qmax!==null&&(qty===null||qty>qmax))return false;if(!inDate(getCellValue(r,7),ef,et))return false;if(rs==='YES'&&!res)return false;if(rs==='NO'&&res)return false;if(!inDate(res,rf,rt))return false;if(!inDate(getCellValue(r,9),sf,sf))return false;if(!inDate(getCellValue(r,10),st,st))return false;if(lf!==null&&(lead===null||lead<lf))return false;if(lh!==null&&(lead===null||lead>lh))return false;return true})}
-function problemFiltered(){const rows=Array.isArray(allProblemRows)?allProblemRows:[];const get=id=>q(id)?.value?.trim()||'';const status=get('downloadProblemStatus'),cust=get('downloadProblemCustomer').toLowerCase(),pic=get('downloadProblemPic').toLowerCase(),part=get('downloadProblemPart').toLowerCase(),wip=get('downloadProblemWip').toLowerCase(),df=get('downloadProblemDateFrom'),dt=get('downloadProblemDateTo'),mn=dNum(get('downloadProblemMinusMin')),mx=dNum(get('downloadProblemMinusMax'));return rows.filter(r=>{if(status&&getProblemStatus(r)!==status)return false;if(cust&&!getProblemValue(r,3).toLowerCase().includes(cust))return false;if(pic&&!getProblemValue(r,12).toLowerCase().includes(pic))return false;if(part&&!getProblemValue(r,5).toLowerCase().includes(part))return false;if(wip&&!getProblemValue(r,4).toLowerCase().includes(wip))return false;if(!inDate(getProblemValue(r,0),df,dt))return false;const minus=dNum(getProblemValue(r,10));if(mn!==null&&(minus===null||minus<mn))return false;if(mx!==null&&(minus===null||minus>mx))return false;return true})}
+function progressFiltered(){const rows=Array.isArray(allProgressRows)?allProgressRows:[];const txt=id=>String(q(id)?.value??'').trim();const cell=(r,i)=>String(getCellValue(r,i)??'').trim();const get=id=>txt(id);const quick=get('downloadProgressQuick'), cust=get('downloadProgressCustomer').toLowerCase(),wp=get('downloadProgressWp').toLowerCase(),assy=get('downloadProgressAssy').toLowerCase(),cct=get('downloadProgressCct').toLowerCase(),proc=+get('downloadProgressProcess');const qmin=dNum(get('downloadProgressQtyMin')),qmax=dNum(get('downloadProgressQtyMax')),lf=dNum(get('downloadProgressLeadMin')),lh=dNum(get('downloadProgressLeadMax'));const ef=get('downloadProgressEtdFrom'),et=get('downloadProgressEtdTo'),rf=get('downloadProgressRescheduleFrom'),rt=get('downloadProgressRescheduleTo'),sf=get('downloadProgressStart'),st=get('downloadProgressFinish'),rs=get('downloadProgressReschedule');const today=new Date();today.setHours(0,0,0,0);const plus3=new Date(today);plus3.setDate(today.getDate()+3);return rows.filter(r=>{const status=getRowStatus(r), etd=dDate(getCellValue(r,7)), res=getCellValue(r,8), qty=dNum(getCellValue(r,5)), lead=dNum(getCellValue(r,11));if(quick==='OPEN'&&status!=='OPEN')return false;if(quick==='CLOSE'&&status!=='CLOSE')return false;if(quick==='RESCHEDULE'&&!res)return false;if(quick==='OVERDUE'&&!(status==='OPEN'&&etd&&etd<today))return false;if(quick==='ETD3'&&!(status==='OPEN'&&etd&&etd>=today&&etd<=plus3))return false;if(quick==='NOT_STARTED'&&!(status==='OPEN'&&!cell(r,9)))return false;if(cust&&!cell(r,1).toLowerCase().includes(cust))return false;if(wp&&!cell(r,3).toLowerCase().includes(wp))return false;if(assy&&!cell(r,2).toLowerCase().includes(assy))return false;if(cct&&!cell(r,4).toLowerCase().includes(cct))return false;if(proc&&!(dNum(getCellValue(r,proc))>0))return false;if(qmin!==null&&(qty===null||qty<qmin))return false;if(qmax!==null&&(qty===null||qty>qmax))return false;if(!inDate(getCellValue(r,7),ef,et))return false;if(rs==='YES'&&!String(res||'').trim())return false;if(rs==='NO'&&String(res||'').trim())return false;if(!inDate(res,rf,rt))return false;if(!inDate(getCellValue(r,9),sf,sf))return false;if(!inDate(getCellValue(r,10),st,st))return false;if(lf!==null&&(lead===null||lead<lf))return false;if(lh!==null&&(lead===null||lead>lh))return false;return true})}
+function problemFiltered(){const rows=Array.isArray(allProblemRows)?allProblemRows:[];const get=id=>String(q(id)?.value??'').trim();const pcell=(r,i)=>String(getProblemValue(r,i)??'').trim();const status=get('downloadProblemStatus'),cust=get('downloadProblemCustomer').toLowerCase(),pic=get('downloadProblemPic').toLowerCase(),part=get('downloadProblemPart').toLowerCase(),wip=get('downloadProblemWip').toLowerCase(),df=get('downloadProblemDateFrom'),dt=get('downloadProblemDateTo'),mn=dNum(get('downloadProblemMinusMin')),mx=dNum(get('downloadProblemMinusMax'));return rows.filter(r=>{if(status&&getProblemStatus(r)!==status)return false;if(cust&&!pcell(r,3).toLowerCase().includes(cust))return false;if(pic&&!pcell(r,12).toLowerCase().includes(pic))return false;if(part&&!pcell(r,5).toLowerCase().includes(part))return false;if(wip&&!pcell(r,4).toLowerCase().includes(wip))return false;if(!inDate(getProblemValue(r,0),df,dt))return false;const minus=dNum(getProblemValue(r,10));if(mn!==null&&(minus===null||minus<mn))return false;if(mx!==null&&(minus===null||minus>mx))return false;return true})}
 function filtered(){return downloadSource==='progress'?progressFiltered():problemFiltered()}
 function headers(){return downloadSource==='progress'?progressHeaders:problemHeaders}
 function vals(r){return downloadSource==='progress'?r: r.slice(0,17)}
-function render(){const rows=filtered(),h=headers();q('downloadCount').textContent=`${rows.length.toLocaleString('id-ID')} data siap di-download`;q('downloadPreviewTitle').textContent=`Preview ${downloadSource==='progress'?'Progress 2026':'Problem'}`;q('downloadPreviewMeta').textContent=`Menampilkan ${rows.length.toLocaleString('id-ID')} baris`;q('downloadPreviewHead').innerHTML=`<tr>${h.map(x=>`<th>${escapeD(x)}</th>`).join('')}</tr>`;const shown=rows.slice(0,100);q('downloadPreviewBody').innerHTML=shown.length?shown.map(r=>`<tr>${vals(r).map(v=>`<td>${escapeD(v)}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${h.length}" class="download-empty">Tidak ada data yang sesuai filter.</td></tr>`;if(rows.length>100)q('downloadPreviewBody').insertAdjacentHTML('beforeend',`<tr><td colspan="${h.length}" class="download-more">Preview dibatasi 100 baris. Download tetap berisi semua ${rows.length.toLocaleString('id-ID')} baris hasil filter.</td></tr>`)}
-function populate(){if(!Array.isArray(allProgressRows)||!Array.isArray(allProblemRows))return;opts('downloadProgressCustomerList',allProgressRows.map(r=>getCellValue(r,1)));opts('downloadProgressWpList',allProgressRows.map(r=>getCellValue(r,3)));opts('downloadProgressAssyList',allProgressRows.map(r=>getCellValue(r,2)));opts('downloadProblemCustomerList',allProblemRows.map(r=>getProblemValue(r,3)));opts('downloadProblemPicList',allProblemRows.map(r=>getProblemValue(r,12)));opts('downloadProblemPartList',allProblemRows.map(r=>getProblemValue(r,5)));opts('downloadProblemWipList',allProblemRows.map(r=>getProblemValue(r,4)));const ps=q('downloadProgressProcess');if(ps&&ps.options.length===1)PROCESS_COLUMNS.forEach(p=>ps.insertAdjacentHTML('beforeend',`<option value="${p.index}">${escapeD(p.name)}</option>`));}
+function render(){const h=headers();if(!q('downloadCount')||!q('downloadPreviewBody'))return;const sourceRows=downloadSource==='progress'?allProgressRows:allProblemRows;if(!Array.isArray(sourceRows)||sourceRows.length===0){q('downloadCount').textContent='Menunggu data Google Sheets...';q('downloadPreviewTitle').textContent=`Preview ${downloadSource==='progress'?'Progress 2026':'Problem'}`;q('downloadPreviewMeta').textContent='Data sedang dimuat';q('downloadPreviewHead').innerHTML=`<tr>${h.map(x=>`<th>${escapeD(x)}</th>`).join('')}</tr>`;q('downloadPreviewBody').innerHTML=`<tr><td colspan="${h.length}" class="download-empty">⏳ Data sedang dimuat dari Google Sheets...</td></tr>`;return}let rows=[];try{rows=filtered()}catch(err){console.error('Download filter error:',err);q('downloadCount').textContent='Filter belum dapat diproses';q('downloadPreviewMeta').textContent='Periksa filter yang dipilih';q('downloadPreviewBody').innerHTML=`<tr><td colspan="${h.length}" class="download-empty">Terjadi kesalahan saat memproses filter.</td></tr>`;return}q('downloadCount').textContent=`${rows.length.toLocaleString('id-ID')} data siap di-download`;q('downloadPreviewTitle').textContent=`Preview ${downloadSource==='progress'?'Progress 2026':'Problem'}`;q('downloadPreviewMeta').textContent=`Menampilkan ${rows.length.toLocaleString('id-ID')} baris`;q('downloadPreviewHead').innerHTML=`<tr>${h.map(x=>`<th>${escapeD(x)}</th>`).join('')}</tr>`;const shown=rows.slice(0,100);q('downloadPreviewBody').innerHTML=shown.length?shown.map(r=>`<tr>${vals(r).map(v=>`<td>${escapeD(v)}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${h.length}" class="download-empty">Tidak ada data yang sesuai filter.</td></tr>`;if(rows.length>100)q('downloadPreviewBody').insertAdjacentHTML('beforeend',`<tr><td colspan="${h.length}" class="download-more">Preview dibatasi 100 baris. Download tetap berisi semua ${rows.length.toLocaleString('id-ID')} baris hasil filter.</td></tr>`)}
+function populate(){if(Array.isArray(allProgressRows)){opts('downloadProgressCustomerList',allProgressRows.map(r=>getCellValue(r,1)));opts('downloadProgressWpList',allProgressRows.map(r=>getCellValue(r,3)));opts('downloadProgressAssyList',allProgressRows.map(r=>getCellValue(r,2)));}if(Array.isArray(allProblemRows)){opts('downloadProblemCustomerList',allProblemRows.map(r=>getProblemValue(r,3)));opts('downloadProblemPicList',allProblemRows.map(r=>getProblemValue(r,12)));opts('downloadProblemPartList',allProblemRows.map(r=>getProblemValue(r,5)));opts('downloadProblemWipList',allProblemRows.map(r=>getProblemValue(r,4)));}const ps=q('downloadProgressProcess');if(ps&&ps.options.length===1&&Array.isArray(PROCESS_COLUMNS))PROCESS_COLUMNS.forEach(p=>ps.insertAdjacentHTML('beforeend',`<option value="${p.index}">${escapeD(p.name)}</option>`));}
 function csvCell(v){const x=String(v??'');return /[",\n\r]/.test(x)?`"${x.replace(/"/g,'""')}"`:x}
 function downloadBlob(name,type,data){const blob=new Blob([data],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function downloadCsv(){const rows=filtered(),h=headers(),csv='\ufeff'+[h, ...rows.map(vals)].map(r=>r.map(csvCell).join(',')).join('\r\n');downloadBlob(`${downloadSource==='progress'?'progress-2026':'problem'}-filtered.csv`,'text/csv;charset=utf-8',csv)}
 async function downloadExcel(){const rows=filtered(),h=headers();if(typeof XLSX==='undefined'){alert('Library Excel belum siap. Coba klik lagi beberapa detik kemudian.');return}const wb=XLSX.utils.book_new(),ws=XLSX.utils.aoa_to_sheet([h,...rows.map(vals)]);XLSX.utils.book_append_sheet(wb,ws,downloadSource==='progress'?'Progress 2026':'Problem');XLSX.writeFile(wb,`${downloadSource==='progress'?'progress-2026':'problem'}-filtered.xlsx`)}
-function reset(){document.querySelectorAll('#download input,#download select').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=''});render()}
+function reset(){const box=document.getElementById('download');if(!box)return;box.querySelectorAll('input,select').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=''});populate();render();}
+window.resetDownloadFilters=function(){reset();const btn=q('downloadReset');if(btn){btn.classList.add('ui-action-success');setTimeout(()=>btn.classList.remove('ui-action-success'),450)}}
 function switchSource(src){downloadSource=src;document.querySelectorAll('.download-source').forEach(b=>b.classList.toggle('active',b.dataset.source===src));q('downloadProgressFilters').style.display=src==='progress'?'grid':'none';q('downloadProblemFilters').style.display=src==='problem'?'grid':'none';populate();render()}
-function bind(){document.querySelectorAll('.download-source').forEach(b=>b.addEventListener('click',()=>switchSource(b.dataset.source)));q('downloadReset')?.addEventListener('click',reset);q('downloadCsv')?.addEventListener('click',downloadCsv);q('downloadExcel')?.addEventListener('click',downloadExcel);document.querySelectorAll('#download input,#download select').forEach(el=>el.addEventListener('input',render));document.querySelectorAll('#download select').forEach(el=>el.addEventListener('change',render));setInterval(()=>{if(q('download')?.classList.contains('active-page')){populate();render()}},5000)}
-window.refreshDownloadData=function(){populate();render()};
-document.addEventListener('DOMContentLoaded',bind);
+function bind(){document.querySelectorAll('.download-source').forEach(b=>b.addEventListener('click',()=>switchSource(b.dataset.source)));q('downloadCsv')?.addEventListener('click',downloadCsv);q('downloadExcel')?.addEventListener('click',downloadExcel);document.querySelectorAll('#download input,#download select').forEach(el=>el.addEventListener('input',render));document.querySelectorAll('#download select').forEach(el=>el.addEventListener('change',render));setInterval(()=>{if(q('download')?.classList.contains('active-page')){populate();render()}},5000)}
+window.refreshDownloadData=function(){
+  try{populate();render();}catch(err){
+    console.error('Download Data refresh error:',err);
+    const body=q('downloadPreviewBody');
+    const count=q('downloadCount');
+    if(count)count.textContent='Data sedang dimuat...';
+    if(body)body.innerHTML='<tr><td colspan=26 class=\"download-empty\">Data sedang dimuat dari Google Sheets...</td></tr>';
+  }
+};
+document.addEventListener('DOMContentLoaded',()=>{bind();setTimeout(()=>{try{window.refreshDownloadData()}catch(e){console.error(e)}},300)});
+
 })();
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script id="dashboardActionSafetyFix">
+(function(){
+  function flash(msg){
+    let el=document.getElementById('actionSafetyToast');
+    if(!el){el=document.createElement('div');el.id='actionSafetyToast';el.style.cssText='position:fixed;right:18px;top:76px;z-index:20000;background:#ffffff;border:1px solid #d8e5ea;border-radius:12px;padding:10px 14px;box-shadow:0 10px 28px rgba(35,60,72,.15);font:800 12px Arial;color:#3d5661';document.body.appendChild(el)}
+    el.textContent=msg;el.style.display='block';clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',1400);
+  }
+  function busy(btn){if(!btn)return;btn.disabled=true;btn.dataset.oldText=btn.textContent;btn.textContent='↻ Memproses...';setTimeout(()=>{btn.disabled=false;btn.textContent=btn.dataset.oldText||btn.textContent},500)}
+  window.safeResetProgressFilters=function(){try{const btn=document.querySelector('#progress .reset-filter');busy(btn);if(typeof resetFilters==='function')resetFilters();else throw new Error('resetFilters tidak tersedia');}catch(e){console.error(e);document.querySelectorAll('#progress input,#progress select').forEach(el=>el.value='');if(typeof applyFilters==='function')try{applyFilters()}catch(_){ }flash('Filter Progress direset');}};
+  window.safeResetProblemFilters=function(){try{const btn=document.querySelector('#problem .reset-filter');busy(btn);if(typeof resetProblemFilters==='function')resetProblemFilters();else throw new Error('resetProblemFilters tidak tersedia');}catch(e){console.error(e);document.querySelectorAll('#problem input,#problem select').forEach(el=>el.value='');if(typeof applyProblemFilters==='function')try{applyProblemFilters()}catch(_){ }flash('Filter Problem direset');}};
+  window.safeRefreshMonitoringCenter=function(){try{const btn=document.querySelector('#monitoring .page-header .reset-filter');busy(btn);if(typeof refreshMonitoringCenter==='function')refreshMonitoringCenter();else throw new Error('refreshMonitoringCenter tidak tersedia');if(typeof window.refreshDownloadData==='function')window.refreshDownloadData();flash('Monitoring Center diperbarui');}catch(e){console.error(e);try{if(typeof renderMonitoringCenter==='function')renderMonitoringCenter()}catch(_){}flash('Monitoring Center diperbarui');}};
+  window.safeRefreshStage6Pages=function(){try{const btn=document.querySelector('.stage6-actions .stage6-btn');busy(btn);if(typeof refreshStage6Pages==='function')refreshStage6Pages();else throw new Error('refreshStage6Pages tidak tersedia');flash('Data Meeting/Report diperbarui');}catch(e){console.error(e);try{if(typeof renderStage6Pages==='function')renderStage6Pages()}catch(_){}flash('Data Meeting/Report diperbarui');}};
+  window.safeResetDownloadFilters=function(){try{const btn=document.getElementById('downloadReset');busy(btn);if(typeof window.resetDownloadFilters==='function')window.resetDownloadFilters();else throw new Error('resetDownloadFilters tidak tersedia');flash('Semua filter Download Data direset');}catch(e){console.error(e);try{document.querySelectorAll('#download input,#download select').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=''});if(typeof window.refreshDownloadData==='function')window.refreshDownloadData()}catch(_){}flash('Filter Download Data direset');}};
+})();
+</script>
+
+
+
+    <!-- =====================================================
+         LOGIN CONTROL
+    ====================================================== -->
+    <script>
+    (function(){
+        const LOGIN_USERNAME = "admin";
+        const LOGIN_PASSWORD = "12345";
+        const LOGIN_SESSION_KEY = "prototypeMonitoringLoggedIn";
+
+        function showDashboard(){
+            document.body.classList.remove("login-locked");
+            const screen=document.getElementById("loginScreen");
+            if(screen) screen.style.display="none";
+            try{sessionStorage.setItem(LOGIN_SESSION_KEY,"1");}catch(e){}
+        }
+
+        function showLogin(){
+            document.body.classList.add("login-locked");
+            const screen=document.getElementById("loginScreen");
+            if(screen) screen.style.display="flex";
+        }
+
+        window.loginDashboard=function(){
+            const username=document.getElementById("loginUsername");
+            const password=document.getElementById("loginPassword");
+            const error=document.getElementById("loginError");
+            const user=String(username ? username.value : "").trim();
+            const pass=String(password ? password.value : "");
+            if(user===LOGIN_USERNAME && pass===LOGIN_PASSWORD){
+                if(error) error.textContent="";
+                showDashboard();
+                return true;
+            }
+            if(error) error.textContent="Username atau password salah.";
+            if(password){password.value="";password.focus();}
+            return false;
+        };
+
+        window.logoutDashboard=function(){
+            try{sessionStorage.removeItem(LOGIN_SESSION_KEY);}catch(e){}
+            const username=document.getElementById("loginUsername");
+            const password=document.getElementById("loginPassword");
+            const error=document.getElementById("loginError");
+            if(username) username.value="";
+            if(password) password.value="";
+            if(error) error.textContent="";
+            showLogin();
+        };
+
+        function init(){
+            let logged=false;
+            try{logged=sessionStorage.getItem(LOGIN_SESSION_KEY)==="1";}catch(e){}
+            if(logged){showDashboard();}else{showLogin();}
+            const form=document.getElementById("loginForm");
+            if(form && !form.dataset.loginBound){
+                form.dataset.loginBound="1";
+                form.addEventListener("submit",function(e){
+                    e.preventDefault();
+                    window.loginDashboard();
+                });
+            }
+        }
+
+        if(document.readyState==="loading"){
+            document.addEventListener("DOMContentLoaded",init,{once:true});
+        }else{init();}
+    })();
+    </script>
 </body>
 
 </html>
