@@ -9034,6 +9034,102 @@ document.addEventListener('DOMContentLoaded',()=>{bind();setTimeout(()=>{try{win
   window.safeResetDownloadFilters=function(){try{const btn=document.getElementById('downloadReset');busy(btn);if(typeof window.resetDownloadFilters==='function')window.resetDownloadFilters();else throw new Error('resetDownloadFilters tidak tersedia');flash('Semua filter Download Data direset');}catch(e){console.error(e);try{document.querySelectorAll('#download input,#download select').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value=''});if(typeof window.refreshDownloadData==='function')window.refreshDownloadData()}catch(_){}flash('Filter Download Data direset');}};
 })();
 </script>
+<script id="finalInteractionRepair">
+(function(){
+  'use strict';
+  const byId = id => document.getElementById(id);
+  const val = id => String(byId(id)?.value ?? '').trim();
+  const num = v => { const n=Number(String(v??'').replace(/,/g,'').replace(/[^0-9.-]/g,'')); return Number.isFinite(n)?n:null; };
+  const text = v => String(v ?? '').trim().toLowerCase();
+  function dateOnly(v){
+    if(v===null||v===undefined||String(v).trim()==='') return null;
+    const s=String(v).trim(); let m=s.match(/^(\d{4})[-\/]([0-9]{1,2})[-\/]([0-9]{1,2})/);
+    if(m) return new Date(+m[1],+m[2]-1,+m[3]);
+    m=s.match(/^([0-9]{1,2})[\/-]([0-9]{1,2})[\/-]([0-9]{2,4})$/);
+    if(m){let a=+m[1],b=+m[2],y=+m[3];if(y<100)y+=2000;let d,mo;if(a>12){d=a;mo=b-1}else{d=b;mo=a-1}return new Date(y,mo,d)}
+    const d=new Date(s); return Number.isNaN(d.getTime())?null:new Date(d.getFullYear(),d.getMonth(),d.getDate());
+  }
+  function between(v,from,to){
+    if(!from&&!to)return true; const d=dateOnly(v); if(!d)return false;
+    const key=x=>x.getFullYear()*10000+(x.getMonth()+1)*100+x.getDate(), k=key(d);
+    const f=from?key(dateOnly(from)):null, t=to?key(dateOnly(to)):null;
+    return (!f||k>=f)&&(!t||k<=t);
+  }
+  function escape(v){return typeof escapeHTML==='function'?escapeHTML(String(v??'')):String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+  function progressRows(){return Array.isArray(window.allProgressRows)?window.allProgressRows:(typeof allProgressRows!=='undefined'?allProgressRows:[])}
+  function problemRows(){return Array.isArray(window.allProblemRows)?window.allProblemRows:(typeof allProblemRows!=='undefined'?allProblemRows:[])}
+  function gcell(r,i){return typeof getCellValue==='function'?String(getCellValue(r,i)??''):String(r?.[i]??'')}
+  function pcell(r,i){return typeof getProblemValue==='function'?String(getProblemValue(r,i)??''):String(r?.[i]??'')}
+
+  // ---------- DOWNLOAD DATA: independent, deterministic preview ----------
+  const pHeaders=["NO","CUSTOMER","ASSY NO","WP","CCT","QTY","TOTAL CCT","ETD","RESCHEDULE ETD","ACTUAL START","ACTUAL FINISH","LEAD TIME","REPAIR","CUTTING / CRIMPING","JOINTING / MVVS","MIDDLE","HOUSING","ASSEMBLING","BUZZER / CHECKER","VISUAL","TE-TA FINISHING","PREDEL","RFG","STATUS","OPEN QTY","KETERANGAN"];
+  const prHeaders=["DATE PROBLEM","ASSY NO","CUSTOMER","WIP","PART NAME","PART NO BEI","PART NO BEE","QTY STD","QTY ACT","MINUS","SATUAN","PIC","DATE RECEIVED","STATUS","KETERANGAN","PROBLEM"];
+  let source='progress';
+  function selectedSource(){return source}
+  function renderDownload(){
+    const body=byId('downloadPreviewBody'), head=byId('downloadPreviewHead'), count=byId('downloadCount'), meta=byId('downloadPreviewMeta'), title=byId('downloadPreviewTitle');
+    if(!body||!head)return;
+    const rows=source==='progress'?progressRows():problemRows();
+    const headers=source==='progress'?pHeaders:prHeaders;
+    head.innerHTML='<tr>'+headers.map(x=>'<th>'+escape(x)+'</th>').join('')+'</tr>';
+    if(!rows.length){
+      if(count)count.textContent='Menunggu data Google Sheets...';
+      if(meta)meta.textContent='Data belum tersedia';
+      body.innerHTML='<tr><td colspan="'+headers.length+'" class="download-empty">⏳ Data sedang dimuat dari Google Sheets...</td></tr>';
+      return;
+    }
+    let result=[];
+    if(source==='progress'){
+      const q=id=>val(id), quick=q('downloadProgressQuick').toUpperCase(), cust=text(q('downloadProgressCustomer')), wp=text(q('downloadProgressWp')), assy=text(q('downloadProgressAssy')), cct=text(q('downloadProgressCct')), proc=Number(q('downloadProgressProcess'))||0;
+      const qmin=num(q('downloadProgressQtyMin')),qmax=num(q('downloadProgressQtyMax')),lmin=num(q('downloadProgressLeadMin')),lmax=num(q('downloadProgressLeadMax'));
+      const ef=q('downloadProgressEtdFrom'),et=q('downloadProgressEtdTo'),rf=q('downloadProgressRescheduleFrom'),rt=q('downloadProgressRescheduleTo'),sf=q('downloadProgressStart'),st=q('downloadProgressFinish'),rs=q('downloadProgressReschedule').toUpperCase();
+      const today=new Date();today.setHours(0,0,0,0);const plus3=new Date(today);plus3.setDate(plus3.getDate()+3);
+      result=rows.filter(r=>{
+        const status=typeof getRowStatus==='function'?String(getRowStatus(r)||'').trim().toUpperCase():text(gcell(r,23)).toUpperCase();
+        const etd=dateOnly(gcell(r,7)), res=gcell(r,8), qty=num(gcell(r,5)), lead=num(gcell(r,11));
+        if(quick==='OPEN'&&status!=='OPEN')return false;if(quick==='CLOSE'&&status!=='CLOSE')return false;
+        if(quick==='RESCHEDULE'&&!res.trim())return false;
+        if(quick==='OVERDUE'&&!(status==='OPEN'&&etd&&etd<today))return false;
+        if((quick==='ETD3'||quick==='ETD ≤ 3 HARI')&&!(status==='OPEN'&&etd&&etd>=today&&etd<=plus3))return false;
+        if(quick==='NOT_STARTED'&&!(status==='OPEN'&&!gcell(r,9).trim()))return false;
+        if(cust&&!text(gcell(r,1)).includes(cust))return false;if(wp&&!text(gcell(r,3)).includes(wp))return false;if(assy&&!text(gcell(r,2)).includes(assy))return false;if(cct&&!text(gcell(r,4)).includes(cct))return false;
+        if(proc&&!(num(gcell(r,proc))>0))return false;if(qmin!==null&&(qty===null||qty<qmin))return false;if(qmax!==null&&(qty===null||qty>qmax))return false;
+        if(!between(gcell(r,7),ef,et))return false;if(rs==='YES'&&!res.trim())return false;if(rs==='NO'&&res.trim())return false;if(!between(res,rf,rt))return false;if(!between(gcell(r,9),sf,sf))return false;if(!between(gcell(r,10),st,st))return false;if(lmin!==null&&(lead===null||lead<lmin))return false;if(lmax!==null&&(lead===null||lead>lmax))return false;
+        return true;
+      });
+    }else{
+      const status=q('downloadProblemStatus'),cust=text(val('downloadProblemCustomer')),pic=text(val('downloadProblemPic')),part=text(val('downloadProblemPart')),wip=text(val('downloadProblemWip')),df=val('downloadProblemDateFrom'),dt=val('downloadProblemDateTo'),mn=num(val('downloadProblemMinusMin')),mx=num(val('downloadProblemMinusMax'));
+      result=rows.filter(r=>{const stt=typeof getProblemStatus==='function'?String(getProblemStatus(r)||'').trim().toUpperCase():text(pcell(r,13)).toUpperCase();const minus=num(pcell(r,10));if(status&&stt!==status.toUpperCase())return false;if(cust&&!text(pcell(r,2)).includes(cust))return false;if(pic&&!text(pcell(r,11)).includes(pic))return false;if(part&&!text(pcell(r,4)).includes(part))return false;if(wip&&!text(pcell(r,3)).includes(wip))return false;if(!between(pcell(r,0),df,dt))return false;if(mn!==null&&(minus===null||minus<mn))return false;if(mx!==null&&(minus===null||minus>mx))return false;return true});
+    }
+    if(count)count.textContent=result.length.toLocaleString('id-ID')+' data siap di-download';
+    if(meta)meta.textContent='Menampilkan '+result.length.toLocaleString('id-ID')+' baris';
+    if(title)title.textContent='Preview '+(source==='progress'?'Progress 2026':'Problem');
+    const shown=result.slice(0,100);body.innerHTML=shown.length?shown.map(r=>'<tr>'+r.slice(0,headers.length).map(v=>'<td>'+escape(v)+'</td>').join('')+'</tr>').join(''):'<tr><td colspan="'+headers.length+'" class="download-empty">Tidak ada data yang sesuai filter.</td></tr>';
+    if(result.length>100)body.insertAdjacentHTML('beforeend','<tr><td colspan="'+headers.length+'" class="download-more">Preview dibatasi 100 baris. Download tetap berisi semua '+result.length.toLocaleString('id-ID')+' baris hasil filter.</td></tr>');
+  }
+  window.renderDownloadPreview=renderDownload;
+  window.refreshDownloadData=renderDownload;
+  window.setDownloadSource=function(s){source=s==='problem'?'problem':'progress';document.querySelectorAll('.download-source').forEach(b=>b.classList.toggle('active',b.dataset.source===source));const a=byId('downloadProgressFilters'),b=byId('downloadProblemFilters');if(a)a.style.display=source==='progress'?'grid':'none';if(b)b.style.display=source==='problem'?'grid':'none';setTimeout(renderDownload,0)};
+  function resetDownload(){const box=byId('download');if(!box)return;box.querySelectorAll('input').forEach(e=>e.value='');box.querySelectorAll('select').forEach(e=>e.selectedIndex=0);setTimeout(renderDownload,0)}
+  window.resetDownloadFilters=resetDownload; window.safeResetDownloadFilters=function(){resetDownload()};
+  document.addEventListener('click',e=>{const b=e.target.closest('.download-source');if(b){e.preventDefault();window.setDownloadSource(b.dataset.source)}},true);
+  document.addEventListener('input',e=>{if(e.target.closest('#download'))setTimeout(renderDownload,0)},true);
+  document.addEventListener('change',e=>{if(e.target.closest('#download'))setTimeout(renderDownload,0)},true);
+
+  // ---------- RESET / REFRESH: call real dashboard functions, then force redraw ----------
+  window.safeResetProgressFilters=function(){try{if(typeof resetFilters==='function')resetFilters();else document.querySelectorAll('#progress input,#progress select').forEach(e=>e.value='')}catch(e){console.error('Progress reset',e)}setTimeout(()=>{try{if(typeof applyFilters==='function')applyFilters()}catch(e){console.error(e)}},0)};
+  window.safeResetProblemFilters=function(){try{if(typeof resetProblemFilters==='function')resetProblemFilters();else document.querySelectorAll('#problem input,#problem select').forEach(e=>e.value='')}catch(e){console.error('Problem reset',e)}setTimeout(()=>{try{if(typeof applyProblemFilters==='function')applyProblemFilters()}catch(e){console.error(e)}},0)};
+  window.safeRefreshMonitoringCenter=function(){try{if(typeof renderMonitoringCenter==='function')renderMonitoringCenter();else if(typeof refreshMonitoringCenter==='function')refreshMonitoringCenter()}catch(e){console.error('Monitoring refresh',e)} };
+  window.safeRefreshStage6Pages=function(){try{if(typeof renderStage6Pages==='function')renderStage6Pages();else if(typeof refreshStage6Pages==='function')refreshStage6Pages()}catch(e){console.error('Stage6 refresh',e)} };
+
+  function hookDataLoaders(){
+    if(typeof allProgressRows!=='undefined' && allProgressRows.length) renderDownload();
+    if(typeof allProblemRows!=='undefined' && allProblemRows.length) renderDownload();
+  }
+  document.addEventListener('DOMContentLoaded',()=>{setTimeout(hookDataLoaders,1000);setTimeout(hookDataLoaders,3000);setInterval(hookDataLoaders,5000)});
+})();
+</script>
+
 </body>
 
 </html>
