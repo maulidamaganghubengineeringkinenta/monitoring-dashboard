@@ -12986,6 +12986,219 @@ body.dashboard-dark:not(.login-locked) .page .pill{
 })();
 </script>
 
+
+
+<!-- FINAL VISUAL PASS: Monitoring surfaces + Progress customer chart palette -->
+<style id="finalMonitoringAndChartPaletteFix">
+/* =========================================================
+   MONITORING — FORCE DARK SURFACES + HIGH-CONTRAST TEXT
+   This is intentionally the LAST monitoring rule set.
+========================================================= */
+body.dashboard-dark:not(.login-locked) #monitoring > .page-header{
+  background:#20242a!important;
+  border:1px solid #3a4048!important;
+  box-shadow:none!important;
+  color:#f7f8fa!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring > .page-header h2,
+body.dashboard-dark:not(.login-locked) #monitoring > .page-header p{
+  color:#f7f8fa!important;
+  -webkit-text-fill-color:#f7f8fa!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring > .page-header p{
+  color:#c8ced5!important;
+  -webkit-text-fill-color:#c8ced5!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring > .page-header .reset-filter{
+  background:#2d3339!important;
+  color:#f7f8fa!important;
+  border:1px solid #4a5158!important;
+}
+
+/* Attention Center */
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-section{
+  background:#20242a!important;
+  border:1px solid #3a4048!important;
+  color:#e7eaee!important;
+  box-shadow:none!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-section > h3,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage2-card > h3{
+  background:#272c32!important;
+  color:#f7f8fa!important;
+  -webkit-text-fill-color:#f7f8fa!important;
+  border-left-color:#58616b!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert{
+  background:#272c32!important;
+  border-color:#3f474f!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert-title{
+  color:#f7f8fa!important;
+  -webkit-text-fill-color:#f7f8fa!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert-sub{
+  color:#c8ced5!important;
+  -webkit-text-fill-color:#c8ced5!important;
+}
+
+/* Calendar header + month/year */
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-calendar-head{
+  background:#272c32!important;
+  border:1px solid #3a4048!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-calendar-head button{
+  background:#30363d!important;
+  color:#f7f8fa!important;
+  border-color:#4a5158!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-month{
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  font-weight:800!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-weekday{
+  color:#cfd6dc!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-day{
+  background:#252a30!important;
+  color:#f0f3f6!important;
+  border-color:#3b424a!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-day.today{
+  background:#30363d!important;
+  border-color:#8f6cff!important;
+  box-shadow:inset 0 0 0 2px #8f6cff!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-event{
+  background:#303840!important;
+  color:#e9edf1!important;
+  border-left-color:#6e8cff!important;
+}
+
+/* Production Job Timeline + legend/instruction text */
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage3-grid .monitor-stage2-card{
+  background:#20242a!important;
+  border-color:#3a4048!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage3-grid .monitor-stage2-card > h3{
+  background:#272c32!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-label{
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-sub,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-note{
+  color:#cfd6dc!important;
+  -webkit-text-fill-color:#cfd6dc!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-note{
+  background:#272c32!important;
+  border:1px solid #3a4048!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-step:not(:last-child)::after{
+  background:#4b535c!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-step.done:not(:last-child)::after{
+  background:#64788a!important;
+}
+
+/* =========================================================
+   PROGRESS — CUSTOMER CHART PALETTE
+   OPEN = blue, CLOSE = purple, never pastel peach/green in dark mode.
+========================================================= */
+body.dashboard-dark:not(.login-locked) #progress #customerChartTitle,
+body.dashboard-dark:not(.login-locked) #progress #customerChartDescription{
+  color:#f7f8fa!important;
+  -webkit-text-fill-color:#f7f8fa!important;
+}
+body.dashboard-dark:not(.login-locked) #progress #customerChartDescription{
+  color:#c8ced5!important;
+  -webkit-text-fill-color:#c8ced5!important;
+}
+</style>
+
+<script id="finalProblemAndProgressChartPaletteFix">
+(function(){
+  'use strict';
+  const DARK = document.body && document.body.classList.contains('dashboard-dark');
+  function applyProgressCustomerPalette(){
+    if(!window.Chart) return;
+    const canvas=document.getElementById('customerChart');
+    if(!canvas) return;
+    const chart=Chart.getChart(canvas);
+    if(!chart) return;
+    const dark=document.body.classList.contains('dashboard-dark');
+    const open=dark ? '#5B8FF9' : '#F2B38F';
+    const close=dark ? '#9B6DFF' : '#9ED0B0';
+    const text=dark ? '#F5F7FA' : '#263238';
+    const muted=dark ? '#C8CED5' : '#5F6D75';
+    const grid=dark ? '#343A41' : '#E2EDF2';
+    const ds=chart.data && chart.data.datasets ? chart.data.datasets : [];
+    if(ds[0]) ds[0].backgroundColor=open;
+    if(ds[1]) ds[1].backgroundColor=close;
+    const o=chart.config.options || (chart.config.options={});
+    o.plugins=o.plugins||{};
+    o.plugins.legend=o.plugins.legend||{};
+    o.plugins.legend.labels=o.plugins.legend.labels||{};
+    o.plugins.legend.labels.color=text;
+    o.scales=o.scales||{};
+    o.scales.x=o.scales.x||{}; o.scales.x.ticks=o.scales.x.ticks||{};
+    o.scales.y=o.scales.y||{}; o.scales.y.ticks=o.scales.y.ticks||{}; o.scales.y.grid=o.scales.y.grid||{};
+    o.scales.x.ticks.color=muted;
+    o.scales.y.ticks.color=muted;
+    o.scales.y.grid.color=grid;
+    try{chart.update('none');}catch(e){try{chart.update();}catch(_){}
+    }
+  }
+  function applyAllProblemPalettes(){
+    if(!window.Chart) return;
+    const dark=document.body.classList.contains('dashboard-dark');
+    const colors={
+      customer: dark ? ['#5B8FF9','#9B6DFF'] : ['#B9DDF2'],
+      status: dark ? ['#5B8FF9','#9B6DFF'] : ['#F4C8AC','#B9DEC9'],
+      single: dark ? '#5B8FF9' : null,
+      trend: dark ? '#8F6CFF' : '#344E5D'
+    };
+    const ids=['problemCustomerChart','problemStatusChart','problemPartChart','problemPICChart','problemTrendChart'];
+    ids.forEach(id=>{
+      const c=document.getElementById(id); if(!c) return;
+      const ch=Chart.getChart(c); if(!ch) return;
+      const ds=ch.data?.datasets||[];
+      if(id==='problemStatusChart' && ds[0]) ds[0].backgroundColor=colors.status;
+      else if(id==='problemTrendChart' && ds[0]){
+        ds[0].borderColor=colors.trend;
+        ds[0].backgroundColor=dark?'rgba(143,108,255,.16)':'rgba(52,78,93,.12)';
+        ds[0].pointBackgroundColor=colors.trend;
+        ds[0].pointBorderColor=dark?'#F5F7FA':'#344E5D';
+      } else if(ds[0]) ds[0].backgroundColor=colors.single;
+      const o=ch.config.options || (ch.config.options={});
+      o.plugins=o.plugins||{}; o.plugins.legend=o.plugins.legend||{}; o.plugins.legend.labels=o.plugins.legend.labels||{};
+      o.plugins.legend.labels.color=dark?'#F5F7FA':'#263238';
+      o.scales=o.scales||{};
+      Object.keys(o.scales).forEach(k=>{
+        const sc=o.scales[k]||{}; sc.ticks=sc.ticks||{}; sc.grid=sc.grid||{};
+        sc.ticks.color=dark?'#C8CED5':'#263238';
+        if(k==='y') sc.grid.color=dark?'#343A41':'#E2EDF2';
+      });
+      try{ch.update('none');}catch(e){try{ch.update();}catch(_){}
+      }
+    });
+  }
+  function apply(){applyProgressCustomerPalette();applyAllProblemPalettes();}
+  window.applyFinalChartPaletteFix=apply;
+  [0,250,700,1300,2200].forEach(ms=>setTimeout(apply,ms));
+  window.addEventListener('resize',apply);
+  const observer=new MutationObserver(function(){
+    setTimeout(apply,80);
+  });
+  if(document.body) observer.observe(document.body,{attributes:true,attributeFilter:['class']});
+})();
+</script>
+
 </body>
 
 </html>
