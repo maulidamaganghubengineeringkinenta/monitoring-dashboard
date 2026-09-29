@@ -10712,9 +10712,19 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
         const src=q("downloadSource")?.value==="problem"?"Problem":"Progress 2026"; const chips=[...document.querySelectorAll('.download-chip.active')]; const quick=chips[0]?.textContent?.trim()||"Semua"; return `${src} · ${quick} · filter manual diterapkan`;
     }
     function update(){
-        populateLists(); const isProblem=q("downloadSource")?.value==="problem"; q("downloadProgressFilters").style.display=isProblem?"none":"block";q("downloadProblemFilters").style.display=isProblem?"block":"none";renderQuick();
-        const rows=currentData(); q("downloadCount").textContent=`${rows.length.toLocaleString('id-ID')} data`;q("downloadFilterSummary").textContent=summary();renderPreview(rows);
-        const disabled=!rows.length;q("downloadCsvBtn").disabled=disabled;q("downloadXlsxBtn").disabled=disabled;
+        populateLists();
+        const isProblem=q("downloadSource")?.value==="problem";
+        const pf=q("downloadProgressFilters"),pr=q("downloadProblemFilters");
+        if(pf)pf.style.display=isProblem?"none":"block";
+        if(pr)pr.style.display=isProblem?"block":"none";
+        const rows=currentData();
+        const count=q("downloadCount"),summaryEl=q("downloadFilterSummary");
+        if(count)count.textContent=`${rows.length.toLocaleString('id-ID')} data`;
+        if(summaryEl)summaryEl.textContent=summary();
+        renderPreview(rows);
+        const disabled=!rows.length;
+        if(q("downloadCsvBtn"))q("downloadCsvBtn").disabled=disabled;
+        if(q("downloadXlsxBtn"))q("downloadXlsxBtn").disabled=disabled;
     }
     function safeFilePart(s){return String(s).replace(/[^a-z0-9_-]+/gi,"_").replace(/^_+|_+$/g,"").slice(0,80)||"DATA";}
     function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);}
@@ -10725,8 +10735,12 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
         renderQuick(); update();
     }
     function bind(){
-        q("downloadSource")?.addEventListener('change',()=>{renderQuick();update();}); q("downloadResetBtn")?.addEventListener('click',reset);q("downloadCsvBtn")?.addEventListener('click',downloadCSV);q("downloadXlsxBtn")?.addEventListener('click',downloadXLSX);
+        q("downloadSource")?.addEventListener('change',()=>{renderQuick();update();});
+        q("downloadResetBtn")?.addEventListener('click',reset);
+        q("downloadCsvBtn")?.addEventListener('click',downloadCSV);
+        q("downloadXlsxBtn")?.addEventListener('click',downloadXLSX);
         document.querySelectorAll('#download input,#download select').forEach(el=>{el.addEventListener('input',update);el.addEventListener('change',update);});
+        renderQuick();
         update();
     }
     window.refreshDownloadData=function(){populateLists();update();};
@@ -11014,11 +11028,8 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
   window.safeRefreshMonitoringCenter=function(){try{if(typeof renderMonitoringCenter==='function')renderMonitoringCenter();else if(typeof refreshMonitoringCenter==='function')refreshMonitoringCenter()}catch(e){console.error('Monitoring refresh',e)} };
   window.safeRefreshStage6Pages=function(){try{if(typeof renderStage6Pages==='function')renderStage6Pages();else if(typeof refreshStage6Pages==='function')refreshStage6Pages()}catch(e){console.error('Stage6 refresh',e)} };
 
-  function hookDataLoaders(){
-    if(typeof allProgressRows!=='undefined' && allProgressRows.length) renderDownload();
-    if(typeof allProblemRows!=='undefined' && allProblemRows.length) renderDownload();
-  }
-  document.addEventListener('DOMContentLoaded',()=>{setTimeout(hookDataLoaders,1200);setTimeout(hookDataLoaders,3000)});
+  // Download preview is rendered by downloadDataEngine.update()/refreshDownloadData().
+  // Do not call a removed renderDownload() function here.
 })();
 </script>
 
@@ -11185,104 +11196,120 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
 </script>
 <script id="darkModeReferenceChartEngine">
 (function(){
-  const DARK_PALETTE={
-    text:'#d9dfe3', muted:'#8f999f', grid:'#343b42', border:'#414950',
-    red:'#d85b63', yellow:'#d9a84e', blue:'#5e9fbd', cyan:'#5aa9bd',
-    green:'#63a07c', purple:'#8c73ad', orange:'#c98555'
-  };
-  const hexToRgb=h=>{
-    const m=String(h||'').match(/^#([0-9a-f]{6})$/i); if(!m)return null;
-    return [parseInt(m[1].slice(0,2),16),parseInt(m[1].slice(2,4),16),parseInt(m[1].slice(4,6),16)];
-  };
-  const rgbToHex=a=>'#'+a.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
-  const soften=value=>{
-    if(typeof value!=='string') return value;
-    const m=value.match(/^#([0-9a-f]{6})$/i);
-    if(!m)return value;
-    const rgb=hexToRgb(value); if(!rgb)return value;
-    const max=Math.max(...rgb), min=Math.min(...rgb);
-    if(max<70) return value;
-    return rgbToHex(rgb.map(v=>v*.72+25));
-  };
-  function patchChart(chart,dark){
-    if(!chart||!chart.options)return;
-    const o=chart.options;
+  'use strict';
+  const DARK={text:'#f5f7fa',muted:'#b8c0c7',grid:'#343a41',border:'#4a5158'};
+  const LIGHT={text:'#5f6d75',grid:'#dfe7eb',border:'#cfd9de'};
+  const darkColors=['#5b8ff9','#a477ff','#59c7f2','#63c99a','#e4b45c','#ef6b73','#dc8b61'];
+  const clone=v=>Array.isArray(v)?v.slice():v;
+  const rawOptions=chart=>chart?.config?.options || null;
+  function remember(chart,o){
+    if(chart.__dmSaved)return;
+    chart.__dmSaved={
+      color:o.color,
+      legend:o.plugins?.legend?.labels?.color,
+      title:o.plugins?.title?.color,
+      subtitle:o.plugins?.subtitle?.color,
+      scales:{},
+      datasets:(chart.data?.datasets||[]).map(ds=>({
+        backgroundColor:clone(ds.backgroundColor),
+        borderColor:clone(ds.borderColor),
+        pointBackgroundColor:clone(ds.pointBackgroundColor),
+        pointBorderColor:clone(ds.pointBorderColor)
+      }))
+    };
+    Object.keys(o.scales||{}).forEach(k=>{
+      const sc=o.scales[k]||{};
+      chart.__dmSaved.scales[k]={
+        ticks:sc.ticks?.color,
+        grid:sc.grid?.color,
+        border:sc.border?.color
+      };
+    });
+  }
+  function ensureObject(parent,key){
+    if(!parent[key] || typeof parent[key]!=='object' || Array.isArray(parent[key])) parent[key]={};
+    return parent[key];
+  }
+  function patch(chart,dark){
+    const o=rawOptions(chart);
+    if(!chart||!o)return;
+    remember(chart,o);
     o.plugins=o.plugins||{};
     o.scales=o.scales||{};
+    const legend=ensureObject(o.plugins,'legend');
+    legend.labels=ensureObject(legend,'labels');
     if(dark){
-      if(!chart.$dmOriginal){
-        chart.$dmOriginal={
-          color:o.color,
-          legend:o.plugins.legend&&o.plugins.legend.labels?o.plugins.legend.labels.color:undefined,
-          titles:{}, scales:{}, datasets:[]
-        };
-        ['title','subtitle'].forEach(k=>{chart.$dmOriginal.titles[k]=o.plugins[k]?o.plugins[k].color:undefined;});
-        Object.keys(o.scales).forEach(k=>{const sc=o.scales[k];chart.$dmOriginal.scales[k]={ticks:sc.ticks&&sc.ticks.color,grid:sc.grid&&sc.grid.color,border:sc.border&&sc.border.color};});
-        (chart.data&&chart.data.datasets||[]).forEach(ds=>{chart.$dmOriginal.datasets.push({
-          backgroundColor:Array.isArray(ds.backgroundColor)?ds.backgroundColor.slice():ds.backgroundColor,
-          borderColor:Array.isArray(ds.borderColor)?ds.borderColor.slice():ds.borderColor,
-          pointBackgroundColor:Array.isArray(ds.pointBackgroundColor)?ds.pointBackgroundColor.slice():ds.pointBackgroundColor,
-          pointBorderColor:Array.isArray(ds.pointBorderColor)?ds.pointBorderColor.slice():ds.pointBorderColor
-        });});
+      o.color=DARK.text;
+      legend.labels.color=DARK.text;
+      if(o.plugins.title)o.plugins.title.color=DARK.text;
+      if(o.plugins.subtitle)o.plugins.subtitle.color=DARK.muted;
+      Object.keys(o.scales).forEach(k=>{
+        const sc=ensureObject(o.scales,k);
+        const ticks=ensureObject(sc,'ticks');
+        const grid=ensureObject(sc,'grid');
+        const border=ensureObject(sc,'border');
+        ticks.color=DARK.muted;
+        grid.color=DARK.grid;
+        border.color=DARK.border;
+      });
+      (chart.data?.datasets||[]).forEach((ds,i)=>{
+        const c=darkColors[i%darkColors.length];
+        if(ds.backgroundColor!==undefined) ds.backgroundColor=Array.isArray(ds.backgroundColor)?ds.backgroundColor.map((_,j)=>darkColors[j%darkColors.length]):c;
+        if(ds.borderColor!==undefined) ds.borderColor=Array.isArray(ds.borderColor)?ds.borderColor.map((_,j)=>darkColors[j%darkColors.length]):c;
+        if(ds.pointBackgroundColor!==undefined) ds.pointBackgroundColor=c;
+        if(ds.pointBorderColor!==undefined) ds.pointBorderColor=DARK.text;
+      });
+    }else{
+      const saved=chart.__dmSaved;
+      if(saved){
+        o.color=saved.color;
+        legend.labels.color=saved.legend;
+        if(o.plugins.title)o.plugins.title.color=saved.title;
+        if(o.plugins.subtitle)o.plugins.subtitle.color=saved.subtitle;
+        Object.keys(saved.scales).forEach(k=>{
+          const sc=ensureObject(o.scales,k),v=saved.scales[k];
+          ensureObject(sc,'ticks').color=v.ticks;
+          ensureObject(sc,'grid').color=v.grid;
+          ensureObject(sc,'border').color=v.border;
+        });
+        (chart.data?.datasets||[]).forEach((ds,i)=>{
+          const v=saved.datasets[i]; if(!v)return;
+          ds.backgroundColor=v.backgroundColor;
+          ds.borderColor=v.borderColor;
+          ds.pointBackgroundColor=v.pointBackgroundColor;
+          ds.pointBorderColor=v.pointBorderColor;
+        });
       }
-      o.color=DARK_PALETTE.text;
-      if(o.plugins.legend){o.plugins.legend.labels=o.plugins.legend.labels||{};o.plugins.legend.labels.color=DARK_PALETTE.text;}
-      ['title','subtitle'].forEach(k=>{if(o.plugins[k])o.plugins[k].color=DARK_PALETTE.text;});
-      Object.values(o.scales).forEach(sc=>{
-        sc.ticks=sc.ticks||{}; sc.ticks.color=DARK_PALETTE.muted;
-        sc.grid=sc.grid||{}; sc.grid.color=DARK_PALETTE.grid;
-        sc.border=sc.border||{}; sc.border.color=DARK_PALETTE.border;
-      });
-      (chart.data&&chart.data.datasets||[]).forEach(ds=>{
-        if(typeof ds.backgroundColor==='string')ds.backgroundColor=soften(ds.backgroundColor);
-        else if(Array.isArray(ds.backgroundColor))ds.backgroundColor=ds.backgroundColor.map(soften);
-        if(typeof ds.borderColor==='string')ds.borderColor=soften(ds.borderColor);
-        else if(Array.isArray(ds.borderColor))ds.borderColor=ds.borderColor.map(soften);
-        if(typeof ds.pointBackgroundColor==='string')ds.pointBackgroundColor=soften(ds.pointBackgroundColor);
-        if(typeof ds.pointBorderColor==='string')ds.pointBorderColor=soften(ds.pointBorderColor);
-      });
-      chart.$dmIsDark=true;
-    }else if(chart.$dmOriginal){
-      const r=chart.$dmOriginal;
-      o.color=r.color;
-      if(o.plugins.legend&&r.legend!==undefined)o.plugins.legend.labels.color=r.legend;
-      ['title','subtitle'].forEach(k=>{if(o.plugins[k])o.plugins[k].color=r.titles[k];});
-      Object.keys(r.scales).forEach(k=>{const sc=o.scales[k],v=r.scales[k];if(!sc)return;if(sc.ticks)v.ticks!==undefined&&(sc.ticks.color=v.ticks);if(sc.grid)v.grid!==undefined&&(sc.grid.color=v.grid);if(sc.border)v.border!==undefined&&(sc.border.color=v.border);});
-      (chart.data&&chart.data.datasets||[]).forEach((ds,i)=>{const v=r.datasets[i];if(!v)return;ds.backgroundColor=v.backgroundColor;ds.borderColor=v.borderColor;ds.pointBackgroundColor=v.pointBackgroundColor;ds.pointBorderColor=v.pointBorderColor;});
-      chart.$dmIsDark=false;
     }
-    try{chart.update('none');}catch(e){try{chart.update();}catch(_){}}
+    try{chart.update('none');}catch(e){try{chart.update();}catch(_){}
+    }
   }
-  window.applyReferenceDarkCharts=function(){
+  function apply(){
     if(!window.Chart)return;
     const dark=document.body.classList.contains('dashboard-dark');
-    Chart.defaults.color=dark?DARK_PALETTE.text:'#5f6d75';
-    Chart.defaults.borderColor=dark?DARK_PALETTE.grid:'#dfe7eb';
-    if(Chart.defaults.plugins&&Chart.defaults.plugins.legend&&Chart.defaults.plugins.legend.labels){
-      Chart.defaults.plugins.legend.labels.color=dark?DARK_PALETTE.text:'#5f6d75';
-    }
-    document.querySelectorAll('canvas').forEach(canvas=>{
-      try{const chart=Chart.getChart?Chart.getChart(canvas):null;if(chart)patchChart(chart,dark);}catch(e){}
+    Chart.defaults.color=dark?DARK.text:LIGHT.text;
+    Chart.defaults.borderColor=dark?DARK.grid:LIGHT.grid;
+    if(Chart.defaults.plugins?.legend?.labels) Chart.defaults.plugins.legend.labels.color=dark?DARK.text:LIGHT.text;
+    document.querySelectorAll('canvas').forEach(c=>{
+      try{const ch=Chart.getChart(c);if(ch)patch(ch,dark);}catch(e){}
     });
-  };
-  function burst(){
-    let n=0; const timer=setInterval(()=>{applyReferenceDarkCharts(); if(++n>=10)clearInterval(timer);},350);
   }
-  window.refreshReferenceDarkCharts=burst;
-  const originalApply=window.applySettings;
-  if(typeof originalApply==='function'){
-    window.applySettings=function(data){
-      const r=originalApply.apply(this,arguments); setTimeout(burst,60); return r;
-    };
+  function schedule(){
+    [0,180,500,1000].forEach(ms=>setTimeout(apply,ms));
   }
+  window.applyReferenceDarkCharts=apply;
+  window.refreshReferenceDarkCharts=schedule;
   const originalShow=window.showPage;
   if(typeof originalShow==='function'){
-    window.showPage=function(){
-      const r=originalShow.apply(this,arguments); setTimeout(burst,120); return r;
-    };
+    window.showPage=function(){const r=originalShow.apply(this,arguments);schedule();return r;};
   }
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(burst,300));
-  setTimeout(burst,800);
+  const originalApply=window.applySettings;
+  if(typeof originalApply==='function'){
+    window.applySettings=function(){const r=originalApply.apply(this,arguments);schedule();return r;};
+  }
+  const observer=new MutationObserver(()=>schedule());
+  if(document.body) observer.observe(document.body,{attributes:true,attributeFilter:['class']});
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',schedule,{once:true}); else schedule();
 })();
 </script>
 
@@ -11922,108 +11949,7 @@ body.dashboard-dark:not(.login-locked) canvas{background:transparent!important}
 </style>
 
 <script id="darkModeMasterCharts">
-(function(){
-  const P={
-    text:'#f7f8fa', muted:'#b0b6bf', grid:'#343941', border:'#4a4f59',
-    blue:'#5b8ff9', purple:'#a477ff', cyan:'#59c7f2', green:'#63c99a',
-    amber:'#e4b45c', red:'#ef6b73', orange:'#dc8b61'
-  };
-  const light={
-    text:'#5f6d75', grid:'#dfe7eb', border:'#cfd9de',
-    colors:['#F2B38F','#9ED0B0','#B9DDF2','#BFE3D0','#344E5D','#F4C8AC','#B9DEC9']
-  };
-  const darkColors=[P.blue,P.purple,P.cyan,P.green,P.amber,P.red,P.orange];
-  function arr(v){return Array.isArray(v)?v:[v];}
-  function clone(v){return Array.isArray(v)?v.slice():v;}
-  function remember(chart){
-    if(chart.__masterDarkSaved)return;
-    chart.__masterDarkSaved={
-      options:{color:chart.options?.color},
-      legend:chart.options?.plugins?.legend?.labels?.color,
-      title:chart.options?.plugins?.title?.color,
-      subtitle:chart.options?.plugins?.subtitle?.color,
-      scales:{},
-      datasets:(chart.data?.datasets||[]).map(ds=>({
-        backgroundColor:clone(ds.backgroundColor),borderColor:clone(ds.borderColor),
-        pointBackgroundColor:clone(ds.pointBackgroundColor),pointBorderColor:clone(ds.pointBorderColor),
-        gridColor:ds.gridColor
-      }))
-    };
-    Object.keys(chart.options?.scales||{}).forEach(k=>{
-      const s=chart.options.scales[k]||{};
-      chart.__masterDarkSaved.scales[k]={
-        ticks:s.ticks?.color,grid:s.grid?.color,border:s.border?.color
-      };
-    });
-  }
-  function patch(chart,dark){
-    if(!chart||!chart.options)return;
-    remember(chart);
-    const o=chart.options, plugins=o.plugins||(o.plugins={});
-    const legend=plugins.legend||(plugins.legend={});
-    legend.labels=legend.labels||{};
-    if(dark){
-      o.color=P.text;
-      legend.labels.color=P.text;
-      if(plugins.title)plugins.title.color=P.text;
-      if(plugins.subtitle)plugins.subtitle.color=P.muted;
-      Object.values(o.scales||{}).forEach(s=>{
-        s.ticks=s.ticks||{};s.ticks.color=P.muted;
-        s.grid=s.grid||{};s.grid.color=P.grid;
-        s.border=s.border||{};s.border.color=P.border;
-      });
-      (chart.data?.datasets||[]).forEach((ds,i)=>{
-        const base=darkColors[i%darkColors.length];
-        const isArray=Array.isArray(ds.backgroundColor);
-        ds.backgroundColor=isArray?ds.backgroundColor.map((_,j)=>darkColors[j%darkColors.length]):base;
-        if(ds.borderColor!==undefined)ds.borderColor=Array.isArray(ds.borderColor)?ds.borderColor.map((_,j)=>darkColors[j%darkColors.length]):base;
-        if(ds.pointBackgroundColor!==undefined)ds.pointBackgroundColor=base;
-        if(ds.pointBorderColor!==undefined)ds.pointBorderColor=P.text;
-      });
-      chart.__masterDark=true;
-    }else{
-      const r=chart.__masterDarkSaved;
-      if(!r)return;
-      o.color=r.options.color;
-      legend.labels.color=r.legend;
-      if(plugins.title)plugins.title.color=r.title;
-      if(plugins.subtitle)plugins.subtitle.color=r.subtitle;
-      Object.keys(r.scales).forEach(k=>{
-        const s=o.scales?.[k],v=r.scales[k];if(!s)return;
-        s.ticks=s.ticks||{};s.grid=s.grid||{};s.border=s.border||{};
-        s.ticks.color=v.ticks;s.grid.color=v.grid;s.border.color=v.border;
-      });
-      (chart.data?.datasets||[]).forEach((ds,i)=>{
-        const v=r.datasets[i];if(!v)return;
-        ds.backgroundColor=v.backgroundColor;ds.borderColor=v.borderColor;
-        ds.pointBackgroundColor=v.pointBackgroundColor;ds.pointBorderColor=v.pointBorderColor;
-      });
-      chart.__masterDark=false;
-    }
-    try{chart.update('none')}catch(e){try{chart.update()}catch(_){}}
-  }
-  function apply(){
-    if(!window.Chart)return;
-    const dark=document.body.classList.contains('dashboard-dark');
-    Chart.defaults.color=dark?P.text:light.text;
-    Chart.defaults.borderColor=dark?P.grid:light.grid;
-    if(Chart.defaults.plugins?.legend?.labels)Chart.defaults.plugins.legend.labels.color=dark?P.text:light.text;
-    document.querySelectorAll('canvas').forEach(c=>{
-      try{const ch=Chart.getChart(c);if(ch)patch(ch,dark)}catch(e){}
-    });
-  }
-  window.applyMasterDarkMode=apply;
-  let timer=null;
-  function start(){
-    if(timer)clearInterval(timer);
-    timer=setInterval(apply,700);
-    apply();
-  }
-  const watchTheme=new MutationObserver(()=>apply());
-  if(document.body)watchTheme.observe(document.body,{attributes:true,attributeFilter:['class']});
-  document.addEventListener('DOMContentLoaded',start,{once:true});
-  setTimeout(start,400);
-})();
+/* Dark-mode chart styling is handled by darkModeReferenceChartEngine. */
 </script>
 
 <style id="darkModeProgressMonitoringProblemFix">
@@ -12567,54 +12493,24 @@ body.dashboard-dark:not(.login-locked) #problem .problem-trend-container{
 <script id="finalRepairProblemChartsAndDownload">
 (function(){
   'use strict';
-  function problemCharts(){
-    return [window.problemCustomerChart,window.problemStatusChart,window.problemPartChart,window.problemPICChart,window.problemTrendChart].filter(Boolean);
+  function resizeProblemCharts(){
+    const page=document.getElementById('problem'); if(!page)return;
+    page.querySelectorAll('.problem-chart-container,.problem-doughnut-container,.problem-trend-container').forEach(el=>{
+      const trend=el.classList.contains('problem-trend-container');
+      el.style.height=trend?'280px':'260px';
+      el.style.minHeight=trend?'280px':'260px';
+    });
+    requestAnimationFrame(()=>{
+      page.querySelectorAll('canvas').forEach(c=>{
+        try{const ch=window.Chart?.getChart?.(c); if(ch){ch.resize();ch.update('none');}}catch(e){}
+      });
+    });
   }
-  function resizeAndRefreshProblemCharts(){
-    const page=document.getElementById('problem');
-    if(!page)return;
-    const containers=page.querySelectorAll('.problem-chart-container,.problem-doughnut-container,.problem-trend-container');
-    containers.forEach(el=>{el.style.minHeight=el.classList.contains('problem-trend-container')?'280px':'260px';});
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      problemCharts().forEach(ch=>{try{ch.resize();ch.update('none')}catch(e){}});
-    }));
-  }
-  function ensureProblemCharts(){
-    if(typeof window.applyProblemFilters==='function'){
-      try{window.applyProblemFilters()}catch(e){console.warn('Problem chart redraw:',e)}
-    }
-    resizeAndRefreshProblemCharts();
-  }
-  window.addEventListener('resize',resizeAndRefreshProblemCharts);
+  window.refreshProblemChartsNow=resizeProblemCharts;
+  window.addEventListener('resize',resizeProblemCharts);
   document.addEventListener('DOMContentLoaded',()=>{
-    setTimeout(ensureProblemCharts,300);
-    setTimeout(ensureProblemCharts,1200);
-    setTimeout(ensureProblemCharts,2500);
+    [250,800,1600].forEach(ms=>setTimeout(resizeProblemCharts,ms));
   });
-
-  /* The download page had two competing preview renderers. Keep the first,
-     filter-aware renderer authoritative and stop the second renderer from
-     repeatedly replacing its DOM every few seconds. */
-  const stopDuplicateDownloadLoop=()=>{
-    try{
-      if(window.__downloadStableRepair)return;
-      window.__downloadStableRepair=true;
-      const page=document.getElementById('download');
-      if(!page)return;
-      let lastKey='';
-      const stabilize=()=>{
-        if(!page.classList.contains('active-page'))return;
-        const body=document.getElementById('downloadPreviewBody');
-        const head=document.getElementById('downloadPreviewHead');
-        if(!body||!head)return;
-        const key=(head.innerHTML.length)+'|'+(body.innerHTML.length)+'|'+(document.getElementById('downloadCount')?.textContent||'');
-        if(key!==lastKey){lastKey=key;}
-      };
-      window.addEventListener('resize',stabilize);
-      /* Do not poll/rewrite preview. Data changes already trigger the real update handler. */
-    }catch(e){console.warn('Download stability repair:',e)}
-  };
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',stopDuplicateDownloadLoop,{once:true});else stopDuplicateDownloadLoop();
 })();
 </script>
 </body>
