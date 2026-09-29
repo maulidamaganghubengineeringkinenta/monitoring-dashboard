@@ -1726,6 +1726,100 @@ body:not(.dashboard-dark):not(.login-locked) #download .download-count{
 }
 </style>
 
+
+<style id="globalTableDensitySettings">
+/* =========================================================
+   GLOBAL TABLE DENSITY
+   Pengaturan Ukuran Tabel berlaku ke seluruh tabel dashboard:
+   Progress, Problem, Monitoring/Report, WP Flow, dan Download.
+   ========================================================= */
+:root{
+  --table-pad-y: 9px;
+  --table-pad-x: 9px;
+  --table-head-pad-y: 9px;
+  --table-font-size: 11px;
+}
+
+body.table-density-compact{
+  --table-pad-y: 5px;
+  --table-pad-x: 8px;
+  --table-head-pad-y: 6px;
+  --table-font-size: 10px;
+}
+
+body.table-density-large{
+  --table-pad-y: 12px;
+  --table-pad-x: 10px;
+  --table-head-pad-y: 12px;
+  --table-font-size: 12px;
+}
+
+/* Main Progress / Problem / Monitoring tables */
+body.table-density-compact .table-container table th,
+body.table-density-compact .table-container table td,
+body.table-density-large .table-container table th,
+body.table-density-large .table-container table td,
+body:not(.table-density-compact):not(.table-density-large) .table-container table th,
+body:not(.table-density-compact):not(.table-density-large) .table-container table td{
+  font-size: var(--table-font-size);
+  padding-left: var(--table-pad-x) !important;
+  padding-right: var(--table-pad-x) !important;
+}
+
+body.table-density-compact .table-container table th,
+body.table-density-compact .table-container table td{padding-top:var(--table-pad-y)!important;padding-bottom:var(--table-pad-y)!important}
+body.table-density-large .table-container table th,
+body.table-density-large .table-container table td{padding-top:var(--table-pad-y)!important;padding-bottom:var(--table-pad-y)!important}
+
+/* Explicit dashboard tables */
+body.table-density-compact .stage6-report-table th,
+body.table-density-compact .stage6-report-table td,
+body.table-density-compact .problem-table th,
+body.table-density-compact .problem-table td,
+body.table-density-compact .wp-flow-table th,
+body.table-density-compact .wp-flow-table td,
+body.table-density-compact .download-preview-table th,
+body.table-density-compact .download-preview-table td{
+  padding-top:var(--table-pad-y)!important;
+  padding-bottom:var(--table-pad-y)!important;
+  padding-left:var(--table-pad-x)!important;
+  padding-right:var(--table-pad-x)!important;
+  font-size:var(--table-font-size)!important;
+}
+
+body.table-density-large .stage6-report-table th,
+body.table-density-large .stage6-report-table td,
+body.table-density-large .problem-table th,
+body.table-density-large .problem-table td,
+body.table-density-large .wp-flow-table th,
+body.table-density-large .wp-flow-table td,
+body.table-density-large .download-preview-table th,
+body.table-density-large .download-preview-table td{
+  padding-top:var(--table-pad-y)!important;
+  padding-bottom:var(--table-pad-y)!important;
+  padding-left:var(--table-pad-x)!important;
+  padding-right:var(--table-pad-x)!important;
+  font-size:var(--table-font-size)!important;
+}
+
+/* Keep the download preview's existing Normal/Compact/Large behavior compatible. */
+body.table-density-compact .download-preview-table td,
+body.table-density-compact .download-preview-table th{padding-top:5px!important;padding-bottom:5px!important}
+body.table-density-large .download-preview-table td,
+body.table-density-large .download-preview-table th{padding-top:12px!important;padding-bottom:12px!important}
+
+/* Density also applies to report tables rendered dynamically. */
+body.table-density-compact #stage6ReportContent .stage6-report-table th,
+body.table-density-compact #stage6ReportContent .stage6-report-table td{padding-top:5px!important;padding-bottom:5px!important}
+body.table-density-large #stage6ReportContent .stage6-report-table th,
+body.table-density-large #stage6ReportContent .stage6-report-table td{padding-top:12px!important;padding-bottom:12px!important}
+
+/* Slightly reduce row gaps created by action/status content in compact mode. */
+body.table-density-compact .table-container .table-status,
+body.table-density-compact .table-container .badge,
+body.table-density-compact .table-container .status-badge{transform:scale(.94);transform-origin:center}
+</style>
+
 </head>
 
 <body class="login-locked">
@@ -4162,7 +4256,7 @@ body:not(.dashboard-dark):not(.login-locked) #download .download-count{
                                 <select id="settingsTheme" class="settings-control"><option value="light">Light</option><option value="dark">Dark</option></select>
                             </div>
                             <div class="settings-field">
-                                <div><label for="settingsDensity">Ukuran Tabel</label><small>Atur kepadatan baris pada tabel preview.</small></div>
+                                <div><label for="settingsDensity">Ukuran Tabel</label><small>Atur kepadatan baris pada tabel di seluruh dashboard.</small></div>
                                 <select id="settingsDensity" class="settings-control"><option value="normal">Normal</option><option value="compact">Compact</option><option value="large">Large</option></select>
                             </div>
                             <div class="settings-field">
