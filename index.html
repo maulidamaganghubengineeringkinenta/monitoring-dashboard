@@ -10614,7 +10614,13 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
         return [...new Set(rows.map(r=>String(r[index]??"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"id"));
     }
     function fillList(id, values){ const el=q(id); if(!el)return; el.innerHTML=values.map(v=>`<option value="${esc(v)}"></option>`).join(""); }
-    function fillProcess(){ const el=q("dlProcess"); if(!el)return; el.innerHTML='<option value="">Semua Process</option>'+((typeof PROCESS_COLUMNS !== "undefined" ? PROCESS_COLUMNS : []).map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join("")); }
+    function fillProcess(){
+        const el=q("dlProcess");
+        if(!el)return;
+        const current=el.value || "";
+        el.innerHTML='<option value="">Semua Process</option>'+((typeof PROCESS_COLUMNS !== "undefined" ? PROCESS_COLUMNS : []).map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join(""));
+        if(current && [...el.options].some(o=>o.value===current)) el.value=current;
+    }
     function populateLists(){
         fillList("dlCustomerList",uniqueValues(progressRows(),1)); fillList("dlWpList",uniqueValues(progressRows(),3)); fillList("dlAssyList",uniqueValues(progressRows(),2)); fillList("dlCctList",uniqueValues(progressRows(),4));
         fillList("dlProblemCustomerList",uniqueValues(problemRows(),3)); fillList("dlProblemPicList",uniqueValues(problemRows(),12)); fillList("dlProblemPartList",uniqueValues(problemRows(),5)); fillList("dlProblemWipList",uniqueValues(problemRows(),4)); fillProcess();
@@ -12511,6 +12517,229 @@ body.dashboard-dark:not(.login-locked) #problem .problem-trend-container{
   document.addEventListener('DOMContentLoaded',()=>{
     [250,800,1600].forEach(ms=>setTimeout(resizeProblemCharts,ms));
   });
+})();
+</script>
+
+
+<!-- FINAL CONTRAST + DOWNLOAD PROCESS FILTER REPAIR -->
+<style id="finalContrastAllSheetsRepair">
+/* =========================================================
+   GLOBAL CONTRAST RULES
+   Light surface  -> dark readable text
+   Dark surface   -> white / very-light readable text
+========================================================= */
+:root{
+  --ui-dark-text:#263238;
+  --ui-light-text:#f7f9fb;
+  --ui-muted-dark:#5b6971;
+  --ui-muted-light:#cfd6dc;
+}
+
+/* ---------- DARK MODE: all dashboard surfaces ---------- */
+body.dashboard-dark:not(.login-locked) .page,
+body.dashboard-dark:not(.login-locked) .page *{
+  text-shadow:none!important;
+}
+body.dashboard-dark:not(.login-locked) .page h1,
+body.dashboard-dark:not(.login-locked) .page h2,
+body.dashboard-dark:not(.login-locked) .page h3,
+body.dashboard-dark:not(.login-locked) .page h4,
+body.dashboard-dark:not(.login-locked) .page h5,
+body.dashboard-dark:not(.login-locked) .page h6,
+body.dashboard-dark:not(.login-locked) .page strong,
+body.dashboard-dark:not(.login-locked) .page b,
+body.dashboard-dark:not(.login-locked) .page th{
+  color:var(--ui-light-text)!important;
+}
+body.dashboard-dark:not(.login-locked) .page p,
+body.dashboard-dark:not(.login-locked) .page small,
+body.dashboard-dark:not(.login-locked) .page label,
+body.dashboard-dark:not(.login-locked) .page .muted,
+body.dashboard-dark:not(.login-locked) .page .description,
+body.dashboard-dark:not(.login-locked) .page .subtitle,
+body.dashboard-dark:not(.login-locked) .page .helper,
+body.dashboard-dark:not(.login-locked) .page .hint,
+body.dashboard-dark:not(.login-locked) .page .note{
+  color:var(--ui-muted-light)!important;
+}
+body.dashboard-dark:not(.login-locked) .page input,
+body.dashboard-dark:not(.login-locked) .page select,
+body.dashboard-dark:not(.login-locked) .page textarea{
+  color:var(--ui-light-text)!important;
+  -webkit-text-fill-color:var(--ui-light-text)!important;
+  background:#20242a!important;
+  border-color:#3b424b!important;
+}
+body.dashboard-dark:not(.login-locked) .page input::placeholder,
+body.dashboard-dark:not(.login-locked) .page textarea::placeholder{
+  color:#aeb7bf!important;
+  opacity:1!important;
+}
+body.dashboard-dark:not(.login-locked) .page option{
+  background:#20242a!important;
+  color:#f7f9fb!important;
+}
+body.dashboard-dark:not(.login-locked) .page table td{
+  color:#e7ebef!important;
+}
+body.dashboard-dark:not(.login-locked) .page table th{
+  color:#ffffff!important;
+}
+
+/* Progress */
+body.dashboard-dark:not(.login-locked) #progress .kpi-card,
+body.dashboard-dark:not(.login-locked) #progress .card,
+body.dashboard-dark:not(.login-locked) #progress .panel,
+body.dashboard-dark:not(.login-locked) #progress .section-card,
+body.dashboard-dark:not(.login-locked) #progress .chart-card,
+body.dashboard-dark:not(.login-locked) #progress .table-card,
+body.dashboard-dark:not(.login-locked) #progress .filter-card{
+  background:#20242a!important;
+  color:#f7f9fb!important;
+  border-color:#353c45!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .kpi-card *,
+body.dashboard-dark:not(.login-locked) #progress .card *,
+body.dashboard-dark:not(.login-locked) #progress .panel *,
+body.dashboard-dark:not(.login-locked) #progress .section-card *,
+body.dashboard-dark:not(.login-locked) #progress .chart-card *,
+body.dashboard-dark:not(.login-locked) #progress .table-card *{
+  border-color:#353c45;
+}
+
+/* Monitoring */
+body.dashboard-dark:not(.login-locked) #monitoring .kpi-card,
+body.dashboard-dark:not(.login-locked) #monitoring .card,
+body.dashboard-dark:not(.login-locked) #monitoring .panel,
+body.dashboard-dark:not(.login-locked) #monitoring .section-card,
+body.dashboard-dark:not(.login-locked) #monitoring .chart-card,
+body.dashboard-dark:not(.login-locked) #monitoring .table-card,
+body.dashboard-dark:not(.login-locked) #monitoring .filter-card,
+body.dashboard-dark:not(.login-locked) #monitoring .calendar-card{
+  background:#20242a!important;
+  color:#f7f9fb!important;
+  border-color:#353c45!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .kpi-card *,
+body.dashboard-dark:not(.login-locked) #monitoring .card *,
+body.dashboard-dark:not(.login-locked) #monitoring .panel *,
+body.dashboard-dark:not(.login-locked) #monitoring .section-card *,
+body.dashboard-dark:not(.login-locked) #monitoring .chart-card *,
+body.dashboard-dark:not(.login-locked) #monitoring .table-card *,
+body.dashboard-dark:not(.login-locked) #monitoring .calendar-card *{
+  border-color:#353c45;
+}
+
+/* Problem */
+body.dashboard-dark:not(.login-locked) #problem .kpi-card,
+body.dashboard-dark:not(.login-locked) #problem .card,
+body.dashboard-dark:not(.login-locked) #problem .panel,
+body.dashboard-dark:not(.login-locked) #problem .section-card,
+body.dashboard-dark:not(.login-locked) #problem .chart-card,
+body.dashboard-dark:not(.login-locked) #problem .table-card,
+body.dashboard-dark:not(.login-locked) #problem .filter-card{
+  background:#20242a!important;
+  color:#f7f9fb!important;
+  border-color:#353c45!important;
+}
+
+/* Download + WP Flow already have good dark treatment: keep their semantic accents,
+   but guarantee text contrast inside any bright surface that remains. */
+body.dashboard-dark:not(.login-locked) #download .download-card-head strong,
+body.dashboard-dark:not(.login-locked) #download .download-field label,
+body.dashboard-dark:not(.login-locked) #download .download-card-head small,
+body.dashboard-dark:not(.login-locked) #download .download-note,
+body.dashboard-dark:not(.login-locked) #download .download-count{
+  color:#e9eef2!important;
+}
+
+/* ---------- LIGHT MODE: prevent white text on bright cards ---------- */
+body:not(.dashboard-dark):not(.login-locked) .page h1,
+body:not(.dashboard-dark):not(.login-locked) .page h2,
+body:not(.dashboard-dark):not(.login-locked) .page h3,
+body:not(.dashboard-dark):not(.login-locked) .page h4,
+body:not(.dashboard-dark):not(.login-locked) .page h5,
+body:not(.dashboard-dark):not(.login-locked) .page h6,
+body:not(.dashboard-dark):not(.login-locked) .page label,
+body:not(.dashboard-dark):not(.login-locked) .page th{
+  color:#263238;
+}
+body:not(.dashboard-dark):not(.login-locked) .page p,
+body:not(.dashboard-dark):not(.login-locked) .page small{
+  color:#5d6c74;
+}
+body:not(.dashboard-dark):not(.login-locked) .page input,
+body:not(.dashboard-dark):not(.login-locked) .page select,
+body:not(.dashboard-dark):not(.login-locked) .page textarea{
+  color:#263238;
+  -webkit-text-fill-color:#263238;
+}
+
+/* ---------- semantic bright badges/chips: force the appropriate dark text ---------- */
+body.dashboard-dark:not(.login-locked) .page .download-chip.active,
+body.dashboard-dark:not(.login-locked) .page .status-chip,
+body.dashboard-dark:not(.login-locked) .page .badge,
+body.dashboard-dark:not(.login-locked) .page .pill{
+  text-shadow:none!important;
+}
+</style>
+
+<script id="contrastAutoRepair">
+(function(){
+  const TEXT_NODES='h1,h2,h3,h4,h5,h6,p,span,small,label,strong,b,a,button,th,td,li,div';
+  const SKIP='canvas,svg,script,style,option,textarea,input,select';
+  function parseRgb(c){
+    if(!c || c==='transparent') return null;
+    const m=c.match(/rgba?\\(([^)]+)\\)/i); if(!m)return null;
+    const p=m[1].split(',').map(x=>parseFloat(x.trim()));
+    if(p.length<3)return null;
+    const a=p.length>3?p[3]:1; if(a===0)return null;
+    return {r:p[0],g:p[1],b:p[2],a};
+  }
+  function lum(c){
+    const f=v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};
+    return .2126*f(c.r)+.7152*f(c.g)+.0722*f(c.b);
+  }
+  function effectiveBg(el){
+    let n=el;
+    while(n && n!==document.body){
+      const cs=getComputedStyle(n), c=parseRgb(cs.backgroundColor);
+      if(c && c.a>0.05)return c;
+      n=n.parentElement;
+    }
+    const bc=parseRgb(getComputedStyle(document.body).backgroundColor);
+    return bc||{r:32,g:36,b:42,a:1};
+  }
+  function textLum(cs){const c=parseRgb(cs.color);return c?lum(c):null;}
+  function repair(){
+    const dark=document.body.classList.contains('dashboard-dark');
+    document.querySelectorAll('.page').forEach(page=>{
+      page.querySelectorAll(TEXT_NODES).forEach(el=>{
+        if(el.matches(SKIP))return;
+        if(!el.textContent.trim())return;
+        if(el.closest('canvas,svg,script,style'))return;
+        const cs=getComputedStyle(el);
+        if(cs.display==='none'||cs.visibility==='hidden')return;
+        const bg=effectiveBg(el), bl=lum(bg), tl=textLum(cs);
+        if(tl===null)return;
+        // Only repair clearly broken contrast; preserve intentional accent colors.
+        if(bl<0.22 && tl<0.38){
+          el.style.setProperty('color','#f7f9fb','important');
+          el.style.setProperty('-webkit-text-fill-color','#f7f9fb','important');
+        }else if(bl>0.72 && tl>0.72){
+          el.style.setProperty('color','#263238','important');
+          el.style.setProperty('-webkit-text-fill-color','#263238','important');
+        }
+      });
+    });
+  }
+  let timer=0;
+  function schedule(){clearTimeout(timer);timer=setTimeout(repair,80);}
+  window.repairAllTextContrast=repair;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
+  const obs=new MutationObserver(schedule);
+  obs.observe(document.body,{attributes:true,attributeFilter:['class'],subtree:true,childList:true});
+  window.addEventListener('resize',schedule);
 })();
 </script>
 </body>
