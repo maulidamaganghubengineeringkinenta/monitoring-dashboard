@@ -1538,6 +1538,194 @@ body.dashboard-dark:not(.login-locked) [style*="background: #ffffff"]{
 </style>
 
 
+
+<style id="finalContrastRepairV2">
+/* =========================================================
+   FINAL READABILITY PASS
+   Rule: dark background -> bright text; light background -> dark text.
+========================================================= */
+
+/* ---------- GLOBAL GREETING / LIVE AREA ---------- */
+body.dashboard-dark:not(.login-locked) .dashboard-greeting{
+  background:#202329!important;
+  border-color:#3a4048!important;
+  color:#f7f9fb!important;
+}
+body.dashboard-dark:not(.login-locked) .dashboard-greeting-title,
+body.dashboard-dark:not(.login-locked) .dashboard-greeting-status{
+  color:#ffffff!important;
+}
+body.dashboard-dark:not(.login-locked) .dashboard-greeting-sub{
+  color:#d2d7dd!important;
+}
+body.dashboard-dark:not(.login-locked) .cute-status-card,
+body.dashboard-dark:not(.login-locked) .cute-clock-card{
+  background:#202329!important;
+  border-color:#3a4048!important;
+  color:#f7f9fb!important;
+}
+body.dashboard-dark:not(.login-locked) .cute-status-label,
+body.dashboard-dark:not(.login-locked) .cute-kicker,
+body.dashboard-dark:not(.login-locked) .cute-date{
+  color:#d4dae0!important;
+}
+body.dashboard-dark:not(.login-locked) .cute-status-title,
+body.dashboard-dark:not(.login-locked) .cute-clock{
+  color:#ffffff!important;
+}
+body.dashboard-dark:not(.login-locked) .cute-status-sub{
+  color:#c8ced5!important;
+}
+body.dashboard-dark:not(.login-locked) .live-indicator{
+  background:#202329!important;
+  border:1px solid #3a4048!important;
+  color:#ffffff!important;
+}
+body.dashboard-dark:not(.login-locked) .live-indicator span{
+  background:#67d391!important;
+  box-shadow:0 0 0 3px rgba(103,211,145,.14)!important;
+}
+
+body:not(.dashboard-dark):not(.login-locked) .dashboard-greeting-title,
+body:not(.dashboard-dark):not(.login-locked) .cute-status-title,
+body:not(.dashboard-dark):not(.login-locked) .cute-clock,
+body:not(.dashboard-dark):not(.login-locked) .live-indicator{
+  color:#263238!important;
+}
+body:not(.dashboard-dark):not(.login-locked) .dashboard-greeting-sub,
+body:not(.dashboard-dark):not(.login-locked) .cute-status-sub,
+body:not(.dashboard-dark):not(.login-locked) .cute-date,
+body:not(.dashboard-dark):not(.login-locked) .cute-status-label{
+  color:#596970!important;
+}
+
+/* ---------- PROGRESS: PRODUCTION READING ---------- */
+body.dashboard-dark:not(.login-locked) #progress #automaticProductionReading{
+  background:#272b31!important;
+  border-color:#3a4048!important;
+  color:#f7f9fb!important;
+}
+body.dashboard-dark:not(.login-locked) #progress #automaticProductionReading *{
+  color:#f0f3f6!important;
+}
+body:not(.dashboard-dark):not(.login-locked) #progress #automaticProductionReading{
+  color:#263238!important;
+}
+
+/* ---------- PROBLEM: STATUS CELLS + GOOGLE SHEETS ---------- */
+body.dashboard-dark:not(.login-locked) #problem .problem-status-open,
+body.dashboard-dark:not(.login-locked) #problem .problem-status-close,
+body.dashboard-dark:not(.login-locked) #problem .table-status-open,
+body.dashboard-dark:not(.login-locked) #problem .table-status-close{
+  background:#30353d!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  border-color:#4a515a!important;
+  font-weight:900!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .problem-status-open,
+body.dashboard-dark:not(.login-locked) #problem .table-status-open{
+  background:#263b32!important;
+  color:#8ff0b8!important;
+  -webkit-text-fill-color:#8ff0b8!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .problem-status-close,
+body.dashboard-dark:not(.login-locked) #problem .table-status-close{
+  background:#30353d!important;
+  color:#f1f4f7!important;
+  -webkit-text-fill-color:#f1f4f7!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .data-source{
+  background:#272b31!important;
+  border-color:#3a4048!important;
+  color:#f7f9fb!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .data-source strong{
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .data-source small{
+  color:#c8ced5!important;
+  -webkit-text-fill-color:#c8ced5!important;
+}
+body:not(.dashboard-dark):not(.login-locked) #problem .problem-status-open,
+body:not(.dashboard-dark):not(.login-locked) #problem .problem-status-close,
+body:not(.dashboard-dark):not(.login-locked) #problem .table-status-open,
+body:not(.dashboard-dark):not(.login-locked) #problem .table-status-close{
+  color:#263238!important;
+  -webkit-text-fill-color:#263238!important;
+}
+
+/* ---------- MONITORING: TITLES / CALENDAR / TIMELINE ---------- */
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-section h3,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage2-card h3,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-month,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-label,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-job-meta .value,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert-title,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-pic-name,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-pic-count{
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-job-meta .label,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-sub,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-note,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert-sub,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-weekday,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-empty,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-quick-title,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-result small{
+  color:#d0d6dc!important;
+  -webkit-text-fill-color:#d0d6dc!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-job-meta{
+  background:#272b31!important;
+  border-color:#3a4048!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-step:not(:last-child)::after{
+  background:#4a515a!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-step.done:not(:last-child)::after{
+  background:#7d99ad!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-dot{
+  background:#30353d!important;
+  border-color:#555c65!important;
+  color:#f7f9fb!important;
+  box-shadow:0 0 0 1px #555c65!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-step.done .monitor-timeline-dot{
+  background:#5f7180!important;
+  border-color:#6f8291!important;
+  color:#ffffff!important;
+  box-shadow:0 0 0 1px #6f8291!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-step.current .monitor-timeline-dot{
+  background:#272b31!important;
+  color:#b9a4ff!important;
+  box-shadow:0 0 0 2px #9b82ff!important;
+}
+
+/* ---------- DOWNLOAD: PREVIEW COUNT ---------- */
+body.dashboard-dark:not(.login-locked) #download .download-count{
+  background:#30353d!important;
+  border:1px solid #4a515a!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+body.dashboard-dark:not(.login-locked) #download .download-card-head strong{
+  color:#ffffff!important;
+}
+body.dashboard-dark:not(.login-locked) #download .download-card-head small{
+  color:#c8ced5!important;
+}
+body:not(.dashboard-dark):not(.login-locked) #download .download-count{
+  color:#263238!important;
+  -webkit-text-fill-color:#263238!important;
+}
+</style>
+
 </head>
 
 <body class="login-locked">
@@ -10718,7 +10906,12 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
         const src=q("downloadSource")?.value==="problem"?"Problem":"Progress 2026"; const chips=[...document.querySelectorAll('.download-chip.active')]; const quick=chips[0]?.textContent?.trim()||"Semua"; return `${src} · ${quick} · filter manual diterapkan`;
     }
     function update(){
+        const __downloadProcessValue = q("dlProcess")?.value || "";
         populateLists();
+        const __dlProcess = q("dlProcess");
+        if(__dlProcess && __downloadProcessValue && [...__dlProcess.options].some(o=>o.value===__downloadProcessValue)){
+            __dlProcess.value=__downloadProcessValue;
+        }
         const isProblem=q("downloadSource")?.value==="problem";
         const pf=q("downloadProgressFilters"),pr=q("downloadProblemFilters");
         if(pf)pf.style.display=isProblem?"none":"block";
@@ -12742,6 +12935,57 @@ body.dashboard-dark:not(.login-locked) .page .pill{
   window.addEventListener('resize',schedule);
 })();
 </script>
+
+<script id="finalDownloadProcessStateRepair">
+(function(){
+  'use strict';
+  function q(id){return document.getElementById(id);}
+  function captureDownloadFilters(){
+    const ids=['dlStatus','dlCustomer','dlWp','dlAssy','dlCct','dlProcess','dlQtyMin','dlQtyMax','dlEtdFrom','dlEtdTo','dlReschedule','dlRescheduleFrom','dlRescheduleTo','dlStartFrom','dlStartTo','dlFinishFrom','dlFinishTo','dlLeadMin','dlLeadMax','dlProblemStatus','dlProblemCustomer','dlProblemPic','dlProblemPart','dlProblemWip','dlProblemDateFrom','dlProblemDateTo','dlProblemMinusMin','dlProblemMinusMax'];
+    const out={}; ids.forEach(id=>{const el=q(id); if(el) out[id]=el.value;}); return out;
+  }
+  function restoreDownloadFilters(state){
+    Object.entries(state||{}).forEach(([id,val])=>{const el=q(id); if(el && [...(el.options||[])].some(o=>o.value===val) || el && !('options' in el)) el.value=val;});
+  }
+  function patchUpdate(){
+    if(typeof window.__downloadUpdatePatched==='boolean') return;
+    const scripts=[...document.scripts].map(s=>s.textContent||'').filter(t=>t.includes('function populateLists()')&&t.includes('function update()')&&t.includes('downloadCount'));
+    if(!scripts.length) return;
+    /* The original update() is already bound to the UI. We cannot replace its closure safely;
+       instead preserve the selected Process whenever its options are rebuilt. */
+    const el=q('dlProcess');
+    if(!el) return;
+    const observer=new MutationObserver(()=>{
+      const desired=el.dataset.keepValue;
+      if(desired && [...el.options].some(o=>o.value===desired) && el.value!==desired){
+        el.value=desired;
+        delete el.dataset.keepValue;
+      }
+    });
+    observer.observe(el,{childList:true});
+    el.addEventListener('change',()=>{el.dataset.keepValue=el.value;},true);
+    window.__downloadUpdatePatched=true;
+  }
+  function bind(){
+    const el=q('dlProcess');
+    if(!el) return;
+    el.addEventListener('change',()=>{
+      /* Keep the selected process stable across any list repopulation triggered by update(). */
+      const v=el.value;
+      el.dataset.keepValue=v;
+      setTimeout(()=>{
+        if(v && [...el.options].some(o=>o.value===v)) el.value=v;
+      },0);
+      setTimeout(()=>{
+        if(v && [...el.options].some(o=>o.value===v)) el.value=v;
+      },100);
+    },true);
+    patchUpdate();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind,{once:true}); else bind();
+})();
+</script>
+
 </body>
 
 </html>
