@@ -828,6 +828,101 @@ body.settings-compact .settings-card{padding:16px}.table-density-compact .downlo
 body.settings-dark-preview .settings-hero{background:linear-gradient(135deg,#26353c,#31444d);border-color:#425862}.settings-dark-preview .settings-hero h2,.settings-dark-preview .settings-hero p{color:#edf4f6}.settings-dark-preview .settings-hero p{color:#c0cdd2}.settings-dark-preview .settings-hero-icon{background:#344951;border-color:#52666e}.settings-dark-preview .settings-card{background:#26353c;border-color:#43565e}.settings-dark-preview .settings-card-head{border-color:#3b4d55}.settings-dark-preview .settings-card-head h3,.settings-dark-preview .settings-field label{color:#e2ebee}.settings-dark-preview .settings-card-head p,.settings-dark-preview .settings-field small,.settings-dark-preview .settings-save-note{color:#aebdc3}.settings-dark-preview .settings-control{background:#31434b;border-color:#52666e;color:#e6eef0}.settings-dark-preview .settings-user-badge,.settings-dark-preview .settings-permission{background:#2d3e46;border-color:#43565e}.settings-dark-preview .settings-user-badge strong,.settings-dark-preview .settings-permission span{color:#e0e9ec}.settings-dark-preview .settings-user-badge span{color:#aebdc3}.settings-dark-preview .settings-actions{border-color:#3b4d55}.settings-dark-preview .settings-btn{background:#31434b;border-color:#52666e;color:#e6eef0}
 </style>
 
+<style id="settingsFinalCSS">
+/* Settings navigation: pin the gear menu to the lower-left sidebar */
+.sidebar{position:fixed !important;display:flex !important;flex-direction:column !important;box-sizing:border-box;}
+.sidebar-settings-bottom{margin-top:auto !important;margin-left:14px !important;margin-right:14px !important;width:calc(100% - 28px) !important;flex:none !important;}
+.sidebar .logout-button{flex:none !important;}
+.sidebar-bottom{flex:none !important;}
+
+/* Data settings cards */
+.settings-data-actions{display:flex;flex-direction:column;gap:10px;margin-top:2px}
+.settings-data-btn{width:100%;display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid #dce7eb;background:#f8fbfc;border-radius:12px;text-align:left;cursor:pointer;transition:.18s ease;color:#273943}
+.settings-data-btn:hover{transform:translateY(-1px);border-color:#9fc0cc;box-shadow:0 5px 14px rgba(36,65,78,.08)}
+.settings-data-btn:active{transform:translateY(0)}
+.settings-data-btn-icon{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:#eaf4f7;font-size:17px;flex:none}
+.settings-data-btn strong{display:block;font-size:12px;font-weight:800}
+.settings-data-btn small{display:block;margin-top:3px;color:#7a8a92;font-size:10px;line-height:1.4}
+.settings-data-btn.danger{background:#fff8f7;border-color:#f0d8d4}
+.settings-data-btn.danger .settings-data-btn-icon{background:#fdebea}
+.settings-data-status{margin-top:14px;padding:10px 12px;border-radius:10px;background:#eef8f2;color:#47735a;font-size:10px;font-weight:700;border:1px solid #d8ecdf}
+.settings-data-status.error{background:#fff1f0;color:#a44c46;border-color:#f0d3d0}
+
+/* Real dashboard dark mode */
+body.dashboard-dark:not(.login-locked){background:#111a1f !important;color:#dce6ea !important}
+body.dashboard-dark:not(.login-locked) .main{background:#111a1f !important;color:#dce6ea !important}
+body.dashboard-dark:not(.login-locked) .topbar,
+body.dashboard-dark:not(.login-locked) .panel,
+body.dashboard-dark:not(.login-locked) .card,
+body.dashboard-dark:not(.login-locked) .kpi-card,
+body.dashboard-dark:not(.login-locked) .process-card,
+body.dashboard-dark:not(.login-locked) .filter-panel,
+body.dashboard-dark:not(.login-locked) .filter-card,
+body.dashboard-dark:not(.login-locked) .download-filter-card,
+body.dashboard-dark:not(.login-locked) .download-preview-card,
+body.dashboard-dark:not(.login-locked) .download-hero,
+body.dashboard-dark:not(.login-locked) .settings-hero,
+body.dashboard-dark:not(.login-locked) .settings-card,
+body.dashboard-dark:not(.login-locked) .monitor-stage2-card,
+body.dashboard-dark:not(.login-locked) .cute-status-card,
+body.dashboard-dark:not(.login-locked) .cute-clock-card{background:#1d292f !important;border-color:#35464e !important;color:#dce6ea !important}
+body.dashboard-dark:not(.login-locked) .topbar h1,
+body.dashboard-dark:not(.login-locked) .page-heading,
+body.dashboard-dark:not(.login-locked) .panel h2,
+body.dashboard-dark:not(.login-locked) .panel h3,
+body.dashboard-dark:not(.login-locked) .card h2,
+body.dashboard-dark:not(.login-locked) .card h3,
+body.dashboard-dark:not(.login-locked) .kpi-value,
+body.dashboard-dark:not(.login-locked) .kpi-label,
+body.dashboard-dark:not(.login-locked) .settings-hero h2,
+body.dashboard-dark:not(.login-locked) .settings-card-head h3,
+body.dashboard-dark:not(.login-locked) .settings-field label,
+body.dashboard-dark:not(.login-locked) .settings-user-badge strong,
+body.dashboard-dark:not(.login-locked) .settings-permission span{color:#e5eef1 !important}
+body.dashboard-dark:not(.login-locked) .topbar p,
+body.dashboard-dark:not(.login-locked) .breadcrumb,
+body.dashboard-dark:not(.login-locked) .panel-subtitle,
+body.dashboard-dark:not(.login-locked) .settings-hero p,
+body.dashboard-dark:not(.login-locked) .settings-card-head p,
+body.dashboard-dark:not(.login-locked) .settings-field small,
+body.dashboard-dark:not(.login-locked) .settings-save-note,
+body.dashboard-dark:not(.login-locked) .cute-status-sub{color:#9fb0b8 !important}
+body.dashboard-dark:not(.login-locked) table{background:#1d292f !important;color:#dce6ea !important}
+body.dashboard-dark:not(.login-locked) th{background:#26363e !important;color:#e3edf0 !important;border-color:#3a4b53 !important}
+body.dashboard-dark:not(.login-locked) td{background:#1d292f !important;color:#d5e0e4 !important;border-color:#35464e !important}
+body.dashboard-dark:not(.login-locked) tr:hover td{background:#24343b !important}
+body.dashboard-dark:not(.login-locked) input,
+body.dashboard-dark:not(.login-locked) select,
+body.dashboard-dark:not(.login-locked) textarea,
+body.dashboard-dark:not(.login-locked) .settings-control{background:#26363e !important;color:#e4edef !important;border-color:#4a5d66 !important}
+body.dashboard-dark:not(.login-locked) input::placeholder{color:#84969f !important}
+body.dashboard-dark:not(.login-locked) .settings-data-btn{background:#26363e !important;color:#e3edf0 !important;border-color:#43565f !important}
+body.dashboard-dark:not(.login-locked) .settings-data-btn small{color:#9fb0b8 !important}
+body.dashboard-dark:not(.login-locked) .settings-data-btn-icon{background:#31444d !important}
+body.dashboard-dark:not(.login-locked) .settings-data-status{background:#203a2b !important;color:#9fd0ae !important;border-color:#315840 !important}
+body.dashboard-dark:not(.login-locked) .settings-data-status.error{background:#402826 !important;color:#e5aaa3 !important;border-color:#64413d !important}
+body.dashboard-dark:not(.login-locked) .download-filter-card .filter-group,
+body.dashboard-dark:not(.login-locked) .download-preview-head,
+body.dashboard-dark:not(.login-locked) .download-filter-summary{background:#26363e !important;color:#dce6ea !important;border-color:#40535c !important}
+body.dashboard-dark:not(.login-locked) .modal-content,
+body.dashboard-dark:not(.login-locked) .modal-card,
+body.dashboard-dark:not(.login-locked) .modal{background:#1d292f !important;color:#dce6ea !important}
+body.dashboard-dark:not(.login-locked) .sidebar{background:#10181d !important;border-color:#2c3d45 !important}
+body.dashboard-dark:not(.login-locked) .sidebar .menu{color:#cbd8dc !important}
+body.dashboard-dark:not(.login-locked) .sidebar .menu:hover,
+body.dashboard-dark:not(.login-locked) .sidebar .menu.active{background:#24343b !important;color:#fff !important}
+body.dashboard-dark:not(.login-locked) .sidebar-section-title{color:#7f939c !important}
+body.dashboard-dark:not(.login-locked) .sidebar-settings-bottom{border-color:#40545d !important;background:#1b282e !important}
+body.dashboard-dark:not(.login-locked) .status-order-item,
+body.dashboard-dark:not(.login-locked) .monitor-mini-stat{background:#26363e !important;color:#dce6ea !important;border-color:#40535c !important}
+body.dashboard-dark:not(.login-locked) .status-order-item strong,
+body.dashboard-dark:not(.login-locked) .monitor-mini-stat .value{color:#e4edef !important}
+body.dashboard-dark:not(.login-locked) .status-order-item small,
+body.dashboard-dark:not(.login-locked) .monitor-mini-stat .label{color:#9eafb7 !important}
+body.dashboard-dark:not(.login-locked) .filter-group label{color:#d9e4e8 !important}
+body.dashboard-dark:not(.login-locked) .settings-actions{border-color:#35464e !important}
+body.dashboard-dark:not(.login-locked) .settings-btn{background:#26363e !important;border-color:#465a63 !important;color:#e5eef1 !important}
+</style>
 </head>
 
 <body class="login-locked">
@@ -1008,16 +1103,6 @@ body.settings-dark-preview .settings-hero{background:linear-gradient(135deg,#263
             </button>
 
 
-            <button
-                class="menu" data-page="settings"
-                onclick="showPage('settings'); closeSidebar();">
-
-                <span class="menu-icon">⚙️</span>
-
-                <span>Pengaturan</span>
-
-            </button>
-
         </nav>
 
 
@@ -1061,6 +1146,11 @@ body.settings-dark-preview .settings-hero{background:linear-gradient(135deg,#263
             </a>
 </nav>
 
+
+        <button type="button" class="sidebar-settings-bottom menu" data-page="settings" onclick="showPage('settings'); closeSidebar();">
+            <span class="menu-icon">⚙️</span>
+            <span>Pengaturan</span>
+        </button>
 
         <button
             type="button"
@@ -3252,7 +3342,7 @@ body.settings-dark-preview .settings-hero{background:linear-gradient(135deg,#263
                     <div>
                         <div class="panel-kicker">SYSTEM SETTINGS</div>
                         <h2>⚙️ Pengaturan</h2>
-                        <p>Atur tampilan dashboard dan informasi pengguna dalam satu tempat.</p>
+                        <p>Atur tampilan dashboard dan pengelolaan data dalam satu tempat.</p>
                     </div>
                     <div class="settings-hero-icon">⚙️</div>
                 </div>
@@ -3281,32 +3371,24 @@ body.settings-dark-preview .settings-hero{background:linear-gradient(135deg,#263
 
                     <div class="settings-card">
                         <div class="settings-card-head">
-                            <div class="settings-card-icon">👤</div>
-                            <div><h3>Pengaturan Pengguna</h3><p>Kelola informasi akun dan hak akses pengguna.</p></div>
+                            <div class="settings-card-icon">🗄️</div>
+                            <div><h3>Pengaturan Data</h3><p>Kelola dan perbarui data dashboard dengan cepat.</p></div>
                         </div>
-                        <div class="settings-user-badge">
-                            <div class="settings-avatar" id="settingsAvatar">A</div>
-                            <div><strong id="settingsUserDisplay">Administrator</strong><span id="settingsUserRoleBadge">Administrator · Aktif</span></div>
+                        <div class="settings-data-actions">
+                            <button type="button" class="settings-data-btn" id="settingsRefreshDataBtn">
+                                <span class="settings-data-btn-icon">🔄</span>
+                                <span><strong>Refresh Data</strong><small>Ambil data terbaru dari Google Sheets.</small></span>
+                            </button>
+                            <button type="button" class="settings-data-btn" id="settingsResetFilterBtn">
+                                <span class="settings-data-btn-icon">🧹</span>
+                                <span><strong>Reset Filter</strong><small>Kembalikan filter Progress dan Problem ke kondisi awal.</small></span>
+                            </button>
+                            <button type="button" class="settings-data-btn danger" id="settingsClearCacheBtn">
+                                <span class="settings-data-btn-icon">🗑️</span>
+                                <span><strong>Hapus Pengaturan Tersimpan</strong><small>Hapus preferensi tampilan yang tersimpan di browser.</small></span>
+                            </button>
                         </div>
-                        <div class="settings-form">
-                            <div class="settings-field">
-                                <div><label for="settingsFullName">Nama Pengguna</label><small>Nama yang ditampilkan pada dashboard.</small></div>
-                                <input id="settingsFullName" class="settings-control" type="text" value="Administrator" placeholder="Nama pengguna">
-                            </div>
-                            <div class="settings-field">
-                                <div><label for="settingsUsername">Username</label><small>Username untuk login ke dashboard.</small></div>
-                                <input id="settingsUsername" class="settings-control" type="text" value="admin" readonly>
-                            </div>
-                            <div class="settings-field">
-                                <div><label for="settingsRole">Role</label><small>Hak akses akun saat ini.</small></div>
-                                <select id="settingsRole" class="settings-control"><option value="Administrator">Administrator</option><option value="Supervisor">Supervisor</option><option value="Viewer">Viewer</option></select>
-                            </div>
-                        </div>
-                        <div class="settings-permissions">
-                            <div class="settings-permission"><span>Dashboard & Monitoring</span><b>Diizinkan</b></div>
-                            <div class="settings-permission"><span>Download Data</span><b>Diizinkan</b></div>
-                            <div class="settings-permission"><span>Pengaturan</span><b id="settingsPermissionLabel">Diizinkan</b></div>
-                        </div>
+                        <div class="settings-data-status" id="settingsDataStatus">Data terhubung ke sumber Google Sheets.</div>
                     </div>
                 </div>
 
@@ -5636,43 +5718,93 @@ function clearProcessFilter() {
    SETTINGS
 ========================================================= */
 (function(){
-    const KEY = 'prototypeMonitoringSettings_v1';
-    const defaults = {theme:'light',density:'normal',autoRefresh:false,fullName:'Administrator',role:'Administrator'};
+    const KEY = 'prototypeMonitoringSettings_v2';
+    const defaults = {theme:'light',density:'normal',autoRefresh:false};
+    let autoRefreshTimer = null;
+
     function getSettings(){
-        try{return Object.assign({},defaults,JSON.parse(localStorage.getItem(KEY)||'{}'));}catch(e){return {...defaults};}
+        try { return Object.assign({}, defaults, JSON.parse(localStorage.getItem(KEY)||'{}')); }
+        catch(e) { return {...defaults}; }
     }
-    function saveSettings(data){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}}
+    function saveSettings(data){ try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){} }
+
     function applySettings(data){
-        document.body.classList.toggle('settings-compact', data.density==='compact');
-        document.body.classList.toggle('table-density-compact', data.density==='compact');
-        document.body.classList.toggle('table-density-large', data.density==='large');
-        document.body.classList.toggle('settings-dark-preview', data.theme==='dark');
-        const name=document.getElementById('settingsUserDisplay');
-        const role=document.getElementById('settingsUserRoleBadge');
-        const avatar=document.getElementById('settingsAvatar');
-        const perm=document.getElementById('settingsPermissionLabel');
-        if(name) name.textContent=data.fullName||'Administrator';
-        if(role) role.textContent=(data.role||'Administrator')+' · Aktif';
-        if(avatar) avatar.textContent=(data.fullName||'Administrator').trim().charAt(0).toUpperCase()||'A';
-        if(perm) perm.textContent=data.role==='Viewer'?'Terbatas':'Diizinkan';
+        document.body.classList.toggle('dashboard-dark', data.theme === 'dark');
+        document.body.classList.toggle('table-density-compact', data.density === 'compact');
+        document.body.classList.toggle('table-density-large', data.density === 'large');
         const theme=document.getElementById('settingsTheme'); if(theme) theme.value=data.theme;
         const density=document.getElementById('settingsDensity'); if(density) density.value=data.density;
         const refresh=document.getElementById('settingsAutoRefresh'); if(refresh) refresh.checked=!!data.autoRefresh;
-        const full=document.getElementById('settingsFullName'); if(full) full.value=data.fullName;
-        const roleSel=document.getElementById('settingsRole'); if(roleSel) roleSel.value=data.role;
+        setupAutoRefresh(!!data.autoRefresh);
     }
+
+    function setupAutoRefresh(enabled){
+        if(autoRefreshTimer){ clearInterval(autoRefreshTimer); autoRefreshTimer=null; }
+        if(!enabled) return;
+        autoRefreshTimer=setInterval(()=>{
+            if(typeof window.refreshDashboardData === 'function') window.refreshDashboardData();
+            else { if(typeof loadProgressData==='function') loadProgressData(); if(typeof loadProblemData==='function'){ problemLoaded=false; loadProblemData(); } }
+        }, 300000);
+    }
+
     function readForm(){
-        return {theme:document.getElementById('settingsTheme')?.value||'light',density:document.getElementById('settingsDensity')?.value||'normal',autoRefresh:!!document.getElementById('settingsAutoRefresh')?.checked,fullName:(document.getElementById('settingsFullName')?.value||'Administrator').trim()||'Administrator',role:document.getElementById('settingsRole')?.value||'Administrator'};
+        return {
+            theme:document.getElementById('settingsTheme')?.value||'light',
+            density:document.getElementById('settingsDensity')?.value||'normal',
+            autoRefresh:!!document.getElementById('settingsAutoRefresh')?.checked
+        };
     }
-    function save(){const data=readForm();saveSettings(data);applySettings(data);const note=document.getElementById('settingsSaveNote');if(note){note.textContent='✓ Pengaturan berhasil disimpan';setTimeout(()=>{note.textContent='Perubahan disimpan di browser ini.'},2200)}}
-    function reset(){saveSettings(defaults);applySettings(defaults);const note=document.getElementById('settingsSaveNote');if(note){note.textContent='Pengaturan dikembalikan ke default';setTimeout(()=>{note.textContent='Perubahan disimpan di browser ini.'},2200)}}
+
+    function setStatus(message, success=true){
+        const el=document.getElementById('settingsDataStatus');
+        if(el){ el.textContent=(success?'✓ ':'')+message; el.classList.toggle('error',!success); }
+    }
+
+    async function refreshData(){
+        setStatus('Sedang mengambil data terbaru...', true);
+        try{
+            if(typeof loadProgressData==='function') await loadProgressData();
+            if(typeof loadProblemData==='function'){ problemLoaded=false; await loadProblemData(); }
+            if(typeof window.refreshDownloadData==='function') window.refreshDownloadData();
+            setStatus('Data berhasil diperbarui dari Google Sheets.');
+        }catch(e){ setStatus('Gagal memperbarui data. Coba lagi.', false); }
+    }
+
+    function resetFilters(){
+        if(typeof window.resetFilters==='function') window.resetFilters();
+        if(typeof window.resetProblemFilters==='function') window.resetProblemFilters();
+        if(typeof window.refreshDownloadData==='function') window.refreshDownloadData();
+        setStatus('Semua filter berhasil dikembalikan ke kondisi awal.');
+    }
+
+    function save(){
+        const data=readForm(); saveSettings(data); applySettings(data);
+        const note=document.getElementById('settingsSaveNote');
+        if(note){ note.textContent='✓ Pengaturan berhasil disimpan'; setTimeout(()=>note.textContent='Perubahan tersimpan di browser ini.',2200); }
+    }
+
+    function reset(){
+        saveSettings(defaults); applySettings(defaults);
+        const note=document.getElementById('settingsSaveNote');
+        if(note){ note.textContent='Pengaturan dikembalikan ke default'; setTimeout(()=>note.textContent='Perubahan tersimpan di browser ini.',2200); }
+    }
+
     function init(){
         applySettings(getSettings());
+        document.getElementById('settingsTheme')?.addEventListener('change',()=>{ const d=readForm(); saveSettings(d); applySettings(d); });
+        document.getElementById('settingsDensity')?.addEventListener('change',()=>{ const d=readForm(); saveSettings(d); applySettings(d); });
+        document.getElementById('settingsAutoRefresh')?.addEventListener('change',()=>{ const d=readForm(); saveSettings(d); applySettings(d); });
         document.getElementById('settingsSaveBtn')?.addEventListener('click',save);
-        document.getElementById('settingsResetBtn')?.addEventListener('click',()=>{if(confirm('Kembalikan semua pengaturan ke nilai default?'))reset();});
+        document.getElementById('settingsResetBtn')?.addEventListener('click',()=>{ if(confirm('Kembalikan pengaturan tampilan ke nilai default?')) reset(); });
+        document.getElementById('settingsRefreshDataBtn')?.addEventListener('click',refreshData);
+        document.getElementById('settingsResetFilterBtn')?.addEventListener('click',resetFilters);
+        document.getElementById('settingsClearCacheBtn')?.addEventListener('click',()=>{
+            if(confirm('Hapus pengaturan tampilan yang tersimpan di browser?')){ localStorage.removeItem(KEY); applySettings(defaults); setStatus('Pengaturan tersimpan berhasil dihapus.'); }
+        });
     }
+    window.refreshDashboardData=refreshData;
     window.applyDashboardSettings=()=>applySettings(getSettings());
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
 })();
 
 /* =========================================================
