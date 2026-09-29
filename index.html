@@ -12079,6 +12079,374 @@ body.dashboard-dark:not(.login-locked) canvas{background:transparent!important}
   setTimeout(start,400);
 })();
 </script>
+
+<style id="darkModeProgressMonitoringProblemFix">
+/* =========================================================
+   DARK MODE FINAL PASS — PROGRESS / MONITORING / PROBLEM
+   These three pages use their own legacy light-theme surfaces.
+   This block is intentionally LAST so it wins over those rules.
+========================================================= */
+body.dashboard-dark:not(.login-locked){
+  --page-bg:#17191d;
+  --surface:#202329;
+  --surface-2:#272b31;
+  --surface-3:#2d3239;
+  --line:#3a4048;
+  --line-soft:#30353d;
+  --white:#f7f8fa;
+  --text:#e7eaee;
+  --muted:#aeb5bd;
+  --faint:#89919a;
+  --accent:#8f6cff;
+}
+
+/* ---------- shared page surfaces ---------- */
+body.dashboard-dark:not(.login-locked) #progress,
+body.dashboard-dark:not(.login-locked) #monitoring,
+body.dashboard-dark:not(.login-locked) #problem{
+  background:var(--page-bg)!important;
+  color:var(--text)!important;
+}
+
+body.dashboard-dark:not(.login-locked) #progress .panel,
+body.dashboard-dark:not(.login-locked) #progress .card,
+body.dashboard-dark:not(.login-locked) #progress .chart-card,
+body.dashboard-dark:not(.login-locked) #progress .process-section,
+body.dashboard-dark:not(.login-locked) #progress .production-reading-section,
+body.dashboard-dark:not(.login-locked) #progress .table-container,
+body.dashboard-dark:not(.login-locked) #progress .filter-panel,
+body.dashboard-dark:not(.login-locked) #progress .monitor-section,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-card,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-section,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage2-card,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage3-grid > .monitor-stage2-card,
+body.dashboard-dark:not(.login-locked) #problem .panel,
+body.dashboard-dark:not(.login-locked) #problem .chart-card,
+body.dashboard-dark:not(.login-locked) #problem .filter-panel,
+body.dashboard-dark:not(.login-locked) #problem .table-container{
+  background:var(--surface)!important;
+  border-color:var(--line)!important;
+  color:var(--text)!important;
+  box-shadow:none!important;
+}
+
+/* Remove legacy colorful KPI backgrounds on these three pages.
+   Semantic meaning remains through the icon/border, not a bright card fill. */
+body.dashboard-dark:not(.login-locked) #progress .kpi-card,
+body.dashboard-dark:not(.login-locked) #problem .kpi-card,
+body.dashboard-dark:not(.login-locked) #progress .kpi-blue,
+body.dashboard-dark:not(.login-locked) #progress .kpi-orange,
+body.dashboard-dark:not(.login-locked) #progress .kpi-green,
+body.dashboard-dark:not(.login-locked) #progress .kpi-purple,
+body.dashboard-dark:not(.login-locked) #progress .kpi-yellow,
+body.dashboard-dark:not(.login-locked) #progress .kpi-pink,
+body.dashboard-dark:not(.login-locked) #problem .kpi-blue,
+body.dashboard-dark:not(.login-locked) #problem .kpi-orange,
+body.dashboard-dark:not(.login-locked) #problem .kpi-green,
+body.dashboard-dark:not(.login-locked) #problem .kpi-purple{
+  background:var(--surface)!important;
+  border:1px solid var(--line)!important;
+  color:var(--text)!important;
+  box-shadow:none!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .kpi-card:hover,
+body.dashboard-dark:not(.login-locked) #problem .kpi-card:hover,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-card:hover{
+  background:var(--surface-2)!important;
+  border-color:#4a515a!important;
+}
+
+/* Small semantic accents on KPI cards instead of full bright backgrounds. */
+body.dashboard-dark:not(.login-locked) #progress .kpi-blue,
+body.dashboard-dark:not(.login-locked) #problem .kpi-blue{border-left:4px solid #62a8ff!important}
+body.dashboard-dark:not(.login-locked) #progress .kpi-orange,
+body.dashboard-dark:not(.login-locked) #problem .kpi-orange{border-left:4px solid #e4b45c!important}
+body.dashboard-dark:not(.login-locked) #progress .kpi-green,
+body.dashboard-dark:not(.login-locked) #problem .kpi-green{border-left:4px solid #63c99a!important}
+body.dashboard-dark:not(.login-locked) #progress .kpi-purple,
+body.dashboard-dark:not(.login-locked) #problem .kpi-purple{border-left:4px solid #a477ff!important}
+body.dashboard-dark:not(.login-locked) #progress .kpi-yellow{border-left:4px solid #e4b45c!important}
+body.dashboard-dark:not(.login-locked) #progress .kpi-pink{border-left:4px solid #ef7d9a!important}
+
+/* ---------- Progress ---------- */
+body.dashboard-dark:not(.login-locked) #progress .kpi-label,
+body.dashboard-dark:not(.login-locked) #progress .kpi-value,
+body.dashboard-dark:not(.login-locked) #progress .kpi-description,
+body.dashboard-dark:not(.login-locked) #progress .kpi-subtitle,
+body.dashboard-dark:not(.login-locked) #problem .kpi-label,
+body.dashboard-dark:not(.login-locked) #problem .kpi-value,
+body.dashboard-dark:not(.login-locked) #problem .kpi-description{
+  color:var(--white)!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .kpi-description,
+body.dashboard-dark:not(.login-locked) #progress .kpi-subtitle,
+body.dashboard-dark:not(.login-locked) #problem .kpi-description{
+  color:var(--muted)!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .chart-header,
+body.dashboard-dark:not(.login-locked) #progress .panel-header,
+body.dashboard-dark:not(.login-locked) #progress .section-heading,
+body.dashboard-dark:not(.login-locked) #progress .filter-title,
+body.dashboard-dark:not(.login-locked) #progress .filter-icon{
+  color:var(--white)!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .chart-kicker,
+body.dashboard-dark:not(.login-locked) #progress .section-kicker,
+body.dashboard-dark:not(.login-locked) #progress .panel-kicker,
+body.dashboard-dark:not(.login-locked) #progress .progress-filter-hint,
+body.dashboard-dark:not(.login-locked) #progress .table-note,
+body.dashboard-dark:not(.login-locked) #progress .page-header p{
+  color:var(--muted)!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .active-filter-context{
+  background:var(--surface-2)!important;
+  border:1px solid var(--line)!important;
+  color:var(--text)!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .active-filter-content strong,
+body.dashboard-dark:not(.login-locked) #progress .active-filter-content span{
+  color:var(--text)!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .active-filter-content span{color:var(--muted)!important}
+body.dashboard-dark:not(.login-locked) #progress .filter-group,
+body.dashboard-dark:not(.login-locked) #problem .filter-group{
+  background:var(--surface-2)!important;
+  border-color:var(--line)!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .filter-group label,
+body.dashboard-dark:not(.login-locked) #problem .filter-group label{
+  color:var(--white)!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .searchable-filter,
+body.dashboard-dark:not(.login-locked) #progress input,
+body.dashboard-dark:not(.login-locked) #progress select,
+body.dashboard-dark:not(.login-locked) #problem input,
+body.dashboard-dark:not(.login-locked) #problem select,
+body.dashboard-dark:not(.login-locked) #problem textarea,
+body.dashboard-dark:not(.login-locked) #problem .searchable-input{
+  background:#2b3037!important;
+  color:#f7f8fa!important;
+  border-color:#474e58!important;
+}
+body.dashboard-dark:not(.login-locked) #progress input::placeholder,
+body.dashboard-dark:not(.login-locked) #problem input::placeholder{
+  color:#9aa2ab!important;
+  opacity:1!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .status-order-item{
+  background:var(--surface-2)!important;
+  border:1px solid var(--line)!important;
+  color:var(--text)!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .status-not-started,
+body.dashboard-dark:not(.login-locked) #progress .status-progress,
+body.dashboard-dark:not(.login-locked) #progress .status-finished{
+  background:var(--surface-2)!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .status-order-item strong{color:var(--white)!important}
+body.dashboard-dark:not(.login-locked) #progress .status-order-item small{color:var(--muted)!important}
+body.dashboard-dark:not(.login-locked) #progress .process-section,
+body.dashboard-dark:not(.login-locked) #progress .production-reading-section,
+body.dashboard-dark:not(.login-locked) #progress .chart-card{
+  background:var(--surface)!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .process-overview > *,
+body.dashboard-dark:not(.login-locked) #progress .summary-item,
+body.dashboard-dark:not(.login-locked) #progress .data-source{
+  background:var(--surface-2)!important;
+  border-color:var(--line)!important;
+  color:var(--text)!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .table-container,
+body.dashboard-dark:not(.login-locked) #progress .table-container table{
+  background:var(--surface)!important;
+}
+
+/* ---------- Monitoring ---------- */
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-tabs{
+  background:var(--surface-2)!important;
+  border-color:var(--line)!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-tab{
+  color:var(--muted)!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-tab:hover,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-tab.active{
+  background:var(--surface-3)!important;
+  color:var(--white)!important;
+  border-color:#4b525b!important;
+  box-shadow:none!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .mc-label,
+body.dashboard-dark:not(.login-locked) #monitoring .mc-value,
+body.dashboard-dark:not(.login-locked) #monitoring .mc-desc,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-section h3,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage2-card h3,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-month,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-lead-breakdown-title,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-pic-name,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-pic-count,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-label{
+  color:var(--white)!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .mc-desc,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-sub,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-note,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert-sub,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-result small,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-weekday,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-empty,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-bucket-label,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-bucket-value{
+  color:var(--muted)!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-lead-breakdown,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-breakdown-row,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-mini-stat,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-job-meta,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-pic-row,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-day{
+  background:var(--surface-2)!important;
+  border-color:var(--line)!important;
+  color:var(--text)!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert:hover,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-pic-row:hover,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-result:hover,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-day:hover{
+  background:var(--surface-3)!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-quick-strip{
+  background:var(--surface-2)!important;
+  border-color:var(--line)!important;
+  box-shadow:none!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-quick-title{color:var(--muted)!important}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-quick-chip{
+  background:var(--surface-3)!important;
+  color:var(--white)!important;
+  border-color:var(--line)!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-calendar-head button,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-action-btn,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-search button{
+  background:var(--surface-3)!important;
+  color:var(--white)!important;
+  border-color:var(--line)!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-search input{
+  background:#2b3037!important;
+  color:var(--white)!important;
+  border-color:#474e58!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-event,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-more-button{
+  background:#323840!important;
+  color:#eef1f4!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-more-menu,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-more-item{
+  background:var(--surface-2)!important;
+  color:var(--white)!important;
+  border-color:var(--line)!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-more-item:hover{background:var(--surface-3)!important}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-modal-overlay{background:rgba(0,0,0,.72)!important}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-modal-card{
+  background:var(--surface)!important;
+  border:1px solid var(--line)!important;
+  color:var(--text)!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-modal-close{
+  background:var(--surface-3)!important;
+  color:var(--white)!important;
+  border:1px solid var(--line)!important;
+}
+
+/* ---------- Problem ---------- */
+body.dashboard-dark:not(.login-locked) #problem .active-filter-context{
+  background:var(--surface-2)!important;
+  border:1px solid var(--line)!important;
+  color:var(--text)!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .active-filter-content strong{color:var(--white)!important}
+body.dashboard-dark:not(.login-locked) #problem .active-filter-content span{color:var(--muted)!important}
+body.dashboard-dark:not(.login-locked) #problem .filter-title strong,
+body.dashboard-dark:not(.login-locked) #problem .filter-title small,
+body.dashboard-dark:not(.login-locked) #problem .problem-table-info,
+body.dashboard-dark:not(.login-locked) #problem .problem-pagination{
+  color:var(--text)!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .filter-title small,
+body.dashboard-dark:not(.login-locked) #problem .problem-table-info{
+  color:var(--muted)!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .searchable-dropdown-menu{
+  background:var(--surface-2)!important;
+  border-color:var(--line)!important;
+  box-shadow:0 16px 35px rgba(0,0,0,.38)!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .searchable-option,
+body.dashboard-dark:not(.login-locked) #problem .searchable-empty{
+  color:var(--text)!important;
+  background:var(--surface-2)!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .searchable-option:hover{background:var(--surface-3)!important}
+body.dashboard-dark:not(.login-locked) #problem .searchable-arrow{color:var(--white)!important;background:transparent!important}
+body.dashboard-dark:not(.login-locked) #problem .problem-table,
+body.dashboard-dark:not(.login-locked) #problem .problem-table-wrap,
+body.dashboard-dark:not(.login-locked) #problem .problem-table-container{
+  background:var(--surface)!important;
+  color:var(--text)!important;
+  border-color:var(--line)!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .problem-table thead th,
+body.dashboard-dark:not(.login-locked) #problem .problem-table th{
+  background:var(--surface-3)!important;
+  color:#ffffff!important;
+  border-color:var(--line)!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .problem-table tbody td{
+  background:var(--surface)!important;
+  color:var(--text)!important;
+  border-color:var(--line-soft)!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .problem-table tbody tr:hover td{background:var(--surface-2)!important}
+body.dashboard-dark:not(.login-locked) #problem .problem-chart-container,
+body.dashboard-dark:not(.login-locked) #problem .problem-doughnut-container,
+body.dashboard-dark:not(.login-locked) #problem .problem-trend-container{
+  background:var(--surface)!important;
+  border-color:var(--line)!important;
+}
+body.dashboard-dark:not(.login-locked) #problem .chart-header,
+body.dashboard-dark:not(.login-locked) #problem .chart-kicker,
+body.dashboard-dark:not(.login-locked) #problem .panel-header,
+body.dashboard-dark:not(.login-locked) #problem .panel-kicker{
+  color:var(--white)!important;
+}
+
+/* ---------- All canvases on these three pages sit on dark chart cards ---------- */
+body.dashboard-dark:not(.login-locked) #progress canvas,
+body.dashboard-dark:not(.login-locked) #monitoring canvas,
+body.dashboard-dark:not(.login-locked) #problem canvas{
+  background:transparent!important;
+}
+
+/* Kill any remaining inline/legacy white or pastel surfaces inside these pages,
+   while keeping semantic status chips readable. */
+body.dashboard-dark:not(.login-locked) #progress [style*="background:#fff"],
+body.dashboard-dark:not(.login-locked) #progress [style*="background: #fff"],
+body.dashboard-dark:not(.login-locked) #monitoring [style*="background:#fff"],
+body.dashboard-dark:not(.login-locked) #monitoring [style*="background: #fff"],
+body.dashboard-dark:not(.login-locked) #problem [style*="background:#fff"],
+body.dashboard-dark:not(.login-locked) #problem [style*="background: #fff"]{
+  background:var(--surface)!important;
+  color:var(--text)!important;
+  border-color:var(--line)!important;
+}
+</style>
+
 </body>
 
 </html>
