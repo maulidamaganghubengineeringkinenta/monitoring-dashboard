@@ -1924,6 +1924,284 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 }
 </style>
 
+
+<style id="mobileResponsivePreserveDesktop">
+/* =========================================================
+   MOBILE RESPONSIVE LAYER
+   Desktop layout is intentionally untouched.
+   Only activates at <= 767px.
+   ========================================================= */
+@media (max-width: 767px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden;}
+  body:not(.login-locked){font-size:14px;}
+
+  /* Mobile navigation: desktop sidebar remains exactly as-is. */
+  body:not(.login-locked) .menu-toggle{
+    display:flex !important;
+    position:fixed !important;
+    top:12px !important;
+    left:12px !important;
+    z-index:10001 !important;
+    width:44px !important;
+    height:44px !important;
+    padding:0 !important;
+    border:1px solid #d7e2e8 !important;
+    border-radius:12px !important;
+    background:#fff !important;
+    box-shadow:0 5px 18px rgba(25,45,60,.14) !important;
+    align-items:center !important;
+    justify-content:center !important;
+    flex-direction:column !important;
+    gap:4px !important;
+    cursor:pointer !important;
+  }
+  body:not(.login-locked) .menu-toggle span{
+    display:block !important;
+    width:19px !important;
+    height:2px !important;
+    border-radius:2px !important;
+    background:#334b57 !important;
+    transition:.18s ease !important;
+  }
+  body:not(.login-locked) .menu-toggle.menu-active span:nth-child(1){transform:translateY(6px) rotate(45deg)!important;}
+  body:not(.login-locked) .menu-toggle.menu-active span:nth-child(2){opacity:0!important;}
+  body:not(.login-locked) .menu-toggle.menu-active span:nth-child(3){transform:translateY(-6px) rotate(-45deg)!important;}
+
+  body:not(.login-locked) .sidebar{
+    width:min(290px,86vw) !important;
+    max-width:86vw !important;
+    left:0 !important;
+    right:auto !important;
+    top:0 !important;
+    bottom:0 !important;
+    height:100vh !important;
+    transform:translateX(-105%) !important;
+    transition:transform .22s ease !important;
+    z-index:10000 !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+    box-shadow:10px 0 35px rgba(15,23,42,.18) !important;
+  }
+  body:not(.login-locked) .sidebar.sidebar-open{transform:translateX(0)!important;}
+  body:not(.login-locked) .sidebar-overlay{
+    display:block !important;
+    position:fixed !important;
+    inset:0 !important;
+    z-index:9999 !important;
+    background:rgba(15,23,42,.45) !important;
+    opacity:0 !important;
+    pointer-events:none !important;
+    transition:opacity .22s ease !important;
+  }
+  body:not(.login-locked) .sidebar-overlay.overlay-show{
+    opacity:1 !important;
+    pointer-events:auto !important;
+  }
+  body.login-locked .menu-toggle{display:none !important;}
+  body.login-locked .sidebar-overlay{display:none !important;}
+
+  body:not(.login-locked) .main{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    margin-left:0 !important;
+    padding:0 12px 24px !important;
+    box-sizing:border-box !important;
+  }
+  body:not(.login-locked) .topbar{
+    width:100% !important;
+    min-width:0 !important;
+    margin:0 0 12px !important;
+    padding:64px 4px 12px !important;
+    box-sizing:border-box !important;
+    display:flex !important;
+    align-items:flex-start !important;
+    gap:10px !important;
+  }
+  body:not(.login-locked) .page-heading{min-width:0!important;max-width:100%!important;}
+  body:not(.login-locked) .breadcrumb{font-size:10px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  body:not(.login-locked) #pageTitle{font-size:22px!important;line-height:1.2!important;margin:5px 0 3px!important;}
+  body:not(.login-locked) .topbar p{font-size:11px!important;line-height:1.45!important;}
+  body:not(.login-locked) .topbar-right{flex:0 0 auto!important;}
+  body:not(.login-locked) .live-indicator{font-size:9px!important;white-space:nowrap!important;padding:6px 8px!important;}
+
+  /* Main page sections/cards should never force a desktop width. */
+  body:not(.login-locked) .page,
+  body:not(.login-locked) .panel,
+  body:not(.login-locked) .card,
+  body:not(.login-locked) .section,
+  body:not(.login-locked) .filter-panel,
+  body:not(.login-locked) .filter-card,
+  body:not(.login-locked) .download-filter-card,
+  body:not(.login-locked) .download-preview-card,
+  body:not(.login-locked) .download-hero,
+  body:not(.login-locked) .monitor-section,
+  body:not(.login-locked) .monitor-stage2-card,
+  body:not(.login-locked) .stage6-card,
+  body:not(.login-locked) .stage6-report,
+  body:not(.login-locked) .settings-card,
+  body:not(.login-locked) .wp-flow-card{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+  }
+
+  /* KPI areas */
+  body:not(.login-locked) .kpi-grid,
+  body:not(.login-locked) .stage6-kpi-grid,
+  body:not(.login-locked) .wp-flow-kpis{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:9px !important;
+  }
+  body:not(.login-locked) .kpi-card{min-width:0!important;padding:13px!important;}
+  body:not(.login-locked) .kpi-value{font-size:25px!important;}
+  body:not(.login-locked) .kpi-label{font-size:10px!important;line-height:1.25!important;}
+  body:not(.login-locked) .stage6-kpi{padding:13px!important;min-width:0!important;}
+  body:not(.login-locked) .stage6-kpi .value{font-size:25px!important;}
+  body:not(.login-locked) .wp-flow-kpi{padding:13px!important;min-width:0!important;}
+
+  /* Responsive grids */
+  body:not(.login-locked) .download-layout,
+  body:not(.login-locked) .monitor-stage2-grid,
+  body:not(.login-locked) .monitor-stage3-grid,
+  body:not(.login-locked) .stage6-grid,
+  body:not(.login-locked) .wp-flow-grid,
+  body:not(.login-locked) .settings-grid{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+  body:not(.login-locked) .monitor-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;}
+  body:not(.login-locked) .monitor-lead-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  body:not(.login-locked) .monitor-lead-summary .monitor-mini-stat:last-child{grid-column:1/-1!important;}
+  body:not(.login-locked) .monitor-lead-breakdown-grid{grid-template-columns:1fr!important;}
+  body:not(.login-locked) .cute-focus-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;}
+  body:not(.login-locked) .stage6-meeting-attention{grid-template-columns:1fr!important;}
+  body:not(.login-locked) .stage6-row{grid-template-columns:1fr auto!important;}
+  body:not(.login-locked) .stage6-track{grid-column:1/-1!important;}
+  body:not(.login-locked) .stage6-alert{grid-template-columns:auto 1fr auto!important;}
+  body:not(.login-locked) .wp-flow-filters{grid-template-columns:1fr!important;}
+  body:not(.login-locked) .wp-flow-insight{grid-template-columns:1fr!important;}
+
+  /* Filters and controls */
+  body:not(.login-locked) .progress-filter-grid,
+  body:not(.login-locked) .download-filter-grid{grid-template-columns:1fr!important;}
+  body:not(.login-locked) .filter-grid{grid-template-columns:1fr!important;}
+  body:not(.login-locked) .filter-actions,
+  body:not(.login-locked) .progress-filter-actions,
+  body:not(.login-locked) .download-actions,
+  body:not(.login-locked) .stage6-actions,
+  body:not(.login-locked) .monitor-stage3-actions{
+    flex-direction:column!important;
+    align-items:stretch!important;
+    justify-content:stretch!important;
+  }
+  body:not(.login-locked) .filter-actions > *,
+  body:not(.login-locked) .progress-filter-actions > *,
+  body:not(.login-locked) .download-actions > *,
+  body:not(.login-locked) .stage6-actions > *,
+  body:not(.login-locked) .monitor-stage3-actions > *{width:100%!important;box-sizing:border-box!important;}
+  body:not(.login-locked) input,
+  body:not(.login-locked) select,
+  body:not(.login-locked) textarea{max-width:100%!important;box-sizing:border-box!important;}
+  body:not(.login-locked) .monitor-search{flex-direction:column!important;align-items:stretch!important;}
+  body:not(.login-locked) .monitor-search input,
+  body:not(.login-locked) .monitor-search button{width:100%!important;min-width:0!important;}
+
+  /* Tables: keep their desktop column structure, but allow touch scrolling. */
+  body:not(.login-locked) .table-wrap,
+  body:not(.login-locked) .table-responsive,
+  body:not(.login-locked) .download-preview-table-wrap,
+  body:not(.login-locked) .wp-flow-table-wrap,
+  body:not(.login-locked) .stage6-report-table-wrap,
+  body:not(.login-locked) .monitor-table-wrap{
+    width:100%!important;
+    max-width:100%!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:thin;
+  }
+  body:not(.login-locked) table{max-width:none;}
+  body:not(.login-locked) .download-preview-table,
+  body:not(.login-locked) .wp-flow-table,
+  body:not(.login-locked) .stage6-report-table{min-width:720px;}
+
+  /* Cards that contain long content */
+  body:not(.login-locked) .monitor-card{padding:13px!important;min-width:0!important;}
+  body:not(.login-locked) .monitor-card .mc-value{font-size:24px!important;}
+  body:not(.login-locked) .monitor-calendar{gap:3px!important;}
+  body:not(.login-locked) .monitor-day{min-height:58px!important;padding:5px!important;}
+  body:not(.login-locked) .monitor-event{font-size:9px!important;}
+  body:not(.login-locked) .monitor-pic-row{grid-template-columns:1fr auto!important;}
+  body:not(.login-locked) .monitor-pic-track{grid-column:1/-1!important;grid-row:2!important;}
+  body:not(.login-locked) .monitor-job-grid{grid-template-columns:1fr!important;}
+  body:not(.login-locked) .monitor-timeline{overflow-x:auto!important;padding-left:0!important;padding-right:0!important;}
+  body:not(.login-locked) .monitor-timeline-step{min-width:90px!important;}
+
+  /* Download page */
+  body:not(.login-locked) .download-preview-head{flex-direction:column!important;align-items:flex-start!important;}
+  body:not(.login-locked) .download-preview-head > *{max-width:100%!important;}
+  body:not(.login-locked) .download-field{min-width:0!important;}
+  body:not(.login-locked) .download-preview-card{overflow:hidden!important;}
+
+  /* Settings */
+  body:not(.login-locked) .settings-hero{padding:18px!important;align-items:flex-start!important;}
+  body:not(.login-locked) .settings-hero-icon{flex:0 0 auto!important;}
+  body:not(.login-locked) .settings-field{align-items:flex-start!important;flex-direction:column!important;gap:8px!important;}
+  body:not(.login-locked) .settings-control{width:100%!important;max-width:none!important;}
+  body:not(.login-locked) .settings-actions{flex-wrap:wrap!important;}
+  body:not(.login-locked) .settings-save-note{width:100%!important;margin:0!important;}
+
+  /* Focus Today / modal dialogs */
+  body:not(.login-locked) .cute-modal-card,
+  body:not(.login-locked) .monitor-modal-card,
+  body:not(.login-locked) .stage6-inline-modal-card,
+  body:not(.login-locked) .modal-content,
+  body:not(.login-locked) .modal-card{
+    width:calc(100vw - 24px)!important;
+    max-width:calc(100vw - 24px)!important;
+    max-height:calc(100vh - 24px)!important;
+    box-sizing:border-box!important;
+    overflow:auto!important;
+    margin:0!important;
+  }
+  body:not(.login-locked) .cute-modal,
+  body:not(.login-locked) .monitor-modal,
+  body:not(.login-locked) .stage6-inline-modal{padding:12px!important;}
+
+  /* Touch-friendly controls */
+  body:not(.login-locked) button,
+  body:not(.login-locked) .menu,
+  body:not(.login-locked) select,
+  body:not(.login-locked) input{min-height:42px;}
+  body:not(.login-locked) .sidebar .menu{min-height:44px!important;}
+
+  /* Prevent fixed-width decorative blocks from creating horizontal scroll. */
+  body:not(.login-locked) .progress-chart-card,
+  body:not(.login-locked) .chart-card,
+  body:not(.login-locked) .chart-container,
+  body:not(.login-locked) canvas{max-width:100%!important;}
+}
+
+@media (max-width: 430px){
+  body:not(.login-locked) .main{padding-left:9px!important;padding-right:9px!important;}
+  body:not(.login-locked) .topbar{padding-left:3px!important;padding-right:3px!important;}
+  body:not(.login-locked) .kpi-grid,
+  body:not(.login-locked) .stage6-kpi-grid,
+  body:not(.login-locked) .wp-flow-kpis,
+  body:not(.login-locked) .monitor-grid,
+  body:not(.login-locked) .cute-focus-grid{gap:7px!important;}
+  body:not(.login-locked) .kpi-card{padding:11px!important;}
+  body:not(.login-locked) .kpi-value{font-size:22px!important;}
+  body:not(.login-locked) .kpi-label{font-size:9px!important;}
+  body:not(.login-locked) .monitor-card .mc-value{font-size:21px!important;}
+  body:not(.login-locked) .monitor-card .mc-label{font-size:10px!important;}
+  body:not(.login-locked) .cute-focus-grid{grid-template-columns:1fr 1fr!important;}
+  body:not(.login-locked) .live-indicator{display:none!important;}
+}
+</style>
+
 </head>
 
 <body class="login-locked">
@@ -13701,6 +13979,25 @@ body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-popup-i
   background:#29404b !important;
 }
 </style>
+
+<script id="mobileResponsiveJS">
+/* Mobile navigation enhancement. Existing desktop navigation logic is preserved. */
+(function(){
+  function closeMobileMenuAfterNavigation(){
+    if(window.matchMedia && window.matchMedia('(max-width: 767px)').matches){
+      if(typeof closeSidebar === 'function') closeSidebar();
+    }
+  }
+  document.addEventListener('click', function(e){
+    const menu=e.target.closest && e.target.closest('.sidebar .menu, .sidebar .menu-link');
+    if(menu) setTimeout(closeMobileMenuAfterNavigation, 40);
+  });
+  window.addEventListener('resize', function(){
+    if(window.innerWidth > 767 && typeof closeSidebar === 'function') closeSidebar();
+  });
+})();
+</script>
+
 </body>
 
 
