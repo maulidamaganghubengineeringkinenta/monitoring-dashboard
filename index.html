@@ -3255,8 +3255,6 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
         <section id="monitoring" class="page">
             <div class="monitor-tabs" role="tablist" aria-label="Monitoring navigation">
                             <button type="button" class="monitor-tab" data-monitor-tab="monitoring" onclick="openMonitoringTab('monitoring')" role="tab">📊 Monitoring</button>
-                            <button type="button" class="monitor-tab" data-monitor-tab="meeting" onclick="openMonitoringTab('meeting')" role="tab">🗣️ Meeting</button>
-                            <button type="button" class="monitor-tab" data-monitor-tab="report" onclick="openMonitoringTab('report')" role="tab">📄 Report</button>
                         </div>
             
 
@@ -3427,118 +3425,6 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         <thead><tr><th>Bulan</th><th>WP</th><th>ASSY IN</th><th>ASSY OUT</th><th>ASSY BAL</th><th>PCS IN</th><th>PCS OUT</th><th>PCS BAL</th><th>CCT IN</th><th>CCT OUT</th><th>CCT BAL</th><th>Status</th></tr></thead>
                         <tbody id="wpFlowTableBody"><tr><td colspan="12" class="wp-flow-empty">Memuat data...</td></tr></tbody>
                     </table>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- =================================================
-             MEETING MODE PAGE
-        ================================================== -->
-
-        <section id="meeting" class="page">
-            <div class="monitor-tabs" role="tablist" aria-label="Monitoring navigation">
-                            <button type="button" class="monitor-tab" data-monitor-tab="monitoring" onclick="openMonitoringTab('monitoring')" role="tab">📊 Monitoring</button>
-                            <button type="button" class="monitor-tab" data-monitor-tab="meeting" onclick="openMonitoringTab('meeting')" role="tab">🗣️ Meeting</button>
-                            <button type="button" class="monitor-tab" data-monitor-tab="report" onclick="openMonitoringTab('report')" role="tab">📄 Report</button>
-                        </div>
-            
-            <div class="stage6-actions">
-                <span class="stage6-date" id="stage6MeetingDate"></span>
-                <button type="button" class="stage6-btn" onclick="refreshStage6Pages()">↻ Refresh</button>
-                <button type="button" class="stage6-btn primary" onclick="openMonitoringTab('report')">📄 Report</button>
-            </div>
-
-            <div class="stage6-meeting">
-                <div class="stage6-meeting-title">
-                    <h2>PROTOTYPE MONITORING</h2>
-                    <p id="stage6MeetingSubtitle">Meeting Mode • Data live dari Google Sheets</p>
-                </div>
-
-                <div class="stage6-kpi-grid">
-                    <div class="stage6-kpi" onclick="stage6OpenFilter('open')"><div class="label">OPEN ORDERS</div><div class="value" id="meetingOpen">0</div></div>
-                    <div class="stage6-kpi" onclick="stage6OpenProblem()"><div class="label">PROBLEM OPEN</div><div class="value" id="meetingProblemOpen">0</div></div>
-                    <div class="stage6-kpi" onclick="monitorProcessBottleneck()"><div class="label">BOTTLENECK QTY</div><div class="value" id="meetingBottleneckQty">0</div></div>
-                    <div class="stage6-kpi"><div class="label">JOB TO DISCUSS</div><div class="value" id="meetingJobsKpi">0</div></div>
-                </div>
-                <div class="stage6-quick-strip">
-                    <span>MEETING QUICK FILTER</span>
-                    <button type="button" onclick="stage6OpenFilter('overdue')">🔴 Overdue</button>
-                    <button type="button" onclick="stage6OpenFilter('etd3')">🟠 ETD ≤ 3 Hari</button>
-                    <button type="button" onclick="monitorFilter('reschedule')">🟣 Reschedule</button>
-                </div>
-
-                <div class="stage6-grid">
-                    <div class="stage6-card">
-                        <h3>🏭 TOP PROCESS BOTTLENECK</h3>
-                        <div id="meetingBottleneck" class="stage6-list"></div>
-                    </div>
-                    <div class="stage6-card">
-                        <h3>🚨 ATTENTION TODAY</h3>
-                        <div id="meetingAttention" class="stage6-meeting-attention"></div>
-                    </div>
-                </div>
-
-                <div class="stage6-card">
-                    <div class="stage6-card-head">
-                        <h3>📌 JOB YANG PERLU DIBAHAS</h3>
-                        <span class="stage6-date" id="meetingJobCount">0 job</span>
-                    </div>
-                    <div id="meetingJobs" class="stage6-list"></div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- =================================================
-             MONITORING REPORT PAGE
-        ================================================== -->
-
-        <section id="report" class="page">
-            <div class="monitor-tabs" role="tablist" aria-label="Monitoring navigation">
-                            <button type="button" class="monitor-tab" data-monitor-tab="monitoring" onclick="openMonitoringTab('monitoring')" role="tab">📊 Monitoring</button>
-                            <button type="button" class="monitor-tab" data-monitor-tab="meeting" onclick="openMonitoringTab('meeting')" role="tab">🗣️ Meeting</button>
-                            <button type="button" class="monitor-tab" data-monitor-tab="report" onclick="openMonitoringTab('report')" role="tab">📄 Report</button>
-                        </div>
-            
-            <div class="stage6-actions">
-                <span class="stage6-date" id="stage6ReportDate"></span>
-                <button type="button" class="stage6-btn" onclick="refreshStage6Pages()">↻ Refresh</button>
-                <button type="button" class="stage6-btn primary" onclick="printStage6Report()">🖨️ Print / Save PDF</button>
-            </div>
-
-            <div class="stage6-report" id="stage6ReportContent">
-                <div class="stage6-report-header">
-                    <h2>PROTOTYPE MONITORING REPORT</h2>
-                    <p id="stage6ReportSubtitle">Data live dari Google Sheets</p>
-                </div>
-
-                <div class="stage6-kpi-grid">
-                    <div class="stage6-kpi" onclick="stage6OpenFilter('open')"><div class="label">OPEN ORDERS</div><div class="value" id="reportOpen">0</div></div>
-                    <div class="stage6-kpi"><div class="label">CLOSE ORDERS</div><div class="value" id="reportClose">0</div></div>
-                    <div class="stage6-kpi" onclick="stage6OpenProblem()"><div class="label">PROBLEM OPEN</div><div class="value" id="reportProblemOpen">0</div></div>
-                    <div class="stage6-kpi"><div class="label">AVG LEAD TIME</div><div class="value" id="reportAvgLead">0</div></div>
-                </div>
-                <div class="stage6-quick-strip report-quick-strip">
-                    <span>REPORT QUICK FILTER</span>
-                    <button type="button" onclick="stage6OpenFilter('overdue')">🔴 Detail Overdue</button>
-                    <button type="button" onclick="stage6OpenFilter('etd3')">🟠 Detail ETD ≤ 3 Hari</button>
-                    <button type="button" onclick="monitorFilter('reschedule')">🟣 Detail Reschedule</button>
-                </div>
-
-                <div class="stage6-report-section stage6-report-process">
-                    <h3>Process Bottleneck — OPEN QTY</h3>
-                    <table class="stage6-report-table"><thead><tr><th>Process</th><th>OPEN QTY</th></tr></thead><tbody id="reportProcessTable"></tbody></table>
-                </div>
-
-                <div class="stage6-report-section stage6-report-attention">
-                    <h3>Attention</h3>
-                    <table class="stage6-report-table"><thead><tr><th>ASSY NO</th><th>Issue</th><th>QTY</th><th>ETD</th></tr></thead><tbody id="reportAttentionTable"></tbody></table>
-                </div>
-
-                <div class="stage6-report-section stage6-report-pic">
-                    <h3>Problem OPEN per PIC</h3>
-                    <table class="stage6-report-table"><thead><tr><th>PIC</th><th>OPEN PROBLEM</th></tr></thead><tbody id="reportPicTable"></tbody></table>
                 </div>
             </div>
         </section>
@@ -7188,7 +7074,7 @@ function showPage(pageName) {
 
     const target = document.getElementById(pageName);
     if (target) target.classList.add("active-page");
-    if (typeof window.updateMonitoringTabs === "function" && ["monitoring","meeting","report"].includes(pageName)) window.updateMonitoringTabs(pageName);
+    if (typeof window.updateMonitoringTabs === "function" && pageName === "monitoring") window.updateMonitoringTabs(pageName);
 
     const menus = document.querySelectorAll(".sidebar .menu[data-page]");
     menus.forEach(menu => menu.classList.remove("active"));
@@ -7202,8 +7088,6 @@ function showPage(pageName) {
         problem: ["Problem", "PROBLEM"],
         monitoring: ["Monitoring", "MONITORING"],
         wpmonitor: ["WP Flow Monitoring", "WP FLOW MONITORING"],
-        meeting: ["Meeting Mode", "MEETING MODE"],
-        report: ["Monitoring Report", "MONITORING REPORT"],
         download: ["Download Data", "DOWNLOAD DATA"],
         settings: ["Pengaturan", "PENGATURAN"]
     };
@@ -7219,9 +7103,6 @@ function showPage(pageName) {
     }
     if (pageName === "wpmonitor") {
         requestAnimationFrame(() => wpFlowRefresh(false));
-    }
-    if (pageName === "meeting" || pageName === "report") {
-        requestAnimationFrame(() => renderStage6Pages());
     }
     if (pageName === "download") { requestAnimationFrame(() => window.refreshDownloadData && window.refreshDownloadData()); }
 }
