@@ -11007,61 +11007,7 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
   function gcell(r,i){return typeof getCellValue==='function'?String(getCellValue(r,i)??''):String(r?.[i]??'')}
   function pcell(r,i){return typeof getProblemValue==='function'?String(getProblemValue(r,i)??''):String(r?.[i]??'')}
 
-  // ---------- DOWNLOAD DATA: independent, deterministic preview ----------
-  const pHeaders=["NO","CUSTOMER","ASSY NO","WP","CCT","QTY","TOTAL CCT","ETD","RESCHEDULE ETD","ACTUAL START","ACTUAL FINISH","LEAD TIME","REPAIR","CUTTING / CRIMPING","JOINTING / MVVS","MIDDLE","HOUSING","ASSEMBLING","BUZZER / CHECKER","VISUAL","TE-TA FINISHING","PREDEL","RFG","STATUS","OPEN QTY","KETERANGAN"];
-  const prHeaders=["DATE PROBLEM","ASSY NO","CUSTOMER","WIP","PART NAME","PART NO BEI","PART NO BEE","QTY STD","QTY ACT","MINUS","SATUAN","PIC","DATE RECEIVED","STATUS","KETERANGAN","PROBLEM"];
-  let source='progress';
-  function selectedSource(){return source}
-  function renderDownload(){
-    const body=byId('downloadPreviewBody'), head=byId('downloadPreviewHead'), count=byId('downloadCount'), meta=byId('downloadPreviewMeta'), title=byId('downloadPreviewTitle');
-    if(!body||!head)return;
-    const rows=source==='progress'?progressRows():problemRows();
-    const headers=source==='progress'?pHeaders:prHeaders;
-    head.innerHTML='<tr>'+headers.map(x=>'<th>'+escape(x)+'</th>').join('')+'</tr>';
-    if(!rows.length){
-      if(count)count.textContent='Menunggu data Google Sheets...';
-      if(meta)meta.textContent='Data belum tersedia';
-      body.innerHTML='<tr><td colspan="'+headers.length+'" class="download-empty">⏳ Data sedang dimuat dari Google Sheets...</td></tr>';
-      return;
-    }
-    let result=[];
-    if(source==='progress'){
-      const q=id=>val(id), quick=q('downloadProgressQuick').toUpperCase(), cust=text(q('downloadProgressCustomer')), wp=text(q('downloadProgressWp')), assy=text(q('downloadProgressAssy')), cct=text(q('downloadProgressCct')), proc=Number(q('downloadProgressProcess'))||0;
-      const qmin=num(q('downloadProgressQtyMin')),qmax=num(q('downloadProgressQtyMax')),lmin=num(q('downloadProgressLeadMin')),lmax=num(q('downloadProgressLeadMax'));
-      const ef=q('downloadProgressEtdFrom'),et=q('downloadProgressEtdTo'),rf=q('downloadProgressRescheduleFrom'),rt=q('downloadProgressRescheduleTo'),sf=q('downloadProgressStart'),st=q('downloadProgressFinish'),rs=q('downloadProgressReschedule').toUpperCase();
-      const today=new Date();today.setHours(0,0,0,0);const plus3=new Date(today);plus3.setDate(plus3.getDate()+3);
-      result=rows.filter(r=>{
-        const status=typeof getRowStatus==='function'?String(getRowStatus(r)||'').trim().toUpperCase():text(gcell(r,23)).toUpperCase();
-        const etd=dateOnly(gcell(r,7)), res=gcell(r,8), qty=num(gcell(r,5)), lead=num(gcell(r,11));
-        if(quick==='OPEN'&&status!=='OPEN')return false;if(quick==='CLOSE'&&status!=='CLOSE')return false;
-        if(quick==='RESCHEDULE'&&!res.trim())return false;
-        if(quick==='OVERDUE'&&!(status==='OPEN'&&etd&&etd<today))return false;
-        if((quick==='ETD3'||quick==='ETD ≤ 3 HARI')&&!(status==='OPEN'&&etd&&etd>=today&&etd<=plus3))return false;
-        if(quick==='NOT_STARTED'&&!(status==='OPEN'&&!gcell(r,9).trim()))return false;
-        if(cust&&!text(gcell(r,1)).includes(cust))return false;if(wp&&!text(gcell(r,3)).includes(wp))return false;if(assy&&!text(gcell(r,2)).includes(assy))return false;if(cct&&!text(gcell(r,4)).includes(cct))return false;
-        if(proc&&!(num(gcell(r,proc))>0))return false;if(qmin!==null&&(qty===null||qty<qmin))return false;if(qmax!==null&&(qty===null||qty>qmax))return false;
-        if(!between(gcell(r,7),ef,et))return false;if(rs==='YES'&&!res.trim())return false;if(rs==='NO'&&res.trim())return false;if(!between(res,rf,rt))return false;if(!between(gcell(r,9),sf,sf))return false;if(!between(gcell(r,10),st,st))return false;if(lmin!==null&&(lead===null||lead<lmin))return false;if(lmax!==null&&(lead===null||lead>lmax))return false;
-        return true;
-      });
-    }else{
-      const status=q('downloadProblemStatus'),cust=text(val('downloadProblemCustomer')),pic=text(val('downloadProblemPic')),part=text(val('downloadProblemPart')),wip=text(val('downloadProblemWip')),df=val('downloadProblemDateFrom'),dt=val('downloadProblemDateTo'),mn=num(val('downloadProblemMinusMin')),mx=num(val('downloadProblemMinusMax'));
-      result=rows.filter(r=>{const stt=typeof getProblemStatus==='function'?String(getProblemStatus(r)||'').trim().toUpperCase():text(pcell(r,13)).toUpperCase();const minus=num(pcell(r,10));if(status&&stt!==status.toUpperCase())return false;if(cust&&!text(pcell(r,2)).includes(cust))return false;if(pic&&!text(pcell(r,11)).includes(pic))return false;if(part&&!text(pcell(r,4)).includes(part))return false;if(wip&&!text(pcell(r,3)).includes(wip))return false;if(!between(pcell(r,0),df,dt))return false;if(mn!==null&&(minus===null||minus<mn))return false;if(mx!==null&&(minus===null||minus>mx))return false;return true});
-    }
-    if(count)count.textContent=result.length.toLocaleString('id-ID')+' data siap di-download';
-    if(meta)meta.textContent='Menampilkan '+result.length.toLocaleString('id-ID')+' baris';
-    if(title)title.textContent='Preview '+(source==='progress'?'Progress 2026':'Problem');
-    const shown=result.slice(0,100);body.innerHTML=shown.length?shown.map(r=>'<tr>'+r.slice(0,headers.length).map(v=>'<td>'+escape(v)+'</td>').join('')+'</tr>').join(''):'<tr><td colspan="'+headers.length+'" class="download-empty">Tidak ada data yang sesuai filter.</td></tr>';
-    if(result.length>100)body.insertAdjacentHTML('beforeend','<tr><td colspan="'+headers.length+'" class="download-more">Preview dibatasi 100 baris. Download tetap berisi semua '+result.length.toLocaleString('id-ID')+' baris hasil filter.</td></tr>');
-  }
-  window.renderDownloadPreview=renderDownload;
-  window.refreshDownloadData=renderDownload;
-  window.setDownloadSource=function(s){source=s==='problem'?'problem':'progress';document.querySelectorAll('.download-source').forEach(b=>b.classList.toggle('active',b.dataset.source===source));const a=byId('downloadProgressFilters'),b=byId('downloadProblemFilters');if(a)a.style.display=source==='progress'?'grid':'none';if(b)b.style.display=source==='problem'?'grid':'none';setTimeout(renderDownload,0)};
-  function resetDownload(){const box=byId('download');if(!box)return;box.querySelectorAll('input').forEach(e=>e.value='');box.querySelectorAll('select').forEach(e=>e.selectedIndex=0);setTimeout(renderDownload,0)}
-  window.resetDownloadFilters=resetDownload; window.safeResetDownloadFilters=function(){resetDownload()};
-  document.addEventListener('click',e=>{const b=e.target.closest('.download-source');if(b){e.preventDefault();window.setDownloadSource(b.dataset.source)}},true);
-  document.addEventListener('input',e=>{if(e.target.closest('#download'))setTimeout(renderDownload,0)},true);
-  document.addEventListener('change',e=>{if(e.target.closest('#download'))setTimeout(renderDownload,0)},true);
-
+  // Download preview is owned by the original filter-aware renderer above.
   // ---------- RESET / REFRESH: call real dashboard functions, then force redraw ----------
   window.safeResetProgressFilters=function(){try{if(typeof resetFilters==='function')resetFilters();else document.querySelectorAll('#progress input,#progress select').forEach(e=>e.value='')}catch(e){console.error('Progress reset',e)}setTimeout(()=>{try{if(typeof applyFilters==='function')applyFilters()}catch(e){console.error(e)}},0)};
   window.safeResetProblemFilters=function(){try{if(typeof resetProblemFilters==='function')resetProblemFilters();else document.querySelectorAll('#problem input,#problem select').forEach(e=>e.value='')}catch(e){console.error('Problem reset',e)}setTimeout(()=>{try{if(typeof applyProblemFilters==='function')applyProblemFilters()}catch(e){console.error(e)}},0)};
@@ -11072,7 +11018,7 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
     if(typeof allProgressRows!=='undefined' && allProgressRows.length) renderDownload();
     if(typeof allProblemRows!=='undefined' && allProblemRows.length) renderDownload();
   }
-  document.addEventListener('DOMContentLoaded',()=>{setTimeout(hookDataLoaders,1000);setTimeout(hookDataLoaders,3000);setInterval(hookDataLoaders,5000)});
+  document.addEventListener('DOMContentLoaded',()=>{setTimeout(hookDataLoaders,1200);setTimeout(hookDataLoaders,3000)});
 })();
 </script>
 
@@ -12447,6 +12393,230 @@ body.dashboard-dark:not(.login-locked) #problem [style*="background: #fff"]{
 }
 </style>
 
+
+
+<!-- FINAL REPAIR: Progress/Monitoring/Problem contrast, Problem chart sizing, stable Download Preview -->
+<style id="finalRepairContrastAndCharts">
+/* ===== PROGRESS: every readable text is white / very light gray in dark mode ===== */
+body.dashboard-dark:not(.login-locked) #progress,
+body.dashboard-dark:not(.login-locked) #progress *{
+  --final-text:#f5f7fa;
+  --final-muted:#c8ced5;
+}
+body.dashboard-dark:not(.login-locked) #progress .page-header h1,
+body.dashboard-dark:not(.login-locked) #progress .page-header p,
+body.dashboard-dark:not(.login-locked) #progress h1,
+body.dashboard-dark:not(.login-locked) #progress h2,
+body.dashboard-dark:not(.login-locked) #progress h3,
+body.dashboard-dark:not(.login-locked) #progress h4,
+body.dashboard-dark:not(.login-locked) #progress h5,
+body.dashboard-dark:not(.login-locked) #progress h6,
+body.dashboard-dark:not(.login-locked) #progress p,
+body.dashboard-dark:not(.login-locked) #progress span,
+body.dashboard-dark:not(.login-locked) #progress div,
+body.dashboard-dark:not(.login-locked) #progress label,
+body.dashboard-dark:not(.login-locked) #progress td,
+body.dashboard-dark:not(.login-locked) #progress th,
+body.dashboard-dark:not(.login-locked) #progress small,
+body.dashboard-dark:not(.login-locked) #progress strong,
+body.dashboard-dark:not(.login-locked) #progress b,
+body.dashboard-dark:not(.login-locked) #progress .chart-kicker,
+body.dashboard-dark:not(.login-locked) #progress .chart-header,
+body.dashboard-dark:not(.login-locked) #progress .panel-header,
+body.dashboard-dark:not(.login-locked) #progress .section-heading,
+body.dashboard-dark:not(.login-locked) #progress .filter-title,
+body.dashboard-dark:not(.login-locked) #progress .filter-icon{
+  color:#f5f7fa!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .page-header p,
+body.dashboard-dark:not(.login-locked) #progress .chart-kicker,
+body.dashboard-dark:not(.login-locked) #progress .chart-header p,
+body.dashboard-dark:not(.login-locked) #progress .panel-header p,
+body.dashboard-dark:not(.login-locked) #progress .progress-filter-hint,
+body.dashboard-dark:not(.login-locked) #progress .table-note,
+body.dashboard-dark:not(.login-locked) #progress .kpi-description,
+body.dashboard-dark:not(.login-locked) #progress .kpi-subtitle,
+body.dashboard-dark:not(.login-locked) #progress small{
+  color:#c8ced5!important;
+}
+body.dashboard-dark:not(.login-locked) #progress input,
+body.dashboard-dark:not(.login-locked) #progress select,
+body.dashboard-dark:not(.login-locked) #progress textarea{
+  color:#f5f7fa!important;
+  background:#252a31!important;
+  border-color:#454c55!important;
+}
+body.dashboard-dark:not(.login-locked) #progress input::placeholder{color:#c0c7cf!important}
+body.dashboard-dark:not(.login-locked) #progress option{background:#252a31!important;color:#f5f7fa!important}
+
+/* ===== MONITORING: only white / light gray text ===== */
+body.dashboard-dark:not(.login-locked) #monitoring h1,
+body.dashboard-dark:not(.login-locked) #monitoring h2,
+body.dashboard-dark:not(.login-locked) #monitoring h3,
+body.dashboard-dark:not(.login-locked) #monitoring h4,
+body.dashboard-dark:not(.login-locked) #monitoring h5,
+body.dashboard-dark:not(.login-locked) #monitoring h6,
+body.dashboard-dark:not(.login-locked) #monitoring p,
+body.dashboard-dark:not(.login-locked) #monitoring span,
+body.dashboard-dark:not(.login-locked) #monitoring div,
+body.dashboard-dark:not(.login-locked) #monitoring label,
+body.dashboard-dark:not(.login-locked) #monitoring td,
+body.dashboard-dark:not(.login-locked) #monitoring th,
+body.dashboard-dark:not(.login-locked) #monitoring small,
+body.dashboard-dark:not(.login-locked) #monitoring strong,
+body.dashboard-dark:not(.login-locked) #monitoring b,
+body.dashboard-dark:not(.login-locked) #monitoring button,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-tab,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert-title,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-pic-name,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-pic-count,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-bucket-label,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-bucket-value{
+  color:#f5f7fa!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-card p,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-section p,
+body.dashboard-dark:not(.login-locked) #monitoring .mc-desc,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-sub,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-timeline-note,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert-sub,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-weekday,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-empty,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-quick-title{
+  color:#c8ced5!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring input,
+body.dashboard-dark:not(.login-locked) #monitoring select,
+body.dashboard-dark:not(.login-locked) #monitoring textarea{
+  color:#f5f7fa!important;background:#252a31!important;border-color:#454c55!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring option{background:#252a31!important;color:#f5f7fa!important}
+
+/* ===== PROBLEM: high contrast text ===== */
+body.dashboard-dark:not(.login-locked) #problem h1,
+body.dashboard-dark:not(.login-locked) #problem h2,
+body.dashboard-dark:not(.login-locked) #problem h3,
+body.dashboard-dark:not(.login-locked) #problem h4,
+body.dashboard-dark:not(.login-locked) #problem h5,
+body.dashboard-dark:not(.login-locked) #problem h6,
+body.dashboard-dark:not(.login-locked) #problem .chart-header,
+body.dashboard-dark:not(.login-locked) #problem .chart-header h2,
+body.dashboard-dark:not(.login-locked) #problem .filter-title,
+body.dashboard-dark:not(.login-locked) #problem .panel-header,
+body.dashboard-dark:not(.login-locked) #problem label,
+body.dashboard-dark:not(.login-locked) #problem th,
+body.dashboard-dark:not(.login-locked) #problem td,
+body.dashboard-dark:not(.login-locked) #problem strong,
+body.dashboard-dark:not(.login-locked) #problem b{
+  color:#f5f7fa!important;
+}
+body.dashboard-dark:not(.login-locked) #problem p,
+body.dashboard-dark:not(.login-locked) #problem small,
+body.dashboard-dark:not(.login-locked) #problem .chart-kicker,
+body.dashboard-dark:not(.login-locked) #problem .chart-header p,
+body.dashboard-dark:not(.login-locked) #problem .problem-table-info,
+body.dashboard-dark:not(.login-locked) #problem .problem-pagination{
+  color:#c8ced5!important;
+}
+body.dashboard-dark:not(.login-locked) #problem input,
+body.dashboard-dark:not(.login-locked) #problem select,
+body.dashboard-dark:not(.login-locked) #problem textarea,
+body.dashboard-dark:not(.login-locked) #problem option{
+  color:#f5f7fa!important;background:#252a31!important;border-color:#454c55!important;
+}
+
+/* ===== PROBLEM CHARTS: explicit height fixes the zero-height canvas issue in both themes ===== */
+#problem .problem-chart-container,
+#problem .problem-doughnut-container,
+#problem .problem-trend-container{
+  position:relative;
+  width:100%;
+  min-height:260px;
+  height:260px;
+  box-sizing:border-box;
+}
+#problem .problem-chart-large .problem-chart-container{height:300px;min-height:300px}
+#problem .problem-chart-full .problem-trend-container{height:280px;min-height:280px}
+#problem .problem-chart-container canvas,
+#problem .problem-doughnut-container canvas,
+#problem .problem-trend-container canvas{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:1px!important;
+}
+
+/* Dark chart cards: chart canvas itself is transparent, parent owns the dark surface. */
+body.dashboard-dark:not(.login-locked) #problem .chart-card,
+body.dashboard-dark:not(.login-locked) #problem .problem-chart-container,
+body.dashboard-dark:not(.login-locked) #problem .problem-doughnut-container,
+body.dashboard-dark:not(.login-locked) #problem .problem-trend-container{
+  background:#20242a!important;
+  border-color:#3b424a!important;
+}
+
+/* ===== DOWNLOAD PREVIEW: stable layout, no flicker ===== */
+#download .download-preview-card{display:flex;flex-direction:column;min-height:420px}
+#download .download-preview-table-wrap{flex:1 1 auto;min-height:180px;max-height:none}
+#download .download-preview-table{table-layout:auto}
+#download .download-preview-table tbody{display:table-row-group}
+#download .download-preview-card .download-actions,
+#download .download-preview-card .download-note{flex:0 0 auto}
+</style>
+
+<script id="finalRepairProblemChartsAndDownload">
+(function(){
+  'use strict';
+  function problemCharts(){
+    return [window.problemCustomerChart,window.problemStatusChart,window.problemPartChart,window.problemPICChart,window.problemTrendChart].filter(Boolean);
+  }
+  function resizeAndRefreshProblemCharts(){
+    const page=document.getElementById('problem');
+    if(!page)return;
+    const containers=page.querySelectorAll('.problem-chart-container,.problem-doughnut-container,.problem-trend-container');
+    containers.forEach(el=>{el.style.minHeight=el.classList.contains('problem-trend-container')?'280px':'260px';});
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      problemCharts().forEach(ch=>{try{ch.resize();ch.update('none')}catch(e){}});
+    }));
+  }
+  function ensureProblemCharts(){
+    if(typeof window.applyProblemFilters==='function'){
+      try{window.applyProblemFilters()}catch(e){console.warn('Problem chart redraw:',e)}
+    }
+    resizeAndRefreshProblemCharts();
+  }
+  window.addEventListener('resize',resizeAndRefreshProblemCharts);
+  document.addEventListener('DOMContentLoaded',()=>{
+    setTimeout(ensureProblemCharts,300);
+    setTimeout(ensureProblemCharts,1200);
+    setTimeout(ensureProblemCharts,2500);
+  });
+
+  /* The download page had two competing preview renderers. Keep the first,
+     filter-aware renderer authoritative and stop the second renderer from
+     repeatedly replacing its DOM every few seconds. */
+  const stopDuplicateDownloadLoop=()=>{
+    try{
+      if(window.__downloadStableRepair)return;
+      window.__downloadStableRepair=true;
+      const page=document.getElementById('download');
+      if(!page)return;
+      let lastKey='';
+      const stabilize=()=>{
+        if(!page.classList.contains('active-page'))return;
+        const body=document.getElementById('downloadPreviewBody');
+        const head=document.getElementById('downloadPreviewHead');
+        if(!body||!head)return;
+        const key=(head.innerHTML.length)+'|'+(body.innerHTML.length)+'|'+(document.getElementById('downloadCount')?.textContent||'');
+        if(key!==lastKey){lastKey=key;}
+      };
+      window.addEventListener('resize',stabilize);
+      /* Do not poll/rewrite preview. Data changes already trigger the real update handler. */
+    }catch(e){console.warn('Download stability repair:',e)}
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',stopDuplicateDownloadLoop,{once:true});else stopDuplicateDownloadLoop();
+})();
+</script>
 </body>
 
 </html>
