@@ -787,6 +787,8 @@ body.login-locked .sidebar-overlay { display:none !important; }
 .wp-flow-filter-card{background:#fff;border:1px solid #e5edf2;border-radius:16px;padding:14px}
 .wp-flow-filter-card label{display:block;font-size:11px;font-weight:800;color:#80909b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
 .wp-flow-filter-card select{width:100%;padding:10px 11px;border:1px solid #dce6ed;border-radius:10px;background:#fff;color:#354553;outline:none}
+.wp-flow-filter-card input{width:100%;padding:10px 11px;border:1px solid #dce6ed;border-radius:10px;background:#fff;color:#354553;outline:none;box-sizing:border-box;font:inherit}
+.wp-flow-filter-card input:focus{border-color:#86b4c5;box-shadow:0 0 0 3px rgba(134,180,197,.12)}
 .wp-flow-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:16px}
 .wp-flow-kpi{background:#fff;border:1px solid #e5edf2;border-radius:16px;padding:15px;cursor:pointer;transition:.18s ease}
 .wp-flow-kpi:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(72,91,108,.08)}
@@ -2234,7 +2236,8 @@ body.table-density-compact .table-container .status-badge{transform:scale(.94);t
 
                 <div
                     class="kpi-card kpi-blue"
-                    onclick="resetFilters()">
+                    onclick="progressTotalKpiAction()"
+                    title="Klik untuk melihat seluruh order">
 
                     <div class="kpi-top">
 
@@ -2361,7 +2364,8 @@ body.table-density-compact .table-container .status-badge{transform:scale(.94);t
 
                 <div
                     class="kpi-card kpi-purple"
-                    onclick="resetFilters()">
+                    onclick="progressCustomerKpiAction()"
+                    title="Klik untuk melihat distribusi order per customer">
 
                     <div class="kpi-top">
 
@@ -2899,11 +2903,6 @@ body.table-density-compact .table-container .status-badge{transform:scale(.94);t
             </div>
 
             <div class="monitor-section">
-                <h3>🔔 Attention Center</h3>
-                <div id="monitorAlerts" class="monitor-alert-list"><div class="monitor-empty">Memuat alert...</div></div>
-            </div>
-
-            <div class="monitor-section">
                 <div class="monitor-calendar-head">
                     <button type="button" onclick="changeMonitoringMonth(-1)" aria-label="Bulan sebelumnya">‹</button>
                     <div class="monitor-month" id="monitorMonthTitle">-</div>
@@ -3000,7 +2999,8 @@ body.table-density-compact .table-container .status-badge{transform:scale(.94);t
                 </div>
                 <div class="wp-flow-filter-card">
                     <label for="wpFlowWp">WP</label>
-                    <select id="wpFlowWp" onchange="wpFlowRender()"><option value="ALL">Semua WP</option></select>
+                    <input id="wpFlowWp" list="wpFlowWpList" value="" placeholder="Semua WP — ketik atau pilih..." oninput="wpFlowRender()" onchange="wpFlowRender()" autocomplete="off">
+                    <datalist id="wpFlowWpList"></datalist>
                 </div>
             </div>
 
@@ -5892,6 +5892,26 @@ function updateTableDescription() {
         description.textContent =
             `Data sesuai filter — ${parts.join(" • ")}`;
     }
+}
+
+
+/* =========================================================
+   PROGRESS KPI ACTIONS
+========================================================= */
+
+function progressScrollTo(selector){
+    const el=document.querySelector(selector);
+    if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function progressTotalKpiAction(){
+    resetFilters();
+    setTimeout(()=>progressScrollTo("#progressTable"),80);
+}
+
+function progressCustomerKpiAction(){
+    resetFilters();
+    setTimeout(()=>progressScrollTo("#customerChart"),80);
 }
 
 
@@ -10907,9 +10927,15 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
     function fillProcess(){
         const el=q("dlProcess");
         if(!el)return;
+        const desired=((typeof PROCESS_COLUMNS !== "undefined" ? PROCESS_COLUMNS : []).map(p=>String(p.name)));
+        const currentOptions=[...el.options].map(o=>o.value);
+        const expected=["",...desired];
+        const same=currentOptions.length===expected.length && currentOptions.every((v,i)=>v===expected[i]);
         const current=el.value || "";
-        el.innerHTML='<option value="">Semua Process</option>'+((typeof PROCESS_COLUMNS !== "undefined" ? PROCESS_COLUMNS : []).map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join(""));
-        if(current && [...el.options].some(o=>o.value===current)) el.value=current;
+        if(!same){
+            el.innerHTML='<option value="">Semua Process</option>'+desired.map(name=>`<option value="${esc(name)}">${esc(name)}</option>`).join("");
+        }
+        if([...el.options].some(o=>o.value===current)) el.value=current;
     }
     function populateLists(){
         fillList("dlCustomerList",uniqueValues(progressRows(),1)); fillList("dlWpList",uniqueValues(progressRows(),3)); fillList("dlAssyList",uniqueValues(progressRows(),2)); fillList("dlCctList",uniqueValues(progressRows(),4));
@@ -11431,10 +11457,15 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
     return out;
   }
 
-  function filtered(){const m=q('wpFlowMonth')?.value||'ALL',w=q('wpFlowWp')?.value||'ALL';return wpFlowData.filter(x=>(m==='ALL'||x.month===m)&&(w==='ALL'||x.wp===w));}
+  function filtered(){const m=q('wpFlowMonth')?.value||'ALL',wRaw=q('wpFlowWp')?.value||'',w=String(wRaw).trim().toUpperCase();return wpFlowData.filter(x=>(m==='ALL'||x.month===m)&&(w===''||w==='ALL'||String(x.wp||'').trim().toUpperCase().includes(w)));}
   function fillFilters(){
     const ms=[...new Set(wpFlowData.map(x=>x.month).filter(Boolean))];const ws=[...new Set(wpFlowData.map(x=>x.wp).filter(Boolean))].sort();
-    const sm=q('wpFlowMonth'),sw=q('wpFlowWp');if(!sm||!sw)return;const oldm=sm.value,oldw=sw.value;sm.innerHTML='<option value="ALL">Semua Bulan</option>'+ms.map(m=>`<option value="${m}">${m}</option>`).join('');sw.innerHTML='<option value="ALL">Semua WP</option>'+ws.map(w=>`<option value="${w}">${w}</option>`).join('');if(ms.includes(oldm))sm.value=oldm;if(ws.includes(oldw))sw.value=oldw;
+    const sm=q('wpFlowMonth'),sw=q('wpFlowWp'),wl=q('wpFlowWpList');if(!sm||!sw)return;
+    const oldm=sm.value||'ALL', oldw=sw.value||'ALL';
+    sm.innerHTML='<option value="ALL">Semua Bulan</option>'+ms.map(m=>`<option value="${m}">${m}</option>`).join('');
+    if(ms.includes(oldm)||oldm==='ALL') sm.value=oldm; else sm.value='ALL';
+    if(wl) wl.innerHTML=ws.map(w=>`<option value="${w}"></option>`).join('');
+    sw.value=(oldw==='ALL'||!oldw)?'':(ws.includes(oldw)?oldw:'');
   }
   function fmt(n){return Number(n||0).toLocaleString('id-ID',{maximumFractionDigits:0});}
   function renderKpi(data){
@@ -13091,6 +13122,16 @@ body.dashboard-dark:not(.login-locked) .page .pill{
 
 
 <!-- FINAL VISUAL PASS: Monitoring surfaces + Progress customer chart palette -->
+<style id="kpiWpDownloadInteractionFix">
+/* KPI actions */
+.kpi-card[onclick]{cursor:pointer;}
+
+/* WP Flow typeable WP filter */
+body.dashboard-dark:not(.login-locked) .wp-flow-filter-card input{background:#1f242a!important;color:#f5f7fa!important;border-color:#414852!important;}
+body.dashboard-dark:not(.login-locked) .wp-flow-filter-card input::placeholder{color:#aeb7bf!important;}
+body.dashboard-dark:not(.login-locked) .wp-flow-filter-card input:focus{border-color:#78aeea!important;box-shadow:0 0 0 3px rgba(120,174,234,.16)!important;}
+</style>
+
 <style id="finalMonitoringAndChartPaletteFix">
 /* =========================================================
    MONITORING — FORCE DARK SURFACES + HIGH-CONTRAST TEXT
