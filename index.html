@@ -1175,7 +1175,8 @@ body.dashboard-dark:not(.login-locked) .stage6-quick-strip button:nth-child(4){b
 .sidebar{display:flex!important;flex-direction:column!important;}
 .sidebar .logout-button{order:9!important;flex:none!important;margin:0 14px!important;width:calc(100% - 28px)!important;box-sizing:border-box!important;}
 .sidebar .sidebar-settings-bottom{order:10!important;margin:8px 14px 0 14px!important;width:calc(100% - 28px)!important;flex:none!important;box-sizing:border-box!important;}
-.sidebar .sidebar-bottom{order:11!important;margin-top:auto!important;flex:none!important;}
+.sidebar .sidebar-bottom{order:11!important;margin-top:8px!important;flex:none!important;}
+.sidebar .sidebar-settings-bottom{margin-top:auto!important;}
 </style>
 
 
@@ -1535,6 +1536,8 @@ body.dashboard-dark:not(.login-locked) [style*="background: #ffffff"]{
   color:var(--dark-text)!important;
 }
 </style>
+
+
 </head>
 
 <body class="login-locked">
@@ -11234,6 +11237,436 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
   window.updateMonitoringTabs=updateMonitoringTabs;
 })();
 </script>
+<script id="darkModeReferenceChartEngine">
+(function(){
+  const DARK_PALETTE={
+    text:'#d9dfe3', muted:'#8f999f', grid:'#343b42', border:'#414950',
+    red:'#d85b63', yellow:'#d9a84e', blue:'#5e9fbd', cyan:'#5aa9bd',
+    green:'#63a07c', purple:'#8c73ad', orange:'#c98555'
+  };
+  const hexToRgb=h=>{
+    const m=String(h||'').match(/^#([0-9a-f]{6})$/i); if(!m)return null;
+    return [parseInt(m[1].slice(0,2),16),parseInt(m[1].slice(2,4),16),parseInt(m[1].slice(4,6),16)];
+  };
+  const rgbToHex=a=>'#'+a.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
+  const soften=value=>{
+    if(typeof value!=='string') return value;
+    const m=value.match(/^#([0-9a-f]{6})$/i);
+    if(!m)return value;
+    const rgb=hexToRgb(value); if(!rgb)return value;
+    const max=Math.max(...rgb), min=Math.min(...rgb);
+    if(max<70) return value;
+    return rgbToHex(rgb.map(v=>v*.72+25));
+  };
+  function patchChart(chart,dark){
+    if(!chart||!chart.options)return;
+    const o=chart.options;
+    o.plugins=o.plugins||{};
+    o.scales=o.scales||{};
+    if(dark){
+      if(!chart.$dmOriginal){
+        chart.$dmOriginal={
+          color:o.color,
+          legend:o.plugins.legend&&o.plugins.legend.labels?o.plugins.legend.labels.color:undefined,
+          titles:{}, scales:{}, datasets:[]
+        };
+        ['title','subtitle'].forEach(k=>{chart.$dmOriginal.titles[k]=o.plugins[k]?o.plugins[k].color:undefined;});
+        Object.keys(o.scales).forEach(k=>{const sc=o.scales[k];chart.$dmOriginal.scales[k]={ticks:sc.ticks&&sc.ticks.color,grid:sc.grid&&sc.grid.color,border:sc.border&&sc.border.color};});
+        (chart.data&&chart.data.datasets||[]).forEach(ds=>{chart.$dmOriginal.datasets.push({
+          backgroundColor:Array.isArray(ds.backgroundColor)?ds.backgroundColor.slice():ds.backgroundColor,
+          borderColor:Array.isArray(ds.borderColor)?ds.borderColor.slice():ds.borderColor,
+          pointBackgroundColor:Array.isArray(ds.pointBackgroundColor)?ds.pointBackgroundColor.slice():ds.pointBackgroundColor,
+          pointBorderColor:Array.isArray(ds.pointBorderColor)?ds.pointBorderColor.slice():ds.pointBorderColor
+        });});
+      }
+      o.color=DARK_PALETTE.text;
+      if(o.plugins.legend){o.plugins.legend.labels=o.plugins.legend.labels||{};o.plugins.legend.labels.color=DARK_PALETTE.text;}
+      ['title','subtitle'].forEach(k=>{if(o.plugins[k])o.plugins[k].color=DARK_PALETTE.text;});
+      Object.values(o.scales).forEach(sc=>{
+        sc.ticks=sc.ticks||{}; sc.ticks.color=DARK_PALETTE.muted;
+        sc.grid=sc.grid||{}; sc.grid.color=DARK_PALETTE.grid;
+        sc.border=sc.border||{}; sc.border.color=DARK_PALETTE.border;
+      });
+      (chart.data&&chart.data.datasets||[]).forEach(ds=>{
+        if(typeof ds.backgroundColor==='string')ds.backgroundColor=soften(ds.backgroundColor);
+        else if(Array.isArray(ds.backgroundColor))ds.backgroundColor=ds.backgroundColor.map(soften);
+        if(typeof ds.borderColor==='string')ds.borderColor=soften(ds.borderColor);
+        else if(Array.isArray(ds.borderColor))ds.borderColor=ds.borderColor.map(soften);
+        if(typeof ds.pointBackgroundColor==='string')ds.pointBackgroundColor=soften(ds.pointBackgroundColor);
+        if(typeof ds.pointBorderColor==='string')ds.pointBorderColor=soften(ds.pointBorderColor);
+      });
+      chart.$dmIsDark=true;
+    }else if(chart.$dmOriginal){
+      const r=chart.$dmOriginal;
+      o.color=r.color;
+      if(o.plugins.legend&&r.legend!==undefined)o.plugins.legend.labels.color=r.legend;
+      ['title','subtitle'].forEach(k=>{if(o.plugins[k])o.plugins[k].color=r.titles[k];});
+      Object.keys(r.scales).forEach(k=>{const sc=o.scales[k],v=r.scales[k];if(!sc)return;if(sc.ticks)v.ticks!==undefined&&(sc.ticks.color=v.ticks);if(sc.grid)v.grid!==undefined&&(sc.grid.color=v.grid);if(sc.border)v.border!==undefined&&(sc.border.color=v.border);});
+      (chart.data&&chart.data.datasets||[]).forEach((ds,i)=>{const v=r.datasets[i];if(!v)return;ds.backgroundColor=v.backgroundColor;ds.borderColor=v.borderColor;ds.pointBackgroundColor=v.pointBackgroundColor;ds.pointBorderColor=v.pointBorderColor;});
+      chart.$dmIsDark=false;
+    }
+    try{chart.update('none');}catch(e){try{chart.update();}catch(_){}}
+  }
+  window.applyReferenceDarkCharts=function(){
+    if(!window.Chart)return;
+    const dark=document.body.classList.contains('dashboard-dark');
+    Chart.defaults.color=dark?DARK_PALETTE.text:'#5f6d75';
+    Chart.defaults.borderColor=dark?DARK_PALETTE.grid:'#dfe7eb';
+    if(Chart.defaults.plugins&&Chart.defaults.plugins.legend&&Chart.defaults.plugins.legend.labels){
+      Chart.defaults.plugins.legend.labels.color=dark?DARK_PALETTE.text:'#5f6d75';
+    }
+    document.querySelectorAll('canvas').forEach(canvas=>{
+      try{const chart=Chart.getChart?Chart.getChart(canvas):null;if(chart)patchChart(chart,dark);}catch(e){}
+    });
+  };
+  function burst(){
+    let n=0; const timer=setInterval(()=>{applyReferenceDarkCharts(); if(++n>=10)clearInterval(timer);},350);
+  }
+  window.refreshReferenceDarkCharts=burst;
+  const originalApply=window.applySettings;
+  if(typeof originalApply==='function'){
+    window.applySettings=function(data){
+      const r=originalApply.apply(this,arguments); setTimeout(burst,60); return r;
+    };
+  }
+  const originalShow=window.showPage;
+  if(typeof originalShow==='function'){
+    window.showPage=function(){
+      const r=originalShow.apply(this,arguments); setTimeout(burst,120); return r;
+    };
+  }
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(burst,300));
+  setTimeout(burst,800);
+})();
+</script>
+
+<style id="darkModeReferenceFinal">
+/* =========================================================
+   DARK MODE REFERENCE FINAL
+   Neutral charcoal dashboard, high contrast, muted charts.
+   Designed from the supplied reference screenshots.
+========================================================= */
+body.dashboard-dark:not(.login-locked){
+  --dm-bg:#191d21;
+  --dm-sidebar:#20252a;
+  --dm-panel:#22272c;
+  --dm-panel-2:#272d32;
+  --dm-panel-3:#2d3339;
+  --dm-border:#343b42;
+  --dm-border-2:#3c444b;
+  --dm-text:#f3f5f6;
+  --dm-text-2:#d5dadd;
+  --dm-muted:#9aa3aa;
+  --dm-muted-2:#78828a;
+  --dm-accent:#8ecfe5;
+  --dm-accent-bg:#2b4650;
+  background:var(--dm-bg)!important;
+  color:var(--dm-text)!important;
+  color-scheme:dark;
+}
+
+/* Base surfaces */
+body.dashboard-dark:not(.login-locked) .main,
+body.dashboard-dark:not(.login-locked) .content,
+body.dashboard-dark:not(.login-locked) .page,
+body.dashboard-dark:not(.login-locked) .page-content,
+body.dashboard-dark:not(.login-locked) .topbar{
+  background:var(--dm-bg)!important;
+  color:var(--dm-text)!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar{
+  background:var(--dm-sidebar)!important;
+  border-color:#30373e!important;
+  color:var(--dm-text)!important;
+}
+
+/* Sidebar: settings + logout + live data form one bottom group */
+body.dashboard-dark:not(.login-locked) .sidebar .menu{color:#cfd5d9!important;background:transparent!important}
+body.dashboard-dark:not(.login-locked) .sidebar .menu:hover{background:#2a3036!important;color:#fff!important}
+body.dashboard-dark:not(.login-locked) .sidebar .menu.active{background:#2d3d45!important;color:#fff!important}
+body.dashboard-dark:not(.login-locked) .sidebar-section-title{color:#8e989f!important}
+body.dashboard-dark:not(.login-locked) .sidebar .logout-button{
+  background:#272e34!important;border:1px solid #3b444b!important;color:#d9dee1!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar .logout-button:hover{background:#30383f!important;color:#fff!important}
+body.dashboard-dark:not(.login-locked) .sidebar .sidebar-settings-bottom{
+  background:#a8d7e9!important;border:1px solid #a8d7e9!important;color:#1c2b32!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar .sidebar-settings-bottom:hover{background:#b9e0ee!important;color:#16242a!important}
+body.dashboard-dark:not(.login-locked) .sidebar-bottom{border-color:#343b42!important}
+body.dashboard-dark:not(.login-locked) .sidebar-status strong{color:#eef2f4!important}
+body.dashboard-dark:not(.login-locked) .sidebar-status small{color:#8d979e!important}
+
+/* Typography: one readable hierarchy */
+body.dashboard-dark:not(.login-locked) .page h1,
+body.dashboard-dark:not(.login-locked) .page h2,
+body.dashboard-dark:not(.login-locked) .page h3,
+body.dashboard-dark:not(.login-locked) .page h4,
+body.dashboard-dark:not(.login-locked) .page h5,
+body.dashboard-dark:not(.login-locked) .page h6,
+body.dashboard-dark:not(.login-locked) .page strong,
+body.dashboard-dark:not(.login-locked) .page b,
+body.dashboard-dark:not(.login-locked) .page th,
+body.dashboard-dark:not(.login-locked) .page label,
+body.dashboard-dark:not(.login-locked) .topbar h1,
+body.dashboard-dark:not(.login-locked) .topbar h2,
+body.dashboard-dark:not(.login-locked) .topbar h3,
+body.dashboard-dark:not(.login-locked) .topbar strong{
+  color:var(--dm-text)!important;
+}
+body.dashboard-dark:not(.login-locked) .page p,
+body.dashboard-dark:not(.login-locked) .page small,
+body.dashboard-dark:not(.login-locked) .page .panel-subtitle,
+body.dashboard-dark:not(.login-locked) .page .breadcrumb,
+body.dashboard-dark:not(.login-locked) .page-header p,
+body.dashboard-dark:not(.login-locked) .page-heading p,
+body.dashboard-dark:not(.login-locked) .topbar p,
+body.dashboard-dark:not(.login-locked) .download-note,
+body.dashboard-dark:not(.login-locked) .settings-card-head p,
+body.dashboard-dark:not(.login-locked) .settings-field small,
+body.dashboard-dark:not(.login-locked) .settings-save-note{
+  color:var(--dm-muted)!important;
+}
+
+/* Main cards: no bright gradients in dark mode */
+body.dashboard-dark:not(.login-locked) .panel,
+body.dashboard-dark:not(.login-locked) .card,
+body.dashboard-dark:not(.login-locked) .kpi-card,
+body.dashboard-dark:not(.login-locked) .process-card,
+body.dashboard-dark:not(.login-locked) .filter-panel,
+body.dashboard-dark:not(.login-locked) .filter-card,
+body.dashboard-dark:not(.login-locked) .download-filter-card,
+body.dashboard-dark:not(.login-locked) .download-preview-card,
+body.dashboard-dark:not(.login-locked) .download-hero,
+body.dashboard-dark:not(.login-locked) .monitor-card,
+body.dashboard-dark:not(.login-locked) .monitor-section,
+body.dashboard-dark:not(.login-locked) .monitor-stage2-card,
+body.dashboard-dark:not(.login-locked) .stage6-card,
+body.dashboard-dark:not(.login-locked) .stage6-kpi,
+body.dashboard-dark:not(.login-locked) .stage6-report,
+body.dashboard-dark:not(.login-locked) .stage6-report-section,
+body.dashboard-dark:not(.login-locked) .wp-flow-card,
+body.dashboard-dark:not(.login-locked) .wp-flow-filter-card,
+body.dashboard-dark:not(.login-locked) .wp-flow-kpi,
+body.dashboard-dark:not(.login-locked) .settings-hero,
+body.dashboard-dark:not(.login-locked) .settings-card,
+body.dashboard-dark:not(.login-locked) .cute-status-card,
+body.dashboard-dark:not(.login-locked) .cute-clock-card,
+body.dashboard-dark:not(.login-locked) .cute-focus-card,
+body.dashboard-dark:not(.login-locked) .assistant-card{
+  background:var(--dm-panel)!important;
+  border-color:var(--dm-border)!important;
+  color:var(--dm-text)!important;
+  box-shadow:none!important;
+}
+
+/* Remove the bright monitoring KPI gradients; keep semantic accents small */
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-grid .monitor-card,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-card-open,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-card-start,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-card-bottle,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-card-problem{
+  background:var(--dm-panel)!important;
+  color:var(--dm-text)!important;
+  border:1px solid var(--dm-border)!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-card .mc-label,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-card .mc-value,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-card .mc-desc{
+  color:var(--dm-text)!important;
+}
+
+/* Inner blocks */
+body.dashboard-dark:not(.login-locked) .filter-group,
+body.dashboard-dark:not(.login-locked) .download-preview-head,
+body.dashboard-dark:not(.login-locked) .download-filter-summary,
+body.dashboard-dark:not(.login-locked) .monitor-mini-stat,
+body.dashboard-dark:not(.login-locked) .status-order-item,
+body.dashboard-dark:not(.login-locked) .monitor-job-meta,
+body.dashboard-dark:not(.login-locked) .monitor-lead-breakdown,
+body.dashboard-dark:not(.login-locked) .monitor-breakdown-row,
+body.dashboard-dark:not(.login-locked) .stage6-row,
+body.dashboard-dark:not(.login-locked) .stage6-popup-item,
+body.dashboard-dark:not(.login-locked) .wp-flow-insight-box,
+body.dashboard-dark:not(.login-locked) .settings-user-badge,
+body.dashboard-dark:not(.login-locked) .settings-permission,
+body.dashboard-dark:not(.login-locked) .settings-data-btn,
+body.dashboard-dark:not(.login-locked) .cute-focus-item,
+body.dashboard-dark:not(.login-locked) .cute-notif-item,
+body.dashboard-dark:not(.login-locked) .monitor-alert{
+  background:var(--dm-panel-2)!important;
+  border-color:var(--dm-border)!important;
+  color:var(--dm-text-2)!important;
+}
+
+/* Neutralize bright section-specific backgrounds/gradients */
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage2-card > h3,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage3-grid .monitor-stage2-card > h3,
+body.dashboard-dark:not(.login-locked) .monitor-quick-strip,
+body.dashboard-dark:not(.login-locked) .stage6-quick-strip,
+body.dashboard-dark:not(.login-locked) .monitor-calendar-head,
+body.dashboard-dark:not(.login-locked) .cute-focus-section,
+body.dashboard-dark:not(.login-locked) .download-hero,
+body.dashboard-dark:not(.login-locked) .settings-hero{
+  background:var(--dm-panel-2)!important;
+  color:var(--dm-text)!important;
+  border-color:var(--dm-border)!important;
+}
+
+/* Inputs */
+body.dashboard-dark:not(.login-locked) input,
+body.dashboard-dark:not(.login-locked) select,
+body.dashboard-dark:not(.login-locked) textarea,
+body.dashboard-dark:not(.login-locked) .settings-control,
+body.dashboard-dark:not(.login-locked) .searchable-filter{
+  background:#2a3036!important;
+  color:#f0f3f5!important;
+  border-color:#454e56!important;
+}
+body.dashboard-dark:not(.login-locked) input::placeholder,
+body.dashboard-dark:not(.login-locked) textarea::placeholder{color:#89939a!important}
+body.dashboard-dark:not(.login-locked) input:focus,
+body.dashboard-dark:not(.login-locked) select:focus,
+body.dashboard-dark:not(.login-locked) textarea:focus{
+  border-color:#78b8ce!important;
+  box-shadow:0 0 0 3px rgba(120,184,206,.14)!important;
+}
+
+/* Tables */
+body.dashboard-dark:not(.login-locked) table,
+body.dashboard-dark:not(.login-locked) .download-preview-table,
+body.dashboard-dark:not(.login-locked) .wp-flow-table,
+body.dashboard-dark:not(.login-locked) .stage6-report-table{
+  background:var(--dm-panel)!important;
+  color:var(--dm-text-2)!important;
+  border-color:var(--dm-border)!important;
+}
+body.dashboard-dark:not(.login-locked) table th,
+body.dashboard-dark:not(.login-locked) .download-preview-table th,
+body.dashboard-dark:not(.login-locked) .wp-flow-table th,
+body.dashboard-dark:not(.login-locked) .stage6-report-table th{
+  background:#2c3238!important;
+  color:#eef1f3!important;
+  border-color:var(--dm-border)!important;
+}
+body.dashboard-dark:not(.login-locked) table td,
+body.dashboard-dark:not(.login-locked) .download-preview-table td,
+body.dashboard-dark:not(.login-locked) .wp-flow-table td,
+body.dashboard-dark:not(.login-locked) .stage6-report-table td{
+  background:var(--dm-panel)!important;
+  color:#d1d7db!important;
+  border-color:#343b42!important;
+}
+body.dashboard-dark:not(.login-locked) table tr:hover td{background:#292f35!important}
+
+/* Buttons */
+body.dashboard-dark:not(.login-locked) .settings-btn,
+body.dashboard-dark:not(.login-locked) .settings-data-btn,
+body.dashboard-dark:not(.login-locked) .download-button.secondary,
+body.dashboard-dark:not(.login-locked) .download-reset,
+body.dashboard-dark:not(.login-locked) .monitor-action-btn,
+body.dashboard-dark:not(.login-locked) .stage6-btn,
+body.dashboard-dark:not(.login-locked) .wp-flow-btn,
+body.dashboard-dark:not(.login-locked) .monitor-search button,
+body.dashboard-dark:not(.login-locked) .monitor-calendar-head button{
+  background:#2a3036!important;
+  color:#e9edef!important;
+  border-color:#444d55!important;
+}
+body.dashboard-dark:not(.login-locked) .settings-btn:hover,
+body.dashboard-dark:not(.login-locked) .settings-data-btn:hover,
+body.dashboard-dark:not(.login-locked) .download-button.secondary:hover,
+body.dashboard-dark:not(.login-locked) .download-reset:hover,
+body.dashboard-dark:not(.login-locked) .monitor-action-btn:hover,
+body.dashboard-dark:not(.login-locked) .stage6-btn:hover,
+body.dashboard-dark:not(.login-locked) .wp-flow-btn:hover,
+body.dashboard-dark:not(.login-locked) .monitor-search button:hover,
+body.dashboard-dark:not(.login-locked) .monitor-calendar-head button:hover{
+  background:#333a41!important;
+  border-color:#56616a!important;
+}
+body.dashboard-dark:not(.login-locked) .settings-btn.primary,
+body.dashboard-dark:not(.login-locked) .download-button.primary,
+body.dashboard-dark:not(.login-locked) .stage6-btn.primary{
+  background:#4b8195!important;
+  border-color:#5a95aa!important;
+  color:#fff!important;
+}
+
+/* Settings */
+body.dashboard-dark:not(.login-locked) .settings-hero{background:#242a30!important}
+body.dashboard-dark:not(.login-locked) .settings-hero h2,
+body.dashboard-dark:not(.login-locked) .settings-card-head h3,
+body.dashboard-dark:not(.login-locked) .settings-field label,
+body.dashboard-dark:not(.login-locked) .settings-user-badge strong,
+body.dashboard-dark:not(.login-locked) .settings-permission span,
+body.dashboard-dark:not(.login-locked) .settings-data-btn strong{color:#f1f4f5!important}
+body.dashboard-dark:not(.login-locked) .settings-card-head,
+body.dashboard-dark:not(.login-locked) .settings-actions{border-color:#363e45!important}
+body.dashboard-dark:not(.login-locked) .settings-card-icon,
+body.dashboard-dark:not(.login-locked) .settings-data-btn-icon,
+body.dashboard-dark:not(.login-locked) .settings-avatar{background:#303a41!important;color:#dff3fa!important}
+body.dashboard-dark:not(.login-locked) .settings-data-btn small,
+body.dashboard-dark:not(.login-locked) .settings-user-badge span{color:#9da7ae!important}
+body.dashboard-dark:not(.login-locked) .settings-data-btn.danger{background:#302629!important;border-color:#4d383c!important}
+body.dashboard-dark:not(.login-locked) .settings-data-btn.danger .settings-data-btn-icon{background:#423035!important}
+
+/* WP Flow / status colors: muted, not neon */
+body.dashboard-dark:not(.login-locked) .wp-flow-badge.open{background:#4b332e!important;color:#efb7aa!important}
+body.dashboard-dark:not(.login-locked) .wp-flow-badge.close{background:#294037!important;color:#b8dcc7!important}
+body.dashboard-dark:not(.login-locked) .wp-flow-badge.balance{background:#3e3549!important;color:#d5c5e6!important}
+body.dashboard-dark:not(.login-locked) .chip-danger{background:#482d32!important;color:#efb7bd!important;border-color:#604047!important}
+body.dashboard-dark:not(.login-locked) .chip-warning{background:#463c28!important;color:#e5d39a!important;border-color:#5e5335!important}
+body.dashboard-dark:not(.login-locked) .chip-purple{background:#3e3549!important;color:#d5c5e6!important;border-color:#544765!important}
+
+/* Hard override inline white surfaces from legacy components */
+body.dashboard-dark:not(.login-locked) [style*="background:#fff"],
+body.dashboard-dark:not(.login-locked) [style*="background: #fff"],
+body.dashboard-dark:not(.login-locked) [style*="background:#ffffff"],
+body.dashboard-dark:not(.login-locked) [style*="background: #ffffff"]{
+  background:var(--dm-panel-2)!important;
+  color:var(--dm-text-2)!important;
+  border-color:var(--dm-border)!important;
+}
+
+/* Inline gray text from the light theme: force readable neutral gray */
+body.dashboard-dark:not(.login-locked) [style*="color:#78858f"],
+body.dashboard-dark:not(.login-locked) [style*="color:#7a8a91"],
+body.dashboard-dark:not(.login-locked) [style*="color:#7a8994"],
+body.dashboard-dark:not(.login-locked) [style*="color:#80909b"],
+body.dashboard-dark:not(.login-locked) [style*="color:#8997a0"]{
+  color:#a3adb4!important;
+}
+
+/* Progress/status tiles: dark surfaces, semantic accent only in small labels */
+body.dashboard-dark:not(.login-locked) .status-not-started,
+body.dashboard-dark:not(.login-locked) .status-progress,
+body.dashboard-dark:not(.login-locked) .status-finished{
+  background:var(--dm-panel-2)!important;
+  color:var(--dm-text-2)!important;
+}
+
+/* Canvas charts: the JS patch below also changes Chart.js colors. */
+body.dashboard-dark:not(.login-locked) canvas{
+  background:transparent!important;
+}
+
+/* Modals */
+body.dashboard-dark:not(.login-locked) .modal-content,
+body.dashboard-dark:not(.login-locked) .modal-card,
+body.dashboard-dark:not(.login-locked) .monitor-modal-card,
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card,
+body.dashboard-dark:not(.login-locked) .cute-modal-card,
+body.dashboard-dark:not(.login-locked) .cute-quick-menu,
+body.dashboard-dark:not(.login-locked) .monitor-assistant-panel,
+body.dashboard-dark:not(.login-locked) .monitor-more-menu,
+body.dashboard-dark:not(.login-locked) .monitor-more-item{
+  background:var(--dm-panel)!important;
+  color:var(--dm-text)!important;
+  border-color:var(--dm-border)!important;
+}
+body.dashboard-dark:not(.login-locked) .monitor-more-item:hover{background:var(--dm-panel-2)!important}
+</style>
 </body>
 
 </html>
