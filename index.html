@@ -11940,124 +11940,7 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
   window.updateMonitoringTabs=updateMonitoringTabs;
 })();
 </script>
-<script id="darkModeReferenceChartEngine">
-(function(){
-  'use strict';
-  const DARK={text:'#f5f7fa',muted:'#b8c0c7',grid:'#343a41',border:'#4a5158'};
-  const LIGHT={text:'#5f6d75',grid:'#dfe7eb',border:'#cfd9de'};
-  const darkColors=['#5b8ff9','#a477ff','#59c7f2','#63c99a','#e4b45c','#ef6b73','#dc8b61'];
-  const clone=v=>Array.isArray(v)?v.slice():v;
-  const rawOptions=chart=>chart?.config?.options || null;
-  function remember(chart,o){
-    if(chart.__dmSaved)return;
-    chart.__dmSaved={
-      color:o.color,
-      legend:o.plugins?.legend?.labels?.color,
-      title:o.plugins?.title?.color,
-      subtitle:o.plugins?.subtitle?.color,
-      scales:{},
-      datasets:(chart.data?.datasets||[]).map(ds=>({
-        backgroundColor:clone(ds.backgroundColor),
-        borderColor:clone(ds.borderColor),
-        pointBackgroundColor:clone(ds.pointBackgroundColor),
-        pointBorderColor:clone(ds.pointBorderColor)
-      }))
-    };
-    Object.keys(o.scales||{}).forEach(k=>{
-      const sc=o.scales[k]||{};
-      chart.__dmSaved.scales[k]={
-        ticks:sc.ticks?.color,
-        grid:sc.grid?.color,
-        border:sc.border?.color
-      };
-    });
-  }
-  function ensureObject(parent,key){
-    if(!parent[key] || typeof parent[key]!=='object' || Array.isArray(parent[key])) parent[key]={};
-    return parent[key];
-  }
-  function patch(chart,dark){
-    const o=rawOptions(chart);
-    if(!chart||!o)return;
-    remember(chart,o);
-    o.plugins=o.plugins||{};
-    o.scales=o.scales||{};
-    const legend=ensureObject(o.plugins,'legend');
-    legend.labels=ensureObject(legend,'labels');
-    if(dark){
-      o.color=DARK.text;
-      legend.labels.color=DARK.text;
-      if(o.plugins.title)o.plugins.title.color=DARK.text;
-      if(o.plugins.subtitle)o.plugins.subtitle.color=DARK.muted;
-      Object.keys(o.scales).forEach(k=>{
-        const sc=ensureObject(o.scales,k);
-        const ticks=ensureObject(sc,'ticks');
-        const grid=ensureObject(sc,'grid');
-        const border=ensureObject(sc,'border');
-        ticks.color=DARK.muted;
-        grid.color=DARK.grid;
-        border.color=DARK.border;
-      });
-      (chart.data?.datasets||[]).forEach((ds,i)=>{
-        const c=darkColors[i%darkColors.length];
-        if(ds.backgroundColor!==undefined) ds.backgroundColor=Array.isArray(ds.backgroundColor)?ds.backgroundColor.map((_,j)=>darkColors[j%darkColors.length]):c;
-        if(ds.borderColor!==undefined) ds.borderColor=Array.isArray(ds.borderColor)?ds.borderColor.map((_,j)=>darkColors[j%darkColors.length]):c;
-        if(ds.pointBackgroundColor!==undefined) ds.pointBackgroundColor=c;
-        if(ds.pointBorderColor!==undefined) ds.pointBorderColor=DARK.text;
-      });
-    }else{
-      const saved=chart.__dmSaved;
-      if(saved){
-        o.color=saved.color;
-        legend.labels.color=saved.legend;
-        if(o.plugins.title)o.plugins.title.color=saved.title;
-        if(o.plugins.subtitle)o.plugins.subtitle.color=saved.subtitle;
-        Object.keys(saved.scales).forEach(k=>{
-          const sc=ensureObject(o.scales,k),v=saved.scales[k];
-          ensureObject(sc,'ticks').color=v.ticks;
-          ensureObject(sc,'grid').color=v.grid;
-          ensureObject(sc,'border').color=v.border;
-        });
-        (chart.data?.datasets||[]).forEach((ds,i)=>{
-          const v=saved.datasets[i]; if(!v)return;
-          ds.backgroundColor=v.backgroundColor;
-          ds.borderColor=v.borderColor;
-          ds.pointBackgroundColor=v.pointBackgroundColor;
-          ds.pointBorderColor=v.pointBorderColor;
-        });
-      }
-    }
-    try{chart.update('none');}catch(e){try{chart.update();}catch(_){}
-    }
-  }
-  function apply(){
-    if(!window.Chart)return;
-    const dark=document.body.classList.contains('dashboard-dark');
-    Chart.defaults.color=dark?DARK.text:LIGHT.text;
-    Chart.defaults.borderColor=dark?DARK.grid:LIGHT.grid;
-    if(Chart.defaults.plugins?.legend?.labels) Chart.defaults.plugins.legend.labels.color=dark?DARK.text:LIGHT.text;
-    document.querySelectorAll('canvas').forEach(c=>{
-      try{const ch=Chart.getChart(c);if(ch)patch(ch,dark);}catch(e){}
-    });
-  }
-  function schedule(){
-    [0,180,500,1000].forEach(ms=>setTimeout(apply,ms));
-  }
-  window.applyReferenceDarkCharts=apply;
-  window.refreshReferenceDarkCharts=schedule;
-  const originalShow=window.showPage;
-  if(typeof originalShow==='function'){
-    window.showPage=function(){const r=originalShow.apply(this,arguments);schedule();return r;};
-  }
-  const originalApply=window.applySettings;
-  if(typeof originalApply==='function'){
-    window.applySettings=function(){const r=originalApply.apply(this,arguments);schedule();return r;};
-  }
-  const observer=new MutationObserver(()=>schedule());
-  if(document.body) observer.observe(document.body,{attributes:true,attributeFilter:['class']});
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',schedule,{once:true}); else schedule();
-})();
-</script>
+
 
 <style id="darkModeReferenceFinal">
 /* =========================================================
@@ -13678,83 +13561,7 @@ body.dashboard-dark:not(.login-locked) #progress #customerChartDescription{
 }
 </style>
 
-<script id="finalProblemAndProgressChartPaletteFix">
-(function(){
-  'use strict';
-  const DARK = document.body && document.body.classList.contains('dashboard-dark');
-  function applyProgressCustomerPalette(){
-    if(!window.Chart) return;
-    const canvas=document.getElementById('customerChart');
-    if(!canvas) return;
-    const chart=Chart.getChart(canvas);
-    if(!chart) return;
-    const dark=document.body.classList.contains('dashboard-dark');
-    const open=dark ? '#5B8FF9' : '#F2B38F';
-    const close=dark ? '#9B6DFF' : '#9ED0B0';
-    const text=dark ? '#F5F7FA' : '#263238';
-    const muted=dark ? '#C8CED5' : '#5F6D75';
-    const grid=dark ? '#343A41' : '#E2EDF2';
-    const ds=chart.data && chart.data.datasets ? chart.data.datasets : [];
-    if(ds[0]) ds[0].backgroundColor=open;
-    if(ds[1]) ds[1].backgroundColor=close;
-    const o=chart.config.options || (chart.config.options={});
-    o.plugins=o.plugins||{};
-    o.plugins.legend=o.plugins.legend||{};
-    o.plugins.legend.labels=o.plugins.legend.labels||{};
-    o.plugins.legend.labels.color=text;
-    o.scales=o.scales||{};
-    o.scales.x=o.scales.x||{}; o.scales.x.ticks=o.scales.x.ticks||{};
-    o.scales.y=o.scales.y||{}; o.scales.y.ticks=o.scales.y.ticks||{}; o.scales.y.grid=o.scales.y.grid||{};
-    o.scales.x.ticks.color=muted;
-    o.scales.y.ticks.color=muted;
-    o.scales.y.grid.color=grid;
-    try{chart.update('none');}catch(e){try{chart.update();}catch(_){}
-    }
-  }
-  function applyAllProblemPalettes(){
-    if(!window.Chart) return;
-    const dark=document.body.classList.contains('dashboard-dark');
-    const colors={
-      customer: dark ? ['#5B8FF9','#9B6DFF'] : ['#B9DDF2'],
-      status: dark ? ['#5B8FF9','#9B6DFF'] : ['#F4C8AC','#B9DEC9'],
-      single: dark ? '#5B8FF9' : null,
-      trend: dark ? '#8F6CFF' : '#344E5D'
-    };
-    const ids=['problemCustomerChart','problemStatusChart','problemPartChart','problemPICChart','problemTrendChart'];
-    ids.forEach(id=>{
-      const c=document.getElementById(id); if(!c) return;
-      const ch=Chart.getChart(c); if(!ch) return;
-      const ds=ch.data?.datasets||[];
-      if(id==='problemStatusChart' && ds[0]) ds[0].backgroundColor=colors.status;
-      else if(id==='problemTrendChart' && ds[0]){
-        ds[0].borderColor=colors.trend;
-        ds[0].backgroundColor=dark?'rgba(143,108,255,.16)':'rgba(52,78,93,.12)';
-        ds[0].pointBackgroundColor=colors.trend;
-        ds[0].pointBorderColor=dark?'#F5F7FA':'#344E5D';
-      } else if(ds[0]) ds[0].backgroundColor=colors.single;
-      const o=ch.config.options || (ch.config.options={});
-      o.plugins=o.plugins||{}; o.plugins.legend=o.plugins.legend||{}; o.plugins.legend.labels=o.plugins.legend.labels||{};
-      o.plugins.legend.labels.color=dark?'#F5F7FA':'#263238';
-      o.scales=o.scales||{};
-      Object.keys(o.scales).forEach(k=>{
-        const sc=o.scales[k]||{}; sc.ticks=sc.ticks||{}; sc.grid=sc.grid||{};
-        sc.ticks.color=dark?'#C8CED5':'#263238';
-        if(k==='y') sc.grid.color=dark?'#343A41':'#E2EDF2';
-      });
-      try{ch.update('none');}catch(e){try{ch.update();}catch(_){}
-      }
-    });
-  }
-  function apply(){applyProgressCustomerPalette();applyAllProblemPalettes();}
-  window.applyFinalChartPaletteFix=apply;
-  [0,250,700,1300,2200].forEach(ms=>setTimeout(apply,ms));
-  window.addEventListener('resize',apply);
-  const observer=new MutationObserver(function(){
-    setTimeout(apply,80);
-  });
-  if(document.body) observer.observe(document.body,{attributes:true,attributeFilter:['class']});
-})();
-</script>
+
 
 
 <style id="monitoringReadabilityAndSettingsActiveFix">
@@ -13969,60 +13776,74 @@ body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-popup-i
 </script>
 
 
-<script id="customerChartLightModeTextFix">
+
+
+<script id="safeChartThemeEngine">
 (function(){
   'use strict';
-  function fixCustomerChartText(){
-    if(!window.Chart) return;
-    const canvas=document.getElementById('customerChart');
-    if(!canvas) return;
-    const chart=Chart.getChart(canvas);
-    if(!chart) return;
-
-    const dark=document.body.classList.contains('dashboard-dark');
-    const textColor=dark ? '#F5F7FA' : '#263238';
-    const mutedColor=dark ? '#C8CED5' : '#5F6D75';
-    const gridColor=dark ? '#343A41' : '#E2EDF2';
-
-    const o=chart.options || (chart.options={});
-    o.plugins=o.plugins||{};
-    o.plugins.legend=o.plugins.legend||{};
-    o.plugins.legend.labels=o.plugins.legend.labels||{};
-    o.plugins.legend.labels.color=textColor;
-
-    o.scales=o.scales||{};
-    o.scales.x=o.scales.x||{};
-    o.scales.x.ticks=o.scales.x.ticks||{};
-    o.scales.x.ticks.color=mutedColor;
-    o.scales.y=o.scales.y||{};
-    o.scales.y.ticks=o.scales.y.ticks||{};
-    o.scales.y.ticks.color=mutedColor;
-    o.scales.y.grid=o.scales.y.grid||{};
-    o.scales.y.grid.color=gridColor;
-
-    try{ chart.update('none'); }catch(e){ try{ chart.update(); }catch(_e){} }
-  }
-
-  function run(){ setTimeout(fixCustomerChartText,0); setTimeout(fixCustomerChartText,120); }
-  window.fixCustomerChartLightModeText=fixCustomerChartText;
-
-  document.addEventListener('DOMContentLoaded',run,{once:true});
-  window.addEventListener('resize',fixCustomerChartText);
-
-  const observer=new MutationObserver(function(mutations){
-    for(const m of mutations){
-      if(m.type==='attributes' && m.attributeName==='class'){
-        run();
-        break;
-      }
+  const DARK={text:'#f5f7fa',muted:'#c8ced5',grid:'#343a41',border:'#4a5158'};
+  const LIGHT={text:'#263238',muted:'#5f6d75',grid:'#e2edf2',border:'#cfd9de'};
+  const darkPalette=['#5b8ff9','#9b6dff','#59c7f2','#63c99a','#e4b45c','#ef6b73','#dc8b61'];
+  function cloneArray(v){return Array.isArray(v)?v.slice():v;}
+  function setPath(obj,path,value){
+    let cur=obj;
+    for(let i=0;i<path.length-1;i++){
+      const k=path[i];
+      if(!cur[k] || typeof cur[k]!=='object' || Array.isArray(cur[k])) cur[k]={};
+      cur=cur[k];
     }
+    cur[path[path.length-1]]=value;
+  }
+  function applyChart(chart,dark){
+    if(!chart || !chart.config || !chart.config.options) return;
+    const o=chart.config.options;
+    const theme=dark?DARK:LIGHT;
+    try{
+      setPath(o,['plugins','legend','labels','color'],theme.text);
+      if(o.plugins && o.plugins.title) o.plugins.title.color=theme.text;
+      if(o.plugins && o.plugins.subtitle) o.plugins.subtitle.color=theme.muted;
+      if(o.scales && typeof o.scales==='object'){
+        Object.keys(o.scales).forEach(k=>{
+          const sc=o.scales[k];
+          if(!sc || typeof sc!=='object') return;
+          setPath(sc,['ticks','color'],theme.muted);
+          setPath(sc,['grid','color'],theme.grid);
+          setPath(sc,['border','color'],theme.border);
+        });
+      }
+      if(chart.canvas && chart.canvas.id==='customerChart'){
+        const ds=chart.data && Array.isArray(chart.data.datasets)?chart.data.datasets:[];
+        if(ds[0]) ds[0].backgroundColor=dark?'#5b8ff9':'#f2b38f';
+        if(ds[1]) ds[1].backgroundColor=dark?'#9b6dff':'#9ed0b0';
+      }
+      chart.update('none');
+    }catch(e){
+      // Do not retry with chart.update(); avoiding recursive resolver creation is intentional.
+    }
+  }
+  function apply(){
+    if(!window.Chart || !document.body) return;
+    const dark=document.body.classList.contains('dashboard-dark');
+    try{
+      Chart.defaults.color=dark?DARK.text:LIGHT.text;
+      Chart.defaults.borderColor=dark?DARK.grid:LIGHT.grid;
+      if(Chart.defaults.plugins && Chart.defaults.plugins.legend && Chart.defaults.plugins.legend.labels){
+        Chart.defaults.plugins.legend.labels.color=dark?DARK.text:LIGHT.text;
+      }
+    }catch(e){}
+    document.querySelectorAll('canvas').forEach(function(canvas){
+      try{const chart=Chart.getChart(canvas); if(chart) applyChart(chart,dark);}catch(e){}
+    });
+  }
+  window.applySafeChartTheme=apply;
+  [0,300,900,1800].forEach(ms=>setTimeout(apply,ms));
+  window.addEventListener('resize',function(){setTimeout(apply,50);});
+  const observer=new MutationObserver(function(m){
+    for(const x of m){if(x.type==='attributes' && x.attributeName==='class'){setTimeout(apply,50);break;}}
   });
   if(document.body) observer.observe(document.body,{attributes:true,attributeFilter:['class']});
-
-  [250,700,1300,2200].forEach(ms=>setTimeout(fixCustomerChartText,ms));
 })();
 </script>
-
 </body>
 
 
