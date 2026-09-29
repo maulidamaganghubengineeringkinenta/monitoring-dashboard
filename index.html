@@ -923,6 +923,263 @@ body.dashboard-dark:not(.login-locked) .filter-group label{color:#d9e4e8 !import
 body.dashboard-dark:not(.login-locked) .settings-actions{border-color:#35464e !important}
 body.dashboard-dark:not(.login-locked) .settings-btn{background:#26363e !important;border-color:#465a63 !important;color:#e5eef1 !important}
 </style>
+
+<style id="darkModeHarmonyFix">
+/* =========================================================
+   DARK MODE — COHESIVE DASHBOARD PALETTE
+   ========================================================= */
+body.dashboard-dark:not(.login-locked){
+  --dm-bg:#0f171c;
+  --dm-sidebar:#14232c;
+  --dm-surface:#18262e;
+  --dm-surface-2:#1e2e37;
+  --dm-surface-3:#243740;
+  --dm-border:#304650;
+  --dm-border-soft:#283b44;
+  --dm-text:#e8f0f3;
+  --dm-text-soft:#c3d0d6;
+  --dm-muted:#94a7b0;
+  --dm-accent:#9fd3e6;
+  --dm-accent-dark:#315565;
+  background:var(--dm-bg)!important;
+  color:var(--dm-text)!important;
+}
+body.dashboard-dark:not(.login-locked) .main,
+body.dashboard-dark:not(.login-locked) .page{
+  background:var(--dm-bg)!important;
+  color:var(--dm-text)!important;
+}
+/* Global readable text */
+body.dashboard-dark:not(.login-locked) .page h1,
+body.dashboard-dark:not(.login-locked) .page h2,
+body.dashboard-dark:not(.login-locked) .page h3,
+body.dashboard-dark:not(.login-locked) .page h4,
+body.dashboard-dark:not(.login-locked) .page h5,
+body.dashboard-dark:not(.login-locked) .page h6,
+body.dashboard-dark:not(.login-locked) .page label,
+body.dashboard-dark:not(.login-locked) .page td,
+body.dashboard-dark:not(.login-locked) .page th,
+body.dashboard-dark:not(.login-locked) .page button,
+body.dashboard-dark:not(.login-locked) .page input,
+body.dashboard-dark:not(.login-locked) .page select,
+body.dashboard-dark:not(.login-locked) .page textarea{
+  color:var(--dm-text)!important;
+}
+body.dashboard-dark:not(.login-locked) .page p,
+body.dashboard-dark:not(.login-locked) .page small,
+body.dashboard-dark:not(.login-locked) .page .panel-subtitle,
+body.dashboard-dark:not(.login-locked) .page .breadcrumb,
+body.dashboard-dark:not(.login-locked) .page .download-note,
+body.dashboard-dark:not(.login-locked) .page .download-field label,
+body.dashboard-dark:not(.login-locked) .page .progress-filter-hint,
+body.dashboard-dark:not(.login-locked) .page .monitor-timeline-sub,
+body.dashboard-dark:not(.login-locked) .page .monitor-timeline-note,
+body.dashboard-dark:not(.login-locked) .page .monitor-empty,
+body.dashboard-dark:not(.login-locked) .page .cute-status-sub,
+body.dashboard-dark:not(.login-locked) .page .cute-date,
+body.dashboard-dark:not(.login-locked) .page .cute-focus-item .note,
+body.dashboard-dark:not(.login-locked) .page .cute-focus-loading,
+body.dashboard-dark:not(.login-locked) .page .assistant-sub,
+body.dashboard-dark:not(.login-locked) .page .settings-field small,
+body.dashboard-dark:not(.login-locked) .page .settings-card-head p{
+  color:var(--dm-muted)!important;
+}
+/* Surfaces */
+body.dashboard-dark:not(.login-locked) .topbar,
+body.dashboard-dark:not(.login-locked) .panel,
+body.dashboard-dark:not(.login-locked) .card,
+body.dashboard-dark:not(.login-locked) .kpi-card,
+body.dashboard-dark:not(.login-locked) .process-card,
+body.dashboard-dark:not(.login-locked) .filter-panel,
+body.dashboard-dark:not(.login-locked) .filter-card,
+body.dashboard-dark:not(.login-locked) .download-filter-card,
+body.dashboard-dark:not(.login-locked) .download-preview-card,
+body.dashboard-dark:not(.login-locked) .download-hero,
+body.dashboard-dark:not(.login-locked) .settings-hero,
+body.dashboard-dark:not(.login-locked) .settings-card,
+body.dashboard-dark:not(.login-locked) .monitor-stage2-card,
+body.dashboard-dark:not(.login-locked) .monitor-card,
+body.dashboard-dark:not(.login-locked) .stage6-card,
+body.dashboard-dark:not(.login-locked) .stage6-kpi,
+body.dashboard-dark:not(.login-locked) .wp-flow-card,
+body.dashboard-dark:not(.login-locked) .wp-flow-filter-card,
+body.dashboard-dark:not(.login-locked) .cute-status-card,
+body.dashboard-dark:not(.login-locked) .cute-clock-card,
+body.dashboard-dark:not(.login-locked) .cute-focus-card,
+body.dashboard-dark:not(.login-locked) .assistant-card{
+  background:var(--dm-surface)!important;
+  border-color:var(--dm-border)!important;
+  color:var(--dm-text)!important;
+}
+/* Secondary inner surfaces */
+body.dashboard-dark:not(.login-locked) .filter-group,
+body.dashboard-dark:not(.login-locked) .download-preview-head,
+body.dashboard-dark:not(.login-locked) .download-filter-summary,
+body.dashboard-dark:not(.login-locked) .monitor-mini-stat,
+body.dashboard-dark:not(.login-locked) .status-order-item,
+body.dashboard-dark:not(.login-locked) .settings-user-badge,
+body.dashboard-dark:not(.login-locked) .settings-permission,
+body.dashboard-dark:not(.login-locked) .settings-data-btn,
+body.dashboard-dark:not(.login-locked) .wp-flow-insight-box,
+body.dashboard-dark:not(.login-locked) .cute-focus-item,
+body.dashboard-dark:not(.login-locked) .cute-notif-item,
+body.dashboard-dark:not(.login-locked) .stage6-row,
+body.dashboard-dark:not(.login-locked) .monitor-alert{
+  background:var(--dm-surface-2)!important;
+  border-color:var(--dm-border-soft)!important;
+  color:var(--dm-text-soft)!important;
+}
+/* Inputs */
+body.dashboard-dark:not(.login-locked) input,
+body.dashboard-dark:not(.login-locked) select,
+body.dashboard-dark:not(.login-locked) textarea,
+body.dashboard-dark:not(.login-locked) .settings-control{
+  background:var(--dm-surface-3)!important;
+  color:var(--dm-text)!important;
+  border-color:#415762!important;
+}
+body.dashboard-dark:not(.login-locked) input::placeholder,
+body.dashboard-dark:not(.login-locked) textarea::placeholder{color:#8297a1!important}
+body.dashboard-dark:not(.login-locked) input:focus,
+body.dashboard-dark:not(.login-locked) select:focus,
+body.dashboard-dark:not(.login-locked) textarea:focus{
+  border-color:#78afc2!important;
+  box-shadow:0 0 0 3px rgba(120,175,194,.14)!important;
+}
+/* Tables */
+body.dashboard-dark:not(.login-locked) table,
+body.dashboard-dark:not(.login-locked) .download-preview-table,
+body.dashboard-dark:not(.login-locked) .wp-flow-table,
+body.dashboard-dark:not(.login-locked) .stage6-report-table{
+  background:var(--dm-surface)!important;
+  color:var(--dm-text)!important;
+}
+body.dashboard-dark:not(.login-locked) th,
+body.dashboard-dark:not(.login-locked) .download-preview-table th,
+body.dashboard-dark:not(.login-locked) .wp-flow-table th,
+body.dashboard-dark:not(.login-locked) .stage6-report-table th{
+  background:#22343d!important;
+  color:#dce9ed!important;
+  border-color:var(--dm-border)!important;
+}
+body.dashboard-dark:not(.login-locked) td,
+body.dashboard-dark:not(.login-locked) .download-preview-table td,
+body.dashboard-dark:not(.login-locked) .wp-flow-table td,
+body.dashboard-dark:not(.login-locked) .stage6-report-table td{
+  background:var(--dm-surface)!important;
+  color:#cbd9de!important;
+  border-color:var(--dm-border-soft)!important;
+}
+body.dashboard-dark:not(.login-locked) tr:hover td{background:#21333c!important}
+/* Buttons */
+body.dashboard-dark:not(.login-locked) .settings-btn,
+body.dashboard-dark:not(.login-locked) .settings-data-btn,
+body.dashboard-dark:not(.login-locked) .download-button.secondary,
+body.dashboard-dark:not(.login-locked) .download-reset,
+body.dashboard-dark:not(.login-locked) .monitor-action-btn,
+body.dashboard-dark:not(.login-locked) .stage6-btn,
+body.dashboard-dark:not(.login-locked) .wp-flow-btn{
+  background:var(--dm-surface-3)!important;
+  color:var(--dm-text)!important;
+  border-color:#415762!important;
+}
+body.dashboard-dark:not(.login-locked) .settings-btn:hover,
+body.dashboard-dark:not(.login-locked) .settings-data-btn:hover,
+body.dashboard-dark:not(.login-locked) .download-button.secondary:hover,
+body.dashboard-dark:not(.login-locked) .monitor-action-btn:hover,
+body.dashboard-dark:not(.login-locked) .stage6-btn:hover,
+body.dashboard-dark:not(.login-locked) .wp-flow-btn:hover{background:#2a414b!important;border-color:#56727e!important}
+body.dashboard-dark:not(.login-locked) .settings-btn.primary,
+body.dashboard-dark:not(.login-locked) .download-button.primary,
+body.dashboard-dark:not(.login-locked) .stage6-btn.primary{
+  background:#3d6979!important;
+  border-color:#4b7d8f!important;
+  color:#f2fbfd!important;
+}
+/* Settings page */
+body.dashboard-dark:not(.login-locked) .settings-hero{background:linear-gradient(135deg,#1a2b34,#203740)!important}
+body.dashboard-dark:not(.login-locked) .settings-hero h2,
+body.dashboard-dark:not(.login-locked) .settings-card-head h3,
+body.dashboard-dark:not(.login-locked) .settings-field label,
+body.dashboard-dark:not(.login-locked) .settings-user-badge strong{color:var(--dm-text)!important}
+body.dashboard-dark:not(.login-locked) .settings-card-head,
+body.dashboard-dark:not(.login-locked) .settings-actions{border-color:var(--dm-border)!important}
+body.dashboard-dark:not(.login-locked) .settings-card-icon,
+body.dashboard-dark:not(.login-locked) .settings-data-btn-icon,
+body.dashboard-dark:not(.login-locked) .settings-avatar{background:#29404a!important;color:#cfe8ef!important}
+body.dashboard-dark:not(.login-locked) .settings-data-btn strong{color:var(--dm-text)!important}
+body.dashboard-dark:not(.login-locked) .settings-data-btn small,
+body.dashboard-dark:not(.login-locked) .settings-user-badge span,
+body.dashboard-dark:not(.login-locked) .settings-save-note{color:var(--dm-muted)!important}
+body.dashboard-dark:not(.login-locked) .settings-data-btn.danger{background:#342426!important;border-color:#5a3d40!important}
+body.dashboard-dark:not(.login-locked) .settings-data-btn.danger .settings-data-btn-icon{background:#4a3032!important}
+/* Sidebar — coherent with dashboard */
+body.dashboard-dark:not(.login-locked) .sidebar{
+  background:var(--dm-sidebar)!important;
+  border-color:#263d47!important;
+  color:var(--dm-text)!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar .menu{color:#cbd9de!important}
+body.dashboard-dark:not(.login-locked) .sidebar .menu:hover{background:#1e3540!important;color:#edf7fa!important}
+body.dashboard-dark:not(.login-locked) .sidebar .menu.active{background:#284652!important;color:#f3fafc!important}
+body.dashboard-dark:not(.login-locked) .sidebar-section-title{color:#8197a1!important}
+body.dashboard-dark:not(.login-locked) .sidebar-settings-bottom{background:#203740!important;border-color:#38525d!important;color:#dce9ed!important}
+body.dashboard-dark:not(.login-locked) .sidebar-settings-bottom:hover{background:#294b59!important}
+body.dashboard-dark:not(.login-locked) .logout-button{background:#1b2e37!important;border-color:#344c57!important;color:#c7d5da!important}
+body.dashboard-dark:not(.login-locked) .sidebar-bottom{border-color:#2d444e!important}
+body.dashboard-dark:not(.login-locked) .sidebar-status strong{color:#dce9ed!important}
+body.dashboard-dark:not(.login-locked) .sidebar-status small{color:#8298a2!important}
+/* Modal / overlays */
+body.dashboard-dark:not(.login-locked) .modal-content,
+body.dashboard-dark:not(.login-locked) .modal-card,
+body.dashboard-dark:not(.login-locked) .modal{background:var(--dm-surface)!important;color:var(--dm-text)!important;border-color:var(--dm-border)!important}
+/* Monitoring / WP flow / meeting / report specific text */
+body.dashboard-dark:not(.login-locked) .monitor-card .mc-label,
+body.dashboard-dark:not(.login-locked) .monitor-card .mc-value,
+body.dashboard-dark:not(.login-locked) .monitor-card .mc-desc,
+body.dashboard-dark:not(.login-locked) .stage6-kpi .label,
+body.dashboard-dark:not(.login-locked) .stage6-kpi .value,
+body.dashboard-dark:not(.login-locked) .wp-flow-kpi .label,
+body.dashboard-dark:not(.login-locked) .wp-flow-kpi .value,
+body.dashboard-dark:not(.login-locked) .wp-flow-kpi .sub,
+body.dashboard-dark:not(.login-locked) .monitor-section h3,
+body.dashboard-dark:not(.login-locked) .monitor-stage2-card h3,
+body.dashboard-dark:not(.login-locked) .stage6-card h3,
+body.dashboard-dark:not(.login-locked) .wp-flow-card h3,
+body.dashboard-dark:not(.login-locked) .wp-flow-head h2,
+body.dashboard-dark:not(.login-locked) .wp-flow-table td,
+body.dashboard-dark:not(.login-locked) .wp-flow-table th{color:var(--dm-text)!important}
+body.dashboard-dark:not(.login-locked) .monitor-bucket-label,
+body.dashboard-dark:not(.login-locked) .monitor-job-meta .label,
+body.dashboard-dark:not(.login-locked) .monitor-lead-breakdown-title,
+body.dashboard-dark:not(.login-locked) .stage6-row small,
+body.dashboard-dark:not(.login-locked) .stage6-date,
+body.dashboard-dark:not(.login-locked) .wp-flow-note,
+body.dashboard-dark:not(.login-locked) .wp-flow-empty,
+body.dashboard-dark:not(.login-locked) .wp-flow-month,
+body.dashboard-dark:not(.login-locked) .wp-flow-legend{color:var(--dm-muted)!important}
+/* Keep semantic badges readable but within the same palette */
+body.dashboard-dark:not(.login-locked) .wp-flow-badge.open{background:#5a3b31!important;color:#f0c5b4!important}
+body.dashboard-dark:not(.login-locked) .wp-flow-badge.close{background:#294337!important;color:#b9dec8!important}
+body.dashboard-dark:not(.login-locked) .wp-flow-badge.balance{background:#443858!important;color:#d9c9ea!important}
+body.dashboard-dark:not(.login-locked) .monitor-quick-chip.chip-danger,
+body.dashboard-dark:not(.login-locked) .stage6-quick-strip button:nth-child(2){background:#4b3034!important;color:#efc0c5!important}
+body.dashboard-dark:not(.login-locked) .monitor-quick-chip.chip-warning,
+body.dashboard-dark:not(.login-locked) .stage6-quick-strip button:nth-child(3){background:#4b422d!important;color:#ead7a2!important}
+body.dashboard-dark:not(.login-locked) .monitor-quick-chip.chip-purple,
+body.dashboard-dark:not(.login-locked) .stage6-quick-strip button:nth-child(4){background:#41384b!important;color:#d9cbe5!important}
+</style>
+
+
+<style id="sidebarBottomPositionFix">
+.sidebar{display:flex!important;flex-direction:column!important;}
+.sidebar .sidebar-settings-bottom{order:10!important;margin:0 14px 0 14px!important;width:calc(100% - 28px)!important;flex:none!important;}
+.sidebar .logout-button{order:9!important;flex:none!important;}
+.sidebar .sidebar-bottom{order:11!important;margin-top:12px!important;flex:none!important;}
+.sidebar .sidebar-bottom{margin-top:auto!important;}
+.sidebar .sidebar-settings-bottom + .logout-button{margin-top:8px!important;}
+</style>
+
 </head>
 
 <body class="login-locked">
