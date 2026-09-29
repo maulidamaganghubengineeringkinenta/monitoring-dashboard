@@ -852,6 +852,8 @@ body.settings-dark-preview .settings-hero{background:linear-gradient(135deg,#263
 .settings-data-btn.danger .settings-data-btn-icon{background:#fdebea}
 .settings-data-status{margin-top:14px;padding:10px 12px;border-radius:10px;background:#eef8f2;color:#47735a;font-size:10px;font-weight:700;border:1px solid #d8ecdf}
 .settings-data-status.error{background:#fff1f0;color:#a44c46;border-color:#f0d3d0}
+.settings-data-status.info{background:#eef4fb;color:#496a86;border-color:#d5e3f0}
+@media(max-width:800px){.settings-grid{grid-template-columns:1fr}.settings-control{max-width:none;width:100%}}
 
 /* Real dashboard dark mode */
 body.dashboard-dark:not(.login-locked){background:#111a1f !important;color:#dce6ea !important}
@@ -4656,6 +4658,32 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                     <div class="settings-card">
                         <div class="settings-card-head">
+                            <div class="settings-card-icon">📥</div>
+                            <div><h3>Pengaturan Export & Download</h3><p>Atur format, isi data, dan nama file sebelum melakukan download.</p></div>
+                        </div>
+                        <div class="settings-form">
+                            <div class="settings-field">
+                                <div><label for="settingsExportFormat">Format Export</label><small>Menentukan format yang dipilih saat membuka halaman Download Data.</small></div>
+                                <select id="settingsExportFormat" class="settings-control"><option value="xlsx">Excel (.xlsx)</option><option value="csv">CSV (.csv)</option></select>
+                            </div>
+                            <div class="settings-field">
+                                <div><label for="settingsFilteredOnly">Data Terfilter Saja</label><small>ON = hanya data sesuai filter. OFF = seluruh data sumber.</small></div>
+                                <label class="settings-switch" title="Gunakan data hasil filter"><input id="settingsFilteredOnly" type="checkbox" checked><span class="settings-slider"></span></label>
+                            </div>
+                            <div class="settings-field">
+                                <div><label for="settingsProblemDetails">Sertakan Detail Problem</label><small>Untuk export Problem, sertakan kolom KETERANGAN dan PROBLEM.</small></div>
+                                <label class="settings-switch" title="Sertakan detail problem"><input id="settingsProblemDetails" type="checkbox" checked><span class="settings-slider"></span></label>
+                            </div>
+                            <div class="settings-field">
+                                <div><label for="settingsFilename">Nama File Otomatis</label><small>Digunakan sebagai awalan nama file saat download.</small></div>
+                                <input id="settingsFilename" class="settings-control" type="text" value="Monitoring" placeholder="Monitoring">
+                            </div>
+                        </div>
+                        <div class="settings-data-status" id="settingsExportStatus">✓ Pengaturan export aktif.</div>
+                    </div>
+
+                    <div class="settings-card">
+                        <div class="settings-card-head">
                             <div class="settings-card-icon">🗄️</div>
                             <div><h3>Pengaturan Data</h3><p>Kelola dan perbarui data dashboard dengan cepat.</p></div>
                         </div>
@@ -7040,8 +7068,8 @@ function clearProcessFilter() {
    SETTINGS
 ========================================================= */
 (function(){
-    const KEY = 'prototypeMonitoringSettings_v2';
-    const defaults = {theme:'light',density:'normal',autoRefresh:false};
+    const KEY = 'prototypeMonitoringSettings_v3';
+    const defaults = {theme:'light',density:'normal',autoRefresh:false,exportFormat:'xlsx',filteredOnly:true,problemDetails:true,filename:'Monitoring'};
     let autoRefreshTimer = null;
 
     function getSettings(){
@@ -7057,7 +7085,12 @@ function clearProcessFilter() {
         const theme=document.getElementById('settingsTheme'); if(theme) theme.value=data.theme;
         const density=document.getElementById('settingsDensity'); if(density) density.value=data.density;
         const refresh=document.getElementById('settingsAutoRefresh'); if(refresh) refresh.checked=!!data.autoRefresh;
+        const fmt=document.getElementById('settingsExportFormat'); if(fmt) fmt.value=data.exportFormat||'xlsx';
+        const filtered=document.getElementById('settingsFilteredOnly'); if(filtered) filtered.checked=data.filteredOnly!==false;
+        const details=document.getElementById('settingsProblemDetails'); if(details) details.checked=data.problemDetails!==false;
+        const filename=document.getElementById('settingsFilename'); if(filename) filename.value=data.filename||'Monitoring';
         setupAutoRefresh(!!data.autoRefresh);
+        if(typeof window.applyDownloadSettings==='function') window.applyDownloadSettings(data);
     }
 
     function setupAutoRefresh(enabled){
@@ -7073,13 +7106,21 @@ function clearProcessFilter() {
         return {
             theme:document.getElementById('settingsTheme')?.value||'light',
             density:document.getElementById('settingsDensity')?.value||'normal',
-            autoRefresh:!!document.getElementById('settingsAutoRefresh')?.checked
+            autoRefresh:!!document.getElementById('settingsAutoRefresh')?.checked,
+            exportFormat:document.getElementById('settingsExportFormat')?.value||'xlsx',
+            filteredOnly:document.getElementById('settingsFilteredOnly')?.checked!==false,
+            problemDetails:document.getElementById('settingsProblemDetails')?.checked!==false,
+            filename:(document.getElementById('settingsFilename')?.value||'Monitoring').trim().slice(0,60)||'Monitoring'
         };
     }
 
     function setStatus(message, success=true){
         const el=document.getElementById('settingsDataStatus');
         if(el){ el.textContent=(success?'✓ ':'')+message; el.classList.toggle('error',!success); }
+    }
+    function setExportStatus(message, success=true){
+        const el=document.getElementById('settingsExportStatus');
+        if(el){ el.textContent=(success?'✓ ':'')+message; el.classList.toggle('error',!success); el.classList.toggle('info',!success); }
     }
 
     async function refreshData(){
@@ -7103,6 +7144,7 @@ function clearProcessFilter() {
         const data=readForm(); saveSettings(data); applySettings(data);
         const note=document.getElementById('settingsSaveNote');
         if(note){ note.textContent='✓ Pengaturan berhasil disimpan'; setTimeout(()=>note.textContent='Perubahan tersimpan di browser ini.',2200); }
+        setExportStatus(`Export ${data.exportFormat.toUpperCase()} · ${data.filteredOnly?'data terfilter':'seluruh data'} · detail problem ${data.problemDetails?'ON':'OFF'}.`);
     }
 
     function reset(){
@@ -7111,23 +7153,30 @@ function clearProcessFilter() {
         if(note){ note.textContent='Pengaturan dikembalikan ke default'; setTimeout(()=>note.textContent='Perubahan tersimpan di browser ini.',2200); }
     }
 
+    function autoApply(){
+        const data=readForm(); saveSettings(data); applySettings(data);
+        setExportStatus(`Format ${data.exportFormat.toUpperCase()} dipilih · ${data.filteredOnly?'data terfilter':'seluruh data'} · detail problem ${data.problemDetails?'ON':'OFF'}.`);
+    }
+
     function init(){
         applySettings(getSettings());
-        document.getElementById('settingsTheme')?.addEventListener('change',()=>{ const d=readForm(); saveSettings(d); applySettings(d); });
-        document.getElementById('settingsDensity')?.addEventListener('change',()=>{ const d=readForm(); saveSettings(d); applySettings(d); });
-        document.getElementById('settingsAutoRefresh')?.addEventListener('change',()=>{ const d=readForm(); saveSettings(d); applySettings(d); });
+        ['settingsTheme','settingsDensity','settingsAutoRefresh','settingsExportFormat','settingsFilteredOnly','settingsProblemDetails','settingsFilename'].forEach(id=>{
+            const el=document.getElementById(id);
+            if(el) el.addEventListener(el.type==='text'?'input':'change',autoApply);
+        });
         document.getElementById('settingsSaveBtn')?.addEventListener('click',save);
-        document.getElementById('settingsResetBtn')?.addEventListener('click',()=>{ if(confirm('Kembalikan pengaturan tampilan ke nilai default?')) reset(); });
+        document.getElementById('settingsResetBtn')?.addEventListener('click',()=>{ if(confirm('Kembalikan semua pengaturan ke nilai default?')) reset(); });
         document.getElementById('settingsRefreshDataBtn')?.addEventListener('click',refreshData);
         document.getElementById('settingsResetFilterBtn')?.addEventListener('click',resetFilters);
         document.getElementById('settingsClearCacheBtn')?.addEventListener('click',()=>{
-            if(confirm('Hapus pengaturan tampilan yang tersimpan di browser?')){ localStorage.removeItem(KEY); applySettings(defaults); setStatus('Pengaturan tersimpan berhasil dihapus.'); }
+            if(confirm('Hapus semua pengaturan tersimpan di browser?')){ localStorage.removeItem(KEY); applySettings(defaults); setStatus('Pengaturan tersimpan berhasil dihapus.'); setExportStatus('Pengaturan export kembali ke default.'); }
         });
     }
     window.refreshDashboardData=refreshData;
+    window.getDashboardSettings=getSettings;
     window.applyDashboardSettings=()=>applySettings(getSettings());
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
-})();
+})();;
 
 /* =========================================================
    SHOW PAGE
@@ -11410,7 +11459,25 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
         if(!box.querySelector('.active'))box.firstElementChild?.classList.add('active');
         box.querySelectorAll('.download-chip').forEach(b=>b.addEventListener('click',()=>{box.querySelectorAll('.download-chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');update();}));
     }
-    function headers(){return q("downloadSource")?.value==="problem"?problemHeaders:progressHeaders;}
+    function headers(){
+        const isProblem=q("downloadSource")?.value==="problem";
+        if(isProblem && window.getDashboardSettings && window.getDashboardSettings().problemDetails===false){
+            return problemHeaders.filter(h=>h!=="KETERANGAN" && h!=="PROBLEM");
+        }
+        return isProblem?problemHeaders:progressHeaders;
+    }
+    function rowsForExport(){
+        const settings=window.getDashboardSettings?window.getDashboardSettings():{};
+        const isProblem=q("downloadSource")?.value==="problem";
+        let rows;
+        if(settings.filteredOnly!==false){ rows=currentData(); }
+        else { rows=isProblem?problemRows():progressRows(); }
+        if(isProblem && settings.problemDetails===false){
+            const keep=problemHeaders.map((h,i)=>({h,i})).filter(x=>x.h!=="KETERANGAN"&&x.h!=="PROBLEM").map(x=>x.i);
+            rows=rows.map(r=>keep.map(i=>r[i]??""));
+        }
+        return rows;
+    }
     function getDownloadPreviewRowLimit(){
         const card=q("downloadPreviewCard")||document.querySelector(".download-preview-card");
         const wrap=q("downloadPreviewTableWrap")||document.querySelector(".download-preview-table-wrap");
@@ -11457,8 +11524,14 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
     }
     function safeFilePart(s){return String(s).replace(/[^a-z0-9_-]+/gi,"_").replace(/^_+|_+$/g,"").slice(0,80)||"DATA";}
     function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);}
-    function downloadCSV(){const rows=currentData(),h=headers();if(!rows.length)return;const csv=[h,...rows].map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(',')).join('\r\n');downloadBlob(new Blob(["\\ufeff"+csv],{type:"text/csv;charset=utf-8"}),`Monitoring_${safeFilePart(q("downloadSource").value)}_${new Date().toISOString().slice(0,10)}.csv`);}
-    function downloadXLSX(){const rows=currentData(),h=headers();if(!rows.length)return; if(window.XLSX){const data=[h,...rows];const wb=XLSX.utils.book_new();const ws=XLSX.utils.aoa_to_sheet(data);XLSX.utils.book_append_sheet(wb,ws,q("downloadSource").value==="problem"?"Problem":"Progress");XLSX.writeFile(wb,`Monitoring_${safeFilePart(q("downloadSource").value)}_${new Date().toISOString().slice(0,10)}.xlsx`);}else{downloadCSV();}}
+    function exportBaseName(ext){
+        const st=window.getDashboardSettings?window.getDashboardSettings():{};
+        const base=safeFilePart(st.filename||"Monitoring");
+        const source=safeFilePart(q("downloadSource")?.value||"data");
+        return `${base}_${source}_${new Date().toISOString().slice(0,10)}`;
+    }
+    function downloadCSV(){const rows=rowsForExport(),h=headers();if(!rows.length){alert("Tidak ada data untuk di-download.");return;}const csv=[h,...rows].map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(',')).join('\r\n');downloadBlob(new Blob(["\\ufeff"+csv],{type:"text/csv;charset=utf-8"}),`${exportBaseName()}.csv`);}
+    function downloadXLSX(){const rows=rowsForExport(),h=headers();if(!rows.length){alert("Tidak ada data untuk di-download.");return;} if(window.XLSX){const data=[h,...rows];const wb=XLSX.utils.book_new();const ws=XLSX.utils.aoa_to_sheet(data);XLSX.utils.book_append_sheet(wb,ws,q("downloadSource").value==="problem"?"Problem":"Progress");XLSX.writeFile(wb,`${exportBaseName()}.xlsx`);}else{downloadCSV();}}
     function reset(){
         document.querySelectorAll('#download input,#download select').forEach(el=>el.value="");
         renderQuick(); update();
@@ -11473,6 +11546,14 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
         update();
     }
     window.refreshDownloadData=function(){populateLists();update();};
+    window.applyDownloadSettings=function(settings){
+        const source=q("downloadSource")?.value||"progress";
+        update();
+        const fmt=settings?.exportFormat||"xlsx";
+        const csv=q("downloadCsvBtn"),xlsx=q("downloadXlsxBtn");
+        if(csv) csv.title=fmt==="csv"?"Format export yang dipilih di Pengaturan":"Download CSV";
+        if(xlsx) xlsx.title=fmt==="xlsx"?"Format export yang dipilih di Pengaturan":"Download Excel";
+    };
     document.addEventListener('DOMContentLoaded',bind,{once:true});
     window.addEventListener('resize',()=>{
         const rows=currentData();
@@ -14003,6 +14084,61 @@ body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-popup-i
   window.addEventListener('resize', function(){
     if(window.innerWidth > 767 && typeof closeSidebar === 'function') closeSidebar();
   });
+})();
+</script>
+
+
+<script id="customerChartLightModeTextFix">
+(function(){
+  'use strict';
+  function fixCustomerChartText(){
+    if(!window.Chart) return;
+    const canvas=document.getElementById('customerChart');
+    if(!canvas) return;
+    const chart=Chart.getChart(canvas);
+    if(!chart) return;
+
+    const dark=document.body.classList.contains('dashboard-dark');
+    const textColor=dark ? '#F5F7FA' : '#263238';
+    const mutedColor=dark ? '#C8CED5' : '#5F6D75';
+    const gridColor=dark ? '#343A41' : '#E2EDF2';
+
+    const o=chart.options || (chart.options={});
+    o.plugins=o.plugins||{};
+    o.plugins.legend=o.plugins.legend||{};
+    o.plugins.legend.labels=o.plugins.legend.labels||{};
+    o.plugins.legend.labels.color=textColor;
+
+    o.scales=o.scales||{};
+    o.scales.x=o.scales.x||{};
+    o.scales.x.ticks=o.scales.x.ticks||{};
+    o.scales.x.ticks.color=mutedColor;
+    o.scales.y=o.scales.y||{};
+    o.scales.y.ticks=o.scales.y.ticks||{};
+    o.scales.y.ticks.color=mutedColor;
+    o.scales.y.grid=o.scales.y.grid||{};
+    o.scales.y.grid.color=gridColor;
+
+    try{ chart.update('none'); }catch(e){ try{ chart.update(); }catch(_e){} }
+  }
+
+  function run(){ setTimeout(fixCustomerChartText,0); setTimeout(fixCustomerChartText,120); }
+  window.fixCustomerChartLightModeText=fixCustomerChartText;
+
+  document.addEventListener('DOMContentLoaded',run,{once:true});
+  window.addEventListener('resize',fixCustomerChartText);
+
+  const observer=new MutationObserver(function(mutations){
+    for(const m of mutations){
+      if(m.type==='attributes' && m.attributeName==='class'){
+        run();
+        break;
+      }
+    }
+  });
+  if(document.body) observer.observe(document.body,{attributes:true,attributeFilter:['class']});
+
+  [250,700,1300,2200].forEach(ms=>setTimeout(fixCustomerChartText,ms));
 })();
 </script>
 
