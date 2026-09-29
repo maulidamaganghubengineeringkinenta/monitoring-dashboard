@@ -3189,18 +3189,18 @@ body.login-locked .sidebar-overlay { display:none !important; }
                         </div>
                     </div>
 
-                    <div class="download-preview-card">
+                    <div class="download-preview-card" id="downloadPreviewCard">
                         <div class="download-card-head">
                             <div><strong>Download Preview</strong><small id="downloadFilterSummary">Semua data</small></div>
                             <div class="download-count" id="downloadCount">0 data</div>
                         </div>
-                        <div class="download-preview-table-wrap"><table class="download-preview-table"><thead id="downloadPreviewHead"></thead><tbody id="downloadPreviewBody"></tbody></table></div>
+                        <div class="download-preview-table-wrap" id="downloadPreviewTableWrap"><table class="download-preview-table"><thead id="downloadPreviewHead"></thead><tbody id="downloadPreviewBody"></tbody></table></div>
                         <div class="download-empty" id="downloadEmpty" style="display:none">Tidak ada data yang sesuai dengan filter.</div>
                         <div class="download-actions">
                             <button type="button" class="download-button secondary" id="downloadCsvBtn">⬇️ Download CSV</button>
                             <button type="button" class="download-button primary" id="downloadXlsxBtn">📊 Download Excel (.xlsx)</button>
                         </div>
-                        <div class="download-note">Preview menampilkan maksimal 10 baris. File download tetap berisi seluruh data yang sesuai filter.</div>
+                        <div class="download-note">Preview menampilkan jumlah baris yang disesuaikan dengan ruang yang tersedia. File download tetap berisi seluruh data yang sesuai filter.</div>
                     </div>
                 </div>
             </div>
@@ -9783,10 +9783,25 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
         box.querySelectorAll('.download-chip').forEach(b=>b.addEventListener('click',()=>{box.querySelectorAll('.download-chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');update();}));
     }
     function headers(){return q("downloadSource")?.value==="problem"?problemHeaders:progressHeaders;}
+    function getDownloadPreviewRowLimit(){
+        const card=q("downloadPreviewCard")||document.querySelector(".download-preview-card");
+        const wrap=q("downloadPreviewTableWrap")||document.querySelector(".download-preview-table-wrap");
+        if(!card||!wrap)return 10;
+        const headBox=q("downloadPreviewHead")?.closest("thead");
+        const cardStyle=getComputedStyle(card);
+        const verticalPadding=parseFloat(cardStyle.paddingTop||0)+parseFloat(cardStyle.paddingBottom||0);
+        const siblings=[...card.children].filter(el=>el!==wrap);
+        const reserved=siblings.reduce((sum,el)=>sum+el.getBoundingClientRect().height,0);
+        const available=Math.max(0,card.clientHeight-verticalPadding-reserved-8);
+        const headerHeight=headBox?.getBoundingClientRect().height||36;
+        const rowHeight=36;
+        return Math.max(1,Math.floor((available-headerHeight)/rowHeight));
+    }
     function renderPreview(rows){
         const h=headers(), head=q("downloadPreviewHead"),body=q("downloadPreviewBody"),empty=q("downloadEmpty");
         if(head)head.innerHTML='<tr>'+h.map(x=>`<th>${esc(x)}</th>`).join('')+'</tr>';
-        if(body)body.innerHTML=rows.slice(0,10).map(r=>'<tr>'+h.map((_,i)=>`<td>${esc(r[i]??"")}</td>`).join('')+'</tr>').join('');
+        const limit=getDownloadPreviewRowLimit();
+        if(body)body.innerHTML=rows.slice(0,limit).map(r=>'<tr>'+h.map((_,i)=>`<td>${esc(r[i]??"")}</td>`).join('')+'</tr>').join('');
         if(empty)empty.style.display=rows.length?'none':'block';
     }
     function summary(){
@@ -9812,6 +9827,10 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
     }
     window.refreshDownloadData=function(){populateLists();update();};
     document.addEventListener('DOMContentLoaded',bind,{once:true});
+    window.addEventListener('resize',()=>{
+        const rows=currentData();
+        renderPreview(rows);
+    });
 })();
 </script>
 
