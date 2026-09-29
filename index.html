@@ -13199,6 +13199,130 @@ body.dashboard-dark:not(.login-locked) #progress #customerChartDescription{
 })();
 </script>
 
+
+<style id="monitoringReadabilityAndSettingsActiveFix">
+/* =========================================================
+   FINAL TARGETED FIX
+   1) Monitoring Attention Center: bright, readable secondary text/badges
+   2) Production Job Timeline: all detail/meta text readable
+   3) Settings sidebar button: only highlighted when Settings is active
+========================================================= */
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-section,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage2-card,
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage3-grid .monitor-stage2-card{
+  background:#20252b!important;
+  color:#f4f7f9!important;
+  border-color:#39414a!important;
+}
+
+/* Attention Center cards */
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert{
+  background:#292f36!important;
+  border:1px solid #414a54!important;
+  color:#f4f7f9!important;
+  box-shadow:none!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert-title{
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  font-weight:800!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-alert-sub{
+  color:#e2e8ed!important;
+  -webkit-text-fill-color:#e2e8ed!important;
+  font-weight:600!important;
+  opacity:1!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-badge{
+  background:#3b4350!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  border:1px solid #56616d!important;
+  font-weight:800!important;
+}
+
+/* Production Job Timeline list + its detail badge */
+body.dashboard-dark:not(.login-locked) #monitoring #monitorJobList .monitor-alert{
+  background:#292f36!important;
+  border-color:#414a54!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring #monitorJobList .monitor-alert-title,
+body.dashboard-dark:not(.login-locked) #monitoring #monitorJobList .monitor-alert-sub{
+  color:#f4f7f9!important;
+  -webkit-text-fill-color:#f4f7f9!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring #monitorJobList .monitor-alert-sub{
+  color:#d9e1e6!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring #monitorJobList .monitor-badge{
+  background:#343d48!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  border-color:#596571!important;
+}
+
+/* Timeline modal/detail metadata */
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-job-meta{
+  background:#292f36!important;
+  border-color:#414a54!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-job-meta .label{
+  color:#c7d0d7!important;
+  -webkit-text-fill-color:#c7d0d7!important;
+}
+body.dashboard-dark:not(.login-locked) #monitoring .monitor-job-meta .value{
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+
+/* Sidebar Settings: neutral by default, highlighted only when Settings page is active */
+body.dashboard-dark:not(.login-locked) .sidebar .sidebar-settings-bottom{
+  background:#272e35!important;
+  border:1px solid #3b444c!important;
+  color:#dfe5e9!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar .sidebar-settings-bottom *{
+  color:#dfe5e9!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar .sidebar-settings-bottom:hover{
+  background:#303840!important;
+  border-color:#4a555f!important;
+  color:#ffffff!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar .sidebar-settings-bottom:hover *{
+  color:#ffffff!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar .sidebar-settings-bottom.active{
+  background:#9fd8ea!important;
+  border-color:#9fd8ea!important;
+  color:#17252c!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar .sidebar-settings-bottom.active *{
+  color:#17252c!important;
+}
+
+/* Light mode follows the same active/inactive behavior */
+body:not(.dashboard-dark) .sidebar .sidebar-settings-bottom{
+  background:#f3f6f7!important;
+  border:1px solid #d8e2e6!important;
+  color:#33454e!important;
+}
+body:not(.dashboard-dark) .sidebar .sidebar-settings-bottom *{
+  color:#33454e!important;
+}
+body:not(.dashboard-dark) .sidebar .sidebar-settings-bottom:hover{
+  background:#eaf1f4!important;
+}
+body:not(.dashboard-dark) .sidebar .sidebar-settings-bottom.active{
+  background:#a8d7e9!important;
+  border-color:#a8d7e9!important;
+  color:#17313b!important;
+}
+body:not(.dashboard-dark) .sidebar .sidebar-settings-bottom.active *{
+  color:#17313b!important;
+}
+</style>
+
 </body>
 
 </html>
