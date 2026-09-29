@@ -13653,6 +13653,43 @@ body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-popup-i
 </style>
 </body>
 
+
+<style id="focusTodayDetailDarkTextFix">
+/* FOCUS TODAY — detail text uses dark text on light detail surfaces for maximum readability */
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-popup-item,
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-popup-item *,
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card p,
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card small,
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-date,
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-row small,
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-detail,
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-meta,
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .detail,
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .detail * {
+  color:#24343d !important;
+  -webkit-text-fill-color:#24343d !important;
+  opacity:1 !important;
+}
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-popup-item {
+  background:#f1f5f7 !important;
+  border-color:#c8d5dc !important;
+}
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-popup-item:hover {
+  background:#e5edf1 !important;
+}
+/* Detail text inside the main Focus Today notification list */
+body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-notif-item small,
+body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-notif-item .detail,
+body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-notif-item .detail * {
+  color:#24343d !important;
+  -webkit-text-fill-color:#24343d !important;
+  opacity:1 !important;
+}
+body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-notif-item {
+  background:#f1f5f7 !important;
+  border-color:#c8d5dc !important;
+}
+</style>
 </html>
 <style id="finalSmartNotificationDarkReadabilityFix">
 /* SMART NOTIFICATION — FINAL DARK MODE CONTRAST FIX */
