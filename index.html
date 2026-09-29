@@ -460,8 +460,13 @@ body.login-locked .sidebar-overlay { display:none !important; }
 .cute-notif-intro{padding:11px 12px;margin-bottom:10px;border-radius:12px;background:#f6fafc;border:1px solid #e3edf1}.cute-notif-intro strong{display:block;font-size:12px;color:#243943}.cute-notif-intro small{display:block;margin-top:3px;font-size:10px;color:#72828a;line-height:1.4}
 </style>
 
+<style id="oldestOpenProblemCSS">
+#oldestOpenProblemCard{cursor:pointer;}
+#oldestOpenProblemCard:hover{transform:translateY(-2px);box-shadow:0 7px 20px rgba(35,49,60,.12);}
+#oldestOpenProblemCard:active{transform:translateY(0);}
+</style>
 <style id="downloadDataCSS">
-.download-page{width:100%;max-width:1180px;margin:0 auto;box-sizing:border-box}.download-hero{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:20px 22px;margin-bottom:16px;border:1px solid #d8e8ee;border-radius:18px;background:linear-gradient(135deg,#f8fcfe,#eef8fb)}.download-hero h2{margin:5px 0 5px;font-size:22px;color:#1e313b}.download-hero p{margin:0;color:#70818a;font-size:12px;line-height:1.5}.download-live-badge{font-size:10px;font-weight:900;color:#507687;white-space:nowrap}.download-live-badge span{display:inline-block;width:7px;height:7px;border-radius:50%;background:#67b78a;margin-right:6px}.download-layout{display:grid;grid-template-columns:minmax(330px,.9fr) minmax(420px,1.1fr);gap:16px;align-items:start}.download-filter-card,.download-preview-card{background:#fff;border:1px solid #d9e7ec;border-radius:18px;padding:18px;box-sizing:border-box}.download-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}.download-card-head strong{display:block;font-size:14px;color:#243741}.download-card-head small{display:block;margin-top:4px;color:#7a8a91;font-size:10px;line-height:1.4}.download-reset{border:1px solid #cfdfe5;background:#f7fafb;color:#526872;border-radius:9px;padding:8px 10px;font-size:10px;font-weight:800;cursor:pointer}.download-field{min-width:0;margin-bottom:12px}.download-field label{display:block;font-size:10px;font-weight:900;color:#52636b;margin-bottom:5px}.download-field input,.download-field select{width:100%;height:38px;padding:8px 10px;border:1px solid #d2e1e6;border-radius:9px;background:#fff;box-sizing:border-box;font-size:11px;color:#344851;outline:none}.download-field input:focus,.download-field select:focus{border-color:#86b4c5;box-shadow:0 0 0 3px rgba(134,180,197,.12)}.download-filter-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 10px}.download-filter-grid .download-field:first-child{grid-column:1/-1}.download-chip-grid{display:flex;flex-wrap:wrap;gap:7px}.download-chip{border:1px solid #d2e3e9;background:#f8fbfc;color:#4b616a;border-radius:999px;padding:8px 11px;font-size:10px;font-weight:800;cursor:pointer;transition:.15s ease}.download-chip:hover{transform:translateY(-1px);border-color:#a9c8d3}.download-chip.active{background:#dff1f8;border-color:#91bdcc;color:#294957}.download-count{padding:7px 10px;border-radius:999px;background:#eef8fb;color:#426676;font-size:10px;font-weight:900;white-space:nowrap}.download-preview-table-wrap{width:100%;overflow:auto;border:1px solid #e1ebef;border-radius:12px}.download-preview-table{width:100%;min-width:650px;border-collapse:collapse;font-size:10px}.download-preview-table th{background:#f5f9fa;color:#536770;text-align:left;padding:9px;border-bottom:1px solid #dfe9ed;white-space:nowrap}.download-preview-table td{padding:9px;border-bottom:1px solid #edf2f4;color:#42545c;white-space:nowrap}.download-preview-table tr:last-child td{border-bottom:0}.download-empty{padding:28px 10px;text-align:center;color:#7c8b92;font-size:11px}.download-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:14px}.download-button{border:0;border-radius:10px;padding:11px 14px;font-size:10px;font-weight:900;cursor:pointer}.download-button.primary{background:#263746;color:#fff}.download-button.secondary{background:#eaf4f7;color:#355462;border:1px solid #cfe1e7}.download-button:disabled{opacity:.5;cursor:not-allowed}.download-note{margin-top:9px;color:#8a999f;font-size:9px;line-height:1.45}.download-filter-card .download-field:last-child{margin-bottom:0}@media(max-width:900px){.download-layout{grid-template-columns:1fr}.download-hero{align-items:flex-start;flex-direction:column}.download-filter-grid{grid-template-columns:1fr}.download-filter-grid .download-field:first-child{grid-column:auto}}@media(max-width:520px){.download-page{max-width:100%}.download-filter-card,.download-preview-card{padding:14px}.download-actions{justify-content:stretch}.download-button{width:100%}}
+.download-page{width:100%;max-width:1180px;margin:0 auto;box-sizing:border-box}.download-hero{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:20px 22px;margin-bottom:16px;border:1px solid #d8e8ee;border-radius:18px;background:linear-gradient(135deg,#f8fcfe,#eef8fb)}.download-hero h2{margin:5px 0 5px;font-size:22px;color:#1e313b}.download-hero p{margin:0;color:#70818a;font-size:12px;line-height:1.5}.download-live-badge{font-size:10px;font-weight:900;color:#507687;white-space:nowrap}.download-live-badge span{display:inline-block;width:7px;height:7px;border-radius:50%;background:#67b78a;margin-right:6px}.download-layout{display:grid;grid-template-columns:minmax(330px,.9fr) minmax(420px,1.1fr);gap:16px;align-items:stretch}.download-filter-card,.download-preview-card{background:#fff;border:1px solid #d9e7ec;border-radius:18px;padding:18px;box-sizing:border-box;height:100%;}.download-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}.download-card-head strong{display:block;font-size:14px;color:#243741}.download-card-head small{display:block;margin-top:4px;color:#7a8a91;font-size:10px;line-height:1.4}.download-reset{border:1px solid #cfdfe5;background:#f7fafb;color:#526872;border-radius:9px;padding:8px 10px;font-size:10px;font-weight:800;cursor:pointer}.download-field{min-width:0;margin-bottom:12px}.download-field label{display:block;font-size:10px;font-weight:900;color:#52636b;margin-bottom:5px}.download-field input,.download-field select{width:100%;height:38px;padding:8px 10px;border:1px solid #d2e1e6;border-radius:9px;background:#fff;box-sizing:border-box;font-size:11px;color:#344851;outline:none}.download-field input:focus,.download-field select:focus{border-color:#86b4c5;box-shadow:0 0 0 3px rgba(134,180,197,.12)}.download-filter-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 10px}.download-filter-grid .download-field:first-child{grid-column:1/-1}.download-chip-grid{display:flex;flex-wrap:wrap;gap:7px}.download-chip{border:1px solid #d2e3e9;background:#f8fbfc;color:#4b616a;border-radius:999px;padding:8px 11px;font-size:10px;font-weight:800;cursor:pointer;transition:.15s ease}.download-chip:hover{transform:translateY(-1px);border-color:#a9c8d3}.download-chip.active{background:#dff1f8;border-color:#91bdcc;color:#294957}.download-count{padding:7px 10px;border-radius:999px;background:#eef8fb;color:#426676;font-size:10px;font-weight:900;white-space:nowrap}.download-preview-table-wrap{width:100%;overflow:auto;border:1px solid #e1ebef;border-radius:12px}.download-preview-table{width:100%;min-width:650px;border-collapse:collapse;font-size:10px}.download-preview-table th{background:#f5f9fa;color:#536770;text-align:left;padding:9px;border-bottom:1px solid #dfe9ed;white-space:nowrap}.download-preview-table td{padding:9px;border-bottom:1px solid #edf2f4;color:#42545c;white-space:nowrap}.download-preview-table tr:last-child td{border-bottom:0}.download-empty{padding:28px 10px;text-align:center;color:#7c8b92;font-size:11px}.download-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:14px}.download-button{border:0;border-radius:10px;padding:11px 14px;font-size:10px;font-weight:900;cursor:pointer}.download-button.primary{background:#263746;color:#fff}.download-button.secondary{background:#eaf4f7;color:#355462;border:1px solid #cfe1e7}.download-button:disabled{opacity:.5;cursor:not-allowed}.download-note{margin-top:9px;color:#8a999f;font-size:9px;line-height:1.45}.download-filter-card .download-field:last-child{margin-bottom:0}@media(max-width:900px){.download-layout{grid-template-columns:1fr}.download-hero{align-items:flex-start;flex-direction:column}.download-filter-grid{grid-template-columns:1fr}.download-filter-grid .download-field:first-child{grid-column:auto}}@media(max-width:520px){.download-page{max-width:100%}.download-filter-card,.download-preview-card{padding:14px}.download-actions{justify-content:stretch}.download-button{width:100%}}
 </style>
 
 <style id="colorful-monitoring-pages">
@@ -2312,7 +2317,7 @@ body.login-locked .sidebar-overlay { display:none !important; }
 
                 </div>
 
-                <div class="kpi-card kpi-purple"><div class="kpi-top"><div class="kpi-label">OLDEST OPEN PROBLEM</div><div class="kpi-icon">⏳</div></div><div class="kpi-value" id="problemOldestAge">0 hari</div><div class="kpi-description">Umur problem OPEN terlama</div></div>
+                <div class="kpi-card kpi-purple problem-clickable" id="oldestOpenProblemCard" onclick="openOldestOpenProblem()" title="Klik untuk melihat detail problem OPEN terlama"><div class="kpi-top"><div class="kpi-label">OLDEST OPEN PROBLEM</div><div class="kpi-icon">⏳</div></div><div class="kpi-value" id="problemOldestAge">0 hari</div><div class="kpi-description">Klik untuk melihat detail problem OPEN terlama</div></div>
 
             </div>
 
@@ -8492,6 +8497,33 @@ function setProblemStatusFilter(
 /* =========================================================
    PROBLEM DETAIL
 ========================================================= */
+
+function openOldestOpenProblem() {
+    const rows = Array.isArray(allProblemRows) ? allProblemRows : [];
+
+    if (!rows.length) {
+        return;
+    }
+
+    let oldestIndex = -1;
+    let oldestAge = -1;
+
+    rows.forEach((row, index) => {
+        const age = problemAgeDays(row);
+        if (age !== null && age > oldestAge) {
+            oldestAge = age;
+            oldestIndex = index;
+        }
+    });
+
+    if (oldestIndex < 0) {
+        setProblemStatusFilter("OPEN");
+        return;
+    }
+
+    openProblemDetail(oldestIndex);
+}
+
 
 function openProblemDetail(index) {
 
