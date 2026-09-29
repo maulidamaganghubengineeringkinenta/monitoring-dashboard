@@ -11339,21 +11339,69 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
   function focusHTML(){const n=nums();return `<div class="cute-focus-item" data-focus="overdue" role="button" tabindex="0" onclick="window.__focusCardClick('overdue')" title="Klik untuk melihat detail OVERDUE"><div class="icon">⏰</div><div class="label">OVERDUE</div><div class="value">${n.overdue}</div><div class="note">OPEN melewati ETD · Klik untuk detail</div></div><div class="cute-focus-item" data-focus="etd3" role="button" tabindex="0" onclick="window.__focusCardClick('etd3')" title="Klik untuk melihat detail ETD ≤ 3 HARI"><div class="icon">📅</div><div class="label">ETD ≤ 3 HARI</div><div class="value">${n.etd3}</div><div class="note">Segera dipantau · Klik untuk detail</div></div><div class="cute-focus-item" data-focus="reschedule" role="button" tabindex="0" onclick="window.__focusCardClick('reschedule')" title="Klik untuk melihat detail RESCHEDULE"><div class="icon">🔄</div><div class="label">RESCHEDULE</div><div class="value">${n.reschedule}</div><div class="note">Perubahan ETD · Klik untuk detail</div></div><div class="cute-focus-item" data-focus="problem" role="button" tabindex="0" onclick="window.__focusCardClick('problem')" title="Klik untuk melihat Problem OPEN"><div class="icon">⚠️</div><div class="label">PROBLEM OPEN</div><div class="value">${n.problemOpen}</div><div class="note">Perlu perhatian · Klik untuk detail</div></div><div class="cute-focus-item" data-focus="bottleneck" role="button" tabindex="0" onclick="window.__focusCardClick('bottleneck')" title="Klik untuk melihat Bottleneck"><div class="icon">👀</div><div class="label">BOTTLENECK</div><div class="value">${n.bottleneckQty}</div><div class="note">${n.bottleneck} · Klik untuk detail</div></div>`}
   window.__focusCardClick = function(type){
     try{
-      if(type==='problem'&&typeof stage6OpenProblem==='function'){stage6OpenProblem();return;}
-      if(type==='bottleneck'&&typeof monitoringProcessWorkload==='function'&&typeof stage6OpenProcess==='function'){
-        const data=monitoringProcessWorkload().filter(x=>(+x.qty||0)>0).sort((a,b)=>(+b.qty||0)-(+a.qty||0));
-        if(data[0]){stage6OpenProcess(data[0].name);return;}
+      // PROBLEM OPEN already has its own dedicated detail flow.
+      if(type==='problem' && typeof stage6OpenProblem==='function'){
+        stage6OpenProblem();
+        return;
       }
-      if(typeof monitoringMetrics==='function'&&typeof stage6RowsPopup==='function'){
-        const m=monitoringMetrics();
-        const map={overdue:m.overdueRows||[],etd3:m.etd3Rows||[],reschedule:m.rescheduleRows||[]};
-        const rows=map[type]||[];
-        const labels={overdue:'OVERDUE',etd3:'ETD ≤ 3 HARI',reschedule:'RESCHEDULE'};
-        stage6RowsPopup(rows,`Detail ${labels[type]||type.toUpperCase()}`,`${rows.length} job`);return;
+
+      // BOTTLENECK opens the process-specific workload detail.
+      if(type==='bottleneck'){
+        if(typeof monitoringProcessWorkload==='function' && typeof stage6OpenProcess==='function'){
+          const data = (monitoringProcessWorkload() || [])
+            .filter(x => (+x.qty || 0) > 0)
+            .sort((a,b) => (+b.qty || 0) - (+a.qty || 0));
+          if(data[0]){
+            stage6OpenProcess(data[0].name);
+            return;
+          }
+        }
+        if(typeof showStage6InlineModal==='function'){
+          showStage6InlineModal('BOTTLENECK', '0 OPEN QTY', '<div class="stage6-popup-empty">Tidak ada process bottleneck yang aktif.</div>');
+          return;
+        }
       }
-      if(typeof monitorFilter==='function'&&(type==='overdue'||type==='etd3'||type==='reschedule'))monitorFilter(type);
-      if((type==='overdue'||type==='etd3'||type==='reschedule')&&typeof stage6RowsPopup==='function'){const m=monitoringMetrics();const rows=type==='overdue'?m.overdueRows:type==='etd3'?m.etd3Rows:m.rescheduleRows;stage6RowsPopup(rows,'Detail '+type.toUpperCase(),rows.length+' job');return;}
-    }catch(err){console.warn('Focus Today click error:',err);}
+
+      // These three categories use the same monitoring data source, but are
+      // routed explicitly so each DETAIL action always opens the correct list.
+      const route = {
+        overdue: {label:'OVERDUE', rowsKey:'overdueRows'},
+        etd3: {label:'ETD ≤ 3 HARI', rowsKey:'etd3Rows'},
+        reschedule: {label:'RESCHEDULE', rowsKey:'rescheduleRows'}
+      }[type];
+
+      if(route && typeof monitoringMetrics==='function'){
+        const m = monitoringMetrics() || {};
+        const rows = Array.isArray(m[route.rowsKey]) ? m[route.rowsKey] : [];
+
+        // Primary action: open the existing detail modal used by Monitoring.
+        if(typeof stage6RowsPopup==='function'){
+          stage6RowsPopup(rows, `Detail ${route.label}`, `${rows.length} job`);
+          return;
+        }
+
+        // Fallback: use the Monitoring detail panel if the inline popup helper
+        // is unavailable in a particular browser/runtime.
+        if(typeof monitorFilter==='function'){
+          monitorFilter(type);
+          return;
+        }
+      }
+
+      // Last-resort feedback instead of a silent click.
+      if(typeof showStage6InlineModal==='function'){
+        showStage6InlineModal('Focus Today', 'Detail', '<div class="stage6-popup-empty">Detail belum dapat dibuka karena data monitoring belum tersedia.</div>');
+      }
+    }catch(err){
+      console.warn('Focus Today click error:', err);
+      // Never leave the user with a dead click: fall back to the Monitoring panel.
+      try{
+        if((type==='overdue'||type==='etd3'||type==='reschedule') && typeof monitorFilter==='function'){
+          monitorFilter(type);
+          return;
+        }
+      }catch(fallbackErr){ console.warn('Focus Today fallback error:', fallbackErr); }
+    }
   }
   // Compatibility alias: older Focus Today delegated handlers call focusCardClick directly.
   window.focusCardClick = window.__focusCardClick;
@@ -11364,7 +11412,7 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
   function focusDetails(){const n=nums();const body=q('cuteFocusBody');if(!body)return;const items=[['⏰','OVERDUE',n.overdue+' order OPEN melewati ETD.','overdue'],['📅','ETD ≤ 3 HARI',n.etd3+' order perlu dipantau dalam waktu dekat.','etd3'],['🔄','RESCHEDULE',n.reschedule+' order mengalami perubahan ETD.','reschedule'],['⚠️','PROBLEM OPEN',n.problemOpen+' problem masih OPEN.','problem'],['👀','BOTTLENECK',(n.bottleneck==='-'?'Belum ada':n.bottleneck)+' · '+n.bottleneckQty+' OPEN QTY.','bottleneck']];body.innerHTML=items.map(x=>`<div class="cute-notif-item is-clickable" data-focus-detail="${x[3]}" role="button" tabindex="0" onclick="window.__focusCardClick('${x[3]}')" title="Klik untuk membuka detail"><div class="ni">${x[0]}</div><div><strong>${x[1]}</strong><small>${x[2]}</small></div><span class="focus-detail-badge">DETAIL</span></div>`).join('')+(items.every(x=>!String(x[2]).match(/\d+/)||Number((x[2].match(/\d+/)||['0'])[0])===0)?'<div class="cute-empty-state"><div class="big">🎉</div><strong>All clear!</strong><span>Tidak ada attention untuk hari ini.</span></div>':'')}
   function openAssistant(){const btn=q('monitorAssistantButton'),panel=q('monitorAssistantPanel');if(typeof window.__cuteAssistant==='function')window.__cuteAssistant();if(panel){panel.classList.add('open');panel.setAttribute('aria-hidden','false')}if(btn)btn.setAttribute('aria-expanded','true')}
   function closeAssistant(){const panel=q('monitorAssistantPanel'),btn=q('monitorAssistantButton');if(panel)panel.classList.remove('open');if(btn)btn.setAttribute('aria-expanded','false')}
-  function init(){updateClock();updateStatus();updateFocus();focusDetails();setInterval(updateClock,1000);setInterval(()=>{updateStatus();updateFocus();focusDetails()},5000);q('cuteNotificationBtn')?.addEventListener('click',()=>{notifications();openModal('cuteNotificationPanel')});q('cuteNotificationBody')?.addEventListener('click',e=>{const item=e.target.closest('.cute-notif-item[data-notif-index]');if(!item)return;const i=+item.dataset.notifIndex;const actions=['overdue','reschedule','problem','etd3','bottleneck'];const a=actions[i];closeAll();if(a==='problem'&&typeof stage6OpenProblem==='function')stage6OpenProblem();else if(a==='bottleneck'&&typeof monitorProcessBottleneck==='function')monitorProcessBottleneck();else if((a==='overdue'||a==='etd3'||a==='reschedule')&&typeof monitorFilter==='function')monitorFilter(a);});q('cuteFocusRefresh')?.addEventListener('click',()=>{updateStatus();updateFocus();focusDetails()});q('cuteQuickMain')?.addEventListener('click',()=>{q('cuteQuickMain').classList.toggle('open');q('cuteQuickMenu').classList.toggle('open')});document.querySelectorAll('[data-close-cute]').forEach(x=>x.addEventListener('click',closeAll));document.querySelectorAll('#cuteQuickMenu button').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.action;q('cuteQuickMain').classList.remove('open');q('cuteQuickMenu').classList.remove('open');if(a==='assistant')openAssistant();if(a==='focus'){if(typeof showPage==='function')showPage('progress');focusDetails();openModal('cuteFocusPanel')}if(a==='progress'&&typeof showPage==='function')showPage('progress');if(a==='problem'&&typeof showPage==='function')showPage('problem');if(a==='report'&&typeof showPage==='function')showPage('report')}));q('cuteFocusGrid')?.addEventListener('click',e=>{const item=e.target.closest('.cute-focus-item');if(!item)return;focusCardClick(item.dataset.focus)});q('cuteFocusGrid')?.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const item=e.target.closest('.cute-focus-item');if(!item)return;e.preventDefault();focusCardClick(item.dataset.focus)});let clicks=0,last=0;q('dashboardGreeting')?.addEventListener('click',()=>{const now=Date.now();clicks=now-last<800?clicks+1:1;last=now;if(clicks>=5){clicks=0;document.body.classList.add('secret-monitor-mode');setTimeout(()=>document.body.classList.remove('secret-monitor-mode'),4000);alert('🎉 SECRET MONITORING MODE UNLOCKED! 🚀')}});}
+  function init(){updateClock();updateStatus();updateFocus();focusDetails();setInterval(updateClock,1000);setInterval(()=>{updateStatus();updateFocus();focusDetails()},5000);q('cuteNotificationBtn')?.addEventListener('click',()=>{notifications();openModal('cuteNotificationPanel')});q('cuteNotificationBody')?.addEventListener('click',e=>{const item=e.target.closest('.cute-notif-item[data-notif-index]');if(!item)return;const i=+item.dataset.notifIndex;const actions=['overdue','reschedule','problem','etd3','bottleneck'];const a=actions[i];closeAll();if(a==='problem'&&typeof stage6OpenProblem==='function')stage6OpenProblem();else if(a==='bottleneck'&&typeof monitorProcessBottleneck==='function')monitorProcessBottleneck();else if((a==='overdue'||a==='etd3'||a==='reschedule')&&typeof monitorFilter==='function')monitorFilter(a);});q('cuteFocusRefresh')?.addEventListener('click',()=>{updateStatus();updateFocus();focusDetails()});q('cuteQuickMain')?.addEventListener('click',()=>{q('cuteQuickMain').classList.toggle('open');q('cuteQuickMenu').classList.toggle('open')});document.querySelectorAll('[data-close-cute]').forEach(x=>x.addEventListener('click',closeAll));document.querySelectorAll('#cuteQuickMenu button').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.action;q('cuteQuickMain').classList.remove('open');q('cuteQuickMenu').classList.remove('open');if(a==='assistant')openAssistant();if(a==='focus'){if(typeof showPage==='function')showPage('progress');focusDetails();openModal('cuteFocusPanel')}if(a==='progress'&&typeof showPage==='function')showPage('progress');if(a==='problem'&&typeof showPage==='function')showPage('problem');if(a==='report'&&typeof showPage==='function')showPage('report')}));q('cuteFocusGrid')?.addEventListener('click',e=>{const item=e.target.closest('.cute-focus-item');if(!item)return;/* inline onclick handles the action */});q('cuteFocusGrid')?.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const item=e.target.closest('.cute-focus-item');if(!item)return;e.preventDefault();window.__focusCardClick(item.dataset.focus)});let clicks=0,last=0;q('dashboardGreeting')?.addEventListener('click',()=>{const now=Date.now();clicks=now-last<800?clicks+1:1;last=now;if(clicks>=5){clicks=0;document.body.classList.add('secret-monitor-mode');setTimeout(()=>document.body.classList.remove('secret-monitor-mode'),4000);alert('🎉 SECRET MONITORING MODE UNLOCKED! 🚀')}});}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
