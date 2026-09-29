@@ -1825,6 +1825,105 @@ body.table-density-compact .table-container .badge,
 body.table-density-compact .table-container .status-badge{transform:scale(.94);transform-origin:center}
 </style>
 
+
+<style id="productionReadingWorkloadAttentionFix">
+/* Production Reading: keep process/WP names and values in two clean columns. */
+#readingProcessList .production-reading-clickable,
+#readingWPList .production-reading-clickable{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+    column-gap:14px;
+    width:100%;
+    box-sizing:border-box;
+}
+#readingProcessList .production-reading-clickable > span,
+#readingWPList .production-reading-clickable > span{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+#readingProcessList .production-reading-clickable > strong,
+#readingWPList .production-reading-clickable > strong{
+    justify-self:end;
+    min-width:34px;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+}
+
+/* Attention: show the first items directly and put the remainder in a dropdown. */
+#readingAttentionList .attention-item{
+    width:100%;
+    box-sizing:border-box;
+}
+.reading-attention-dropdown{
+    margin-top:2px;
+    border:1px solid #d9e2e7;
+    border-radius:9px;
+    background:#f7fafb;
+    overflow:hidden;
+}
+.reading-attention-dropdown summary{
+    cursor:pointer;
+    list-style:none;
+    padding:8px 10px;
+    font-size:12px;
+    font-weight:800;
+    color:#29404d;
+    user-select:none;
+}
+.reading-attention-dropdown summary::-webkit-details-marker{display:none}
+.reading-attention-dropdown summary::before{
+    content:"▾";
+    display:inline-block;
+    margin-right:7px;
+    transition:transform .15s ease;
+}
+.reading-attention-dropdown[open] summary::before{transform:rotate(180deg)}
+.reading-attention-dropdown-list{
+    display:grid;
+    gap:7px;
+    padding:0 8px 8px;
+    max-height:210px;
+    overflow-y:auto;
+}
+.reading-attention-dropdown .attention-item{
+    font-size:12px;
+}
+.reading-empty-attention{
+    color:#7a8a91;
+}
+
+/* Dark mode */
+body.dashboard-dark:not(.login-locked) #progress #readingProcessList .production-reading-clickable,
+body.dashboard-dark:not(.login-locked) #progress #readingWPList .production-reading-clickable,
+body.dashboard-dark:not(.login-locked) #progress #readingAttentionList .production-reading-clickable{
+    color:#f7f8fa!important;
+    background:#2b3037!important;
+    border-color:#474e58!important;
+}
+body.dashboard-dark:not(.login-locked) #progress #readingProcessList .production-reading-clickable > span,
+body.dashboard-dark:not(.login-locked) #progress #readingWPList .production-reading-clickable > span{
+    color:#f7f8fa!important;
+}
+body.dashboard-dark:not(.login-locked) #progress #readingProcessList .production-reading-clickable > strong,
+body.dashboard-dark:not(.login-locked) #progress #readingWPList .production-reading-clickable > strong{
+    color:#ffffff!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .reading-attention-dropdown{
+    background:#262b31!important;
+    border-color:#474e58!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .reading-attention-dropdown summary{
+    color:#f7f8fa!important;
+}
+body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
+    color:#aeb5bd!important;
+}
+</style>
+
 </head>
 
 <body class="login-locked">
@@ -5812,16 +5911,33 @@ function updateProductionReading(rows) {
     }
 
     const attentionList = document.getElementById("readingAttentionList");
-    const uniqueAttention = [...new Set(attention)].slice(0, 8);
+    const allAttention = attention;
     if (attentionList) {
-        attentionList.innerHTML = uniqueAttention.length
-            ? uniqueAttention.map(item => {
+        if (!allAttention.length) {
+            attentionList.innerHTML = `<span class="reading-empty-attention">Tidak ada order OPEN yang perlu perhatian.</span>`;
+        } else {
+            const visibleAttention = allAttention.slice(0, 8);
+            const remainingAttention = allAttention.slice(8);
+
+            const renderAttentionItem = item => {
                 const assy = item.split(" — ")[0];
                 return `<div class="production-reading-clickable attention-item" onclick='productionReadingDrilldown("assy", ${JSON.stringify(assy)})' title="Klik untuk melihat order ini">${escapeHTML(item)}</div>`;
-            }).join("")
-            : `<span style="color:#7a8a91;">Tidak ada order OPEN yang perlu perhatian.</span>`;
+            };
+
+            attentionList.innerHTML = visibleAttention.map(renderAttentionItem).join("");
+
+            if (remainingAttention.length) {
+                attentionList.innerHTML += `
+                    <details class="reading-attention-dropdown">
+                        <summary>Lihat ${remainingAttention.length} perhatian lainnya</summary>
+                        <div class="reading-attention-dropdown-list">
+                            ${remainingAttention.map(renderAttentionItem).join("")}
+                        </div>
+                    </details>`;
+            }
+        }
     }
-    readingSet("readingAttentionCount", attention.length);
+    readingSet("readingAttentionCount", allAttention.length);
 
     const insight = document.getElementById("automaticProductionReading");
     if (insight) {
