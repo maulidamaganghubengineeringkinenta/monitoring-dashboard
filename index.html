@@ -11667,6 +11667,418 @@ body.dashboard-dark:not(.login-locked) .monitor-more-item{
 }
 body.dashboard-dark:not(.login-locked) .monitor-more-item:hover{background:var(--dm-panel-2)!important}
 </style>
+
+<style id="darkModeMasterOverride">
+/* =========================================================
+   MASTER DARK MODE — HIGH CONTRAST / CHARCOAL REFERENCE
+   This block intentionally comes LAST so legacy light-theme
+   colors cannot override the dark theme.
+========================================================= */
+body.dashboard-dark:not(.login-locked){
+  --dark-bg:#15171b;
+  --dark-sidebar:#1d2025;
+  --dark-panel:#202329;
+  --dark-panel-2:#272a31;
+  --dark-panel-3:#2d3038;
+  --dark-border:#3a3e47;
+  --dark-border-soft:#30343c;
+  --dark-text:#f7f8fa;
+  --dark-text-2:#e1e4e9;
+  --dark-muted:#b0b6bf;
+  --dark-faint:#8f97a2;
+  --dark-accent:#9b6cff;
+  --dark-accent-2:#62a8ff;
+  background:var(--dark-bg)!important;
+  color:var(--dark-text)!important;
+}
+
+/* Page/background layers */
+body.dashboard-dark:not(.login-locked),
+body.dashboard-dark:not(.login-locked) .main,
+body.dashboard-dark:not(.login-locked) .content,
+body.dashboard-dark:not(.login-locked) .page,
+body.dashboard-dark:not(.login-locked) .page.active-page,
+body.dashboard-dark:not(.login-locked) .page-content,
+body.dashboard-dark:not(.login-locked) .app,
+body.dashboard-dark:not(.login-locked) .app-shell{
+  background:var(--dark-bg)!important;
+  color:var(--dark-text)!important;
+}
+
+/* Sidebar */
+body.dashboard-dark:not(.login-locked) .sidebar{
+  background:var(--dark-sidebar)!important;
+  border-color:var(--dark-border)!important;
+  color:var(--dark-text)!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar *{color:var(--dark-text-2)!important}
+body.dashboard-dark:not(.login-locked) .sidebar-section-title,
+body.dashboard-dark:not(.login-locked) .sidebar small,
+body.dashboard-dark:not(.login-locked) .sidebar-status small{color:var(--dark-muted)!important}
+body.dashboard-dark:not(.login-locked) .sidebar .menu:hover,
+body.dashboard-dark:not(.login-locked) .sidebar .menu.active{
+  background:#2b2f37!important;
+  color:#fff!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar .menu.active *{color:#fff!important}
+body.dashboard-dark:not(.login-locked) .sidebar-settings-bottom{
+  background:#8f62f6!important;
+  border-color:#a57dff!important;
+  color:#fff!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar-settings-bottom *{color:#fff!important}
+body.dashboard-dark:not(.login-locked) .sidebar .logout-button{
+  background:#272b32!important;
+  border-color:#3b4049!important;
+  color:#f5f7fa!important;
+}
+body.dashboard-dark:not(.login-locked) .sidebar .logout-button *{color:#f5f7fa!important}
+body.dashboard-dark:not(.login-locked) .sidebar-bottom{border-color:#353a43!important}
+body.dashboard-dark:not(.login-locked) .sidebar-status strong{color:#f7f8fa!important}
+
+/* Universal typography: no dark gray text on dark backgrounds */
+body.dashboard-dark:not(.login-locked) .page h1,
+body.dashboard-dark:not(.login-locked) .page h2,
+body.dashboard-dark:not(.login-locked) .page h3,
+body.dashboard-dark:not(.login-locked) .page h4,
+body.dashboard-dark:not(.login-locked) .page h5,
+body.dashboard-dark:not(.login-locked) .page h6,
+body.dashboard-dark:not(.login-locked) .page strong,
+body.dashboard-dark:not(.login-locked) .page b,
+body.dashboard-dark:not(.login-locked) .page th,
+body.dashboard-dark:not(.login-locked) .page label,
+body.dashboard-dark:not(.login-locked) .page td,
+body.dashboard-dark:not(.login-locked) .page .kpi-value,
+body.dashboard-dark:not(.login-locked) .page .kpi-label,
+body.dashboard-dark:not(.login-locked) .page .mc-value,
+body.dashboard-dark:not(.login-locked) .page .mc-label{
+  color:var(--dark-text)!important;
+}
+body.dashboard-dark:not(.login-locked) .page p,
+body.dashboard-dark:not(.login-locked) .page small,
+body.dashboard-dark:not(.login-locked) .page .panel-subtitle,
+body.dashboard-dark:not(.login-locked) .page .breadcrumb,
+body.dashboard-dark:not(.login-locked) .page .description,
+body.dashboard-dark:not(.login-locked) .page .note,
+body.dashboard-dark:not(.login-locked) .page .muted,
+body.dashboard-dark:not(.login-locked) .page .kpi-description,
+body.dashboard-dark:not(.login-locked) .page .mc-desc,
+body.dashboard-dark:not(.login-locked) .page .download-note,
+body.dashboard-dark:not(.login-locked) .page .settings-card-head p,
+body.dashboard-dark:not(.login-locked) .page .settings-field small,
+body.dashboard-dark:not(.login-locked) .page .settings-save-note{
+  color:var(--dark-muted)!important;
+}
+
+/* Generic surfaces — force charcoal even when legacy inline styles exist */
+body.dashboard-dark:not(.login-locked) .panel,
+body.dashboard-dark:not(.login-locked) .card,
+body.dashboard-dark:not(.login-locked) .kpi-card,
+body.dashboard-dark:not(.login-locked) .process-card,
+body.dashboard-dark:not(.login-locked) .filter-panel,
+body.dashboard-dark:not(.login-locked) .filter-card,
+body.dashboard-dark:not(.login-locked) .download-filter-card,
+body.dashboard-dark:not(.login-locked) .download-preview-card,
+body.dashboard-dark:not(.login-locked) .download-hero,
+body.dashboard-dark:not(.login-locked) .monitor-card,
+body.dashboard-dark:not(.login-locked) .monitor-section,
+body.dashboard-dark:not(.login-locked) .monitor-stage2-card,
+body.dashboard-dark:not(.login-locked) .stage6-card,
+body.dashboard-dark:not(.login-locked) .stage6-kpi,
+body.dashboard-dark:not(.login-locked) .stage6-report,
+body.dashboard-dark:not(.login-locked) .stage6-report-section,
+body.dashboard-dark:not(.login-locked) .wp-flow-card,
+body.dashboard-dark:not(.login-locked) .wp-flow-filter-card,
+body.dashboard-dark:not(.login-locked) .wp-flow-kpi,
+body.dashboard-dark:not(.login-locked) .settings-hero,
+body.dashboard-dark:not(.login-locked) .settings-card,
+body.dashboard-dark:not(.login-locked) .cute-status-card,
+body.dashboard-dark:not(.login-locked) .cute-clock-card,
+body.dashboard-dark:not(.login-locked) .cute-focus-card,
+body.dashboard-dark:not(.login-locked) .assistant-card,
+body.dashboard-dark:not(.login-locked) .modal-content,
+body.dashboard-dark:not(.login-locked) .modal-card,
+body.dashboard-dark:not(.login-locked) .monitor-modal-card,
+body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card,
+body.dashboard-dark:not(.login-locked) .cute-modal-card,
+body.dashboard-dark:not(.login-locked) .cute-quick-menu,
+body.dashboard-dark:not(.login-locked) .monitor-assistant-panel,
+body.dashboard-dark:not(.login-locked) .monitor-more-menu{
+  background:var(--dark-panel)!important;
+  border-color:var(--dark-border)!important;
+  color:var(--dark-text)!important;
+  box-shadow:none!important;
+}
+
+/* Nested blocks */
+body.dashboard-dark:not(.login-locked) .filter-group,
+body.dashboard-dark:not(.login-locked) .download-preview-head,
+body.dashboard-dark:not(.login-locked) .download-filter-summary,
+body.dashboard-dark:not(.login-locked) .monitor-mini-stat,
+body.dashboard-dark:not(.login-locked) .status-order-item,
+body.dashboard-dark:not(.login-locked) .monitor-job-meta,
+body.dashboard-dark:not(.login-locked) .monitor-lead-breakdown,
+body.dashboard-dark:not(.login-locked) .monitor-breakdown-row,
+body.dashboard-dark:not(.login-locked) .stage6-row,
+body.dashboard-dark:not(.login-locked) .stage6-popup-item,
+body.dashboard-dark:not(.login-locked) .wp-flow-insight-box,
+body.dashboard-dark:not(.login-locked) .settings-user-badge,
+body.dashboard-dark:not(.login-locked) .settings-permission,
+body.dashboard-dark:not(.login-locked) .settings-data-btn,
+body.dashboard-dark:not(.login-locked) .cute-focus-item,
+body.dashboard-dark:not(.login-locked) .cute-notif-item,
+body.dashboard-dark:not(.login-locked) .monitor-alert,
+body.dashboard-dark:not(.login-locked) .monitor-quick-strip,
+body.dashboard-dark:not(.login-locked) .stage6-quick-strip,
+body.dashboard-dark:not(.login-locked) .monitor-calendar-head{
+  background:var(--dark-panel-2)!important;
+  border-color:var(--dark-border)!important;
+  color:var(--dark-text-2)!important;
+}
+
+/* Anything inside a dark surface inherits a readable text color unless it
+   is an icon/status element with an explicit semantic override below. */
+body.dashboard-dark:not(.login-locked) .panel *,
+body.dashboard-dark:not(.login-locked) .card *,
+body.dashboard-dark:not(.login-locked) .kpi-card *,
+body.dashboard-dark:not(.login-locked) .process-card *,
+body.dashboard-dark:not(.login-locked) .filter-panel *,
+body.dashboard-dark:not(.login-locked) .filter-card *,
+body.dashboard-dark:not(.login-locked) .download-filter-card *,
+body.dashboard-dark:not(.login-locked) .download-preview-card *,
+body.dashboard-dark:not(.login-locked) .monitor-card *,
+body.dashboard-dark:not(.login-locked) .monitor-stage2-card *,
+body.dashboard-dark:not(.login-locked) .stage6-card *,
+body.dashboard-dark:not(.login-locked) .stage6-report *,
+body.dashboard-dark:not(.login-locked) .wp-flow-card *,
+body.dashboard-dark:not(.login-locked) .settings-card *{
+  color:var(--dark-text-2)!important;
+}
+body.dashboard-dark:not(.login-locked) .panel p,
+body.dashboard-dark:not(.login-locked) .card p,
+body.dashboard-dark:not(.login-locked) .panel small,
+body.dashboard-dark:not(.login-locked) .card small,
+body.dashboard-dark:not(.login-locked) .settings-card p,
+body.dashboard-dark:not(.login-locked) .settings-card small{
+  color:var(--dark-muted)!important;
+}
+
+/* Inputs and selects */
+body.dashboard-dark:not(.login-locked) input,
+body.dashboard-dark:not(.login-locked) select,
+body.dashboard-dark:not(.login-locked) textarea,
+body.dashboard-dark:not(.login-locked) .settings-control,
+body.dashboard-dark:not(.login-locked) .searchable-filter{
+  background:#2b2f36!important;
+  color:#f7f8fa!important;
+  border-color:#464b55!important;
+}
+body.dashboard-dark:not(.login-locked) input::placeholder,
+body.dashboard-dark:not(.login-locked) textarea::placeholder{color:#9aa2ad!important;opacity:1!important}
+body.dashboard-dark:not(.login-locked) input:focus,
+body.dashboard-dark:not(.login-locked) select:focus,
+body.dashboard-dark:not(.login-locked) textarea:focus{
+  border-color:#9b6cff!important;
+  box-shadow:0 0 0 3px rgba(155,108,255,.16)!important;
+}
+
+/* Tables */
+body.dashboard-dark:not(.login-locked) table,
+body.dashboard-dark:not(.login-locked) .download-preview-table,
+body.dashboard-dark:not(.login-locked) .wp-flow-table,
+body.dashboard-dark:not(.login-locked) .stage6-report-table{
+  background:var(--dark-panel)!important;
+  color:var(--dark-text-2)!important;
+  border-color:var(--dark-border)!important;
+}
+body.dashboard-dark:not(.login-locked) table thead,
+body.dashboard-dark:not(.login-locked) .download-preview-table thead,
+body.dashboard-dark:not(.login-locked) .wp-flow-table thead,
+body.dashboard-dark:not(.login-locked) .stage6-report-table thead{
+  background:var(--dark-panel-3)!important;
+}
+body.dashboard-dark:not(.login-locked) table th,
+body.dashboard-dark:not(.login-locked) .download-preview-table th,
+body.dashboard-dark:not(.login-locked) .wp-flow-table th,
+body.dashboard-dark:not(.login-locked) .stage6-report-table th{
+  background:var(--dark-panel-3)!important;
+  color:#ffffff!important;
+  border-color:var(--dark-border)!important;
+}
+body.dashboard-dark:not(.login-locked) table td,
+body.dashboard-dark:not(.login-locked) .download-preview-table td,
+body.dashboard-dark:not(.login-locked) .wp-flow-table td,
+body.dashboard-dark:not(.login-locked) .stage6-report-table td{
+  background:var(--dark-panel)!important;
+  color:#e2e6eb!important;
+  border-color:var(--dark-border-soft)!important;
+}
+body.dashboard-dark:not(.login-locked) table tr:hover td{background:#2a2e35!important}
+
+/* Buttons: neutral dark by default, purple only for primary actions */
+body.dashboard-dark:not(.login-locked) button,
+body.dashboard-dark:not(.login-locked) .settings-btn,
+body.dashboard-dark:not(.login-locked) .settings-data-btn,
+body.dashboard-dark:not(.login-locked) .download-button.secondary,
+body.dashboard-dark:not(.login-locked) .download-reset,
+body.dashboard-dark:not(.login-locked) .monitor-action-btn,
+body.dashboard-dark:not(.login-locked) .stage6-btn,
+body.dashboard-dark:not(.login-locked) .wp-flow-btn,
+body.dashboard-dark:not(.login-locked) .monitor-search button,
+body.dashboard-dark:not(.login-locked) .monitor-calendar-head button{
+  background:#2a2e35!important;
+  color:#f7f8fa!important;
+  border-color:#444952!important;
+}
+body.dashboard-dark:not(.login-locked) button:hover,
+body.dashboard-dark:not(.login-locked) .settings-data-btn:hover,
+body.dashboard-dark:not(.login-locked) .monitor-action-btn:hover,
+body.dashboard-dark:not(.login-locked) .stage6-btn:hover,
+body.dashboard-dark:not(.login-locked) .wp-flow-btn:hover{
+  background:#333740!important;
+  color:#fff!important;
+  border-color:#555b66!important;
+}
+body.dashboard-dark:not(.login-locked) .settings-btn.primary,
+body.dashboard-dark:not(.login-locked) .download-button.primary,
+body.dashboard-dark:not(.login-locked) .stage6-btn.primary,
+body.dashboard-dark:not(.login-locked) .download-action-primary{
+  background:#8f62f6!important;
+  border-color:#a57dff!important;
+  color:#fff!important;
+}
+
+/* Status colors: dark chips + bright readable text */
+body.dashboard-dark:not(.login-locked) .chip-danger,
+body.dashboard-dark:not(.login-locked) .wp-flow-badge.open{background:#492b31!important;color:#ffb6be!important;border-color:#6a3d45!important}
+body.dashboard-dark:not(.login-locked) .chip-warning{background:#463b25!important;color:#ffe19a!important;border-color:#66552f!important}
+body.dashboard-dark:not(.login-locked) .chip-purple,
+body.dashboard-dark:not(.login-locked) .wp-flow-badge.balance{background:#3d304f!important;color:#ddc5ff!important;border-color:#5b4674!important}
+body.dashboard-dark:not(.login-locked) .wp-flow-badge.close{background:#254238!important;color:#b8f0cf!important;border-color:#396551!important}
+body.dashboard-dark:not(.login-locked) .status-not-started,
+body.dashboard-dark:not(.login-locked) .status-progress,
+body.dashboard-dark:not(.login-locked) .status-finished{background:var(--dark-panel-2)!important;color:#f1f4f7!important}
+
+/* Remove legacy bright gradient backgrounds */
+body.dashboard-dark:not(.login-locked) [class*="gradient"],
+body.dashboard-dark:not(.login-locked) [class*="hero"]{
+  background-image:none!important;
+}
+
+/* SVG/icons: keep visible without flooding the page with color */
+body.dashboard-dark:not(.login-locked) svg{color:#e9edf2!important}
+body.dashboard-dark:not(.login-locked) svg[fill="white"],
+body.dashboard-dark:not(.login-locked) svg[fill="#fff"],
+body.dashboard-dark:not(.login-locked) svg[fill="#ffffff"]{fill:#f7f8fa!important}
+
+/* Canvas itself is transparent; Chart.js receives the actual dark palette below. */
+body.dashboard-dark:not(.login-locked) canvas{background:transparent!important}
+</style>
+
+<script id="darkModeMasterCharts">
+(function(){
+  const P={
+    text:'#f7f8fa', muted:'#b0b6bf', grid:'#343941', border:'#4a4f59',
+    blue:'#5b8ff9', purple:'#a477ff', cyan:'#59c7f2', green:'#63c99a',
+    amber:'#e4b45c', red:'#ef6b73', orange:'#dc8b61'
+  };
+  const light={
+    text:'#5f6d75', grid:'#dfe7eb', border:'#cfd9de',
+    colors:['#F2B38F','#9ED0B0','#B9DDF2','#BFE3D0','#344E5D','#F4C8AC','#B9DEC9']
+  };
+  const darkColors=[P.blue,P.purple,P.cyan,P.green,P.amber,P.red,P.orange];
+  function arr(v){return Array.isArray(v)?v:[v];}
+  function clone(v){return Array.isArray(v)?v.slice():v;}
+  function remember(chart){
+    if(chart.__masterDarkSaved)return;
+    chart.__masterDarkSaved={
+      options:{color:chart.options?.color},
+      legend:chart.options?.plugins?.legend?.labels?.color,
+      title:chart.options?.plugins?.title?.color,
+      subtitle:chart.options?.plugins?.subtitle?.color,
+      scales:{},
+      datasets:(chart.data?.datasets||[]).map(ds=>({
+        backgroundColor:clone(ds.backgroundColor),borderColor:clone(ds.borderColor),
+        pointBackgroundColor:clone(ds.pointBackgroundColor),pointBorderColor:clone(ds.pointBorderColor),
+        gridColor:ds.gridColor
+      }))
+    };
+    Object.keys(chart.options?.scales||{}).forEach(k=>{
+      const s=chart.options.scales[k]||{};
+      chart.__masterDarkSaved.scales[k]={
+        ticks:s.ticks?.color,grid:s.grid?.color,border:s.border?.color
+      };
+    });
+  }
+  function patch(chart,dark){
+    if(!chart||!chart.options)return;
+    remember(chart);
+    const o=chart.options, plugins=o.plugins||(o.plugins={});
+    const legend=plugins.legend||(plugins.legend={});
+    legend.labels=legend.labels||{};
+    if(dark){
+      o.color=P.text;
+      legend.labels.color=P.text;
+      if(plugins.title)plugins.title.color=P.text;
+      if(plugins.subtitle)plugins.subtitle.color=P.muted;
+      Object.values(o.scales||{}).forEach(s=>{
+        s.ticks=s.ticks||{};s.ticks.color=P.muted;
+        s.grid=s.grid||{};s.grid.color=P.grid;
+        s.border=s.border||{};s.border.color=P.border;
+      });
+      (chart.data?.datasets||[]).forEach((ds,i)=>{
+        const base=darkColors[i%darkColors.length];
+        const isArray=Array.isArray(ds.backgroundColor);
+        ds.backgroundColor=isArray?ds.backgroundColor.map((_,j)=>darkColors[j%darkColors.length]):base;
+        if(ds.borderColor!==undefined)ds.borderColor=Array.isArray(ds.borderColor)?ds.borderColor.map((_,j)=>darkColors[j%darkColors.length]):base;
+        if(ds.pointBackgroundColor!==undefined)ds.pointBackgroundColor=base;
+        if(ds.pointBorderColor!==undefined)ds.pointBorderColor=P.text;
+      });
+      chart.__masterDark=true;
+    }else{
+      const r=chart.__masterDarkSaved;
+      if(!r)return;
+      o.color=r.options.color;
+      legend.labels.color=r.legend;
+      if(plugins.title)plugins.title.color=r.title;
+      if(plugins.subtitle)plugins.subtitle.color=r.subtitle;
+      Object.keys(r.scales).forEach(k=>{
+        const s=o.scales?.[k],v=r.scales[k];if(!s)return;
+        s.ticks=s.ticks||{};s.grid=s.grid||{};s.border=s.border||{};
+        s.ticks.color=v.ticks;s.grid.color=v.grid;s.border.color=v.border;
+      });
+      (chart.data?.datasets||[]).forEach((ds,i)=>{
+        const v=r.datasets[i];if(!v)return;
+        ds.backgroundColor=v.backgroundColor;ds.borderColor=v.borderColor;
+        ds.pointBackgroundColor=v.pointBackgroundColor;ds.pointBorderColor=v.pointBorderColor;
+      });
+      chart.__masterDark=false;
+    }
+    try{chart.update('none')}catch(e){try{chart.update()}catch(_){}}
+  }
+  function apply(){
+    if(!window.Chart)return;
+    const dark=document.body.classList.contains('dashboard-dark');
+    Chart.defaults.color=dark?P.text:light.text;
+    Chart.defaults.borderColor=dark?P.grid:light.grid;
+    if(Chart.defaults.plugins?.legend?.labels)Chart.defaults.plugins.legend.labels.color=dark?P.text:light.text;
+    document.querySelectorAll('canvas').forEach(c=>{
+      try{const ch=Chart.getChart(c);if(ch)patch(ch,dark)}catch(e){}
+    });
+  }
+  window.applyMasterDarkMode=apply;
+  let timer=null;
+  function start(){
+    if(timer)clearInterval(timer);
+    timer=setInterval(apply,700);
+    apply();
+  }
+  const watchTheme=new MutationObserver(()=>apply());
+  if(document.body)watchTheme.observe(document.body,{attributes:true,attributeFilter:['class']});
+  document.addEventListener('DOMContentLoaded',start,{once:true});
+  setTimeout(start,400);
+})();
+</script>
 </body>
 
 </html>
