@@ -6078,19 +6078,35 @@ function problemUnifiedRowsPopup(rows,title){
     const list=Array.isArray(rows)?rows:[];
     const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta');
     if(!overlay||!body)return;
-    const entries=list.map(r=>({part:String(getProblemValue(r,PROBLEM_COLUMNS.PART_NAME)||'').trim()||'Tanpa PART NAME',row:r}));
+    // Popup pertama dikelompokkan berdasarkan CUSTOMER. Setiap customer tetap dihitung dari seluruh record Problem.
+    const customerMap=new Map();
+    list.forEach(r=>{
+        const customer=String(getProblemValue(r,PROBLEM_COLUMNS.CUSTOMER)||'').trim()||'Tanpa CUSTOMER';
+        if(!customerMap.has(customer))customerMap.set(customer,[]);
+        customerMap.get(customer).push(r);
+    });
+    const entries=[...customerMap.entries()].map(([customer,rows])=>({customer,rows}));
     window.__unifiedPopupRows=list; window.__unifiedPopupTitle=title||'Problem'; window.__unifiedProblemBackType='open'; window.__unifiedPopupProblemGroups=entries;
     if(titleEl)titleEl.textContent=title||'Problem';
-    if(meta){const assy=new Set(),wp=new Set();list.forEach(r=>{const a=String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||'').trim();if(a)assy.add(a);unifiedProblemWpForAssy(a).forEach(w=>wp.add(w));});meta.textContent=`${list.length.toLocaleString('id-ID')} data Problem · ${assy.size.toLocaleString('id-ID')} ASSY · ${wp.size.toLocaleString('id-ID')} WP`;}
-    body.innerHTML=entries.length?`<div class="unified-popup-list">${entries.map((g,i)=>{const assy=String(getProblemValue(g.row,PROBLEM_COLUMNS.ASSY_NO)||'').trim()||'Tanpa ASSY';const wp=unifiedProblemWpForAssy(assy)[0]||'Tanpa WP';const problem=String(getProblemValue(g.row,PROBLEM_COLUMNS.PROBLEM)||'').trim()||'Tanpa PROBLEM';return `<div class="unified-popup-row" onclick="unifiedProblemRecordDetail(${i})"><div><strong>${escapeHTML(assy)} <span style="opacity:.55">·</span> ${escapeHTML(wp)}</strong><small>${escapeHTML(g.part)} · ${escapeHTML(problem)}</small></div><span class="arrow">DETAIL ›</span></div>`;}).join('')}</div>`:`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data.</div>`;
+    if(meta){const assy=new Set(),wp=new Set();list.forEach(r=>{const a=String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||'').trim();if(a)assy.add(a);unifiedProblemWpForAssy(a).forEach(w=>wp.add(w));});meta.textContent=`${list.length.toLocaleString('id-ID')} data Problem · ${assy.size.toLocaleString('id-ID')} ASSY · ${wp.size.toLocaleString('id-ID')} WP · ${entries.length.toLocaleString('id-ID')} CUSTOMER`;}
+    body.innerHTML=entries.length?`<div class="unified-popup-list">${entries.map((g,i)=>{const assy=new Set(),wp=new Set();g.rows.forEach(r=>{const a=String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||'').trim();if(a)assy.add(a);unifiedProblemWpForAssy(a).forEach(w=>wp.add(w));});return `<div class="unified-popup-row" onclick="unifiedProblemCustomerDetail(${i})"><div><strong>${escapeHTML(g.customer)}</strong><small>${g.rows.length.toLocaleString('id-ID')} Problem · ${assy.size.toLocaleString('id-ID')} ASSY · ${wp.size.toLocaleString('id-ID')} WP</small></div><span class="arrow">DETAIL ›</span></div>`;}).join('')}</div>`:`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data.</div>`;
+    overlay.classList.add('open');
+}
+function unifiedProblemCustomerDetail(index){
+    const g=(window.__unifiedPopupProblemGroups||[])[index]; if(!g)return;
+    const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta'); if(!overlay||!body)return;
+    if(titleEl)titleEl.textContent=g.customer;
+    if(meta)meta.textContent=`${g.rows.length.toLocaleString('id-ID')} Problem · Klik problem untuk detail lengkap`;
+    body.innerHTML=`<div class="unified-popup-back" onclick="problemUnifiedRowsPopup(window.__unifiedPopupRows||[],window.__unifiedPopupTitle||'Problem')">← Kembali</div><div class="unified-popup-list">${g.rows.map((r,i)=>{const assy=String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||'').trim()||'Tanpa ASSY';const wp=unifiedProblemWpForAssy(assy)[0]||'Tanpa WP';const part=String(getProblemValue(r,PROBLEM_COLUMNS.PART_NAME)||'').trim()||'Tanpa PART NAME';const problem=String(getProblemValue(r,PROBLEM_COLUMNS.PROBLEM)||'').trim()||'Tanpa PROBLEM';const globalIndex=window.__unifiedPopupRows.indexOf(r);return `<div class="unified-popup-row" onclick="unifiedProblemRecordDetail(${globalIndex})"><div><strong>${escapeHTML(problem)}</strong><small>${escapeHTML(assy)} · ${escapeHTML(wp)} · ${escapeHTML(part)}</small></div><span class="arrow">DETAIL ›</span></div>`;}).join('')}</div>`;
     overlay.classList.add('open');
 }
 function unifiedProblemRecordDetail(index){
-    const g=(window.__unifiedPopupProblemGroups||[])[index]; if(!g)return; const r=g.row;
+    const r=(window.__unifiedPopupRows||[])[index]; if(!r)return;
     const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta'); if(!overlay||!body)return;
     const assy=String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||'').trim()||'Tanpa ASSY'; const wp=unifiedProblemWpForAssy(assy)[0]||'Tanpa WP';
-    if(titleEl)titleEl.textContent=`${g.part} · ${String(getProblemValue(r,PROBLEM_COLUMNS.PROBLEM)||'Tanpa PROBLEM')}`; if(meta)meta.textContent=`${assy} · ${wp} · Detail lengkap`;
-    body.innerHTML=`<div class="unified-popup-back" onclick="problemUnifiedRowsPopup(window.__unifiedPopupRows||[],window.__unifiedPopupTitle||'Problem')">← Kembali</div><div class="unified-popup-detail-grid">${Object.entries(PROBLEM_COLUMNS).map(([l,c])=>`<div class="unified-popup-detail-item"><div class="label">${l}</div><div class="value">${escapeHTML(String(getProblemValue(r,c)||'-'))}</div></div>`).join('')}</div>`;
+    const customer=String(getProblemValue(r,PROBLEM_COLUMNS.CUSTOMER)||'').trim()||'Tanpa CUSTOMER';
+    if(titleEl)titleEl.textContent=String(getProblemValue(r,PROBLEM_COLUMNS.PROBLEM)||'Tanpa PROBLEM'); if(meta)meta.textContent=`${customer} · ${assy} · ${wp} · Detail lengkap`;
+    body.innerHTML=`<div class="unified-popup-back" onclick="unifiedProblemCustomerDetail(${(window.__unifiedPopupProblemGroups||[]).findIndex(g=>g.rows&&g.rows.includes(r))})">← Kembali</div><div class="unified-popup-detail-grid">${Object.entries(PROBLEM_COLUMNS).map(([l,c])=>`<div class="unified-popup-detail-item"><div class="label">${l}</div><div class="value">${escapeHTML(String(getProblemValue(r,c)||'-'))}</div></div>`).join('')}</div>`;
     overlay.classList.add('open');
 }
 const __problemKpiClickTimers = {};
