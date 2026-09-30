@@ -2231,6 +2231,17 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 <style id="unit-label-style">
 .unit-label{font-size:.72em;font-weight:800;letter-spacing:.02em;opacity:.78;white-space:nowrap;}
 </style>
+
+<style id="finalProductionReadingPolish">
+.production-reading-section .kpi-subtitle{font-size:10px!important;line-height:1.15!important;color:#8a949b!important;font-weight:500!important;margin-top:3px!important;}
+.production-reading-section .metric-dual.metric-assy-wp{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:0!important;line-height:1!important;}
+.production-reading-section .metric-assy-wp .metric-primary{display:flex!important;align-items:baseline!important;gap:4px!important;color:#111827!important;}
+.production-reading-section .metric-assy-wp .metric-secondary{display:flex!important;align-items:baseline!important;gap:4px!important;color:#7b8790!important;margin-top:2px!important;}
+.production-reading-section .metric-assy-wp .metric-primary .metric-number{font-weight:900!important;}
+.production-reading-section .metric-assy-wp .metric-secondary .metric-number{font-weight:800!important;font-size:.72em!important;}
+.production-reading-section .metric-assy-wp .metric-primary .metric-unit{font-size:.34em!important;color:#111827!important;opacity:1!important;}
+.production-reading-section .metric-assy-wp .metric-secondary .metric-unit{font-size:.30em!important;color:#7b8790!important;opacity:1!important;}
+</style>
 </head>
 
 <body class="login-locked">
@@ -2651,7 +2662,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         <div
                             class="kpi-label"
                             id="totalDataLabel">
-                            TOTAL ORDERS
+                            TOTAL ASSY/WP
                         </div>
 
                         <div class="kpi-icon">
@@ -2674,7 +2685,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         class="kpi-description"
                         id="totalDataDescription">
 
-                        Klik 1x untuk filter semua dashboard · Klik 2x untuk popup detail
+                        Klik 1x = tampilkan semua data · Klik 2x = popup detail
 
                     </div>
 
@@ -2694,7 +2705,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                             class="kpi-label"
                             id="totalOpenLabel">
 
-                            OPEN ORDERS <span class="unit-label">(ORDER)</span>
+                            OPEN ASSY/WP
 
                         </div>
 
@@ -2718,7 +2729,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         class="kpi-description"
                         id="totalOpenDescription">
 
-                        Klik 1x untuk tampilkan semua OPEN · Klik 2x untuk popup detail
+                        Klik 1x = filter seluruh dashboard ke OPEN · Klik 2x = popup detail
 
                     </div>
 
@@ -2738,7 +2749,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                             class="kpi-label"
                             id="totalCloseLabel">
 
-                            CLOSE ORDERS <span class="unit-label">(ORDER)</span>
+                            CLOSE ASSY/WP
 
                         </div>
 
@@ -2762,7 +2773,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         class="kpi-description"
                         id="totalCloseDescription">
 
-                        Klik 1x untuk tampilkan semua CLOSE · Klik 2x untuk popup detail
+                        Klik 1x = filter seluruh dashboard ke CLOSE · Klik 2x = popup detail
 
                     </div>
 
@@ -3021,9 +3032,9 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                 </div>
 
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px;">
-                    <div class="kpi-card kpi-blue" onclick="productionReadingDrilldown('etd3')"><div class="kpi-label">ETD ≤ 7 HARI</div><div class="kpi-value" id="readingETD3">0</div></div>
-                    <div class="kpi-card kpi-orange" onclick="productionReadingDrilldown('overdue')"><div class="kpi-label">OVERDUE</div><div class="kpi-value" id="readingOverdue">0</div></div>
-                    <div class="kpi-card kpi-yellow" onclick="productionReadingDrilldown('reschedule')"><div class="kpi-label">RESCHEDULE</div><div class="kpi-value" id="readingReschedule">0</div></div>
+                    <div class="kpi-card kpi-blue" onclick="productionReadingDrilldown('etd3')"><div class="kpi-label">ETD ≤ 7 HARI</div><div class="kpi-value" id="readingETD3">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
+                    <div class="kpi-card kpi-orange" onclick="productionReadingDrilldown('overdue')"><div class="kpi-label">OVERDUE</div><div class="kpi-value" id="readingOverdue">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
+                    <div class="kpi-card kpi-yellow" onclick="productionReadingDrilldown('reschedule')"><div class="kpi-label">RESCHEDULE</div><div class="kpi-value" id="readingReschedule">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
                     
                     <div class="kpi-card kpi-green" onclick="productionReadingDrilldown('cct')"><div class="kpi-label">TOTAL CCT</div><div class="kpi-value" id="readingTotalCCT">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
                     <div class="kpi-card kpi-purple" onclick="productionReadingDrilldown('qty')"><div class="kpi-label">TOTAL QTY</div><div class="kpi-value" id="readingTotalQTY">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
@@ -5494,17 +5505,17 @@ function updateKPIValues(
 
         if (totalDataDescription) {
             totalDataDescription.textContent =
-                "Jumlah seluruh ASSY/WP";
+                "Klik 1x = tampilkan semua data · Klik 2x = popup detail";
         }
 
         if (totalOpenDescription) {
             totalOpenDescription.textContent =
-                "Jumlah ASSY/WP yang masih berjalan";
+                "Klik 1x = filter seluruh dashboard ke OPEN · Klik 2x = popup detail";
         }
 
         if (totalCloseDescription) {
             totalCloseDescription.textContent =
-                "Klik 1x untuk tampilkan semua CLOSE · Klik 2x untuk popup detail";
+                "Klik 1x = filter seluruh dashboard ke CLOSE · Klik 2x = popup detail";
         }
     }
 
@@ -6031,19 +6042,30 @@ function unifiedProgressPairDetail(index){
     body.innerHTML=`<div class="unified-popup-back" onclick="unifiedProgressSummary(window.__unifiedPopupRows||[],window.__unifiedPopupTitle||'Detail Data',window.__unifiedPopupSource||'Progress')">← Kembali</div><div class="unified-popup-detail-grid">${[['NO',0],['ASSY NO',2],['WP',3],['CUSTOMER',1],['CCT',4],['QTY',5],['TOTAL CCT',6],['ETD',7],['RESCHEDULE ETD',8],['ACTUAL START',9],['ACTUAL FINISH',10],['LEAD TIME',11],['STATUS',23],['OPEN QTY',24],['KETERANGAN',25]].map(([l,c])=>`<div class="unified-popup-detail-item"><div class="label">${l}</div><div class="value">${escapeHTML(String(getCellValue(rows[0],c)||'-'))}</div></div>`).join('')}</div>`;
 }
 const __progressStatusClickTimers={};
+function progressStatusOnlyFilter(status){
+    const ids=["customerFilter","progressAssyFilter","progressWpFilter","progressCctFilter","progressQtyFilter","progressTotalCctFilter","progressEtdFilter","progressRescheduleFilter","progressActualStartFilter","progressActualFinishFilter","progressLeadTimeFilter"];
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
+    const f=document.getElementById("statusFilter");
+    if(f)f.value=status||"";
+    selectedProcessIndex=null;
+    applyFilters();
+}
 function progressStatusCardClick(type,el){
     const key=type;
     clearTimeout(__progressStatusClickTimers[key]);
     __progressStatusClickTimers[key]=setTimeout(()=>{
         if(type==='open'||type==='close'){
-            const f=document.getElementById('statusFilter');
-            if(f) f.value=type.toUpperCase();
-            selectedProcessIndex=null;
-            applyFilters();
+            progressStatusOnlyFilter(type.toUpperCase());
+        } else if(type==='total'){
+            resetFilters();
         } else {
             progressUnifiedKpi(type);
         }
     },260);
+}
+function progressStatusCardDoubleClick(type,el){
+    clearTimeout(__progressStatusClickTimers[type]);
+    progressUnifiedKpi(type);
 }
 function progressStatusCardDoubleClick(type,el){
     clearTimeout(__progressStatusClickTimers[type]);
@@ -6061,6 +6083,25 @@ function progressUnifiedKpi(type){
     if(type==='customer') title='CUSTOMER — ASSY / WP';
     unifiedProgressSummary(rows,title,'Progress');
 }
+function problemUnifiedRowsPopup(rows,title){
+    const list=Array.isArray(rows)?rows:[];
+    const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta');
+    if(!overlay||!body)return;
+    const entries=list.map(r=>({part:String(getProblemValue(r,PROBLEM_COLUMNS.PART_NAME)||'').trim()||'Tanpa PART NAME',row:r}));
+    window.__unifiedPopupRows=list; window.__unifiedPopupTitle=title||'Problem'; window.__unifiedProblemBackType='open'; window.__unifiedPopupProblemGroups=entries;
+    if(titleEl)titleEl.textContent=title||'Problem';
+    if(meta){const assy=new Set(),wp=new Set();list.forEach(r=>{const a=String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||'').trim();if(a)assy.add(a);unifiedProblemWpForAssy(a).forEach(w=>wp.add(w));});meta.textContent=`${list.length.toLocaleString('id-ID')} data Problem · ${assy.size.toLocaleString('id-ID')} ASSY · ${wp.size.toLocaleString('id-ID')} WP`;}
+    body.innerHTML=entries.length?`<div class="unified-popup-list">${entries.map((g,i)=>{const assy=String(getProblemValue(g.row,PROBLEM_COLUMNS.ASSY_NO)||'').trim()||'Tanpa ASSY';const wp=unifiedProblemWpForAssy(assy)[0]||'Tanpa WP';const problem=String(getProblemValue(g.row,PROBLEM_COLUMNS.PROBLEM)||'').trim()||'Tanpa PROBLEM';return `<div class="unified-popup-row" onclick="unifiedProblemRecordDetail(${i})"><div><strong>${escapeHTML(assy)} <span style="opacity:.55">·</span> ${escapeHTML(wp)}</strong><small>${escapeHTML(g.part)} · ${escapeHTML(problem)}</small></div><span class="arrow">DETAIL ›</span></div>`;}).join('')}</div>`:`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data.</div>`;
+    overlay.classList.add('open');
+}
+function unifiedProblemRecordDetail(index){
+    const g=(window.__unifiedPopupProblemGroups||[])[index]; if(!g)return; const r=g.row;
+    const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta'); if(!overlay||!body)return;
+    const assy=String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||'').trim()||'Tanpa ASSY'; const wp=unifiedProblemWpForAssy(assy)[0]||'Tanpa WP';
+    if(titleEl)titleEl.textContent=`${g.part} · ${String(getProblemValue(r,PROBLEM_COLUMNS.PROBLEM)||'Tanpa PROBLEM')}`; if(meta)meta.textContent=`${assy} · ${wp} · Detail lengkap`;
+    body.innerHTML=`<div class="unified-popup-back" onclick="problemUnifiedRowsPopup(window.__unifiedPopupRows||[],window.__unifiedPopupTitle||'Problem')">← Kembali</div><div class="unified-popup-detail-grid">${Object.entries(PROBLEM_COLUMNS).map(([l,c])=>`<div class="unified-popup-detail-item"><div class="label">${l}</div><div class="value">${escapeHTML(String(getProblemValue(r,c)||'-'))}</div></div>`).join('')}</div>`;
+    overlay.classList.add('open');
+}
 function problemUnifiedKpi(type){
     const base=Array.isArray(filteredProblemRows)?filteredProblemRows:(Array.isArray(allProblemRows)?allProblemRows:[]);
     let rows=base,title='';
@@ -6070,23 +6111,7 @@ function problemUnifiedKpi(type){
     else if(type==='customer'){title='CUSTOMER — PROBLEM';}
     else if(type==='minus'){title='MINUS — PART NAME';}
     else if(type==='oldest'){const open=base.filter(r=>getProblemStatus(r)==='OPEN');let best=null,bestAge=-1;open.forEach(r=>{const a=problemAgeDays(r);if(a!==null&&a>bestAge){bestAge=a;best=r;}});rows=best?[best]:open.slice(0,1);title='OLDEST OPEN — PART NAME';}
-    // Setiap record Problem ditampilkan sebagai satu baris.
-    // PART NAME yang sama tidak boleh digabung karena problem-nya bisa berbeda.
-    const entries=(rows||[]).map(r=>({
-        part:String(getProblemValue(r,PROBLEM_COLUMNS.PART_NAME)||'').trim()||'Tanpa PART NAME',
-        rows:[r]
-    }));
-    window.__unifiedPopupProblemGroups=entries; window.__unifiedPopupRows=rows; window.__unifiedPopupTitle=title; window.__unifiedProblemBackType=type;
-    const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta');
-    if(!overlay||!body)return;
-    if(titleEl)titleEl.textContent=title;
-    if(meta)meta.textContent=`${entries.length.toLocaleString('id-ID')} PART NAME · ${new Set(entries.flatMap(g=>g.rows.map(r=>String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||'').trim()).filter(Boolean))).size.toLocaleString('id-ID')} ASSY`;
-    body.innerHTML=entries.length?`<div class="unified-popup-list">${entries.map((g,i)=>{
-        const assy=[...new Set(g.rows.map(r=>String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||'').trim()).filter(Boolean))].join(', ');
-        const wp=[...new Set(g.rows.flatMap(r=>unifiedProblemWpForAssy(String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||'').trim())))].join(', ');
-        return `<div class="unified-popup-row" onclick="unifiedProblemPairDetail(${i})"><div><strong>${escapeHTML(g.part)}</strong><small>${escapeHTML(assy||'Tanpa ASSY')} <span style="opacity:.55">·</span> ${escapeHTML(wp||'Tanpa WP')} · 1 data Problem</small></div><span class="arrow">DETAIL ›</span></div>`;
-    }).join('')}</div>`:`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data.</div>`;
-    overlay.classList.add('open');
+    problemUnifiedRowsPopup(rows,title);
 }
 function unifiedProblemPairDetail(index){
     const g=(window.__unifiedPopupProblemGroups||[])[index];if(!g)return;
@@ -6136,10 +6161,25 @@ document.addEventListener('click',function(ev){
 },true);
 
 function openProcessOverviewPopup(processName){
-    const process=PROCESS_COLUMNS.find(p=>p.name===processName);
-    if(!process)return;
-    const rows=getFilteredRows().filter(r=>getRowStatus(r)==="OPEN" && getProcessQty(r,process.index)>0);
-    unifiedProgressSummary(rows,`Process — ${processName}`,'Process Overview');
+    try {
+        const name=String(processName||"").trim();
+        const process=PROCESS_COLUMNS.find(p=>String(p.name||"").trim()===name);
+        if(!process) return;
+        const baseRows=Array.isArray(getFilteredRows()) ? getFilteredRows() : [];
+        const rows=baseRows.filter(r=>getRowStatus(r)==="OPEN" && Number(getProcessQty(r,process.index)||0)>0);
+        // Gunakan popup ASSY · WP yang sama dengan KPI Production Reading.
+        unifiedProgressSummary(rows,`Process — ${name}`,'Process Overview');
+    } catch(err) {
+        console.error("Process Overview popup error:",err);
+        const overlay=document.getElementById("productionReadingPopup");
+        const body=document.getElementById("productionReadingPopupBody");
+        const title=document.getElementById("productionReadingPopupTitle");
+        if(overlay&&body){
+            if(title) title.textContent=`Process — ${String(processName||"")}`;
+            body.innerHTML='<div style="padding:30px;text-align:center;color:#74858d">Data proses tidak dapat ditampilkan.</div>';
+            overlay.classList.add("open");
+        }
+    }
 }
 function productionReadingDrilldown(type, value = "") {
     let rows = getFilteredRows().filter(row => getRowStatus(row) === "OPEN");
@@ -7001,8 +7041,9 @@ function updateProcessOverview(rows) {
                             }"
                             data-process-index="${process.index}"
                             data-process-name="${escapeHTML(process.name)}"
+                            onclick="openProcessOverviewPopup(this.getAttribute('data-process-name')); event.stopPropagation();"
                             title="Klik untuk melihat detail ASSY · WP proses ini"
-                            onclick="openProcessOverviewPopup(${JSON.stringify(process.name)})"
+                            data-process-popup="1"
                         >
 
                             <div class="process-card-header">
@@ -11260,7 +11301,7 @@ function stage6ProblemUnitSummary(rows){
 function stage6ProblemUnitDetailByIndex(index){const e=(window.__stage6ProblemEntries||[])[index];if(!e)return;const idx=allProblemRows.indexOf(e.rows[0]);stage6ShowProblemRow(idx);}
 function stage6ProblemUnitDetail(rows,title){stage6ProblemUnitDetailByIndex((window.__stage6ProblemEntries||[]).findIndex(e=>e.rows[0]===rows[0]));}
 function stage6ProblemOpenPairSummary(){stage6ProblemUnitSummary(window.__stage6ProblemRows||[]);}
-function stage6OpenProblem(){const rows=stage6ProblemOpenRows();if(!rows.length){showStage6InlineModal('Problem OPEN','0 data',`<div class="stage6-popup-empty">Tidak ada Problem OPEN.</div>`);return;}stage6ProblemUnitSummary(rows);}
+function stage6OpenProblem(){const rows=stage6ProblemOpenRows();if(!rows.length){showStage6InlineModal('Problem OPEN','0 data',`<div class="stage6-popup-empty">Tidak ada Problem OPEN.</div>`);return;} window.__unifiedProblemBackType="open"; problemUnifiedRowsPopup(rows,"OPEN PART NAME — PROBLEM");}
 
 function stage6OpenFilter(type) {
     const m = monitoringMetrics();
@@ -13980,6 +14021,23 @@ body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-popup-i
 body.dashboard-dark:not(.login-locked) .unified-popup-row{background:#f1f5f7;border-color:#cbd8de;}
 body.dashboard-dark:not(.login-locked) .unified-popup-row strong,body.dashboard-dark:not(.login-locked) .unified-popup-detail-item .value{color:#24343d!important;}
 </style>
+
+<script id="finalProcessPopupFix">
+(function(){
+  if(window.__finalProcessPopupFix)return; window.__finalProcessPopupFix=true;
+  document.addEventListener('click',function(e){
+    const card=e.target.closest('#processOverview .process-card[data-process-popup]');
+    if(!card)return;
+    const name=card.getAttribute('data-process-name');
+    if(!name)return;
+    if(typeof window.openProcessOverviewPopup==='function'){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      window.openProcessOverviewPopup(name);
+    }
+  },true);
+})();
+</script>
 </body>
 
 
