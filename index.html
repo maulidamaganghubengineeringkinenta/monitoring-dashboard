@@ -3292,11 +3292,8 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
             </div>
 
             <div class="monitor-grid">
-                <div class="monitor-card monitor-card-open" onclick="monitorFilter('open')">
+                <div class="monitor-card monitor-card-open" onclick="monitorOpenOrdersPopup()" title="Klik untuk membuka popup OPEN ASSY/WP">
                     <div class="mc-label">OPEN ORDERS</div><div class="mc-value" id="monitorOpen">0</div><div class="mc-desc">Jumlah order yang masih berjalan</div>
-                </div>
-                <div class="monitor-card monitor-card-start" onclick="monitorFilter('notstarted')">
-                    <div class="mc-label">NOT STARTED</div><div class="mc-value" id="monitorNotStarted">0</div><div class="mc-desc">Jumlah ASSY/WP OPEN tanpa Actual Start</div>
                 </div>
                 <div class="monitor-card monitor-card-bottle" onclick="monitorProcessBottleneck()">
                     <div class="mc-label">PROSES TERPADAT QTY</div><div class="mc-value" id="monitorBottleneckQty">0</div><div class="mc-desc" id="monitorBottleneckDesc">Jumlah QTY pada process dengan QTY OPEN terbanyak</div>
@@ -3475,7 +3472,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 <div
                     class="kpi-card kpi-blue problem-clickable"
-                    onclick="problemUnifiedKpi('total')">
+                    onclick="problemKpiCardClick('total',this)" ondblclick="problemKpiCardDoubleClick('total',this)">
 
                     <div class="kpi-top">
 
@@ -3499,9 +3496,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                     </div>
 
 
-                    <div class="kpi-description">
-                        Total seluruh problem
-                    </div>
+                    <div class="kpi-description">Klik 1x: filter semua · Klik 2x: popup</div>
 
                 </div>
 
@@ -3510,7 +3505,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 <div
                     class="kpi-card kpi-orange problem-clickable"
-                    onclick="problemUnifiedKpi('open')">
+                    onclick="problemKpiCardClick('open',this)" ondblclick="problemKpiCardDoubleClick('open',this)">
 
                     <div class="kpi-top">
 
@@ -3534,9 +3529,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                     </div>
 
 
-                    <div class="kpi-description">
-                        Problem yang masih terbuka
-                    </div>
+                    <div class="kpi-description">Klik 1x: filter OPEN · Klik 2x: popup</div>
 
                 </div>
 
@@ -3545,7 +3538,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 <div
                     class="kpi-card kpi-green problem-clickable"
-                    onclick="problemUnifiedKpi('close')">
+                    onclick="problemKpiCardClick('close',this)" ondblclick="problemKpiCardDoubleClick('close',this)">
 
                     <div class="kpi-top">
 
@@ -3569,9 +3562,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                     </div>
 
 
-                    <div class="kpi-description">
-                        Jumlah problem yang telah selesai
-                    </div>
+                    <div class="kpi-description">Klik 1x: filter CLOSE · Klik 2x: popup</div>
 
                 </div>
 
@@ -3641,7 +3632,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 </div>
 
-                <div class="kpi-card kpi-purple problem-clickable" id="oldestOpenProblemCard" onclick="problemUnifiedKpi('oldest')" title="Klik untuk melihat Problem OPEN lebih dari 3 hari"><div class="kpi-top"><div class="kpi-label">OLDEST OPEN PROBLEM</div><div class="kpi-icon">⏳</div></div><div class="kpi-value" id="problemOldestAge">0 hari</div><div class="kpi-description">Klik untuk melihat Problem OPEN lebih dari 3 hari</div></div>
+                <div class="kpi-card kpi-purple problem-clickable" id="oldestOpenProblemCard" onclick="problemOldestCardClick(this)" ondblclick="problemOldestCardDoubleClick(this)" title="Klik 1x untuk filter Problem > 3 hari · Klik 2x untuk popup"><div class="kpi-top"><div class="kpi-label">PROBLEM > 3 HARI</div><div class="kpi-icon">⏳</div></div><div class="kpi-value" id="problemOldestAge">0</div><div class="kpi-description">Klik 1x: filter · Klik 2x: popup</div></div>
 
             </div>
 
@@ -6102,17 +6093,54 @@ function unifiedProblemRecordDetail(index){
     body.innerHTML=`<div class="unified-popup-back" onclick="problemUnifiedRowsPopup(window.__unifiedPopupRows||[],window.__unifiedPopupTitle||'Problem')">← Kembali</div><div class="unified-popup-detail-grid">${Object.entries(PROBLEM_COLUMNS).map(([l,c])=>`<div class="unified-popup-detail-item"><div class="label">${l}</div><div class="value">${escapeHTML(String(getProblemValue(r,c)||'-'))}</div></div>`).join('')}</div>`;
     overlay.classList.add('open');
 }
+const __problemKpiClickTimers = {};
+function problemKpiFilter(type){
+    if(type==='total'){
+        const ids=["problemCustomerFilter","problemStatusFilter","problemPicFilter","problemPartFilter","problemWipFilter","problemDateFrom","problemDateTo"];
+        ids.forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
+    } else if(type==='open'||type==='close'){
+        setProblemStatusFilter(type.toUpperCase());
+    } else if(type==='oldest'){
+        setProblemStatusFilter('OPEN');
+        // Filter dashboard hanya ke record OPEN yang umurnya > 3 hari.
+        filteredProblemRows=(Array.isArray(allProblemRows)?allProblemRows:[]).filter(r=>getProblemStatus(r)==='OPEN'&&(()=>{const a=problemAgeDays(r);return a!==null&&a>3;})());
+        problemCurrentPage=1;
+        updateProblemKPIs(filteredProblemRows);
+        updateProblemCharts(filteredProblemRows);
+        renderProblemTable(filteredProblemRows);
+        updateProblemFilterContext(filteredProblemRows);
+        return;
+    }
+    applyProblemFilters();
+}
 function problemUnifiedKpi(type){
     const base=Array.isArray(filteredProblemRows)?filteredProblemRows:(Array.isArray(allProblemRows)?allProblemRows:[]);
     let rows=base,title='';
-    if(type==='open'){rows=base.filter(r=>getProblemStatus(r)==='OPEN');title='OPEN PART NAME — PROBLEM';}
-    else if(type==='close'){rows=base.filter(r=>getProblemStatus(r)==='CLOSE');title='CLOSE PART NAME — PROBLEM';}
-    else if(type==='total'){title='TOTAL PART NAME — PROBLEM';}
+    if(type==='open'){rows=base.filter(r=>getProblemStatus(r)==='OPEN');title='OPEN PROBLEM';}
+    else if(type==='close'){rows=base.filter(r=>getProblemStatus(r)==='CLOSE');title='CLOSE PROBLEM';}
+    else if(type==='total'){title='TOTAL PROBLEM';}
     else if(type==='customer'){title='CUSTOMER — PROBLEM';}
-    else if(type==='minus'){title='MINUS — PART NAME';}
-    else if(type==='oldest'){rows=base.filter(r=>getProblemStatus(r)==='OPEN'&&(() => {const a=problemAgeDays(r);return a!==null&&a>3;})());title='OPEN > 3 HARI — PROBLEM';}
+    else if(type==='minus'){title='MINUS — PROBLEM';}
+    else if(type==='oldest'){rows=base.filter(r=>getProblemStatus(r)==='OPEN'&&(()=>{const a=problemAgeDays(r);return a!==null&&a>3;})());title='PROBLEM OPEN > 3 HARI';}
     problemUnifiedRowsPopup(rows,title);
 }
+function problemKpiCardClick(type){
+    clearTimeout(__problemKpiClickTimers[type]);
+    __problemKpiClickTimers[type]=setTimeout(()=>problemKpiFilter(type),260);
+}
+function problemKpiCardDoubleClick(type){
+    clearTimeout(__problemKpiClickTimers[type]);
+    problemUnifiedKpi(type);
+}
+function problemOldestCardClick(){
+    clearTimeout(__problemKpiClickTimers.oldest);
+    __problemKpiClickTimers.oldest=setTimeout(()=>problemKpiFilter('oldest'),260);
+}
+function problemOldestCardDoubleClick(){
+    clearTimeout(__problemKpiClickTimers.oldest);
+    problemUnifiedKpi('oldest');
+}
+
 function unifiedProblemPairDetail(index){
     const g=(window.__unifiedPopupProblemGroups||[])[index];if(!g)return;
     const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta');if(!overlay||!body)return;
@@ -8877,12 +8905,12 @@ function updateProblemKPIs(rows) {
     const minus=total.reduce((sum,r)=>sum+getNumericValue(getProblemValue(r,PROBLEM_COLUMNS.MINUS)),0);
     const metric=(a,w)=>`<span class="metric-dual"><span class="metric-number">${a.toLocaleString("id-ID")}</span><span class="metric-unit">ASSY</span><span class="metric-number">${w.toLocaleString("id-ID")}</span><span class="metric-unit">WP</span></span>`;
     const te=document.getElementById("totalProblem"),oe=document.getElementById("openProblem"),ce=document.getElementById("closeProblem"),cu=document.getElementById("problemCustomerCount"),me=document.getElementById("problemMinusTotal");
-    // Problem is counted by unique PART NAME. ASSY/WP remain contextual units.
-    if(te)te.innerHTML=`<span class="problem-part-count">${problemUniquePartCount(total).toLocaleString("id-ID")} PART</span>`;
-    if(oe)oe.innerHTML=`<span class="problem-part-count">${problemUniquePartCount(open).toLocaleString("id-ID")} PART</span>`;
-    if(ce)ce.innerHTML=`<span class="problem-part-count">${problemUniquePartCount(close).toLocaleString("id-ID")} PART</span>`;
+    // Setiap record Problem dihitung satu per satu. PART NAME yang sama tidak digabung.
+    if(te)te.innerHTML=`<span class="problem-part-count">${total.length.toLocaleString("id-ID")} PROBLEM</span>`;
+    if(oe)oe.innerHTML=`<span class="problem-part-count">${open.length.toLocaleString("id-ID")} PROBLEM</span>`;
+    if(ce)ce.innerHTML=`<span class="problem-part-count">${close.length.toLocaleString("id-ID")} PROBLEM</span>`;
     if(cu)cu.textContent=`${customers.toLocaleString("id-ID")} customer`; if(me)me.textContent=`${minus.toLocaleString("id-ID")} QTY`;
-    const ages=total.map(problemAgeDays).filter(v=>v!==null),oldest=document.getElementById("problemOldestAge"); if(oldest)oldest.textContent=ages.length?`${Math.max(...ages)} hari`:"0 hari";
+    const over3=total.filter(r=>getProblemStatus(r)==="OPEN").filter(r=>{const a=problemAgeDays(r);return a!==null&&a>3;}).length,oldest=document.getElementById("problemOldestAge"); if(oldest)oldest.textContent=over3.toLocaleString("id-ID");
 }
 
 
@@ -10595,7 +10623,6 @@ function renderMonitoringAlerts() {
         ["OVERDUE", m.overdue, "ASSY/WP OPEN melewati ETD", "overdueRows"],
         ["ETD ≤ 7 HARI", m.etd3, "ASSY/WP OPEN mendekati deadline", "etd3Rows"],
         ["RESCHEDULE", m.reschedule, "ASSY/WP OPEN mengalami perubahan ETD", "rescheduleRows"],
-        ["NOT STARTED", m.notStarted, "ASSY/WP OPEN belum memiliki Actual Start", "notStartedRows"]
     ];
     const active = alerts.filter(a => a[1] > 0);
     if (!active.length) {
@@ -10807,9 +10834,9 @@ function renderMonitoringCenter() {
     const problemOpen = stage6ProblemOpenRows().length;
     const processData = monitoringProcessWorkload().sort((a,b)=>b.qty-a.qty);
     const topProcess = processData[0];
+    const openUnits = getUniqueUnitCounts(m.rows);
     const map = {
-        monitorOpen: m.rows.length,
-        monitorNotStarted: m.notStarted,
+        monitorOpen: `${openUnits.assy} ASSY · ${openUnits.wp} WP`,
         monitorBottleneckQty: topProcess ? topProcess.qty : 0,
         monitorProblemOpen: problemOpen,
         monitorQuickOverdue: m.overdue,
@@ -10818,7 +10845,7 @@ function renderMonitoringCenter() {
     };
     const desc = document.getElementById("monitorBottleneckDesc");
     if (desc) desc.textContent = topProcess ? `${topProcess.name} · QTY OPEN terbanyak` : "Belum ada workload process OPEN";
-    Object.keys(map).forEach(id => { const el = document.getElementById(id); if (!el) return; const unit = {monitorOpen:"order",monitorNotStarted:"order",monitorBottleneckQty:"QTY",monitorProblemOpen:"problem",monitorQuickOverdue:"order",monitorQuickEtd3:"order",monitorQuickReschedule:"order"}[id]; el.textContent = `${Number(map[id]||0).toLocaleString("id-ID")} ${unit||""}`.trim(); });
+    Object.keys(map).forEach(id => { const el = document.getElementById(id); if (!el) return; if(id==="monitorOpen"){ el.textContent = map[id]; return; } const unit = {monitorBottleneckQty:"QTY",monitorProblemOpen:"problem",monitorQuickOverdue:"order",monitorQuickEtd3:"order",monitorQuickReschedule:"order"}[id]; el.textContent = `${Number(map[id]||0).toLocaleString("id-ID")} ${unit||""}`.trim(); });
     renderMonitoringAlerts();
     renderMonitoringCalendar();
     renderMonitoringStage2();
@@ -10830,6 +10857,11 @@ function refreshMonitoringCenter() {
     renderMonitoringCenter();
     const input = document.getElementById("monitorGlobalSearch");
     if (input && input.value.trim()) runGlobalSearch();
+}
+
+function monitorOpenOrdersPopup(){
+    const rows = monitoringOpenRows();
+    unifiedProgressSummary(rows, "OPEN ASSY / WP", "Monitoring");
 }
 
 function monitorFilter(type) {
@@ -10849,11 +10881,9 @@ function monitorFilter(type) {
         etd3: m.etd3Rows,
         overdue: m.overdueRows,
         reschedule: m.rescheduleRows,
-        notstarted: m.notStartedRows,
         etd3Rows: m.etd3Rows,
         overdueRows: m.overdueRows,
         rescheduleRows: m.rescheduleRows,
-        notStartedRows: m.notStartedRows
     };
     const rows = sets[type] || [];
     const detail = document.getElementById("monitorDayDetail");
