@@ -3413,6 +3413,14 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                     <input id="wpFlowWp" list="wpFlowWpList" value="" placeholder="Semua WP — ketik atau pilih..." oninput="wpFlowRender()" onchange="wpFlowRender()" autocomplete="off">
                     <datalist id="wpFlowWpList"></datalist>
                 </div>
+                <div class="wp-flow-filter-card">
+                    <label for="wpFlowStatus">Status</label>
+                    <select id="wpFlowStatus" onchange="wpFlowRender()">
+                        <option value="ALL">Semua Status</option>
+                        <option value="OPEN">OPEN</option>
+                        <option value="CLOSE">CLOSE</option>
+                    </select>
+                </div>
             </div>
 
             <div class="wp-flow-kpis">
@@ -12083,15 +12091,16 @@ window.__cuteAssistant=assistant;
     return out;
   }
 
-  function filtered(){const m=q('wpFlowMonth')?.value||'ALL',wRaw=q('wpFlowWp')?.value||'',w=String(wRaw).trim().toUpperCase();return wpFlowData.filter(x=>(m==='ALL'||x.month===m)&&(w===''||w==='ALL'||String(x.wp||'').trim().toUpperCase().includes(w)));}
+  function filtered(){const m=q('wpFlowMonth')?.value||'ALL',wRaw=q('wpFlowWp')?.value||'',status=q('wpFlowStatus')?.value||'ALL',w=String(wRaw).trim().toUpperCase();return wpFlowData.filter(x=>(m==='ALL'||x.month===m)&&(w===''||w==='ALL'||String(x.wp||'').trim().toUpperCase().includes(w))&&(status==='ALL'||String(x.status||'').trim().toUpperCase()===status));}
   function fillFilters(){
     const ms=[...new Set(wpFlowData.map(x=>x.month).filter(Boolean))];const ws=[...new Set(wpFlowData.map(x=>x.wp).filter(Boolean))].sort();
-    const sm=q('wpFlowMonth'),sw=q('wpFlowWp'),wl=q('wpFlowWpList');if(!sm||!sw)return;
-    const oldm=sm.value||'ALL', oldw=sw.value||'ALL';
+    const sm=q('wpFlowMonth'),sw=q('wpFlowWp'),wl=q('wpFlowWpList'),ss=q('wpFlowStatus');if(!sm||!sw)return;
+    const oldm=sm.value||'ALL', oldw=sw.value||'ALL', olds=ss?.value||'ALL';
     sm.innerHTML='<option value="ALL">Semua Bulan</option>'+ms.map(m=>`<option value="${m}">${m}</option>`).join('');
     if(ms.includes(oldm)||oldm==='ALL') sm.value=oldm; else sm.value='ALL';
     if(wl) wl.innerHTML=ws.map(w=>`<option value="${w}"></option>`).join('');
     sw.value=(oldw==='ALL'||!oldw)?'':(ws.includes(oldw)?oldw:'');
+    if(ss) ss.value=['ALL','OPEN','CLOSE'].includes(olds)?olds:'ALL';
   }
   function fmt(n){return Number(n||0).toLocaleString('id-ID',{maximumFractionDigits:0});}
   function renderKpi(data){
