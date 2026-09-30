@@ -810,9 +810,9 @@ body.login-locked .sidebar-overlay { display:none !important; }
 .wp-flow-kpi:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(72,91,108,.08)}
 .wp-flow-kpi .label{font-size:11px;font-weight:800;color:#81909b;text-transform:uppercase}.wp-flow-kpi .value{font-size:27px;font-weight:900;color:#334155;margin-top:6px}.wp-flow-kpi .sub{font-size:11px;color:#91a0aa;margin-top:3px}
 .wp-flow-kpi.blue{background:#f2f9fd;border-color:#d5eaf5}.wp-flow-kpi.orange{background:#fff7f1;border-color:#f3dfd0}.wp-flow-kpi.green{background:#f2faf5;border-color:#d8ebdf}.wp-flow-kpi.purple{background:#f8f5fc;border-color:#e6dcf2}.wp-flow-kpi.pink{background:#fff6fa;border-color:#f1dce7}
-.wp-flow-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin-bottom:16px}
+.wp-flow-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:16px}
 .wp-flow-card{background:#fff;border:1px solid #e5edf2;border-radius:16px;padding:16px;min-width:0}.wp-flow-card h3{margin:0 0 13px;font-size:15px;color:#42515d}
-.wp-flow-chart{height:230px;display:flex;align-items:flex-end;gap:9px;padding:10px 4px 24px;border-bottom:1px solid #e7edf1;position:relative}
+.wp-flow-chart{height:280px;display:flex;align-items:flex-end;gap:9px;padding:10px 4px 24px;border-bottom:1px solid #e7edf1;position:relative}
 .wp-flow-bar-group{flex:1;min-width:0;height:100%;display:flex;align-items:flex-end;gap:3px;justify-content:center;position:relative}
 .wp-flow-bar{width:31%;min-height:2px;border-radius:7px 7px 2px 2px}.wp-flow-bar.in{background:#b7ddf1}.wp-flow-bar.out{background:#b9dec9}.wp-flow-bar.balance{background:#d4c4eb}
 .wp-flow-month{position:absolute;bottom:-21px;left:0;right:0;text-align:center;font-size:10px;color:#7e8c96;font-weight:700}
@@ -3448,17 +3448,6 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         <span><i class="wp-flow-dot" style="background:#b9dec9"></i> OUT</span>
                         <span><i class="wp-flow-dot" style="background:#d4c4eb"></i> BALANCE</span>
                     </div>
-                </div>
-                <div class="wp-flow-card" onclick="wpFlowUnifiedPopup('insight')">
-                    <h3>💡 Flow Insight</h3>
-                    <div class="wp-flow-insight">
-                        <div class="wp-flow-insight-box"><div class="small">WP Aktif</div><strong id="wpInsightActive">0 WP</strong></div>
-                        <div class="wp-flow-insight-box"><div class="small">ASSY Balance</div><strong id="wpInsightAssyBalance">0 ASSY</strong></div>
-                        <div class="wp-flow-insight-box"><div class="small">PCS Balance</div><strong id="wpInsightPcsBalance">0 PCS</strong></div>
-                        <div class="wp-flow-insight-box"><div class="small">CCT Balance</div><strong id="wpInsightCctBalance">0 CCT</strong></div>
-                        <div class="wp-flow-insight-box"><div class="small">Status</div><strong id="wpInsightStatus">-</strong></div>
-                    </div>
-                    <div class="wp-flow-note" id="wpFlowNote">Ringkasan kondisi flow berdasarkan data IN, OUT, dan BALANCE. ASSY, PCS, dan CCT ditampilkan terpisah karena satuannya berbeda.</div>
                 </div>
             </div>
 
@@ -6191,7 +6180,7 @@ function wpFlowUnifiedPopup(kind,index){
     const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta');
     if(!overlay||!body)return;
     let rows=data;
-    const titles={assyIn:'ASSY IN',assyOut:'ASSY OUT',assyBal:'ASSY BALANCE',pcsIn:'PCS IN',pcsOut:'PCS OUT',pcsBal:'PCS BALANCE',cctIn:'CCT IN',cctOut:'CCT OUT',cctBal:'CCT BALANCE',chart:'TREND ASSY, PCS & CCT',insight:'FLOW INSIGHT'};
+    const titles={assyIn:'ASSY IN',assyOut:'ASSY OUT',assyBal:'ASSY BALANCE',pcsIn:'PCS IN',pcsOut:'PCS OUT',pcsBal:'PCS BALANCE',cctIn:'CCT IN',cctOut:'CCT OUT',cctBal:'CCT BALANCE',chart:'TREND ASSY, PCS & CCT'};
     if(kind==='row'){
         const r=data[Number(index)]; if(!r)return;
         if(titleEl)titleEl.textContent=`${r.wp} · ${r.month}`; if(meta)meta.textContent='Detail lengkap WP Flow';
@@ -12109,16 +12098,9 @@ window.__cuteAssistant=assistant;
     const sum=k=>data.reduce((a,x)=>a+num(x[k]),0);
     const values={wpKpiAssyIn:['assyIn','ASSY'],wpKpiAssyOut:['assyOut','ASSY'],wpKpiAssyBal:['assyBal','ASSY'],wpKpiPcsIn:['pcsIn','PCS'],wpKpiPcsOut:['pcsOut','PCS'],wpKpiPcsBal:['pcsBal','PCS'],wpKpiCctIn:['cctIn','CCT'],wpKpiCctOut:['cctOut','CCT'],wpKpiCctBal:['cctBal','CCT']};
     Object.entries(values).forEach(([id,[key,unit]])=>{const el=q(id);if(el)el.textContent=fmt(sum(key))+' '+unit;});
-    const active=data.filter(x=>num(x.assyBal)||num(x.pcsBal)||num(x.cctBal)).length;
-    q('wpInsightActive').textContent=fmt(active)+' WP';
-    q('wpInsightAssyBalance').textContent=fmt(sum('assyBal'))+' ASSY';
-    q('wpInsightPcsBalance').textContent=fmt(sum('pcsBal'))+' PCS';
-    q('wpInsightCctBalance').textContent=fmt(sum('cctBal'))+' CCT';
-    const open=data.filter(x=>x.status==='OPEN').length,close=data.filter(x=>x.status==='CLOSE').length;q('wpInsightStatus').textContent=open?`${open} OPEN / ${close} CLOSE`:'CLOSE';
   }
-  function renderChart(){
-    const monthFilter=q('wpFlowMonth')?.value||'ALL';
-    const source=wpFlowData.filter(x=>monthFilter==='ALL'||x.month===monthFilter);
+  function renderChart(data){
+    const source=Array.isArray(data)?data:filtered();
     const configs=[['wpFlowChartAssy','assyIn','assyOut','assyBal'],['wpFlowChartPcs','pcsIn','pcsOut','pcsBal'],['wpFlowChartCct','cctIn','cctOut','cctBal']];
     configs.forEach(([id,inKey,outKey,balKey])=>{
       const el=q(id);if(!el)return;const by={};
@@ -12130,7 +12112,7 @@ window.__cuteAssistant=assistant;
     });
   }
   function renderTable(data){const b=q('wpFlowTableBody');if(!b)return;if(!data.length){b.innerHTML='<tr><td colspan="12" class="wp-flow-empty">Tidak ada data sesuai filter.</td></tr>';return;}b.innerHTML=data.map((x,i)=>`<tr onclick="wpFlowUnifiedPopup('row',${i})"><td>${x.month}</td><td><b>${x.wp}</b></td><td>${fmt(x.assyIn)}</td><td>${fmt(x.assyOut)}</td><td><span class="wp-flow-badge ${x.assyBal?'balance':''}">${fmt(x.assyBal)}</span></td><td>${fmt(x.pcsIn)}</td><td>${fmt(x.pcsOut)}</td><td><span class="wp-flow-badge ${x.pcsBal?'balance':''}">${fmt(x.pcsBal)}</span></td><td>${fmt(x.cctIn)}</td><td>${fmt(x.cctOut)}</td><td><span class="wp-flow-badge ${x.cctBal?'balance':''}">${fmt(x.cctBal)}</span></td><td><span class="wp-flow-badge ${x.status==='OPEN'?'open':'close'}">${x.status||'-'}</span></td></tr>`).join('');}
-  function render(){const d=filtered();window.__wpFlowData=d.slice();renderKpi(d);renderChart();renderTable(d);}
+  function render(){const d=filtered();window.__wpFlowData=d.slice();renderKpi(d);renderChart(d);renderTable(d);}
   async function refresh(force){
     const note=q('wpFlowNote');if(note&&force)note.textContent='Mengambil data terbaru dari Google Sheets…';
     const urls=[
