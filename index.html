@@ -7487,30 +7487,53 @@ function clearProcessFilter() {
           interaction:{mode:'index',intersect:false},
           plugins:{legend:{position:'top',labels:{boxWidth:10,usePointStyle:true,font:{size:10}}}},
           scales:{
-            x:{grid:{display:false},ticks:{font:{size:9}}},
-            y:{beginAtZero:true,ticks:{font:{size:9}}}
+            x:{grid:{display:false},ticks:{font:{size:10,weight:'500'}}},
+            y:{beginAtZero:true,grid:{color:'#cbd5e1',lineWidth:1},ticks:{font:{size:10,weight:'500'},color:'#475569'}}
           },
           ...extra
         }
       });
     };
-    const ds=(pairs)=>pairs.map(([label,k])=>({label:label,data:d.map(r=>r[k]),borderWidth:2,tension:.3,fill:false}));
+    const ds=(pairs)=>pairs.map(([label,k,color,dash])=>({
+      label:label,
+      data:d.map(r=>r[k]),
+      borderColor:color,
+      backgroundColor:color,
+      pointBackgroundColor:color,
+      pointBorderColor:'#ffffff',
+      pointBorderWidth:1.5,
+      pointRadius:3,
+      pointHoverRadius:5,
+      borderWidth:2.5,
+      borderDash:dash||[],
+      tension:.25,
+      fill:false
+    }));
     flowChart=make('loadingExpFlowChart',ds([
-      ['Plan ASSY','planAssy'],['Out ASSY','outAssy'],
-      ['Plan PCS','planQty'],['Out PCS','outQty'],
-      ['Plan CCT','planCct'],['Out CCT','outCct']
+      ['Plan ASSY','planAssy','#2563eb',[]],['Out ASSY','outAssy','#2563eb',[7,5]],
+      ['Plan PCS','planQty','#7c3aed',[]],['Out PCS','outQty','#7c3aed',[7,5]],
+      ['Plan CCT','planCct','#059669',[]],['Out CCT','outCct','#059669',[7,5]]
     ]));
     openChart=make('loadingExpOpenChart',ds([
-      ['Open ASSY','openAssy'],['Open PCS','openQty'],['Open CCT','openCct']
+      ['Open ASSY','openAssy','#ea580c',[]],['Open PCS','openQty','#dc2626',[]],['Open CCT','openCct','#d97706',[]]
     ]));
     achievementChart=make('loadingExpAchievementChart',[{
       label:'Achievement PCS (%)',
       data:d.map(r=>r.planQty?(r.outQty/r.planQty*100):0),
-      borderWidth:2,tension:.3,fill:false
+      borderColor:'#0891b2',
+      backgroundColor:'#0891b2',
+      pointBackgroundColor:'#0891b2',
+      pointBorderColor:'#ffffff',
+      pointBorderWidth:1.5,
+      pointRadius:3.5,
+      pointHoverRadius:5,
+      borderWidth:2.5,
+      tension:.25,
+      fill:false
     }],{
       scales:{
-        x:{grid:{display:false},ticks:{font:{size:9}}},
-        y:{beginAtZero:true,max:100,ticks:{font:{size:9},callback:v=>v+'%'}}
+        x:{grid:{display:false},ticks:{font:{size:10,weight:'500'}}},
+        y:{beginAtZero:true,max:100,grid:{color:'#cbd5e1',lineWidth:1},ticks:{font:{size:10,weight:'500'},callback:v=>v+'%'}}
       }
     });
     if(window.applySafeChartTheme)setTimeout(window.applySafeChartTheme,0);
