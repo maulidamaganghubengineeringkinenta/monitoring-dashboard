@@ -2630,7 +2630,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 <div
                     class="kpi-card kpi-blue"
-                    onclick="progressTotalKpiAction()"
+                    onclick="progressUnifiedKpi('total')"
                     title="Klik untuk melihat seluruh order">
 
                     <div class="kpi-top">
@@ -2672,7 +2672,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 <div
                     class="kpi-card kpi-orange"
-                    onclick="setStatusFilter('OPEN')">
+                    onclick="progressUnifiedKpi('open')">
 
                     <div class="kpi-top">
 
@@ -2715,7 +2715,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 <div
                     class="kpi-card kpi-green"
-                    onclick="setStatusFilter('CLOSE')">
+                    onclick="progressUnifiedKpi('close')">
 
                     <div class="kpi-top">
 
@@ -2758,7 +2758,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 <div
                     class="kpi-card kpi-purple"
-                    onclick="progressCustomerKpiAction()"
+                    onclick="progressUnifiedKpi('customer')"
                     title="Klik untuk melihat distribusi order per customer">
 
                     <div class="kpi-top">
@@ -2789,8 +2789,8 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 </div>
 
-                <div class="kpi-card kpi-green"><div class="kpi-top"><div class="kpi-label">ON-TIME DELIVERY</div><div class="kpi-icon">🎯</div></div><div class="kpi-value" id="progressOnTimeDelivery">0%</div><div class="kpi-description">CLOSE order selesai sesuai ETD</div></div>
-                <div class="kpi-card kpi-orange"><div class="kpi-top"><div class="kpi-label">RESCHEDULE RATE</div><div class="kpi-icon">🔄</div></div><div class="kpi-value" id="progressRescheduleRate">0%</div><div class="kpi-description">Order dengan perubahan ETD</div></div>
+                <div class="kpi-card kpi-green" onclick="progressUnifiedKpi('ontime')"><div class="kpi-top"><div class="kpi-label">ON-TIME DELIVERY</div><div class="kpi-icon">🎯</div></div><div class="kpi-value" id="progressOnTimeDelivery">0%</div><div class="kpi-description">CLOSE order selesai sesuai ETD · Klik untuk detail</div></div>
+                <div class="kpi-card kpi-orange" onclick="progressUnifiedKpi('reschedule')"><div class="kpi-top"><div class="kpi-label">RESCHEDULE RATE</div><div class="kpi-icon">🔄</div></div><div class="kpi-value" id="progressRescheduleRate">0%</div><div class="kpi-description">Order dengan perubahan ETD · Klik untuk detail</div></div>
 
             </div>
 
@@ -3397,15 +3397,15 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
             </div>
 
             <div class="wp-flow-kpis">
-                <div class="wp-flow-kpi blue"><div class="label">ASSY IN</div><div class="value" id="wpKpiAssyIn">0</div><div class="sub">Jumlah ASSY masuk</div></div>
-                <div class="wp-flow-kpi green"><div class="label">ASSY OUT</div><div class="value" id="wpKpiAssyOut">0</div><div class="sub">Jumlah ASSY keluar</div></div>
-                <div class="wp-flow-kpi purple"><div class="label">ASSY BALANCE</div><div class="value" id="wpKpiAssyBal">0</div><div class="sub">Jumlah ASSY yang masih tersisa</div></div>
-                <div class="wp-flow-kpi orange"><div class="label">PCS BALANCE</div><div class="value" id="wpKpiPcsBal">0</div><div class="sub">Jumlah PCS belum OUT</div></div>
-                <div class="wp-flow-kpi pink"><div class="label">CCT BALANCE</div><div class="value" id="wpKpiCctBal">0</div><div class="sub">Jumlah CCT belum OUT</div></div>
+                <div class="wp-flow-kpi blue" onclick="wpFlowUnifiedPopup('assyIn')"><div class="label">ASSY IN</div><div class="value" id="wpKpiAssyIn">0</div><div class="sub">Jumlah ASSY masuk</div></div>
+                <div class="wp-flow-kpi green" onclick="wpFlowUnifiedPopup('assyOut')"><div class="label">ASSY OUT</div><div class="value" id="wpKpiAssyOut">0</div><div class="sub">Jumlah ASSY keluar</div></div>
+                <div class="wp-flow-kpi purple" onclick="wpFlowUnifiedPopup('assyBal')"><div class="label">ASSY BALANCE</div><div class="value" id="wpKpiAssyBal">0</div><div class="sub">Jumlah ASSY yang masih tersisa</div></div>
+                <div class="wp-flow-kpi orange" onclick="wpFlowUnifiedPopup('pcsBal')"><div class="label">PCS BALANCE</div><div class="value" id="wpKpiPcsBal">0</div><div class="sub">Jumlah PCS belum OUT</div></div>
+                <div class="wp-flow-kpi pink" onclick="wpFlowUnifiedPopup('cctBal')"><div class="label">CCT BALANCE</div><div class="value" id="wpKpiCctBal">0</div><div class="sub">Jumlah CCT belum OUT</div></div>
             </div>
 
             <div class="wp-flow-grid">
-                <div class="wp-flow-card">
+                <div class="wp-flow-card" onclick="wpFlowUnifiedPopup('chart')">
                     <h3>📊 Trend IN vs OUT — CCT</h3>
                     <div id="wpFlowChart" class="wp-flow-chart"></div>
                     <div class="wp-flow-legend">
@@ -3414,7 +3414,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         <span><i class="wp-flow-dot" style="background:#d4c4eb"></i> BALANCE</span>
                     </div>
                 </div>
-                <div class="wp-flow-card">
+                <div class="wp-flow-card" onclick="wpFlowUnifiedPopup('insight')">
                     <h3>💡 Flow Insight</h3>
                     <div class="wp-flow-insight">
                         <div class="wp-flow-insight-box"><div class="small">WP Aktif (WP)</div><strong id="wpInsightActive">0</strong></div>
@@ -3457,7 +3457,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 <div
                     class="kpi-card kpi-blue problem-clickable"
-                    onclick="resetProblemFilters()">
+                    onclick="problemUnifiedKpi('total')">
 
                     <div class="kpi-top">
 
@@ -3492,7 +3492,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 <div
                     class="kpi-card kpi-orange problem-clickable"
-                    onclick="setProblemStatusFilter('OPEN')">
+                    onclick="problemUnifiedKpi('open')">
 
                     <div class="kpi-top">
 
@@ -3527,7 +3527,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 <div
                     class="kpi-card kpi-green problem-clickable"
-                    onclick="setProblemStatusFilter('CLOSE')">
+                    onclick="problemUnifiedKpi('close')">
 
                     <div class="kpi-top">
 
@@ -3560,7 +3560,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 <!-- CUSTOMER -->
 
-                <div class="kpi-card kpi-purple">
+                <div class="kpi-card kpi-purple" onclick="problemUnifiedKpi('customer')">
 
                     <div class="kpi-top">
 
@@ -3593,7 +3593,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 <!-- TOTAL MINUS -->
 
-                <div class="kpi-card kpi-orange">
+                <div class="kpi-card kpi-orange" onclick="problemUnifiedKpi('minus')">
 
                     <div class="kpi-top">
 
@@ -3623,7 +3623,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 </div>
 
-                <div class="kpi-card kpi-purple problem-clickable" id="oldestOpenProblemCard" onclick="openOldestOpenProblem()" title="Klik untuk melihat detail problem OPEN terlama"><div class="kpi-top"><div class="kpi-label">OLDEST OPEN PROBLEM</div><div class="kpi-icon">⏳</div></div><div class="kpi-value" id="problemOldestAge">0 hari</div><div class="kpi-description">Klik untuk melihat detail problem OPEN terlama</div></div>
+                <div class="kpi-card kpi-purple problem-clickable" id="oldestOpenProblemCard" onclick="problemUnifiedKpi('oldest')" title="Klik untuk melihat detail problem OPEN terlama"><div class="kpi-top"><div class="kpi-label">OLDEST OPEN PROBLEM</div><div class="kpi-icon">⏳</div></div><div class="kpi-value" id="problemOldestAge">0 hari</div><div class="kpi-description">Klik untuk melihat detail problem OPEN terlama</div></div>
 
             </div>
 
@@ -5968,6 +5968,135 @@ function readingFormatNumber(value, decimals = 0) {
 function readingSet(id,value){const el=document.getElementById(id);if(el){if(String(value).includes("metric-dual"))el.innerHTML=value;else el.textContent=value}}
 
 
+/* =========================================================
+   UNIFIED ASSY / WP POPUP — ALL SHEETS / ALL KPI
+========================================================= */
+function unifiedRowsForProgress(rows){ return Array.isArray(rows)?rows:[]; }
+function unifiedProblemWpForAssy(assy){
+    const set=new Set();
+    (Array.isArray(allProgressRows)?allProgressRows:[]).forEach(r=>{
+        if(String(getCellValue(r,2)||'').trim()===String(assy||'').trim()){
+            const w=String(getCellValue(r,3)||'').trim(); if(w)set.add(w);
+        }
+    });
+    return [...set];
+}
+function unifiedProblemPairs(rows){
+    const out=[];
+    (rows||[]).forEach(r=>{
+        const assy=String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||'').trim()||'Tanpa ASSY';
+        const ws=unifiedProblemWpForAssy(assy);
+        if(ws.length) ws.forEach(wp=>out.push({assy,wp,row:r}));
+        else out.push({assy,wp:'Tanpa WP',row:r});
+    });
+    return out;
+}
+function unifiedProgressSummary(rows,title,source='Progress'){
+    window.__unifiedPopupRows=rows||[]; window.__unifiedPopupSource=source; window.__unifiedPopupTitle=title||'Detail Data';
+    const overlay=document.getElementById('productionReadingPopup');
+    const titleEl=document.getElementById('productionReadingPopupTitle');
+    const meta=document.getElementById('productionReadingPopupMeta');
+    const body=document.getElementById('productionReadingPopupBody');
+    if(!overlay||!body)return;
+    if(titleEl)titleEl.textContent=title||'Detail Data';
+    const counts=readingMetricCounts(rows||[]);
+    if(meta)meta.textContent=`${counts.assy.toLocaleString('id-ID')} ASSY · ${counts.wp.toLocaleString('id-ID')} WP`;
+    const map=new Map();
+    (rows||[]).forEach(r=>{
+        const a=String(getCellValue(r,2)||'').trim()||'Tanpa ASSY';
+        const w=String(getCellValue(r,3)||'').trim()||'Tanpa WP';
+        const key=a+'||'+w;
+        if(!map.has(key))map.set(key,{assy:a,wp:w,rows:[]});
+        map.get(key).rows.push(r);
+    });
+    const entries=[...map.values()];
+    body.innerHTML=entries.length?`<div class="unified-popup-list">${entries.map((e,i)=>`<div class="unified-popup-row" onclick="unifiedProgressPairDetail(${i})"><div><strong>${escapeHTML(e.assy)} <span style="opacity:.55">·</span> ${escapeHTML(e.wp)}</strong><small>1 ASSY · 1 WP · ${e.rows.length} data</small></div><span class="arrow">DETAIL ›</span></div>`).join('')}</div>`:`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data.</div>`;
+    window.__unifiedPopupEntries=entries;
+    overlay.classList.add('open');
+}
+function unifiedProgressPairDetail(index){
+    const e=(window.__unifiedPopupEntries||[])[index]; if(!e)return;
+    const rows=e.rows||[];
+    const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta');
+    if(!overlay||!body)return;
+    if(titleEl)titleEl.textContent=`${e.assy} · ${e.wp}`;
+    if(meta)meta.textContent='Detail lengkap ASSY / WP';
+    body.innerHTML=`<div class="unified-popup-back" onclick="unifiedProgressSummary(window.__unifiedPopupRows||[],window.__unifiedPopupTitle||'Detail Data',window.__unifiedPopupSource||'Progress')">← Kembali</div><div class="unified-popup-detail-grid">${[['NO',0],['ASSY NO',2],['WP',3],['CUSTOMER',1],['CCT',4],['QTY',5],['TOTAL CCT',6],['ETD',7],['RESCHEDULE ETD',8],['ACTUAL START',9],['ACTUAL FINISH',10],['LEAD TIME',11],['STATUS',23],['OPEN QTY',24],['KETERANGAN',25]].map(([l,c])=>`<div class="unified-popup-detail-item"><div class="label">${l}</div><div class="value">${escapeHTML(String(getCellValue(rows[0],c)||'-'))}</div></div>`).join('')}</div>`;
+}
+function progressUnifiedKpi(type){
+    const base=getFilteredRows(); let rows=base; let title='';
+    const today=new Date(),d0=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    if(type==='open'){rows=base.filter(r=>getRowStatus(r)==='OPEN');title='OPEN ASSY / WP';}
+    else if(type==='close'){rows=base.filter(r=>getRowStatus(r)==='CLOSE');title='CLOSE ASSY / WP';}
+    else if(type==='total'){title='TOTAL ASSY / WP';}
+    else if(type==='customer'){title='CUSTOMER';}
+    else if(type==='reschedule'){rows=base.filter(r=>{const a=parseReadingDate(getCellValue(r,7)),b=parseReadingDate(getCellValue(r,8));return a&&b&&a.getTime()!==b.getTime()});title='RESCHEDULE ASSY / WP';}
+    else if(type==='ontime'){rows=base.filter(r=>{if(getRowStatus(r)!=='CLOSE')return false;const e=parseReadingDate(getCellValue(r,7)),f=parseReadingDate(getCellValue(r,10));return e&&f&&f<=e});title='ON-TIME DELIVERY';}
+    if(type==='customer') title='CUSTOMER — ASSY / WP';
+    unifiedProgressSummary(rows,title,'Progress');
+}
+function problemUnifiedKpi(type){
+    const base=Array.isArray(filteredProblemRows)?filteredProblemRows:(Array.isArray(allProblemRows)?allProblemRows:[]); let rows=base,title='';
+    if(type==='open'){rows=base.filter(r=>getProblemStatus(r)==='OPEN');title='OPEN ASSY / WP — PROBLEM';}
+    else if(type==='close'){rows=base.filter(r=>getProblemStatus(r)==='CLOSE');title='CLOSE ASSY / WP — PROBLEM';}
+    else if(type==='total'){title='TOTAL ASSY / WP — PROBLEM';}
+    else if(type==='customer'){title='CUSTOMER — PROBLEM';}
+    else if(type==='minus'){title='MINUS — ASSY / WP';}
+    else if(type==='oldest'){const open=base.filter(r=>getProblemStatus(r)==='OPEN');let best=null,bestAge=-1;open.forEach(r=>{const a=problemAgeDays(r);if(a!==null&&a>bestAge){bestAge=a;best=r;}});rows=best?[best]:open.slice(0,1);title='OLDEST OPEN — ASSY / WP';}
+    const pairs=unifiedProblemPairs(rows);
+    window.__unifiedPopupProblemPairs=pairs; window.__unifiedPopupRows=rows; window.__unifiedPopupTitle=title; window.__unifiedProblemBackType=type;
+    const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta');
+    if(!overlay||!body)return;
+    if(titleEl)titleEl.textContent=title;if(meta)meta.textContent=`${new Set(pairs.map(x=>x.assy)).size} ASSY · ${new Set(pairs.map(x=>x.wp)).size} WP`;
+    body.innerHTML=pairs.length?pairs.map((e,i)=>`<div class="unified-popup-row" onclick="unifiedProblemPairDetail(${i})"><div><strong>${escapeHTML(e.assy)} <span style="opacity:.55">·</span> ${escapeHTML(e.wp)}</strong><small>ASSY / WP · Problem data</small></div><span class="arrow">DETAIL ›</span></div>`).join(''):`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data.</div>`;
+    overlay.classList.add('open');
+}
+function unifiedProblemPairDetail(index){
+    const e=(window.__unifiedPopupProblemPairs||[])[index];if(!e)return;const r=e.row;
+    const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta');if(!overlay||!body)return;
+    if(titleEl)titleEl.textContent=`${e.assy} · ${e.wp}`;if(meta)meta.textContent='Detail lengkap Problem';
+    body.innerHTML=`<div class="unified-popup-back" onclick="problemUnifiedKpi(window.__unifiedProblemBackType||'total')">← Kembali</div><div class="unified-popup-detail-grid">${Object.entries(PROBLEM_COLUMNS).map(([l,c])=>`<div class="unified-popup-detail-item"><div class="label">${l}</div><div class="value">${escapeHTML(String(getProblemValue(r,c)||'-'))}</div></div>`).join('')}</div>`;
+}
+function wpFlowUnifiedPopup(kind,index){
+    const data=Array.isArray(window.__wpFlowData)?window.__wpFlowData:[];
+    const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta');
+    if(!overlay||!body)return;
+    let rows=data;
+    const titles={assyIn:'ASSY IN',assyOut:'ASSY OUT',assyBal:'ASSY BALANCE',pcsBal:'PCS BALANCE',cctBal:'CCT BALANCE',chart:'FLOW CCT',insight:'FLOW INSIGHT'};
+    if(kind==='row'){
+        const r=data[Number(index)]; if(!r)return;
+        if(titleEl)titleEl.textContent=`${r.wp} · ${r.month}`; if(meta)meta.textContent='Detail lengkap WP Flow';
+        body.innerHTML=`<div class="unified-popup-back" onclick="wpFlowUnifiedPopup('all')">← Kembali</div><div class="unified-popup-detail-grid">${[['BULAN',r.month],['WP',r.wp],['ASSY IN',r.assyIn+' ASSY'],['ASSY OUT',r.assyOut+' ASSY'],['ASSY BALANCE',r.assyBal+' ASSY'],['PCS IN',r.pcsIn+' PCS'],['PCS OUT',r.pcsOut+' PCS'],['PCS BALANCE',r.pcsBal+' PCS'],['CCT IN',r.cctIn+' CCT'],['CCT OUT',r.cctOut+' CCT'],['CCT BALANCE',r.cctBal+' CCT'],['STATUS',r.status]].map(([l,v])=>`<div class="unified-popup-detail-item"><div class="label">${l}</div><div class="value">${escapeHTML(String(v??'-'))}</div></div>`).join('')}</div>`;
+        overlay.classList.add('open');return;
+    }
+    if(kind==='assyIn')rows=data.filter(r=>Number(r.assyIn)>0);
+    if(kind==='assyOut')rows=data.filter(r=>Number(r.assyOut)>0);
+    if(kind==='assyBal')rows=data.filter(r=>Number(r.assyBal)>0);
+    if(kind==='pcsBal')rows=data.filter(r=>Number(r.pcsBal)>0);
+    if(kind==='cctBal')rows=data.filter(r=>Number(r.cctBal)>0);
+    if(titleEl)titleEl.textContent=titles[kind]||'WP Flow'; if(meta)meta.textContent=`${new Set(rows.map(r=>r.wp).filter(Boolean)).size} WP · ${rows.length} data`;
+    const grouped=rows.map((r,i)=>({r,i}));
+    body.innerHTML=grouped.length?grouped.map(({r,i})=>`<div class="unified-popup-row" onclick="wpFlowUnifiedPopup('row',${i})"><div><strong>${escapeHTML(r.wp||'-')} <span style="opacity:.55">·</span> ${escapeHTML(r.assyBal||r.assyIn||r.assyOut||0)} ASSY</strong><small>${escapeHTML(r.month||'-')} · ${escapeHTML(String(r.assyBal||0))} ASSY BAL · ${escapeHTML(String(r.cctBal||0))} CCT BAL</small></div><span class="arrow">DETAIL ›</span></div>`).join(''):`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data.</div>`;
+    overlay.classList.add('open');
+}
+
+function unifiedGenericCardPopup(el){
+    if(!el)return;
+    const page=el.closest('.page'); const pageId=page?.id||''; let rows=[],title=(el.querySelector('.kpi-label,.panel-kicker,h2,h3,.label')?.textContent||'Detail Informasi').trim();
+    if(pageId==='problem'){rows=Array.isArray(filteredProblemRows)&&filteredProblemRows.length?filteredProblemRows:(allProblemRows||[]);problemUnifiedKpi('total');return;}
+    if(pageId==='progress'){rows=getFilteredRows();unifiedProgressSummary(rows,title,'Progress');return;}
+    if(pageId==='monitoring'){rows=monitoringOpenRows();unifiedProgressSummary(rows,title,'Monitoring');return;}
+    if(pageId==='wpFlowMonitoring'){wpFlowUnifiedPopup('all');return;}
+}
+// Make otherwise non-clickable informational cards interactive without overriding existing inline actions.
+document.addEventListener('click',function(ev){
+    const target=ev.target.closest('.chart-card,.wp-flow-card');
+    if(!target)return;
+    if(target.getAttribute('onclick'))return;
+    if(ev.target.closest('button,a,input,select'))return;
+    unifiedGenericCardPopup(target);
+},true);
+
 function productionReadingDrilldown(type, value = "") {
     let rows = getFilteredRows().filter(row => getRowStatus(row) === "OPEN");
     const today = new Date();
@@ -5983,7 +6112,7 @@ function productionReadingDrilldown(type, value = "") {
     else if(type==="attention") rows=rows.filter(row=>{const d=parseReadingDate(getCellValue(row,7)),start=String(getCellValue(row,9)||"").trim(),diff=d?readingDateDiffDays(d,startOfToday):null;return(diff!==null&&diff<0)||!start||(diff!==null&&diff<=3)});
     else if(type==="assy") rows=rows.filter(row=>String(getCellValue(row,2)||"").trim()===value);
     const titles={etd3:"ETD ≤ 3 Hari",overdue:"Overdue",reschedule:"Reschedule",notStarted:"Not Started",statusNotStarted:"Status — Not Started",statusProgress:"Status — Progress",statusFinished:"Status — Finished",wp:`WP — ${value}`,process:`Process — ${value}`,attention:"Perlu Perhatian",assy:`ASSY — ${value}`,cct:"Total CCT",qty:"Total QTY",openqty:"Open QTY",avgcct:"Average CCT"};
-    openProductionReadingPopup(titles[type]||"Production Reading",rows);
+    unifiedProgressSummary(rows,titles[type]||"Production Reading","Production Reading");
 }
 function productionReadingUnitGroups(rows){
     const assyMap=new Map(), wpMap=new Map();
@@ -5999,29 +6128,28 @@ function productionReadingDetailRows(rows,title){
     const overlay=document.getElementById('productionReadingPopup'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta'),body=document.getElementById('productionReadingPopupBody');
     if(!overlay||!body)return;
     if(titleEl)titleEl.textContent=title||'Detail Data';
-    const counts=readingMetricCounts(rows);
-    if(meta)meta.textContent=`${counts.assy.toLocaleString('id-ID')} ASSY · ${counts.wp.toLocaleString('id-ID')} WP · ${(rows||[]).length.toLocaleString('id-ID')} data`;
-    body.innerHTML=rows.length?`<div class="reading-popup-back" onclick="productionReadingShowUnitSummary(window.__productionReadingPopupRows||[])">← Kembali ke ASSY / WP</div><div style="overflow:auto"><table><thead><tr><th>NO</th><th>ASSY NO</th><th>WP</th><th>CUSTOMER</th><th>QTY</th><th>OPEN QTY</th><th>CCT</th><th>ETD</th><th>STATUS</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${escapeHTML(String(getCellValue(r,0)||'-'))}</td><td>${escapeHTML(String(getCellValue(r,2)||'-'))}</td><td>${escapeHTML(String(getCellValue(r,3)||'-'))}</td><td>${escapeHTML(String(getCellValue(r,1)||'-'))}</td><td>${escapeHTML(String(getCellValue(r,5)||'0'))}</td><td>${escapeHTML(String(getCellValue(r,24)||'0'))}</td><td>${escapeHTML(String(getCellValue(r,6)||'0'))}</td><td>${escapeHTML(String(getCellValue(r,7)||'-'))}</td><td>${escapeHTML(String(getRowStatus(r)||'-'))}</td></tr>`).join('')}</tbody></table></div>`:`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data.</div>`;
+    if(meta)meta.textContent='Detail lengkap ASSY / WP';
+    body.innerHTML=rows.length?`<div class="unified-popup-back" onclick="productionReadingShowUnitSummary(window.__productionReadingPopupRows||[])">← Kembali</div><div class="unified-popup-detail-grid">${[['NO',0],['ASSY NO',2],['WP',3],['CUSTOMER',1],['CCT',4],['QTY',5],['TOTAL CCT',6],['ETD',7],['RESCHEDULE ETD',8],['ACTUAL START',9],['ACTUAL FINISH',10],['LEAD TIME',11],['STATUS',23],['OPEN QTY',24],['KETERANGAN',25]].map(([l,c])=>`<div class="unified-popup-detail-item"><div class="label">${l}</div><div class="value">${escapeHTML(String(getCellValue(rows[0],c)||'-'))}</div></div>`).join('')}</div>`:`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data.</div>`;
     overlay.classList.add('open');
 }
 function productionReadingShowUnitSummary(rows){
     window.__productionReadingPopupRows=rows||[];
     const overlay=document.getElementById('productionReadingPopup'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta'),body=document.getElementById('productionReadingPopupBody');
     if(!overlay||!body)return;
-    if(titleEl)titleEl.textContent='Pilih ASSY / WP';
+    if(titleEl)titleEl.textContent=window.__productionReadingPopupTitle||'Pilih ASSY / WP';
     const counts=readingMetricCounts(rows); if(meta)meta.textContent=`${counts.assy.toLocaleString('id-ID')} ASSY · ${counts.wp.toLocaleString('id-ID')} WP`;
-    const groups=productionReadingUnitGroups(rows);
-    const make=(label,entries,type)=>entries.length?`<div class="reading-unit-section"><div class="reading-unit-heading">${label}</div><div class="reading-unit-list">${entries.map(([name,rs])=>`<div class="reading-unit-item" onclick='productionReadingDetailRows(window.__productionReadingPopupRows.filter(r=>String(getCellValue(r,${type==='assy'?2:3})||"").trim()===${JSON.stringify(name).replace(/</g,'\\u003c')}, ${JSON.stringify(label+' — '+name).replace(/</g,'\\u003c')})'><div><strong>${escapeHTML(name)}</strong><small>${readingMetricCounts(rs).assy} ASSY · ${readingMetricCounts(rs).wp} WP · ${rs.length} data</small></div><span>DETAIL</span></div>`).join('')}</div></div>`:'';
-    body.innerHTML=make('ASSY',groups.assy,'assy')+make('WP',groups.wp,'wp');
+    const map=new Map();
+    (rows||[]).forEach(r=>{const a=String(getCellValue(r,2)||'').trim()||'Tanpa ASSY',w=String(getCellValue(r,3)||'').trim()||'Tanpa WP',k=a+'||'+w;if(!map.has(k))map.set(k,{assy:a,wp:w,rows:[]});map.get(k).rows.push(r);});
+    const entries=[...map.values()];window.__productionReadingPopupEntries=entries;
+    body.innerHTML=entries.length?entries.map((e,i)=>`<div class="unified-popup-row" onclick="productionReadingOpenPairDetail(${i})"><div><strong>${escapeHTML(e.assy)} <span style="opacity:.55">·</span> ${escapeHTML(e.wp)}</strong><small>1 ASSY · 1 WP · ${e.rows.length} data</small></div><span class="arrow">DETAIL ›</span></div>`).join(''):`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data.</div>`;
     overlay.classList.add('open');
 }
-function openProductionReadingPopup(title, rows){
-    window.__productionReadingPopupRows=rows||[];
-    const overlay=document.getElementById('productionReadingPopup');
-    if(!overlay)return;
-    productionReadingShowUnitSummary(rows||[]);
-    const titleEl=document.getElementById('productionReadingPopupTitle'); if(titleEl)titleEl.textContent=title||'Production Reading';
+function productionReadingOpenPairDetail(index){
+    const e=(window.__productionReadingPopupEntries||[])[index];if(!e)return;
+    window.__productionReadingPopupRows=e.rows||[];
+    productionReadingDetailRows(e.rows||[],`${e.assy} · ${e.wp}`);
 }
+function openProductionReadingPopup(title, rows){window.__productionReadingPopupTitle=title||'Production Reading';window.__productionReadingPopupRows=rows||[];productionReadingShowUnitSummary(rows||[]);}
 function closeProductionReadingPopup(){const x=document.getElementById("productionReadingPopup");if(x)x.classList.remove("open")}
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeProductionReadingPopup()});
 function readingDualMetric(assy,wp){return `<span class="metric-dual"><span class="metric-number">${readingFormatNumber(assy)}</span><span class="metric-unit">ASSY</span><span class="metric-number">${readingFormatNumber(wp)}</span><span class="metric-unit">WP</span></span>`}
@@ -6253,15 +6381,8 @@ function progressScrollTo(selector){
     if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-function progressTotalKpiAction(){
-    resetFilters();
-    setTimeout(()=>progressScrollTo("#progressTable"),80);
-}
-
-function progressCustomerKpiAction(){
-    resetFilters();
-    setTimeout(()=>progressScrollTo("#customerChart"),80);
-}
+function progressTotalKpiAction(){ progressUnifiedKpi("total"); }
+function progressCustomerKpiAction(){ progressUnifiedKpi("customer"); }
 
 
 /* =========================================================
@@ -6839,7 +6960,7 @@ function updateProcessOverview(rows) {
                             }"
                             data-process-index="${process.index}"
                             data-process-name="${escapeHTML(process.name)}"
-                            onclick="filterProcess(${process.index})"
+                            onclick="productionReadingDrilldown('process', ${JSON.stringify(process.name)})"
                         >
 
                             <div class="process-card-header">
@@ -11035,40 +11156,52 @@ function closeStage6InlineModal() {
 }
 
 function stage6UnitGroups(rows){
-    const a=new Map(),w=new Map();(rows||[]).forEach(row=>{const av=String(monitoringAssy(row)||'Tanpa ASSY').trim(),wv=String(monitoringWp(row)||'Tanpa WP').trim();if(!a.has(av))a.set(av,[]);a.get(av).push(row);if(!w.has(wv))w.set(wv,[]);w.get(wv).push(row)});return{assy:[...a.entries()],wp:[...w.entries()]};
+    const m=new Map();
+    (rows||[]).forEach(row=>{
+        const av=String(monitoringAssy(row)||'Tanpa ASSY').trim();
+        const wv=String(monitoringWp(row)||'Tanpa WP').trim();
+        const key=av+'||'+wv;
+        if(!m.has(key))m.set(key,{assy:av,wp:wv,rows:[]});
+        m.get(key).rows.push(row);
+    });
+    return [...m.values()];
 }
 function stage6UnitSummary(rows,title,subtitle,detailTitle){
-    const groups=stage6UnitGroups(rows),cnt=getUniqueUnitCounts(rows);window.__stage6PopupRows=rows||[];window.__stage6PopupDetailTitle=detailTitle||title;
-    const section=(label,entries,col)=>`<div class="stage6-unit-section"><div class="stage6-unit-heading">${label}</div><div class="stage6-popup-list">${entries.map(([name,rs])=>`<div class="stage6-popup-item" onclick='stage6UnitDetail(window.__stage6PopupRows.filter(r=>String(${col===2?'monitoringAssy(r)':'monitoringWp(r)'}||"").trim()===${JSON.stringify(name)}), ${JSON.stringify((detailTitle||title)+' — '+name)})'><div><strong>${escapeHTML(name)}</strong><small>${getUniqueUnitCounts(rs).assy} ASSY · ${getUniqueUnitCounts(rs).wp} WP · ${rs.length} data</small></div><span class="stage6-popup-badge">DETAIL</span></div>`).join('')}</div></div>`;
-    showStage6InlineModal(title,subtitle||`${cnt.assy} ASSY · ${cnt.wp} WP`,section('ASSY',groups.assy,2)+section('WP',groups.wp,3));
+    const entries=stage6UnitGroups(rows),cnt=getUniqueUnitCounts(rows);window.__stage6PopupRows=rows||[];window.__stage6PopupDetailTitle=detailTitle||title;window.__stage6PopupEntries=entries;
+    const body=entries.length?`<div class="stage6-popup-list">${entries.map((e,i)=>`<div class="stage6-popup-item" onclick="stage6UnitDetailByIndex(${i})"><div><strong>${escapeHTML(e.assy)} <span style="opacity:.55">·</span> ${escapeHTML(e.wp)}</strong><small>1 ASSY · 1 WP · ${e.rows.length} data</small></div><span class="stage6-popup-badge">DETAIL</span></div>`).join('')}</div>`:`<div class="stage6-popup-empty">Tidak ada data.</div>`;
+    showStage6InlineModal(title,subtitle||`${cnt.assy} ASSY · ${cnt.wp} WP`,body);
 }
+function stage6UnitDetailByIndex(index){const e=(window.__stage6PopupEntries||[])[index];if(!e)return;stage6UnitDetail(e.rows,`${e.assy} · ${e.wp}`);}
 function stage6UnitDetail(rows,title){
-    const body=`<div class="stage6-popup-back" onclick='stage6UnitSummary(window.__stage6PopupRows||[], "${escapeHTML((window.__stage6PopupDetailTitle||'Detail Data').replace(/"/g,'&quot;'))}", "${getUniqueUnitCounts(window.__stage6PopupRows||[]).assy} ASSY · ${getUniqueUnitCounts(window.__stage6PopupRows||[]).wp} WP")'>← Kembali ke ASSY / WP</div><div class="stage6-popup-list">${rows.map(row=>{const idx=allProgressRows.indexOf(row);return `<div class="stage6-popup-item" onclick="openMonitoringJob(allProgressRows[${idx}]);closeStage6InlineModal()"><div><strong>${escapeHTML(monitoringAssy(row))}</strong><small>${escapeHTML(monitoringCustomer(row))} · WP ${escapeHTML(monitoringWp(row))} · ETD ${escapeHTML(getCellValue(row,7)||'-')} · OPEN QTY ${escapeHTML(getCellValue(row,24)||'0')}</small></div><span class="stage6-popup-badge">DETAIL</span></div>`}).join('')}</div>`;showStage6InlineModal(title,`${getUniqueUnitCounts(rows).assy} ASSY · ${getUniqueUnitCounts(rows).wp} WP`,body);
+    const body=`<div class="stage6-popup-back" onclick='stage6UnitSummary(window.__stage6PopupRows||[], ${JSON.stringify(window.__stage6PopupDetailTitle||title)})'>← Kembali</div><div class="stage6-popup-list">${rows.map(row=>{const idx=allProgressRows.indexOf(row);return `<div class="stage6-popup-item" onclick="openMonitoringJob(allProgressRows[${idx}]);closeStage6InlineModal()"><div><strong>${escapeHTML(monitoringAssy(row))} <span style="opacity:.55">·</span> ${escapeHTML(monitoringWp(row))}</strong><small>${escapeHTML(monitoringCustomer(row))} · ETD ${escapeHTML(getCellValue(row,7)||'-')} · OPEN QTY ${escapeHTML(getCellValue(row,24)||'0')}</small></div><span class="stage6-popup-badge">DETAIL</span></div>`}).join('')}</div>`;
+    showStage6InlineModal(title,`${getUniqueUnitCounts(rows).assy} ASSY · ${getUniqueUnitCounts(rows).wp} WP`,body);
 }
 function stage6RowsPopup(rows,title,subtitle){if(!rows.length){showStage6InlineModal(title,subtitle||'0 data',`<div class="stage6-popup-empty">Tidak ada data untuk ditampilkan.</div>`);return;}stage6UnitSummary(rows,title,subtitle,title);}
-
 function stage6ShowProblemRow(index) {
     const row = allProblemRows[index];
     if (!row) return;
+    const assy=String(getProblemValue(row,PROBLEM_COLUMNS.ASSY_NO)||'Tanpa ASSY').trim()||'Tanpa ASSY';
+    const ws=unifiedProblemWpForAssy(assy); const wp=ws[0]||'Tanpa WP';
     const labels = Object.keys(PROBLEM_COLUMNS);
-    const body = `<div class="stage6-popup-list">${labels.map(key => {
-        const value = getProblemValue(row, PROBLEM_COLUMNS[key]);
-        return `<div class="stage6-popup-item" style="cursor:default"><div><strong>${escapeHTML(key)}</strong><small>${escapeHTML(value || "-")}</small></div></div>`;
-    }).join("")}</div>`;
-    showStage6InlineModal("Problem Detail", "Problem OPEN", body);
+    const body = `<div class="stage6-popup-back" onclick='stage6ProblemOpenPairSummary()'>← Kembali</div><div class="stage6-popup-item" style="cursor:default"><div><strong>${escapeHTML(assy)} <span style="opacity:.55">·</span> ${escapeHTML(wp)}</strong><small>ASSY / WP</small></div></div><div class="stage6-popup-list" style="margin-top:10px">${labels.map(key => {const value=getProblemValue(row,PROBLEM_COLUMNS[key]);return `<div class="stage6-popup-item" style="cursor:default"><div><strong>${escapeHTML(key)}</strong><small>${escapeHTML(value || "-")}</small></div></div>`;}).join('')}</div>`;
+    showStage6InlineModal("Problem Detail", "Detail lengkap ASSY / WP", body);
 }
-
 function stage6ProblemUnitGroups(rows){
-    const a=new Map(),w=new Map();const wpByAssy=new Map();
-    (allProgressRows||[]).forEach(r=>{const av=String(getCellValue(r,2)||'').trim(),wv=String(getCellValue(r,3)||'').trim();if(av&&wv){if(!wpByAssy.has(av))wpByAssy.set(av,new Set());wpByAssy.get(av).add(wv)}});
-    (rows||[]).forEach(row=>{const av=String(getProblemValue(row,PROBLEM_COLUMNS.ASSY_NO)||'').trim()||'Tanpa ASSY';if(!a.has(av))a.set(av,[]);a.get(av).push(row);const ws=wpByAssy.get(av);(ws&&ws.size?[...ws]:['Tanpa WP']).forEach(wv=>{if(!w.has(wv))w.set(wv,[]);w.get(wv).push(row)});});return{assy:[...a.entries()],wp:[...w.entries()]};
+    const m=new Map();
+    (rows||[]).forEach(row=>{
+        const av=String(getProblemValue(row,PROBLEM_COLUMNS.ASSY_NO)||'Tanpa ASSY').trim()||'Tanpa ASSY';
+        const ws=unifiedProblemWpForAssy(av); const list=ws.length?ws:['Tanpa WP'];
+        list.forEach(wv=>{const key=av+'||'+wv;if(!m.has(key))m.set(key,{assy:av,wp:wv,rows:[]});m.get(key).rows.push(row);});
+    });
+    return [...m.values()];
 }
 function stage6ProblemUnitSummary(rows){
-    const groups=stage6ProblemUnitGroups(rows);window.__stage6ProblemRows=rows||[];
-    const section=(label,entries,byAssy)=>`<div class="stage6-unit-section"><div class="stage6-unit-heading">${label}</div><div class="stage6-popup-list">${entries.map(([name,rs])=>`<div class="stage6-popup-item" onclick='stage6ProblemUnitDetail(window.__stage6ProblemRows.filter(r=>${byAssy?`String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||"Tanpa ASSY").trim()`: `(function(){const a=String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||"").trim();const set=new Set();(allProgressRows||[]).forEach(x=>{if(String(getCellValue(x,2)||"").trim()===a){const w=String(getCellValue(x,3)||"").trim();if(w)set.add(w)}});return set.has(${JSON.stringify(name)})})()`}), ${JSON.stringify('Problem — '+name)})'><div><strong>${escapeHTML(name)}</strong><small>${rs.length} data</small></div><span class="stage6-popup-badge">DETAIL</span></div>`).join('')}</div></div>`;
-    showStage6InlineModal('PROBLEM OPEN',`${groups.assy.length} ASSY · ${groups.wp.length} WP`,section('ASSY',groups.assy,true)+section('WP',groups.wp,false));
+    const entries=stage6ProblemUnitGroups(rows);window.__stage6ProblemRows=rows||[];window.__stage6ProblemEntries=entries;
+    showStage6InlineModal('PROBLEM OPEN',`${new Set(entries.map(x=>x.assy)).size} ASSY · ${new Set(entries.map(x=>x.wp)).size} WP`,entries.length?`<div class="stage6-popup-list">${entries.map((e,i)=>`<div class="stage6-popup-item" onclick="stage6ProblemUnitDetailByIndex(${i})"><div><strong>${escapeHTML(e.assy)} <span style="opacity:.55">·</span> ${escapeHTML(e.wp)}</strong><small>1 ASSY · 1 WP · ${e.rows.length} data</small></div><span class="stage6-popup-badge">DETAIL</span></div>`).join('')}</div>`:`<div class="stage6-popup-empty">Tidak ada data.</div>`);
 }
-function stage6ProblemUnitDetail(rows,title){stage6ShowProblemRow(rows.length?allProblemRows.indexOf(rows[0]):-1);}
+function stage6ProblemUnitDetailByIndex(index){const e=(window.__stage6ProblemEntries||[])[index];if(!e)return;const idx=allProblemRows.indexOf(e.rows[0]);stage6ShowProblemRow(idx);}
+function stage6ProblemUnitDetail(rows,title){stage6ProblemUnitDetailByIndex((window.__stage6ProblemEntries||[]).findIndex(e=>e.rows[0]===rows[0]));}
+function stage6ProblemOpenPairSummary(){stage6ProblemUnitSummary(window.__stage6ProblemRows||[]);}
 function stage6OpenProblem(){const rows=stage6ProblemOpenRows();if(!rows.length){showStage6InlineModal('Problem OPEN','0 data',`<div class="stage6-popup-empty">Tidak ada Problem OPEN.</div>`);return;}stage6ProblemUnitSummary(rows);}
 
 function stage6OpenFilter(type) {
@@ -11819,8 +11952,8 @@ window.__cuteAssistant=assistant;
     const arr=Object.entries(by);if(!arr.length){el.innerHTML='<div class="wp-flow-empty">Belum ada data.</div>';return;}const max=Math.max(1,...arr.flatMap(([,v])=>[v.in,v.out,v.bal]));
     el.innerHTML=arr.map(([m,v])=>`<div class="wp-flow-bar-group"><div class="wp-flow-bar in" title="${m} IN: ${fmt(v.in)}" style="height:${Math.max(2,v.in/max*88)}%"></div><div class="wp-flow-bar out" title="${m} OUT: ${fmt(v.out)}" style="height:${Math.max(2,v.out/max*88)}%"></div><div class="wp-flow-bar balance" title="${m} BALANCE: ${fmt(v.bal)}" style="height:${Math.max(2,v.bal/max*88)}%"></div><div class="wp-flow-month">${m.slice(0,3)}</div></div>`).join('');
   }
-  function renderTable(data){const b=q('wpFlowTableBody');if(!b)return;if(!data.length){b.innerHTML='<tr><td colspan="12" class="wp-flow-empty">Tidak ada data sesuai filter.</td></tr>';return;}b.innerHTML=data.map(x=>`<tr><td>${x.month}</td><td><b>${x.wp}</b></td><td>${fmt(x.assyIn)}</td><td>${fmt(x.assyOut)}</td><td><span class="wp-flow-badge ${x.assyBal?'balance':''}">${fmt(x.assyBal)}</span></td><td>${fmt(x.pcsIn)}</td><td>${fmt(x.pcsOut)}</td><td><span class="wp-flow-badge ${x.pcsBal?'balance':''}">${fmt(x.pcsBal)}</span></td><td>${fmt(x.cctIn)}</td><td>${fmt(x.cctOut)}</td><td><span class="wp-flow-badge ${x.cctBal?'balance':''}">${fmt(x.cctBal)}</span></td><td><span class="wp-flow-badge ${x.status==='OPEN'?'open':'close'}">${x.status||'-'}</span></td></tr>`).join('');}
-  function render(){const d=filtered();renderKpi(d);renderChart();renderTable(d);}
+  function renderTable(data){const b=q('wpFlowTableBody');if(!b)return;if(!data.length){b.innerHTML='<tr><td colspan="12" class="wp-flow-empty">Tidak ada data sesuai filter.</td></tr>';return;}b.innerHTML=data.map((x,i)=>`<tr onclick="wpFlowUnifiedPopup('row',${i})"><td>${x.month}</td><td><b>${x.wp}</b></td><td>${fmt(x.assyIn)}</td><td>${fmt(x.assyOut)}</td><td><span class="wp-flow-badge ${x.assyBal?'balance':''}">${fmt(x.assyBal)}</span></td><td>${fmt(x.pcsIn)}</td><td>${fmt(x.pcsOut)}</td><td><span class="wp-flow-badge ${x.pcsBal?'balance':''}">${fmt(x.pcsBal)}</span></td><td>${fmt(x.cctIn)}</td><td>${fmt(x.cctOut)}</td><td><span class="wp-flow-badge ${x.cctBal?'balance':''}">${fmt(x.cctBal)}</span></td><td><span class="wp-flow-badge ${x.status==='OPEN'?'open':'close'}">${x.status||'-'}</span></td></tr>`).join('');}
+  function render(){const d=filtered();window.__wpFlowData=d.slice();renderKpi(d);renderChart();renderTable(d);}
   async function refresh(force){
     const note=q('wpFlowNote');if(note&&force)note.textContent='Mengambil data terbaru dari Google Sheets…';
     const urls=[
@@ -13772,6 +13905,23 @@ body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-popup-i
 </script>
 
 <div id="productionReadingPopup" class="reading-popup-overlay" onclick="if(event.target===this)closeProductionReadingPopup()"><div class="reading-popup" role="dialog" aria-modal="true"><div class="reading-popup-head"><div><h3 id="productionReadingPopupTitle">Production Reading</h3><div id="productionReadingPopupMeta" class="reading-popup-meta"></div></div><button class="reading-popup-close" onclick="closeProductionReadingPopup()" aria-label="Tutup">×</button></div><div id="productionReadingPopupBody"></div></div></div>
+
+<style id="unified-popup-interaction-style">
+.kpi-card,.chart-card,.monitor-card,.monitor-mini-stat,.process-card,.status-order-item{cursor:pointer;}
+.unified-popup-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid #e4ebef;border-radius:10px;background:#f8fafb;margin-bottom:8px;cursor:pointer;transition:.15s;}
+.unified-popup-row:hover{background:#eef5f8;border-color:#bfd2dc;transform:translateY(-1px);}
+.unified-popup-row strong{display:block;font-size:14px;color:#24343d;}
+.unified-popup-row small{display:block;margin-top:3px;color:#6c7d86;font-size:11px;}
+.unified-popup-row .arrow{font-weight:900;color:#55727f;}
+.unified-popup-back{display:inline-flex;align-items:center;gap:5px;margin-bottom:12px;padding:7px 10px;border-radius:8px;background:#eef4f7;color:#45636f;font-weight:800;font-size:12px;cursor:pointer;}
+.unified-popup-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+.unified-popup-detail-item{padding:10px 12px;border:1px solid #e5ecef;border-radius:9px;background:#fafcfd;}
+.unified-popup-detail-item .label{font-size:10px;font-weight:800;color:#71818a;text-transform:uppercase;letter-spacing:.04em;}
+.unified-popup-detail-item .value{margin-top:4px;font-size:13px;font-weight:700;color:#24343d;word-break:break-word;}
+@media(max-width:767px){.unified-popup-detail-grid{grid-template-columns:1fr;}.unified-popup-row{padding:10px 11px;}}
+body.dashboard-dark:not(.login-locked) .unified-popup-row{background:#f1f5f7;border-color:#cbd8de;}
+body.dashboard-dark:not(.login-locked) .unified-popup-row strong,body.dashboard-dark:not(.login-locked) .unified-popup-detail-item .value{color:#24343d!important;}
+</style>
 </body>
 
 
