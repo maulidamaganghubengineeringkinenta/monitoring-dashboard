@@ -1192,9 +1192,9 @@ body.dashboard-dark:not(.login-locked) .stage6-quick-strip button:nth-child(4){b
 
 <style id="sidebarBottomPositionFix">
 .sidebar{display:flex!important;flex-direction:column!important;}
-.sidebar .logout-button{order:9!important;flex:none!important;margin:0 14px!important;width:calc(100% - 28px)!important;box-sizing:border-box!important;}
-.sidebar .sidebar-settings-bottom{order:10!important;margin:8px 14px 0 14px!important;width:calc(100% - 28px)!important;flex:none!important;box-sizing:border-box!important;}
-.sidebar .sidebar-bottom{order:11!important;margin-top:8px!important;flex:none!important;}
+.sidebar .sidebar-settings-bottom{order:9!important;margin:8px 14px 0 14px!important;width:calc(100% - 28px)!important;flex:none!important;box-sizing:border-box!important;}
+.sidebar .sidebar-bottom{order:10!important;margin-top:8px!important;flex:none!important;}
+.sidebar .logout-button{order:11!important;flex:none!important;margin:8px 14px 12px 14px!important;width:calc(100% - 28px)!important;box-sizing:border-box!important;}
 .sidebar .sidebar-settings-bottom{margin-top:auto!important;}
 </style>
 
@@ -3641,7 +3641,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 </div>
 
-                <div class="kpi-card kpi-purple problem-clickable" id="oldestOpenProblemCard" onclick="problemUnifiedKpi('oldest')" title="Klik untuk melihat detail problem OPEN terlama"><div class="kpi-top"><div class="kpi-label">OLDEST OPEN PROBLEM</div><div class="kpi-icon">⏳</div></div><div class="kpi-value" id="problemOldestAge">0 hari</div><div class="kpi-description">Klik untuk melihat detail problem OPEN terlama</div></div>
+                <div class="kpi-card kpi-purple problem-clickable" id="oldestOpenProblemCard" onclick="problemUnifiedKpi('oldest')" title="Klik untuk melihat Problem OPEN lebih dari 3 hari"><div class="kpi-top"><div class="kpi-label">OLDEST OPEN PROBLEM</div><div class="kpi-icon">⏳</div></div><div class="kpi-value" id="problemOldestAge">0 hari</div><div class="kpi-description">Klik untuk melihat Problem OPEN lebih dari 3 hari</div></div>
 
             </div>
 
@@ -6110,7 +6110,7 @@ function problemUnifiedKpi(type){
     else if(type==='total'){title='TOTAL PART NAME — PROBLEM';}
     else if(type==='customer'){title='CUSTOMER — PROBLEM';}
     else if(type==='minus'){title='MINUS — PART NAME';}
-    else if(type==='oldest'){const open=base.filter(r=>getProblemStatus(r)==='OPEN');let best=null,bestAge=-1;open.forEach(r=>{const a=problemAgeDays(r);if(a!==null&&a>bestAge){bestAge=a;best=r;}});rows=best?[best]:open.slice(0,1);title='OLDEST OPEN — PART NAME';}
+    else if(type==='oldest'){rows=base.filter(r=>getProblemStatus(r)==='OPEN'&&(() => {const a=problemAgeDays(r);return a!==null&&a>3;})());title='OPEN > 3 HARI — PROBLEM';}
     problemUnifiedRowsPopup(rows,title);
 }
 function unifiedProblemPairDetail(index){
@@ -10198,28 +10198,20 @@ function setProblemStatusFilter(
 
 function openOldestOpenProblem() {
     const rows = Array.isArray(allProblemRows) ? allProblemRows : [];
-
-    if (!rows.length) {
-        return;
-    }
-
-    let oldestIndex = -1;
-    let oldestAge = -1;
-
-    rows.forEach((row, index) => {
+    const over3Days = rows.filter(row => {
+        if (getProblemStatus(row) !== "OPEN") return false;
         const age = problemAgeDays(row);
-        if (age !== null && age > oldestAge) {
-            oldestAge = age;
-            oldestIndex = index;
-        }
+        return age !== null && age > 3;
     });
 
-    if (oldestIndex < 0) {
-        setProblemStatusFilter("OPEN");
+    // Popup tetap dibuka walaupun tidak ada Problem > 3 hari, supaya
+    // pengguna mendapat informasi yang jelas dari fitur ini.
+    if (!over3Days.length) {
+        problemUnifiedRowsPopup([], "OPEN > 3 HARI — PROBLEM");
         return;
     }
 
-    openProblemDetail(oldestIndex);
+    problemUnifiedRowsPopup(over3Days, "OPEN > 3 HARI — PROBLEM");
 }
 
 
