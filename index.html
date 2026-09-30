@@ -801,7 +801,11 @@ body.login-locked .sidebar-overlay { display:none !important; }
 .wp-flow-filter-card select{width:100%;padding:10px 11px;border:1px solid #dce6ed;border-radius:10px;background:#fff;color:#354553;outline:none}
 .wp-flow-filter-card input{width:100%;padding:10px 11px;border:1px solid #dce6ed;border-radius:10px;background:#fff;color:#354553;outline:none;box-sizing:border-box;font:inherit}
 .wp-flow-filter-card input:focus{border-color:#86b4c5;box-shadow:0 0 0 3px rgba(134,180,197,.12)}
-.wp-flow-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.wp-flow-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.wp-flow-trend-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.wp-flow-trend-panel{min-width:0;border:1px solid var(--border-color,#e7edf0);border-radius:12px;padding:10px;background:rgba(255,255,255,.45)}
+.wp-flow-trend-title{font-weight:800;font-size:13px;margin-bottom:6px;text-align:center;letter-spacing:.3px}
+
 .wp-flow-kpi{background:#fff;border:1px solid #e5edf2;border-radius:16px;padding:15px;cursor:pointer;transition:.18s ease}
 .wp-flow-kpi:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(72,91,108,.08)}
 .wp-flow-kpi .label{font-size:11px;font-weight:800;color:#81909b;text-transform:uppercase}.wp-flow-kpi .value{font-size:27px;font-weight:900;color:#334155;margin-top:6px}.wp-flow-kpi .sub{font-size:11px;color:#91a0aa;margin-top:3px}
@@ -817,7 +821,7 @@ body.login-locked .sidebar-overlay { display:none !important; }
 .wp-flow-insight{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.wp-flow-insight-box{border-radius:12px;padding:12px;background:#f8fafb;border:1px solid #e9eff3}.wp-flow-insight-box .small{font-size:10px;color:#84929c;font-weight:800;text-transform:uppercase}.wp-flow-insight-box strong{display:block;margin-top:4px;color:#3f4e59;font-size:14px}
 .wp-flow-note{font-size:11px;color:#87949d;line-height:1.55;background:#f8fafb;border-radius:11px;padding:11px 12px;margin-top:13px}
 .wp-flow-empty{padding:24px;text-align:center;color:#8997a0;font-size:13px}
-@media(max-width:1050px){.wp-flow-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.wp-flow-grid{grid-template-columns:1fr}}
+@media(max-width:1050px){.wp-flow-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.wp-flow-grid{grid-template-columns:1fr}.wp-flow-trend-grid{grid-template-columns:1fr}}
 @media(max-width:680px){.wp-flow-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.wp-flow-filters{grid-template-columns:1fr}.wp-flow-insight{grid-template-columns:1fr}.wp-flow-kpi .value{font-size:23px}}
 </style>
 
@@ -3415,14 +3419,22 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                 <div class="wp-flow-kpi blue" onclick="wpFlowUnifiedPopup('assyIn')"><div class="label">ASSY IN</div><div class="value" id="wpKpiAssyIn">0</div><div class="sub">Jumlah ASSY masuk</div></div>
                 <div class="wp-flow-kpi green" onclick="wpFlowUnifiedPopup('assyOut')"><div class="label">ASSY OUT</div><div class="value" id="wpKpiAssyOut">0</div><div class="sub">Jumlah ASSY keluar</div></div>
                 <div class="wp-flow-kpi purple" onclick="wpFlowUnifiedPopup('assyBal')"><div class="label">ASSY BALANCE</div><div class="value" id="wpKpiAssyBal">0</div><div class="sub">Jumlah ASSY yang masih tersisa</div></div>
-                <div class="wp-flow-kpi orange" onclick="wpFlowUnifiedPopup('pcsBal')"><div class="label">PCS BALANCE</div><div class="value" id="wpKpiPcsBal">0</div><div class="sub">Jumlah PCS belum OUT</div></div>
-                <div class="wp-flow-kpi pink" onclick="wpFlowUnifiedPopup('cctBal')"><div class="label">CCT BALANCE</div><div class="value" id="wpKpiCctBal">0</div><div class="sub">Jumlah CCT belum OUT</div></div>
+                <div class="wp-flow-kpi blue" onclick="wpFlowUnifiedPopup('pcsIn')"><div class="label">PCS IN</div><div class="value" id="wpKpiPcsIn">0</div><div class="sub">Jumlah PCS masuk</div></div>
+                <div class="wp-flow-kpi green" onclick="wpFlowUnifiedPopup('pcsOut')"><div class="label">PCS OUT</div><div class="value" id="wpKpiPcsOut">0</div><div class="sub">Jumlah PCS keluar</div></div>
+                <div class="wp-flow-kpi orange" onclick="wpFlowUnifiedPopup('pcsBal')"><div class="label">PCS BALANCE</div><div class="value" id="wpKpiPcsBal">0</div><div class="sub">Jumlah PCS yang masih tersisa</div></div>
+                <div class="wp-flow-kpi blue" onclick="wpFlowUnifiedPopup('cctIn')"><div class="label">CCT IN</div><div class="value" id="wpKpiCctIn">0</div><div class="sub">Jumlah CCT masuk</div></div>
+                <div class="wp-flow-kpi green" onclick="wpFlowUnifiedPopup('cctOut')"><div class="label">CCT OUT</div><div class="value" id="wpKpiCctOut">0</div><div class="sub">Jumlah CCT keluar</div></div>
+                <div class="wp-flow-kpi pink" onclick="wpFlowUnifiedPopup('cctBal')"><div class="label">CCT BALANCE</div><div class="value" id="wpKpiCctBal">0</div><div class="sub">Jumlah CCT yang masih tersisa</div></div>
             </div>
 
             <div class="wp-flow-grid">
                 <div class="wp-flow-card" onclick="wpFlowUnifiedPopup('chart')">
-                    <h3>📊 Trend IN vs OUT — CCT</h3>
-                    <div id="wpFlowChart" class="wp-flow-chart"></div>
+                    <h3>📊 Trend IN vs OUT — ASSY, PCS &amp; CCT</h3>
+                    <div class="wp-flow-trend-grid">
+                        <div class="wp-flow-trend-panel"><div class="wp-flow-trend-title">ASSY</div><div id="wpFlowChartAssy" class="wp-flow-chart"></div></div>
+                        <div class="wp-flow-trend-panel"><div class="wp-flow-trend-title">PCS</div><div id="wpFlowChartPcs" class="wp-flow-chart"></div></div>
+                        <div class="wp-flow-trend-panel"><div class="wp-flow-trend-title">CCT</div><div id="wpFlowChartCct" class="wp-flow-chart"></div></div>
+                    </div>
                     <div class="wp-flow-legend">
                         <span><i class="wp-flow-dot" style="background:#b7ddf1"></i> IN</span>
                         <span><i class="wp-flow-dot" style="background:#b9dec9"></i> OUT</span>
@@ -6169,7 +6181,7 @@ function wpFlowUnifiedPopup(kind,index){
     const overlay=document.getElementById('productionReadingPopup'),body=document.getElementById('productionReadingPopupBody'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta');
     if(!overlay||!body)return;
     let rows=data;
-    const titles={assyIn:'ASSY IN',assyOut:'ASSY OUT',assyBal:'ASSY BALANCE',pcsBal:'PCS BALANCE',cctBal:'CCT BALANCE',chart:'FLOW CCT',insight:'FLOW INSIGHT'};
+    const titles={assyIn:'ASSY IN',assyOut:'ASSY OUT',assyBal:'ASSY BALANCE',pcsIn:'PCS IN',pcsOut:'PCS OUT',pcsBal:'PCS BALANCE',cctIn:'CCT IN',cctOut:'CCT OUT',cctBal:'CCT BALANCE',chart:'TREND ASSY, PCS & CCT',insight:'FLOW INSIGHT'};
     if(kind==='row'){
         const r=data[Number(index)]; if(!r)return;
         if(titleEl)titleEl.textContent=`${r.wp} · ${r.month}`; if(meta)meta.textContent='Detail lengkap WP Flow';
@@ -6179,7 +6191,11 @@ function wpFlowUnifiedPopup(kind,index){
     if(kind==='assyIn')rows=data.filter(r=>Number(r.assyIn)>0);
     if(kind==='assyOut')rows=data.filter(r=>Number(r.assyOut)>0);
     if(kind==='assyBal')rows=data.filter(r=>Number(r.assyBal)>0);
+    if(kind==='pcsIn')rows=data.filter(r=>Number(r.pcsIn)>0);
+    if(kind==='pcsOut')rows=data.filter(r=>Number(r.pcsOut)>0);
     if(kind==='pcsBal')rows=data.filter(r=>Number(r.pcsBal)>0);
+    if(kind==='cctIn')rows=data.filter(r=>Number(r.cctIn)>0);
+    if(kind==='cctOut')rows=data.filter(r=>Number(r.cctOut)>0);
     if(kind==='cctBal')rows=data.filter(r=>Number(r.cctBal)>0);
     if(titleEl)titleEl.textContent=titles[kind]||'WP Flow'; if(meta)meta.textContent=`${new Set(rows.map(r=>r.wp).filter(Boolean)).size} WP · ${rows.length} data`;
     const grouped=rows.map((r,i)=>({r,i}));
@@ -12079,15 +12095,25 @@ window.__cuteAssistant=assistant;
   }
   function fmt(n){return Number(n||0).toLocaleString('id-ID',{maximumFractionDigits:0});}
   function renderKpi(data){
-    const sum=k=>data.reduce((a,x)=>a+num(x[k]),0);q('wpKpiAssyIn').textContent=fmt(sum('assyIn'))+' ASSY';q('wpKpiAssyOut').textContent=fmt(sum('assyOut'))+' ASSY';q('wpKpiAssyBal').textContent=fmt(sum('assyBal'))+' ASSY';q('wpKpiPcsBal').textContent=fmt(sum('pcsBal'))+' PCS';q('wpKpiCctBal').textContent=fmt(sum('cctBal'))+' CCT';
+    const sum=k=>data.reduce((a,x)=>a+num(x[k]),0);
+    const values={wpKpiAssyIn:['assyIn','ASSY'],wpKpiAssyOut:['assyOut','ASSY'],wpKpiAssyBal:['assyBal','ASSY'],wpKpiPcsIn:['pcsIn','PCS'],wpKpiPcsOut:['pcsOut','PCS'],wpKpiPcsBal:['pcsBal','PCS'],wpKpiCctIn:['cctIn','CCT'],wpKpiCctOut:['cctOut','CCT'],wpKpiCctBal:['cctBal','CCT']};
+    Object.entries(values).forEach(([id,[key,unit]])=>{const el=q(id);if(el)el.textContent=fmt(sum(key))+' '+unit;});
     q('wpInsightActive').textContent=fmt(data.filter(x=>num(x.assyBal)||num(x.pcsBal)||num(x.cctBal)).length)+' WP';
     q('wpInsightBalance').textContent=fmt(data.filter(x=>num(x.assyBal)||num(x.pcsBal)||num(x.cctBal)).reduce((a,x)=>a+num(x.assyBal)+num(x.pcsBal)+num(x.cctBal),0))+' total';
     const open=data.filter(x=>x.status==='OPEN').length,close=data.filter(x=>x.status==='CLOSE').length;q('wpInsightStatus').textContent=open?`${open} OPEN / ${close} CLOSE`:'CLOSE';
   }
   function renderChart(){
-    const el=q('wpFlowChart');if(!el)return;const by={};wpFlowData.filter(x=>!q('wpFlowMonth')||q('wpFlowMonth').value==='ALL'||x.month===q('wpFlowMonth').value).forEach(x=>{const m=x.month;if(!by[m])by[m]={in:0,out:0,bal:0};by[m].in+=x.cctIn;by[m].out+=x.cctOut;by[m].bal+=x.cctBal;});
-    const arr=Object.entries(by);if(!arr.length){el.innerHTML='<div class="wp-flow-empty">Belum ada data.</div>';return;}const max=Math.max(1,...arr.flatMap(([,v])=>[v.in,v.out,v.bal]));
-    el.innerHTML=arr.map(([m,v])=>`<div class="wp-flow-bar-group"><div class="wp-flow-bar in" title="${m} IN: ${fmt(v.in)}" style="height:${Math.max(2,v.in/max*88)}%"></div><div class="wp-flow-bar out" title="${m} OUT: ${fmt(v.out)}" style="height:${Math.max(2,v.out/max*88)}%"></div><div class="wp-flow-bar balance" title="${m} BALANCE: ${fmt(v.bal)}" style="height:${Math.max(2,v.bal/max*88)}%"></div><div class="wp-flow-month">${m.slice(0,3)}</div></div>`).join('');
+    const monthFilter=q('wpFlowMonth')?.value||'ALL';
+    const source=wpFlowData.filter(x=>monthFilter==='ALL'||x.month===monthFilter);
+    const configs=[['wpFlowChartAssy','assyIn','assyOut','assyBal'],['wpFlowChartPcs','pcsIn','pcsOut','pcsBal'],['wpFlowChartCct','cctIn','cctOut','cctBal']];
+    configs.forEach(([id,inKey,outKey,balKey])=>{
+      const el=q(id);if(!el)return;const by={};
+      source.forEach(x=>{const m=x.month;if(!by[m])by[m]={in:0,out:0,bal:0};by[m].in+=num(x[inKey]);by[m].out+=num(x[outKey]);by[m].bal+=num(x[balKey]);});
+      const arr=Object.entries(by);
+      if(!arr.length){el.innerHTML='<div class="wp-flow-empty">Belum ada data.</div>';return;}
+      const max=Math.max(1,...arr.flatMap(([,v])=>[v.in,v.out,v.bal]));
+      el.innerHTML=arr.map(([m,v])=>`<div class="wp-flow-bar-group"><div class="wp-flow-bar in" title="${m} IN: ${fmt(v.in)}" style="height:${Math.max(2,v.in/max*88)}%"></div><div class="wp-flow-bar out" title="${m} OUT: ${fmt(v.out)}" style="height:${Math.max(2,v.out/max*88)}%"></div><div class="wp-flow-bar balance" title="${m} BALANCE: ${fmt(v.bal)}" style="height:${Math.max(2,v.bal/max*88)}%"></div><div class="wp-flow-month">${m.slice(0,3)}</div></div>`).join('');
+    });
   }
   function renderTable(data){const b=q('wpFlowTableBody');if(!b)return;if(!data.length){b.innerHTML='<tr><td colspan="12" class="wp-flow-empty">Tidak ada data sesuai filter.</td></tr>';return;}b.innerHTML=data.map((x,i)=>`<tr onclick="wpFlowUnifiedPopup('row',${i})"><td>${x.month}</td><td><b>${x.wp}</b></td><td>${fmt(x.assyIn)}</td><td>${fmt(x.assyOut)}</td><td><span class="wp-flow-badge ${x.assyBal?'balance':''}">${fmt(x.assyBal)}</span></td><td>${fmt(x.pcsIn)}</td><td>${fmt(x.pcsOut)}</td><td><span class="wp-flow-badge ${x.pcsBal?'balance':''}">${fmt(x.pcsBal)}</span></td><td>${fmt(x.cctIn)}</td><td>${fmt(x.cctOut)}</td><td><span class="wp-flow-badge ${x.cctBal?'balance':''}">${fmt(x.cctBal)}</span></td><td><span class="wp-flow-badge ${x.status==='OPEN'?'open':'close'}">${x.status||'-'}</span></td></tr>`).join('');}
   function render(){const d=filtered();window.__wpFlowData=d.slice();renderKpi(d);renderChart();renderTable(d);}
