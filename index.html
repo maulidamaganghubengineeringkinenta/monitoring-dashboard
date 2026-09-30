@@ -818,11 +818,11 @@ body.login-locked .sidebar-overlay { display:none !important; }
 .wp-flow-month{position:absolute;bottom:-21px;left:0;right:0;text-align:center;font-size:10px;color:#7e8c96;font-weight:700}
 .wp-flow-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:11px;font-size:11px;color:#65747e}.wp-flow-legend span{display:flex;align-items:center;gap:5px}.wp-flow-dot{width:9px;height:9px;border-radius:3px;display:inline-block}
 .wp-flow-table-wrap{overflow:auto}.wp-flow-table{width:100%;border-collapse:collapse;min-width:850px}.wp-flow-table th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#7a8994;background:#f8fafb;padding:10px 9px;border-bottom:1px solid #e6edf1;text-align:left}.wp-flow-table td{padding:10px 9px;border-bottom:1px solid #edf2f5;font-size:12px;color:#4b5b67}.wp-flow-table tr:hover td{background:#fbfdfe}.wp-flow-badge{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800}.wp-flow-badge.open{background:#fff0e8;color:#b8653e}.wp-flow-badge.close{background:#edf8f1;color:#4f8a67}.wp-flow-badge.balance{background:#f3eef9;color:#7a5d9a}
-.wp-flow-insight{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.wp-flow-insight-box{border-radius:12px;padding:12px;background:#f8fafb;border:1px solid #e9eff3}.wp-flow-insight-box .small{font-size:10px;color:#84929c;font-weight:800;text-transform:uppercase}.wp-flow-insight-box strong{display:block;margin-top:4px;color:#3f4e59;font-size:14px}
+.wp-flow-insight{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}.wp-flow-insight-box{border-radius:12px;padding:12px;background:#f8fafb;border:1px solid #e9eff3}.wp-flow-insight-box .small{font-size:10px;color:#84929c;font-weight:800;text-transform:uppercase}.wp-flow-insight-box strong{display:block;margin-top:4px;color:#3f4e59;font-size:14px}
 .wp-flow-note{font-size:11px;color:#87949d;line-height:1.55;background:#f8fafb;border-radius:11px;padding:11px 12px;margin-top:13px}
 .wp-flow-empty{padding:24px;text-align:center;color:#8997a0;font-size:13px}
 @media(max-width:1050px){.wp-flow-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.wp-flow-grid{grid-template-columns:1fr}.wp-flow-trend-grid{grid-template-columns:1fr}}
-@media(max-width:680px){.wp-flow-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.wp-flow-filters{grid-template-columns:1fr}.wp-flow-insight{grid-template-columns:1fr}.wp-flow-kpi .value{font-size:23px}}
+@media(max-width:680px){.wp-flow-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.wp-flow-filters{grid-template-columns:1fr}.wp-flow-insight{grid-template-columns:repeat(2,minmax(0,1fr))}.wp-flow-kpi .value{font-size:23px}}
 </style>
 
 <style id="settingsPageCSS">
@@ -3452,11 +3452,13 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                 <div class="wp-flow-card" onclick="wpFlowUnifiedPopup('insight')">
                     <h3>💡 Flow Insight</h3>
                     <div class="wp-flow-insight">
-                        <div class="wp-flow-insight-box"><div class="small">WP Aktif (WP)</div><strong id="wpInsightActive">0</strong></div>
-                        <div class="wp-flow-insight-box"><div class="small">WP Balance (WP)</div><strong id="wpInsightBalance">0</strong></div>
+                        <div class="wp-flow-insight-box"><div class="small">WP Aktif</div><strong id="wpInsightActive">0 WP</strong></div>
+                        <div class="wp-flow-insight-box"><div class="small">ASSY Balance</div><strong id="wpInsightAssyBalance">0 ASSY</strong></div>
+                        <div class="wp-flow-insight-box"><div class="small">PCS Balance</div><strong id="wpInsightPcsBalance">0 PCS</strong></div>
+                        <div class="wp-flow-insight-box"><div class="small">CCT Balance</div><strong id="wpInsightCctBalance">0 CCT</strong></div>
                         <div class="wp-flow-insight-box"><div class="small">Status</div><strong id="wpInsightStatus">-</strong></div>
                     </div>
-                    <div class="wp-flow-note" id="wpFlowNote">Data akan mengikuti nilai IN, OUT, BALANCE pada sheet. Sistem tidak membuat nilai WP IN/OUT sendiri karena sumber yang diberikan hanya menyediakan jumlah WP pada summary bulanan.</div>
+                    <div class="wp-flow-note" id="wpFlowNote">Ringkasan kondisi flow berdasarkan data IN, OUT, dan BALANCE. ASSY, PCS, dan CCT ditampilkan terpisah karena satuannya berbeda.</div>
                 </div>
             </div>
 
@@ -12107,8 +12109,11 @@ window.__cuteAssistant=assistant;
     const sum=k=>data.reduce((a,x)=>a+num(x[k]),0);
     const values={wpKpiAssyIn:['assyIn','ASSY'],wpKpiAssyOut:['assyOut','ASSY'],wpKpiAssyBal:['assyBal','ASSY'],wpKpiPcsIn:['pcsIn','PCS'],wpKpiPcsOut:['pcsOut','PCS'],wpKpiPcsBal:['pcsBal','PCS'],wpKpiCctIn:['cctIn','CCT'],wpKpiCctOut:['cctOut','CCT'],wpKpiCctBal:['cctBal','CCT']};
     Object.entries(values).forEach(([id,[key,unit]])=>{const el=q(id);if(el)el.textContent=fmt(sum(key))+' '+unit;});
-    q('wpInsightActive').textContent=fmt(data.filter(x=>num(x.assyBal)||num(x.pcsBal)||num(x.cctBal)).length)+' WP';
-    q('wpInsightBalance').textContent=fmt(data.filter(x=>num(x.assyBal)||num(x.pcsBal)||num(x.cctBal)).reduce((a,x)=>a+num(x.assyBal)+num(x.pcsBal)+num(x.cctBal),0))+' total';
+    const active=data.filter(x=>num(x.assyBal)||num(x.pcsBal)||num(x.cctBal)).length;
+    q('wpInsightActive').textContent=fmt(active)+' WP';
+    q('wpInsightAssyBalance').textContent=fmt(sum('assyBal'))+' ASSY';
+    q('wpInsightPcsBalance').textContent=fmt(sum('pcsBal'))+' PCS';
+    q('wpInsightCctBalance').textContent=fmt(sum('cctBal'))+' CCT';
     const open=data.filter(x=>x.status==='OPEN').length,close=data.filter(x=>x.status==='CLOSE').length;q('wpInsightStatus').textContent=open?`${open} OPEN / ${close} CLOSE`:'CLOSE';
   }
   function renderChart(){
