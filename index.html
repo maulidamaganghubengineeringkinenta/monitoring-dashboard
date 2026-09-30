@@ -3006,23 +3006,23 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                 </div>
 
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px;">
-                    <div class="kpi-card kpi-blue"><div class="kpi-label">ETD ≤ 3 HARI</div><div class="kpi-value" id="readingETD3">0</div><div class="kpi-subtitle">Order mendekati ETD (ORDER)</div></div>
-                    <div class="kpi-card kpi-orange"><div class="kpi-label">OVERDUE</div><div class="kpi-value" id="readingOverdue">0</div><div class="kpi-subtitle">ETD sudah lewat (ORDER)</div></div>
-                    <div class="kpi-card kpi-yellow"><div class="kpi-label">RESCHEDULE</div><div class="kpi-value" id="readingReschedule">0</div><div class="kpi-subtitle">ETD berubah (ORDER)</div></div>
-                    <div class="kpi-card kpi-pink"><div class="kpi-label">NOT STARTED</div><div class="kpi-value" id="readingNotStarted">0</div><div class="kpi-subtitle">Belum actual start (ORDER)</div></div>
-                    <div class="kpi-card kpi-green"><div class="kpi-label">TOTAL CCT</div><div class="kpi-value" id="readingTotalCCT">0</div><div class="kpi-subtitle">Total CCT</div></div>
-                    <div class="kpi-card kpi-purple"><div class="kpi-label">TOTAL QTY</div><div class="kpi-value" id="readingTotalQTY">0</div><div class="kpi-subtitle">Jumlah QTY seluruh order</div></div>
-                    <div class="kpi-card kpi-blue"><div class="kpi-label">OPEN QTY</div><div class="kpi-value" id="readingOpenQTY">0</div><div class="kpi-subtitle">Jumlah QTY yang masih OPEN</div></div>
-                    <div class="kpi-card kpi-green"><div class="kpi-label">AVG CCT</div><div class="kpi-value" id="readingAvgCCT">0</div><div class="kpi-subtitle">Rata-rata CCT per order</div></div>
+                    <div class="kpi-card kpi-blue" onclick="productionReadingDrilldown('etd3')"><div class="kpi-label">ETD ≤ 3 HARI</div><div class="kpi-value" id="readingETD3">0</div><div class="kpi-subtitle">ASSY · WP</div></div>
+                    <div class="kpi-card kpi-orange" onclick="productionReadingDrilldown('overdue')"><div class="kpi-label">OVERDUE</div><div class="kpi-value" id="readingOverdue">0</div><div class="kpi-subtitle">ASSY · WP</div></div>
+                    <div class="kpi-card kpi-yellow" onclick="productionReadingDrilldown('reschedule')"><div class="kpi-label">RESCHEDULE</div><div class="kpi-value" id="readingReschedule">0</div><div class="kpi-subtitle">ASSY · WP</div></div>
+                    <div class="kpi-card kpi-pink" onclick="productionReadingDrilldown('notStarted')"><div class="kpi-label">NOT STARTED</div><div class="kpi-value" id="readingNotStarted">0</div><div class="kpi-subtitle">ASSY · WP</div></div>
+                    <div class="kpi-card kpi-green" onclick="productionReadingDrilldown('cct')"><div class="kpi-label">TOTAL CCT</div><div class="kpi-value" id="readingTotalCCT">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
+                    <div class="kpi-card kpi-purple" onclick="productionReadingDrilldown('qty')"><div class="kpi-label">TOTAL QTY</div><div class="kpi-value" id="readingTotalQTY">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
+                    <div class="kpi-card kpi-blue" onclick="productionReadingDrilldown('openqty')"><div class="kpi-label">OPEN QTY</div><div class="kpi-value" id="readingOpenQTY">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
+                    <div class="kpi-card kpi-green" onclick="productionReadingDrilldown('avgcct')"><div class="kpi-label">AVG CCT</div><div class="kpi-value" id="readingAvgCCT">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
                 </div>
 
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
                     <div class="chart-card status-order-card" style="padding:18px;">
                         <div class="panel-kicker">STATUS</div><h3 style="margin:4px 0 12px;">Status Order</h3>
                         <div class="status-order-items">
-                            <div class="status-order-item status-not-started"><strong id="readingStatusNotStarted">0</strong><small>NOT STARTED · ORDER</small></div>
-                            <div class="status-order-item status-progress"><strong id="readingStatusProgress">0</strong><small>PROGRESS · ORDER</small></div>
-                            <div class="status-order-item status-finished"><strong id="readingStatusFinished">0</strong><small>FINISHED · ORDER</small></div>
+                            <div class="status-order-item status-not-started" onclick="productionReadingDrilldown('statusNotStarted')"><strong id="readingStatusNotStarted">0</strong><small>NOT STARTED · ASSY/WP</small></div>
+                            <div class="status-order-item status-progress" onclick="productionReadingDrilldown('statusProgress')"><strong id="readingStatusProgress">0</strong><small>PROGRESS · ASSY/WP</small></div>
+                            <div class="status-order-item status-finished" onclick="productionReadingDrilldown('statusFinished')"><strong id="readingStatusFinished">0</strong><small>FINISHED · ASSY/WP</small></div>
                         </div>
                     </div>
                     <div class="chart-card" style="padding:18px;">
@@ -5965,77 +5965,38 @@ function readingFormatNumber(value, decimals = 0) {
     });
 }
 
-function readingSet(id, value) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value;
-}
+function readingSet(id,value){const el=document.getElementById(id);if(el){if(String(value).includes("metric-dual"))el.innerHTML=value;else el.textContent=value}}
 
 
 function productionReadingDrilldown(type, value = "") {
     let rows = getFilteredRows().filter(row => getRowStatus(row) === "OPEN");
     const today = new Date();
     const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-    if (type === "all") {
-        // keep all current OPEN rows
-    } else if (type === "etd3") {
-        rows = rows.filter(row => {
-            const etd = parseReadingDate(getCellValue(row, 7));
-            if (!etd) return false;
-            const diff = readingDateDiffDays(etd, startOfToday);
-            return diff >= 0 && diff <= 3;
-        });
-    } else if (type === "overdue") {
-        rows = rows.filter(row => {
-            const etd = parseReadingDate(getCellValue(row, 7));
-            return etd && readingDateDiffDays(etd, startOfToday) < 0;
-        });
-    } else if (type === "reschedule") {
-        rows = rows.filter(row => {
-            const etd = parseReadingDate(getCellValue(row, 7));
-            const revised = parseReadingDate(getCellValue(row, 8));
-            return etd && revised && etd.getTime() !== revised.getTime();
-        });
-    } else if (type === "notStarted") {
-        rows = rows.filter(row => !String(getCellValue(row, 9) || "").trim());
-    } else if (type === "wp") {
-        rows = rows.filter(row => {
-            const wp = String(getCellValue(row, 3) || "").trim() || "Tanpa WP";
-            return wp === value;
-        });
-    } else if (type === "process") {
-        const process = PROCESS_COLUMNS.find(item => item.name === value);
-        if (process) {
-            rows = rows.filter(row => getProcessQty(row, process.index) > 0);
-        }
-    } else if (type === "attention") {
-        rows = rows.filter(row => {
-            const etd = parseReadingDate(getCellValue(row, 7));
-            const actualStart = String(getCellValue(row, 9) || "").trim();
-            const diff = etd ? readingDateDiffDays(etd, startOfToday) : null;
-            return (diff !== null && diff < 0) || !actualStart || (diff !== null && diff <= 3);
-        });
-    } else if (type === "assy") {
-        rows = rows.filter(row => String(getCellValue(row, 2) || "").trim() === value);
-    }
-
-    // Jadikan filter Status OPEN dan tampilkan hasil drilldown di tabel utama.
-    const statusFilter = document.getElementById("statusFilter");
-    if (statusFilter) statusFilter.value = "OPEN";
-
-    selectedProcessIndex = null;
-    progressCurrentPage = 1;
-    displayProgressData(rows);
-    updateStatistics(rows);
-    updateCharts(rows);
-    updateProcessOverview(rows);
-    updateSelectedProcessVisual();
-    updateActiveFilterContext();
-    updateTableDescription();
-
-    const table = document.querySelector(".panel");
-    if (table) table.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (type === "etd3") rows=rows.filter(row=>{const d=parseReadingDate(getCellValue(row,7));if(!d)return false;const diff=readingDateDiffDays(d,startOfToday);return diff>=0&&diff<=3});
+    else if(type==="overdue") rows=rows.filter(row=>{const d=parseReadingDate(getCellValue(row,7));return d&&readingDateDiffDays(d,startOfToday)<0});
+    else if(type==="reschedule") rows=rows.filter(row=>{const a=parseReadingDate(getCellValue(row,7)),b=parseReadingDate(getCellValue(row,8));return a&&b&&a.getTime()!==b.getTime()});
+    else if(type==="notStarted"||type==="statusNotStarted") rows=rows.filter(row=>!String(getCellValue(row,9)||"").trim());
+    else if(type==="statusProgress") rows=rows.filter(row=>String(getCellValue(row,9)||"").trim()&&!String(getCellValue(row,10)||"").trim());
+    else if(type==="statusFinished") rows=rows.filter(row=>String(getCellValue(row,10)||"").trim());
+    else if(type==="wp") rows=rows.filter(row=>(String(getCellValue(row,3)||"").trim()||"Tanpa WP")===value);
+    else if(type==="process"){const process=PROCESS_COLUMNS.find(item=>item.name===value);if(process)rows=rows.filter(row=>getProcessQty(row,process.index)>0)}
+    else if(type==="attention") rows=rows.filter(row=>{const d=parseReadingDate(getCellValue(row,7)),start=String(getCellValue(row,9)||"").trim(),diff=d?readingDateDiffDays(d,startOfToday):null;return(diff!==null&&diff<0)||!start||(diff!==null&&diff<=3)});
+    else if(type==="assy") rows=rows.filter(row=>String(getCellValue(row,2)||"").trim()===value);
+    const titles={etd3:"ETD ≤ 3 Hari",overdue:"Overdue",reschedule:"Reschedule",notStarted:"Not Started",statusNotStarted:"Status — Not Started",statusProgress:"Status — Progress",statusFinished:"Status — Finished",wp:`WP — ${value}`,process:`Process — ${value}`,attention:"Perlu Perhatian",assy:`ASSY — ${value}`,cct:"Total CCT",qty:"Total QTY",openqty:"Open QTY",avgcct:"Average CCT"};
+    openProductionReadingPopup(titles[type]||"Production Reading",rows);
 }
+function openProductionReadingPopup(title, rows){
+    const overlay=document.getElementById("productionReadingPopup"),titleEl=document.getElementById("productionReadingPopupTitle"),meta=document.getElementById("productionReadingPopupMeta"),body=document.getElementById("productionReadingPopupBody");
+    if(!overlay||!body)return; if(titleEl)titleEl.textContent=title;
+    const assy=new Set(),wp=new Set();let qty=0;rows.forEach(r=>{const a=String(getCellValue(r,2)||"").trim(),w=String(getCellValue(r,3)||"").trim();if(a)assy.add(a);if(w)wp.add(w);qty+=readingNumber(getCellValue(r,5))});
+    if(meta)meta.textContent=`${assy.size.toLocaleString("id-ID")} ASSY · ${wp.size.toLocaleString("id-ID")} WP · ${rows.length.toLocaleString("id-ID")} data · ${readingFormatNumber(qty)} QTY`;
+    body.innerHTML=rows.length?`<div style="overflow:auto"><table><thead><tr><th>NO</th><th>ASSY NO</th><th>WP</th><th>CUSTOMER</th><th>QTY</th><th>OPEN QTY</th><th>CCT</th><th>ETD</th><th>STATUS</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${escapeHTML(String(getCellValue(r,0)||"-"))}</td><td>${escapeHTML(String(getCellValue(r,2)||"-"))}</td><td>${escapeHTML(String(getCellValue(r,3)||"-"))}</td><td>${escapeHTML(String(getCellValue(r,1)||"-"))}</td><td>${escapeHTML(String(getCellValue(r,5)||"0"))}</td><td>${escapeHTML(String(getCellValue(r,24)||"0"))}</td><td>${escapeHTML(String(getCellValue(r,6)||"0"))}</td><td>${escapeHTML(String(getCellValue(r,7)||"-"))}</td><td>${escapeHTML(String(getRowStatus(r)||"-"))}</td></tr>`).join("")}</tbody></table></div>`:`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data untuk indikator ini.</div>`;
+    overlay.classList.add("open");
+}
+function closeProductionReadingPopup(){const x=document.getElementById("productionReadingPopup");if(x)x.classList.remove("open")}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeProductionReadingPopup()});
+function readingDualMetric(assy,wp){return `<span class="metric-dual"><span class="metric-number">${readingFormatNumber(assy)}</span><span class="metric-unit">ASSY</span><span class="metric-number">${readingFormatNumber(wp)}</span><span class="metric-unit">WP</span></span>`}
+function readingMetricCounts(rows){const a=new Set(),w=new Set();(rows||[]).forEach(r=>{const av=String(getCellValue(r,2)||"").trim(),wv=String(getCellValue(r,3)||"").trim();if(av)a.add(av);if(wv)w.add(wv)});return{assy:a.size,wp:w.size}}
 
 function updateProductionReading(rows) {
     const section = document.getElementById("productionReadingSection");
@@ -6121,10 +6082,12 @@ function updateProductionReading(rows) {
         }
     });
 
-    readingSet("readingETD3", `${readingFormatNumber(etd3)} ASSY/WP`);
-    readingSet("readingOverdue", `${readingFormatNumber(overdue)} ASSY/WP`);
-    readingSet("readingReschedule", `${readingFormatNumber(reschedule)} ASSY/WP`);
-    readingSet("readingNotStarted", `${readingFormatNumber(notStarted)} ASSY/WP`);
+    const etd3Rows=openRows.filter(row=>{const d=parseReadingDate(getCellValue(row,7));if(!d)return false;const diff=readingDateDiffDays(d,startOfToday);return diff>=0&&diff<=3});
+    const overdueRows=openRows.filter(row=>{const d=parseReadingDate(getCellValue(row,7));return d&&readingDateDiffDays(d,startOfToday)<0});
+    const rescheduleRows=openRows.filter(row=>{const a=parseReadingDate(getCellValue(row,7)),b=parseReadingDate(getCellValue(row,8));return a&&b&&a.getTime()!==b.getTime()});
+    const notStartedRows=openRows.filter(row=>!String(getCellValue(row,9)||"").trim());
+    const c1=readingMetricCounts(etd3Rows),c2=readingMetricCounts(overdueRows),c3=readingMetricCounts(rescheduleRows),c4=readingMetricCounts(notStartedRows);
+    readingSet("readingETD3",readingDualMetric(c1.assy,c1.wp));readingSet("readingOverdue",readingDualMetric(c2.assy,c2.wp));readingSet("readingReschedule",readingDualMetric(c3.assy,c3.wp));readingSet("readingNotStarted",readingDualMetric(c4.assy,c4.wp));
     readingSet("readingTotalCCT", `${readingFormatNumber(totalCCT)} CCT`);
     readingSet("readingTotalQTY", `${readingFormatNumber(totalQTY)} QTY`);
     readingSet("readingOpenQTY", `${readingFormatNumber(openQTY)} QTY`);
@@ -8661,110 +8624,20 @@ function problemAgeDays(row) {
 }
 
 function updateProblemKPIs(rows) {
-
-    const total =
-        rows.length;
-
-    const open =
-        rows.filter(
-            row =>
-                getProblemStatus(row) ===
-                "OPEN"
-        ).length;
-
-    const close =
-        rows.filter(
-            row =>
-                getProblemStatus(row) ===
-                "CLOSE"
-        ).length;
-
-    const customers =
-        new Set(
-            rows
-                .map(row =>
-                    getProblemValue(
-                        row,
-                        PROBLEM_COLUMNS.CUSTOMER
-                    )
-                )
-                .filter(Boolean)
-        ).size;
-
-    const minus =
-        rows.reduce(
-            (sum, row) => {
-                return (
-                    sum +
-                    getNumericValue(
-                        getProblemValue(
-                            row,
-                            PROBLEM_COLUMNS.MINUS
-                        )
-                    )
-                );
-            },
-            0
-        );
-
-    const totalElement =
-        document.getElementById(
-            "totalProblem"
-        );
-
-    const openElement =
-        document.getElementById(
-            "openProblem"
-        );
-
-    const closeElement =
-        document.getElementById(
-            "closeProblem"
-        );
-
-    const customerElement =
-        document.getElementById(
-            "problemCustomerCount"
-        );
-
-    const minusElement =
-        document.getElementById(
-            "problemMinusTotal"
-        );
-
-    if (totalElement) {
-        totalElement.textContent =
-            `${total.toLocaleString("id-ID")} problem`;
-    }
-
-    if (openElement) {
-        openElement.textContent =
-            `${open.toLocaleString("id-ID")} problem`;
-    }
-
-    if (closeElement) {
-        closeElement.textContent =
-            `${close.toLocaleString("id-ID")} problem`;
-    }
-
-    if (customerElement) {
-        customerElement.textContent =
-            `${customers.toLocaleString("id-ID")} customer`;
-    }
-
-    if (minusElement) {
-        minusElement.textContent =
-            `${minus.toLocaleString("id-ID")} QTY`;
-    }
-    const ages = rows.map(problemAgeDays).filter(v => v !== null);
-    const oldest = document.getElementById("problemOldestAge");
-    if (oldest) oldest.textContent = ages.length ? `${Math.max(...ages)} hari` : "0 hari";
+    const assyCount=list=>new Set((list||[]).map(r=>String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||"").trim()).filter(Boolean)).size;
+    const wpMap=new Map();
+    (Array.isArray(allProgressRows)?allProgressRows:[]).forEach(r=>{const a=String(getCellValue(r,2)||"").trim(),w=String(getCellValue(r,3)||"").trim();if(a&&w&&!wpMap.has(a))wpMap.set(a,w)});
+    const wpCount=list=>new Set((list||[]).map(r=>wpMap.get(String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||"").trim())||"").filter(Boolean)).size;
+    const total=rows.length,open=rows.filter(r=>getProblemStatus(r)==="OPEN"),close=rows.filter(r=>getProblemStatus(r)==="CLOSE");
+    const customers=new Set(rows.map(r=>getProblemValue(r,PROBLEM_COLUMNS.CUSTOMER)).filter(Boolean)).size;
+    const minus=rows.reduce((sum,r)=>sum+getNumericValue(getProblemValue(r,PROBLEM_COLUMNS.MINUS)),0);
+    const metric=(a,w)=>`<span class="metric-dual"><span class="metric-number">${a.toLocaleString("id-ID")}</span><span class="metric-unit">ASSY</span><span class="metric-number">${w.toLocaleString("id-ID")}</span><span class="metric-unit">WP</span></span>`;
+    const te=document.getElementById("totalProblem"),oe=document.getElementById("openProblem"),ce=document.getElementById("closeProblem"),cu=document.getElementById("problemCustomerCount"),me=document.getElementById("problemMinusTotal");
+    if(te)te.innerHTML=metric(assyCount(rows),wpCount(rows)); if(oe)oe.innerHTML=metric(assyCount(open),wpCount(open)); if(ce)ce.innerHTML=metric(assyCount(close),wpCount(close));
+    if(cu)cu.textContent=`${customers.toLocaleString("id-ID")} customer`; if(me)me.textContent=`${minus.toLocaleString("id-ID")} QTY`;
+    const ages=rows.map(problemAgeDays).filter(v=>v!==null),oldest=document.getElementById("problemOldestAge"); if(oldest)oldest.textContent=ages.length?`${Math.max(...ages)} hari`:"0 hari";
 }
 
-
-/* =========================================================
-   PROBLEM FILTER CONTEXT
-========================================================= */
 
 function updateProblemFilterContext() {
 
@@ -13895,6 +13768,8 @@ body.dashboard-dark:not(.login-locked) .stage6-inline-modal-card .stage6-popup-i
   if(document.body) observer.observe(document.body,{attributes:true,attributeFilter:['class']});
 })();
 </script>
+
+<div id="productionReadingPopup" class="reading-popup-overlay" onclick="if(event.target===this)closeProductionReadingPopup()"><div class="reading-popup" role="dialog" aria-modal="true"><div class="reading-popup-head"><div><h3 id="productionReadingPopupTitle">Production Reading</h3><div id="productionReadingPopupMeta" class="reading-popup-meta"></div></div><button class="reading-popup-close" onclick="closeProductionReadingPopup()" aria-label="Tutup">×</button></div><div id="productionReadingPopupBody"></div></div></div>
 </body>
 
 
@@ -14028,4 +13903,7 @@ body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-focus-body .cute-no
 <style id="assyWpKpiValueFix">
   .kpi-value small{font-size:.62em;font-weight:700;opacity:.78;margin-left:4px;}
   .kpi-value span{font-weight:800;}
+
+/* UNIT DISPLAY + PRODUCTION READING INTERACTION */
+.metric-dual{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;line-height:1.05}.metric-dual .metric-number{font-size:1em;font-weight:800}.metric-dual .metric-unit{font-size:.34em;font-weight:800;letter-spacing:.04em;opacity:.72;text-transform:uppercase}.production-reading-clickable,.production-reading-section .kpi-card,.status-order-item{cursor:pointer}.production-reading-section .kpi-card{transition:transform .15s ease,box-shadow .15s ease}.production-reading-section .kpi-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(31,52,68,.10)}.reading-popup-overlay{position:fixed;inset:0;background:rgba(15,29,38,.48);display:none;align-items:center;justify-content:center;padding:20px;z-index:99999}.reading-popup-overlay.open{display:flex}.reading-popup{width:min(1100px,96vw);max-height:86vh;overflow:auto;background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.25);padding:20px}.reading-popup-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}.reading-popup-head h3{margin:0;font-size:18px}.reading-popup-close{border:0;background:transparent;font-size:24px;cursor:pointer;line-height:1}.reading-popup-meta{font-size:12px;color:#667780;margin-top:4px}.reading-popup table{width:100%;border-collapse:collapse;font-size:12px}.reading-popup th,.reading-popup td{padding:8px 9px;border-bottom:1px solid #e8eef1;text-align:left;white-space:nowrap}.reading-popup th{position:sticky;top:0;background:#f5f8fa;z-index:1}@media(max-width:767px){.reading-popup{padding:14px;border-radius:12px}.reading-popup th,.reading-popup td{padding:7px;font-size:11px}.metric-dual{gap:5px}.metric-dual .metric-unit{font-size:.30em}}
 </style>
