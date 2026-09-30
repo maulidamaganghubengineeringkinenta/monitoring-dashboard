@@ -5985,13 +5985,42 @@ function productionReadingDrilldown(type, value = "") {
     const titles={etd3:"ETD ≤ 3 Hari",overdue:"Overdue",reschedule:"Reschedule",notStarted:"Not Started",statusNotStarted:"Status — Not Started",statusProgress:"Status — Progress",statusFinished:"Status — Finished",wp:`WP — ${value}`,process:`Process — ${value}`,attention:"Perlu Perhatian",assy:`ASSY — ${value}`,cct:"Total CCT",qty:"Total QTY",openqty:"Open QTY",avgcct:"Average CCT"};
     openProductionReadingPopup(titles[type]||"Production Reading",rows);
 }
+function productionReadingUnitGroups(rows){
+    const assyMap=new Map(), wpMap=new Map();
+    (rows||[]).forEach(row=>{
+        const a=String(getCellValue(row,2)||'').trim()||'Tanpa ASSY';
+        const w=String(getCellValue(row,3)||'').trim()||'Tanpa WP';
+        if(!assyMap.has(a)) assyMap.set(a,[]); assyMap.get(a).push(row);
+        if(!wpMap.has(w)) wpMap.set(w,[]); wpMap.get(w).push(row);
+    });
+    return {assy:[...assyMap.entries()],wp:[...wpMap.entries()]};
+}
+function productionReadingDetailRows(rows,title){
+    const overlay=document.getElementById('productionReadingPopup'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta'),body=document.getElementById('productionReadingPopupBody');
+    if(!overlay||!body)return;
+    if(titleEl)titleEl.textContent=title||'Detail Data';
+    const counts=readingMetricCounts(rows);
+    if(meta)meta.textContent=`${counts.assy.toLocaleString('id-ID')} ASSY · ${counts.wp.toLocaleString('id-ID')} WP · ${(rows||[]).length.toLocaleString('id-ID')} data`;
+    body.innerHTML=rows.length?`<div class="reading-popup-back" onclick="productionReadingShowUnitSummary(window.__productionReadingPopupRows||[])">← Kembali ke ASSY / WP</div><div style="overflow:auto"><table><thead><tr><th>NO</th><th>ASSY NO</th><th>WP</th><th>CUSTOMER</th><th>QTY</th><th>OPEN QTY</th><th>CCT</th><th>ETD</th><th>STATUS</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${escapeHTML(String(getCellValue(r,0)||'-'))}</td><td>${escapeHTML(String(getCellValue(r,2)||'-'))}</td><td>${escapeHTML(String(getCellValue(r,3)||'-'))}</td><td>${escapeHTML(String(getCellValue(r,1)||'-'))}</td><td>${escapeHTML(String(getCellValue(r,5)||'0'))}</td><td>${escapeHTML(String(getCellValue(r,24)||'0'))}</td><td>${escapeHTML(String(getCellValue(r,6)||'0'))}</td><td>${escapeHTML(String(getCellValue(r,7)||'-'))}</td><td>${escapeHTML(String(getRowStatus(r)||'-'))}</td></tr>`).join('')}</tbody></table></div>`:`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data.</div>`;
+    overlay.classList.add('open');
+}
+function productionReadingShowUnitSummary(rows){
+    window.__productionReadingPopupRows=rows||[];
+    const overlay=document.getElementById('productionReadingPopup'),titleEl=document.getElementById('productionReadingPopupTitle'),meta=document.getElementById('productionReadingPopupMeta'),body=document.getElementById('productionReadingPopupBody');
+    if(!overlay||!body)return;
+    if(titleEl)titleEl.textContent='Pilih ASSY / WP';
+    const counts=readingMetricCounts(rows); if(meta)meta.textContent=`${counts.assy.toLocaleString('id-ID')} ASSY · ${counts.wp.toLocaleString('id-ID')} WP`;
+    const groups=productionReadingUnitGroups(rows);
+    const make=(label,entries,type)=>entries.length?`<div class="reading-unit-section"><div class="reading-unit-heading">${label}</div><div class="reading-unit-list">${entries.map(([name,rs])=>`<div class="reading-unit-item" onclick='productionReadingDetailRows(window.__productionReadingPopupRows.filter(r=>String(getCellValue(r,${type==='assy'?2:3})||"").trim()===${JSON.stringify(name).replace(/</g,'\\u003c')}, ${JSON.stringify(label+' — '+name).replace(/</g,'\\u003c')})'><div><strong>${escapeHTML(name)}</strong><small>${readingMetricCounts(rs).assy} ASSY · ${readingMetricCounts(rs).wp} WP · ${rs.length} data</small></div><span>DETAIL</span></div>`).join('')}</div></div>`:'';
+    body.innerHTML=make('ASSY',groups.assy,'assy')+make('WP',groups.wp,'wp');
+    overlay.classList.add('open');
+}
 function openProductionReadingPopup(title, rows){
-    const overlay=document.getElementById("productionReadingPopup"),titleEl=document.getElementById("productionReadingPopupTitle"),meta=document.getElementById("productionReadingPopupMeta"),body=document.getElementById("productionReadingPopupBody");
-    if(!overlay||!body)return; if(titleEl)titleEl.textContent=title;
-    const assy=new Set(),wp=new Set();let qty=0;rows.forEach(r=>{const a=String(getCellValue(r,2)||"").trim(),w=String(getCellValue(r,3)||"").trim();if(a)assy.add(a);if(w)wp.add(w);qty+=readingNumber(getCellValue(r,5))});
-    if(meta)meta.textContent=`${assy.size.toLocaleString("id-ID")} ASSY · ${wp.size.toLocaleString("id-ID")} WP · ${rows.length.toLocaleString("id-ID")} data · ${readingFormatNumber(qty)} QTY`;
-    body.innerHTML=rows.length?`<div style="overflow:auto"><table><thead><tr><th>NO</th><th>ASSY NO</th><th>WP</th><th>CUSTOMER</th><th>QTY</th><th>OPEN QTY</th><th>CCT</th><th>ETD</th><th>STATUS</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${escapeHTML(String(getCellValue(r,0)||"-"))}</td><td>${escapeHTML(String(getCellValue(r,2)||"-"))}</td><td>${escapeHTML(String(getCellValue(r,3)||"-"))}</td><td>${escapeHTML(String(getCellValue(r,1)||"-"))}</td><td>${escapeHTML(String(getCellValue(r,5)||"0"))}</td><td>${escapeHTML(String(getCellValue(r,24)||"0"))}</td><td>${escapeHTML(String(getCellValue(r,6)||"0"))}</td><td>${escapeHTML(String(getCellValue(r,7)||"-"))}</td><td>${escapeHTML(String(getRowStatus(r)||"-"))}</td></tr>`).join("")}</tbody></table></div>`:`<div style="padding:30px;text-align:center;color:#74858d">Tidak ada data untuk indikator ini.</div>`;
-    overlay.classList.add("open");
+    window.__productionReadingPopupRows=rows||[];
+    const overlay=document.getElementById('productionReadingPopup');
+    if(!overlay)return;
+    productionReadingShowUnitSummary(rows||[]);
+    const titleEl=document.getElementById('productionReadingPopupTitle'); if(titleEl)titleEl.textContent=title||'Production Reading';
 }
 function closeProductionReadingPopup(){const x=document.getElementById("productionReadingPopup");if(x)x.classList.remove("open")}
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeProductionReadingPopup()});
@@ -11005,17 +11034,18 @@ function closeStage6InlineModal() {
     modal.setAttribute("aria-hidden", "true");
 }
 
-function stage6RowsPopup(rows, title, subtitle) {
-    if (!rows.length) {
-        showStage6InlineModal(title, subtitle || "0 data", `<div class="stage6-popup-empty">Tidak ada data untuk ditampilkan.</div>`);
-        return;
-    }
-    const body = `<div class="stage6-popup-list">${rows.map(row => {
-        const idx = allProgressRows.indexOf(row);
-        return `<div class="stage6-popup-item" onclick="openMonitoringJob(allProgressRows[${idx}]);closeStage6InlineModal()"><div><strong>${escapeHTML(monitoringAssy(row))}</strong><small>${escapeHTML(monitoringCustomer(row))} · WP ${escapeHTML(monitoringWp(row))} · ETD ${escapeHTML(getCellValue(row,7)||"-")} · OPEN QTY ${escapeHTML(getCellValue(row,24)||"0")}</small></div><span class="stage6-popup-badge">DETAIL</span></div>`;
-    }).join("")}</div>`;
-    showStage6InlineModal(title, subtitle || `${rows.length} job`, body);
+function stage6UnitGroups(rows){
+    const a=new Map(),w=new Map();(rows||[]).forEach(row=>{const av=String(monitoringAssy(row)||'Tanpa ASSY').trim(),wv=String(monitoringWp(row)||'Tanpa WP').trim();if(!a.has(av))a.set(av,[]);a.get(av).push(row);if(!w.has(wv))w.set(wv,[]);w.get(wv).push(row)});return{assy:[...a.entries()],wp:[...w.entries()]};
 }
+function stage6UnitSummary(rows,title,subtitle,detailTitle){
+    const groups=stage6UnitGroups(rows),cnt=getUniqueUnitCounts(rows);window.__stage6PopupRows=rows||[];window.__stage6PopupDetailTitle=detailTitle||title;
+    const section=(label,entries,col)=>`<div class="stage6-unit-section"><div class="stage6-unit-heading">${label}</div><div class="stage6-popup-list">${entries.map(([name,rs])=>`<div class="stage6-popup-item" onclick='stage6UnitDetail(window.__stage6PopupRows.filter(r=>String(${col===2?'monitoringAssy(r)':'monitoringWp(r)'}||"").trim()===${JSON.stringify(name)}), ${JSON.stringify((detailTitle||title)+' — '+name)})'><div><strong>${escapeHTML(name)}</strong><small>${getUniqueUnitCounts(rs).assy} ASSY · ${getUniqueUnitCounts(rs).wp} WP · ${rs.length} data</small></div><span class="stage6-popup-badge">DETAIL</span></div>`).join('')}</div></div>`;
+    showStage6InlineModal(title,subtitle||`${cnt.assy} ASSY · ${cnt.wp} WP`,section('ASSY',groups.assy,2)+section('WP',groups.wp,3));
+}
+function stage6UnitDetail(rows,title){
+    const body=`<div class="stage6-popup-back" onclick='stage6UnitSummary(window.__stage6PopupRows||[], "${escapeHTML((window.__stage6PopupDetailTitle||'Detail Data').replace(/"/g,'&quot;'))}", "${getUniqueUnitCounts(window.__stage6PopupRows||[]).assy} ASSY · ${getUniqueUnitCounts(window.__stage6PopupRows||[]).wp} WP")'>← Kembali ke ASSY / WP</div><div class="stage6-popup-list">${rows.map(row=>{const idx=allProgressRows.indexOf(row);return `<div class="stage6-popup-item" onclick="openMonitoringJob(allProgressRows[${idx}]);closeStage6InlineModal()"><div><strong>${escapeHTML(monitoringAssy(row))}</strong><small>${escapeHTML(monitoringCustomer(row))} · WP ${escapeHTML(monitoringWp(row))} · ETD ${escapeHTML(getCellValue(row,7)||'-')} · OPEN QTY ${escapeHTML(getCellValue(row,24)||'0')}</small></div><span class="stage6-popup-badge">DETAIL</span></div>`}).join('')}</div>`;showStage6InlineModal(title,`${getUniqueUnitCounts(rows).assy} ASSY · ${getUniqueUnitCounts(rows).wp} WP`,body);
+}
+function stage6RowsPopup(rows,title,subtitle){if(!rows.length){showStage6InlineModal(title,subtitle||'0 data',`<div class="stage6-popup-empty">Tidak ada data untuk ditampilkan.</div>`);return;}stage6UnitSummary(rows,title,subtitle,title);}
 
 function stage6ShowProblemRow(index) {
     const row = allProblemRows[index];
@@ -11028,19 +11058,18 @@ function stage6ShowProblemRow(index) {
     showStage6InlineModal("Problem Detail", "Problem OPEN", body);
 }
 
-function stage6OpenProblem() {
-    const rows = stage6ProblemOpenRows();
-    if (!rows.length) {
-        showStage6InlineModal("Problem OPEN", "0 problem", `<div class="stage6-popup-empty">Tidak ada Problem OPEN.</div>`);
-        return;
-    }
-    const body = `<div class="stage6-popup-list">${rows.slice(0,50).map(row => {
-        const idx = allProblemRows.indexOf(row);
-        const vals = row.slice(0,8).map(v => String(v ?? "").trim()).filter(Boolean);
-        return `<div class="stage6-popup-item" onclick="stage6ShowProblemRow(${idx})"><div><strong>${escapeHTML(vals[0] || "Problem")}</strong><small>${escapeHTML(vals.slice(1,5).join(" · ") || "Problem OPEN")}</small></div><span class="stage6-popup-badge">DETAIL</span></div>`;
-    }).join("")}</div>`;
-    showStage6InlineModal("PROBLEM OPEN", `${rows.length} problem`, body);
+function stage6ProblemUnitGroups(rows){
+    const a=new Map(),w=new Map();const wpByAssy=new Map();
+    (allProgressRows||[]).forEach(r=>{const av=String(getCellValue(r,2)||'').trim(),wv=String(getCellValue(r,3)||'').trim();if(av&&wv){if(!wpByAssy.has(av))wpByAssy.set(av,new Set());wpByAssy.get(av).add(wv)}});
+    (rows||[]).forEach(row=>{const av=String(getProblemValue(row,PROBLEM_COLUMNS.ASSY_NO)||'').trim()||'Tanpa ASSY';if(!a.has(av))a.set(av,[]);a.get(av).push(row);const ws=wpByAssy.get(av);(ws&&ws.size?[...ws]:['Tanpa WP']).forEach(wv=>{if(!w.has(wv))w.set(wv,[]);w.get(wv).push(row)});});return{assy:[...a.entries()],wp:[...w.entries()]};
 }
+function stage6ProblemUnitSummary(rows){
+    const groups=stage6ProblemUnitGroups(rows);window.__stage6ProblemRows=rows||[];
+    const section=(label,entries,byAssy)=>`<div class="stage6-unit-section"><div class="stage6-unit-heading">${label}</div><div class="stage6-popup-list">${entries.map(([name,rs])=>`<div class="stage6-popup-item" onclick='stage6ProblemUnitDetail(window.__stage6ProblemRows.filter(r=>${byAssy?`String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||"Tanpa ASSY").trim()`: `(function(){const a=String(getProblemValue(r,PROBLEM_COLUMNS.ASSY_NO)||"").trim();const set=new Set();(allProgressRows||[]).forEach(x=>{if(String(getCellValue(x,2)||"").trim()===a){const w=String(getCellValue(x,3)||"").trim();if(w)set.add(w)}});return set.has(${JSON.stringify(name)})})()`}), ${JSON.stringify('Problem — '+name)})'><div><strong>${escapeHTML(name)}</strong><small>${rs.length} data</small></div><span class="stage6-popup-badge">DETAIL</span></div>`).join('')}</div></div>`;
+    showStage6InlineModal('PROBLEM OPEN',`${groups.assy.length} ASSY · ${groups.wp.length} WP`,section('ASSY',groups.assy,true)+section('WP',groups.wp,false));
+}
+function stage6ProblemUnitDetail(rows,title){stage6ShowProblemRow(rows.length?allProblemRows.indexOf(rows[0]):-1);}
+function stage6OpenProblem(){const rows=stage6ProblemOpenRows();if(!rows.length){showStage6InlineModal('Problem OPEN','0 data',`<div class="stage6-popup-empty">Tidak ada Problem OPEN.</div>`);return;}stage6ProblemUnitSummary(rows);}
 
 function stage6OpenFilter(type) {
     const m = monitoringMetrics();
@@ -11049,39 +11078,12 @@ function stage6OpenFilter(type) {
     stage6RowsPopup(rows, `Detail ${label}`, `${getUniqueUnitCounts(rows).assy} ASSY · ${getUniqueUnitCounts(rows).wp} WP`);
 }
 
-function stage6OpenProcess(processName) {
-    const process = PROCESS_COLUMNS.find(p => p.name === processName);
-    if (!process) return;
-
-    const rows = monitoringOpenRows().filter(row => {
-        const n = monitoringNumber(getCellValue(row, process.index));
-        return n !== null && n > 0;
-    });
-
-    if (!rows.length) {
-        showStage6InlineModal(
-            processName,
-            "0 OPEN job",
-            `<div class="stage6-popup-empty">Tidak ada OPEN workload pada process ini.</div>`
-        );
-        return;
-    }
-
-    const total = rows.reduce((sum, row) => {
-        return sum + (monitoringNumber(getCellValue(row, process.index)) || 0);
-    }, 0);
-
-    const body = `<div class="stage6-popup-list">${rows.map(row => {
-        const idx = allProgressRows.indexOf(row);
-        const processQty = monitoringNumber(getCellValue(row, process.index)) || 0;
-        return `<div class="stage6-popup-item" onclick="openMonitoringJob(allProgressRows[${idx}]);closeStage6InlineModal()"><div><strong>${escapeHTML(monitoringAssy(row))}</strong><small>${escapeHTML(monitoringCustomer(row))} · WP ${escapeHTML(monitoringWp(row))} · ${processName} ${processQty.toLocaleString("id-ID")} · ETD ${escapeHTML(getCellValue(row,7)||"-")}</small></div><span class="stage6-popup-badge">DETAIL</span></div>`;
-    }).join("")}</div>`;
-
-    showStage6InlineModal(
-        processName,
-        `${rows.length} OPEN job · total ${total.toLocaleString("id-ID")} process QTY`,
-        body
-    );
+function stage6OpenProcess(processName){
+    const process=PROCESS_COLUMNS.find(p=>p.name===processName);if(!process)return;
+    const rows=monitoringOpenRows().filter(row=>{const n=monitoringNumber(getCellValue(row,process.index));return n!==null&&n>0;});
+    if(!rows.length){showStage6InlineModal(processName,'0 OPEN job',`<div class="stage6-popup-empty">Tidak ada OPEN workload pada process ini.</div>`);return;}
+    const total=rows.reduce((sum,row)=>sum+(monitoringNumber(getCellValue(row,process.index))||0),0);
+    stage6UnitSummary(rows,processName,`${getUniqueUnitCounts(rows).assy} ASSY · ${getUniqueUnitCounts(rows).wp} WP · total ${total.toLocaleString('id-ID')} process QTY`,processName);
 }
 
 function monitorLeadBucketFilter(label) {
@@ -13809,7 +13811,12 @@ body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-notif-item {
   border-color:#c8d5dc !important;
 }
 </style>
-</html>
+<style id="universalTwoLevelPopupFix">
+.reading-popup-back{display:inline-flex;align-items:center;gap:6px;margin:0 0 12px;padding:7px 10px;border-radius:7px;border:1px solid #d7e0e5;background:#f4f7f9;color:#314754;font-size:12px;font-weight:700;cursor:pointer}
+.reading-unit-section{margin:0 0 16px}.reading-unit-heading{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#6b7c85;margin:0 0 7px}.reading-unit-list{display:grid;gap:7px}.reading-unit-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 13px;border:1px solid #dfe7eb;border-radius:9px;background:#fff;cursor:pointer;transition:.15s}.reading-unit-item:hover{background:#f3f7fa;transform:translateY(-1px)}.reading-unit-item strong{display:block;font-size:13px;color:#24343d}.reading-unit-item small{display:block;margin-top:3px;font-size:10px;color:#71818a}.reading-unit-item>span{font-size:10px;font-weight:800;color:#47718a;white-space:nowrap}
+body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;color:#eef3f6}.dashboard-dark .reading-unit-item{background:#252b31;border-color:#414a53}.dashboard-dark .reading-unit-item:hover{background:#30373f}.dashboard-dark .reading-unit-item strong{color:#f2f5f7}.dashboard-dark .reading-unit-heading{color:#aebbc3}.dashboard-dark .reading-unit-item small{color:#aab6bd}
+</style>
+<style id="stage6TwoLevelPopupFix">.stage6-unit-section{margin-bottom:14px}.stage6-unit-heading{font-size:11px;font-weight:800;letter-spacing:.08em;color:#6b7c85;margin-bottom:6px}.stage6-popup-back{display:inline-flex;margin-bottom:10px;padding:7px 10px;border:1px solid #d7e0e5;border-radius:7px;background:#f4f7f9;color:#314754;font-size:12px;font-weight:700;cursor:pointer}@media(max-width:767px){.stage6-unit-heading{font-size:10px}}body.dashboard-dark .stage6-popup-back{background:#2b3138;border-color:#46505a;color:#eef3f6}.dashboard-dark .stage6-unit-heading{color:#aebbc3}</style></html>
 <style id="finalSmartNotificationDarkReadabilityFix">
 /* SMART NOTIFICATION — FINAL DARK MODE CONTRAST FIX */
 body.dashboard-dark:not(.login-locked) .cute-modal-card{
