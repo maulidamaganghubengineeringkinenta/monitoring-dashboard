@@ -7441,7 +7441,28 @@ function clearProcessFilter() {
   const fmt=n=>Number(n||0).toLocaleString('id-ID',{maximumFractionDigits:2});
   const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   const months=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-  function parseDate(v){const s=String(v??'').trim();if(!s)return null;let d=new Date(s);if(!isNaN(d))return d;let m=s.match(/^\d{1,2}[-\/]([A-Za-z]+|\d{1,2})[-\/](\d{2,4})$/);if(m){let mo=Number(m[1]);if(!mo){const map={jan:1,feb:2,mar:3,apr:4,mei:5,may:5,jun:6,jul:7,agu:8,aug:8,sep:9,okt:10,oct:10,nov:11,des:12,dec:12};mo=map[m[1].toLowerCase().slice(0,3)]||0}const day=Number(s.match(/^(\d{1,2})/)[1]),yr=Number(m[2])<100?2000+Number(m[2]):Number(m[2]);return mo?new Date(yr,mo-1,day):null}m=s.match(/^([A-Za-z]+)[- ](\d{2,4})$/);if(m){const map={jan:0,feb:1,mar:2,apr:3,mei:4,may:4,jun:5,jul:6,agu:7,aug:7,sep:8,okt:9,oct:9,nov:10,des:11,dec:11};const k=m[1].toLowerCase().slice(0,3);if(k in map)return new Date(Number(m[2]),map[k],1)}return null}
+  function parseDate(v){
+    const s=String(v??'').trim();
+    if(!s)return null;
+    const map={jan:0,feb:1,mar:2,apr:3,mei:4,may:4,jun:5,jul:6,agu:7,aug:7,sep:8,okt:9,oct:9,nov:10,des:11,dec:11};
+    let m=s.match(/^([A-Za-z]+)[- ](\d{2,4})$/);
+    if(m){
+      const k=m[1].toLowerCase().slice(0,3),yy=Number(m[2]);
+      if(k in map){const year=yy<100?2000+yy:yy;return new Date(year,map[k],1)}
+    }
+    m=s.match(/^(\d{1,2})[-\/ ]([A-Za-z]+|\d{1,2})[-\/ ](\d{2,4})$/);
+    if(m){
+      let mo=Number(m[2]);
+      if(!mo)mo=map[m[2].toLowerCase().slice(0,3)]+1;
+      const day=Number(m[1]),yy=Number(m[3]),year=yy<100?2000+yy:yy;
+      if(mo>=1&&mo<=12&&day>=1&&day<=31)return new Date(year,mo-1,day);
+    }
+    m=s.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
+    if(m)return new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));
+    m=s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
+    if(m)return new Date(Number(m[3]),Number(m[2])-1,Number(m[1]));
+    return null;
+  }
   function parseCSV(t){const a=[],r=[];let v='',q=false;for(let i=0;i<t.length;i++){const c=t[i],n=t[i+1];if(c==='"'&&q&&n==='"'){v+='"';i++;continue}if(c==='"'){q=!q;continue}if(c===','&&!q){r.push(v);v='';continue}if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&n==='\n')i++;r.push(v);a.push(r.splice(0));v='';continue}v+=c}if(v!==''||r.length){r.push(v);a.push(r)}return a}
   function latestMonthlyBlock(p){let starts=[];for(let i=0;i<p.length;i++){if(!String(p[i]?.[1]??'').toLowerCase().includes('progress loading prototype export'))continue;const hdr=String(p[i+2]?.[3]??'').toLowerCase();const first=p[i+4]?.[1];if(hdr.includes('plan / in')&&parseDate(first))starts.push(i)}return p.slice(starts.length?starts[starts.length-1]:0)}
   function mapRows(p){const out=[];for(const r of latestMonthlyBlock(p)){const raw=r?.[1];const d=parseDate(raw);if(!d||/^avg[- ]/i.test(String(raw))||/^week[- ]/i.test(String(raw)))continue;const oa=num(r[9]),oq=num(r[10]),oc=num(r[11]);const st=String(r[19]??r[16]??'').trim()||((oa||oq||oc)?'Open':'Close');out.push({raw,period:`${months[d.getMonth()]} ${d.getFullYear()}`,date:d,year:d.getFullYear(),month:d.getMonth()+1,wp:num(r[2]),planAssy:num(r[3]),planQty:num(r[4]),planCct:num(r[5]),outAssy:num(r[6]),outQty:num(r[7]),outCct:num(r[8]),openAssy:oa,openQty:oq,openCct:oc,status:st.toUpperCase()})}const m=new Map();out.forEach(x=>m.set(`${x.year}-${x.month}`,x));return [...m.values()].sort((a,b)=>a.date-b.date)}
