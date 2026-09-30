@@ -361,6 +361,8 @@ body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage2-card canvas{f
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 <style>
 .searchable-filter{width:100%;box-sizing:border-box;min-height:38px;padding:9px 11px;border:1px solid #b9c8d2;border-radius:7px;background:#fff;font-size:13px;}
 .searchable-filter:focus{outline:2px solid rgba(37,99,235,.18);border-color:#2563eb;}
@@ -4523,7 +4525,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         <div class="download-preview-table-wrap" id="downloadPreviewTableWrap"><table class="download-preview-table"><thead id="downloadPreviewHead"></thead><tbody id="downloadPreviewBody"></tbody></table></div>
                         <div class="download-empty" id="downloadEmpty" style="display:none">Tidak ada data yang sesuai dengan filter.</div>
                         <div class="download-actions">
-                            <button type="button" class="download-button secondary" id="downloadCsvBtn">⬇️ Download CSV</button>
+                            <button type="button" class="download-button secondary" id="downloadPdfBtn">📄 Download PDF</button>
                             <button type="button" class="download-button primary" id="downloadXlsxBtn">📊 Download Excel (.xlsx)</button>
                         </div>
                         <div class="download-note">Preview menampilkan jumlah baris yang disesuaikan dengan ruang yang tersedia. File download tetap berisi seluruh data yang sesuai filter.</div>
@@ -4577,7 +4579,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         <div class="settings-form">
                             <div class="settings-field">
                                 <div><label for="settingsExportFormat">Format Export</label><small>Menentukan format yang dipilih saat membuka halaman Download Data.</small></div>
-                                <select id="settingsExportFormat" class="settings-control"><option value="xlsx">Excel (.xlsx)</option><option value="csv">CSV (.csv)</option></select>
+                                <select id="settingsExportFormat" class="settings-control"><option value="xlsx">Excel (.xlsx)</option><option value="pdf">PDF (.pdf)</option></select>
                             </div>
                             <div class="settings-field">
                                 <div><label for="settingsFilteredOnly">Data Terfilter Saja</label><small>ON = hanya data sesuai filter. OFF = seluruh data sumber.</small></div>
@@ -11622,8 +11624,8 @@ window.__cuteAssistant=assistant;
         const source=safeFilePart(q("downloadSource")?.value||"data");
         return `${base}_${source}_${new Date().toISOString().slice(0,10)}`;
     }
-    function downloadCSV(){const rows=rowsForExport(),h=headers();if(!rows.length){alert("Tidak ada data untuk di-download.");return;}const csv=[h,...rows].map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(',')).join('\r\n');downloadBlob(new Blob(["\\ufeff"+csv],{type:"text/csv;charset=utf-8"}),`${exportBaseName()}.csv`);}
-    function downloadXLSX(){const rows=rowsForExport(),h=headers();if(!rows.length){alert("Tidak ada data untuk di-download.");return;} if(window.XLSX){const data=[h,...rows];const wb=XLSX.utils.book_new();const ws=XLSX.utils.aoa_to_sheet(data);XLSX.utils.book_append_sheet(wb,ws,q("downloadSource").value==="problem"?"Problem":"Progress");XLSX.writeFile(wb,`${exportBaseName()}.xlsx`);}else{downloadCSV();}}
+    function downloadPDF(){const rows=rowsForExport(),h=headers();if(!rows.length){alert("Tidak ada data untuk di-download.");return;}if(!window.jspdf||!window.jspdf.jsPDF){alert("Library PDF belum siap. Silakan coba lagi.");return;}const {jsPDF}=window.jspdf;const doc=new jsPDF({orientation:"landscape",unit:"mm",format:"a4"});const source=q("downloadSource")?.value==="problem"?"Problem":"Progress 2026";doc.setFontSize(12);doc.text(`Monitoring Data - ${source}`,14,12);doc.setFontSize(8);doc.text(summary(),14,17);doc.autoTable({head:[h],body:rows,startY:21,theme:"grid",styles:{fontSize:5,cellPadding:1.2,overflow:"linebreak",valign:"middle"},headStyles:{fontSize:5.5},margin:{top:21,right:6,bottom:8,left:6},tableWidth:"auto",showHead:"everyPage"});doc.save(`${exportBaseName()}.pdf`);}
+    function downloadXLSX(){const rows=rowsForExport(),h=headers();if(!rows.length){alert("Tidak ada data untuk di-download.");return;} if(window.XLSX){const data=[h,...rows];const wb=XLSX.utils.book_new();const ws=XLSX.utils.aoa_to_sheet(data);XLSX.utils.book_append_sheet(wb,ws,q("downloadSource").value==="problem"?"Problem":"Progress");XLSX.writeFile(wb,`${exportBaseName()}.xlsx`);}else{alert("Library Excel belum siap. Silakan coba lagi.");}}
     function reset(){
         document.querySelectorAll('#download input,#download select').forEach(el=>el.value="");
         renderQuick(); update();
@@ -11631,7 +11633,7 @@ window.__cuteAssistant=assistant;
     function bind(){
         q("downloadSource")?.addEventListener('change',()=>{renderQuick();update();});
         q("downloadResetBtn")?.addEventListener('click',reset);
-        q("downloadCsvBtn")?.addEventListener('click',downloadCSV);
+        q("downloadPdfBtn")?.addEventListener('click',downloadPDF);
         q("downloadXlsxBtn")?.addEventListener('click',downloadXLSX);
         document.querySelectorAll('#download input,#download select').forEach(el=>{el.addEventListener('input',update);el.addEventListener('change',update);});
         renderQuick();
@@ -11642,8 +11644,8 @@ window.__cuteAssistant=assistant;
         const source=q("downloadSource")?.value||"progress";
         update();
         const fmt=settings?.exportFormat||"xlsx";
-        const csv=q("downloadCsvBtn"),xlsx=q("downloadXlsxBtn");
-        if(csv) csv.title=fmt==="csv"?"Format export yang dipilih di Pengaturan":"Download CSV";
+        const pdf=q("downloadPdfBtn"),xlsx=q("downloadXlsxBtn");
+        if(pdf) pdf.title=fmt==="pdf"?"Format export yang dipilih di Pengaturan":"Download PDF";
         if(xlsx) xlsx.title=fmt==="xlsx"?"Format export yang dipilih di Pengaturan":"Download Excel";
     };
     document.addEventListener('DOMContentLoaded',bind,{once:true});
