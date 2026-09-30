@@ -2215,6 +2215,10 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 }
 </style>
 
+
+<style id="unit-label-style">
+.unit-label{font-size:.72em;font-weight:800;letter-spacing:.02em;opacity:.78;white-space:nowrap;}
+</style>
 </head>
 
 <body class="login-locked">
@@ -2676,7 +2680,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                             class="kpi-label"
                             id="totalOpenLabel">
 
-                            OPEN ORDERS
+                            OPEN ORDERS <span class="unit-label">(ORDER)</span>
 
                         </div>
 
@@ -2719,7 +2723,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                             class="kpi-label"
                             id="totalCloseLabel">
 
-                            CLOSE ORDERS
+                            CLOSE ORDERS <span class="unit-label">(ORDER)</span>
 
                         </div>
 
@@ -2780,7 +2784,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
 
                     <div class="kpi-description">
-                        Jumlah customer
+                        Jumlah customer (CUSTOMER)
                     </div>
 
                 </div>
@@ -3002,23 +3006,23 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                 </div>
 
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px;">
-                    <div class="kpi-card kpi-blue"><div class="kpi-label">ETD ≤ 3 HARI</div><div class="kpi-value" id="readingETD3">0</div><div class="kpi-subtitle">Order mendekati ETD</div></div>
-                    <div class="kpi-card kpi-orange"><div class="kpi-label">OVERDUE</div><div class="kpi-value" id="readingOverdue">0</div><div class="kpi-subtitle">ETD sudah lewat</div></div>
-                    <div class="kpi-card kpi-yellow"><div class="kpi-label">RESCHEDULE</div><div class="kpi-value" id="readingReschedule">0</div><div class="kpi-subtitle">ETD berubah</div></div>
-                    <div class="kpi-card kpi-pink"><div class="kpi-label">NOT STARTED</div><div class="kpi-value" id="readingNotStarted">0</div><div class="kpi-subtitle">Belum actual start</div></div>
-                    <div class="kpi-card kpi-green"><div class="kpi-label">TOTAL CCT</div><div class="kpi-value" id="readingTotalCCT">0</div><div class="kpi-subtitle">Total cycle time</div></div>
-                    <div class="kpi-card kpi-purple"><div class="kpi-label">TOTAL QTY</div><div class="kpi-value" id="readingTotalQTY">0</div><div class="kpi-subtitle">Seluruh order</div></div>
-                    <div class="kpi-card kpi-blue"><div class="kpi-label">OPEN QTY</div><div class="kpi-value" id="readingOpenQTY">0</div><div class="kpi-subtitle">QTY masih open</div></div>
-                    <div class="kpi-card kpi-green"><div class="kpi-label">AVG CCT</div><div class="kpi-value" id="readingAvgCCT">0</div><div class="kpi-subtitle">Rata-rata CCT/order</div></div>
+                    <div class="kpi-card kpi-blue"><div class="kpi-label">ETD ≤ 3 HARI</div><div class="kpi-value" id="readingETD3">0</div><div class="kpi-subtitle">Order mendekati ETD (ORDER)</div></div>
+                    <div class="kpi-card kpi-orange"><div class="kpi-label">OVERDUE</div><div class="kpi-value" id="readingOverdue">0</div><div class="kpi-subtitle">ETD sudah lewat (ORDER)</div></div>
+                    <div class="kpi-card kpi-yellow"><div class="kpi-label">RESCHEDULE</div><div class="kpi-value" id="readingReschedule">0</div><div class="kpi-subtitle">ETD berubah (ORDER)</div></div>
+                    <div class="kpi-card kpi-pink"><div class="kpi-label">NOT STARTED</div><div class="kpi-value" id="readingNotStarted">0</div><div class="kpi-subtitle">Belum actual start (ORDER)</div></div>
+                    <div class="kpi-card kpi-green"><div class="kpi-label">TOTAL CCT</div><div class="kpi-value" id="readingTotalCCT">0</div><div class="kpi-subtitle">Total CCT</div></div>
+                    <div class="kpi-card kpi-purple"><div class="kpi-label">TOTAL QTY</div><div class="kpi-value" id="readingTotalQTY">0</div><div class="kpi-subtitle">Jumlah QTY seluruh order</div></div>
+                    <div class="kpi-card kpi-blue"><div class="kpi-label">OPEN QTY</div><div class="kpi-value" id="readingOpenQTY">0</div><div class="kpi-subtitle">Jumlah QTY yang masih OPEN</div></div>
+                    <div class="kpi-card kpi-green"><div class="kpi-label">AVG CCT</div><div class="kpi-value" id="readingAvgCCT">0</div><div class="kpi-subtitle">Rata-rata CCT per order</div></div>
                 </div>
 
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
                     <div class="chart-card status-order-card" style="padding:18px;">
                         <div class="panel-kicker">STATUS</div><h3 style="margin:4px 0 12px;">Status Order</h3>
                         <div class="status-order-items">
-                            <div class="status-order-item status-not-started"><strong id="readingStatusNotStarted">0</strong><small>NOT STARTED</small></div>
-                            <div class="status-order-item status-progress"><strong id="readingStatusProgress">0</strong><small>PROGRESS</small></div>
-                            <div class="status-order-item status-finished"><strong id="readingStatusFinished">0</strong><small>FINISHED</small></div>
+                            <div class="status-order-item status-not-started"><strong id="readingStatusNotStarted">0</strong><small>NOT STARTED · ORDER</small></div>
+                            <div class="status-order-item status-progress"><strong id="readingStatusProgress">0</strong><small>PROGRESS · ORDER</small></div>
+                            <div class="status-order-item status-finished"><strong id="readingStatusFinished">0</strong><small>FINISHED · ORDER</small></div>
                         </div>
                     </div>
                     <div class="chart-card" style="padding:18px;">
@@ -3271,16 +3275,16 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
             <div class="monitor-grid">
                 <div class="monitor-card monitor-card-open" onclick="monitorFilter('open')">
-                    <div class="mc-label">OPEN ORDERS</div><div class="mc-value" id="monitorOpen">0</div><div class="mc-desc">Total order yang masih berjalan</div>
+                    <div class="mc-label">OPEN ORDERS</div><div class="mc-value" id="monitorOpen">0</div><div class="mc-desc">Jumlah order yang masih berjalan</div>
                 </div>
                 <div class="monitor-card monitor-card-start" onclick="monitorFilter('notstarted')">
-                    <div class="mc-label">NOT STARTED</div><div class="mc-value" id="monitorNotStarted">0</div><div class="mc-desc">OPEN tanpa Actual Start</div>
+                    <div class="mc-label">NOT STARTED</div><div class="mc-value" id="monitorNotStarted">0</div><div class="mc-desc">Jumlah ASSY/WP OPEN tanpa Actual Start</div>
                 </div>
                 <div class="monitor-card monitor-card-bottle" onclick="monitorProcessBottleneck()">
-                    <div class="mc-label">BOTTLENECK QTY</div><div class="mc-value" id="monitorBottleneckQty">0</div><div class="mc-desc" id="monitorBottleneckDesc">Process dengan workload OPEN terbesar</div>
+                    <div class="mc-label">BOTTLENECK QTY</div><div class="mc-value" id="monitorBottleneckQty">0</div><div class="mc-desc" id="monitorBottleneckDesc">Jumlah QTY pada process dengan workload OPEN terbesar</div>
                 </div>
                 <div class="monitor-card monitor-card-problem" onclick="stage6OpenProblem()">
-                    <div class="mc-label">PROBLEM OPEN</div><div class="mc-value" id="monitorProblemOpen">0</div><div class="mc-desc">Problem yang masih berjalan</div>
+                    <div class="mc-label">PROBLEM OPEN</div><div class="mc-value" id="monitorProblemOpen">0</div><div class="mc-desc">Jumlah problem yang masih OPEN</div>
                 </div>
             </div>
             <div class="monitor-quick-strip" aria-label="Quick attention filters">
@@ -3393,11 +3397,11 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
             </div>
 
             <div class="wp-flow-kpis">
-                <div class="wp-flow-kpi blue"><div class="label">ASSY IN</div><div class="value" id="wpKpiAssyIn">0</div><div class="sub">Total ASSY masuk</div></div>
-                <div class="wp-flow-kpi green"><div class="label">ASSY OUT</div><div class="value" id="wpKpiAssyOut">0</div><div class="sub">Total ASSY keluar</div></div>
-                <div class="wp-flow-kpi purple"><div class="label">ASSY BALANCE</div><div class="value" id="wpKpiAssyBal">0</div><div class="sub">Masih tersisa</div></div>
-                <div class="wp-flow-kpi orange"><div class="label">PCS BALANCE</div><div class="value" id="wpKpiPcsBal">0</div><div class="sub">PCS belum OUT</div></div>
-                <div class="wp-flow-kpi pink"><div class="label">CCT BALANCE</div><div class="value" id="wpKpiCctBal">0</div><div class="sub">CCT belum OUT</div></div>
+                <div class="wp-flow-kpi blue"><div class="label">ASSY IN</div><div class="value" id="wpKpiAssyIn">0</div><div class="sub">Jumlah ASSY masuk</div></div>
+                <div class="wp-flow-kpi green"><div class="label">ASSY OUT</div><div class="value" id="wpKpiAssyOut">0</div><div class="sub">Jumlah ASSY keluar</div></div>
+                <div class="wp-flow-kpi purple"><div class="label">ASSY BALANCE</div><div class="value" id="wpKpiAssyBal">0</div><div class="sub">Jumlah ASSY yang masih tersisa</div></div>
+                <div class="wp-flow-kpi orange"><div class="label">PCS BALANCE</div><div class="value" id="wpKpiPcsBal">0</div><div class="sub">Jumlah PCS belum OUT</div></div>
+                <div class="wp-flow-kpi pink"><div class="label">CCT BALANCE</div><div class="value" id="wpKpiCctBal">0</div><div class="sub">Jumlah CCT belum OUT</div></div>
             </div>
 
             <div class="wp-flow-grid">
@@ -3413,8 +3417,8 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                 <div class="wp-flow-card">
                     <h3>💡 Flow Insight</h3>
                     <div class="wp-flow-insight">
-                        <div class="wp-flow-insight-box"><div class="small">WP Aktif</div><strong id="wpInsightActive">0</strong></div>
-                        <div class="wp-flow-insight-box"><div class="small">WP Balance</div><strong id="wpInsightBalance">0</strong></div>
+                        <div class="wp-flow-insight-box"><div class="small">WP Aktif (WP)</div><strong id="wpInsightActive">0</strong></div>
+                        <div class="wp-flow-insight-box"><div class="small">WP Balance (WP)</div><strong id="wpInsightBalance">0</strong></div>
                         <div class="wp-flow-insight-box"><div class="small">Status</div><strong id="wpInsightStatus">-</strong></div>
                     </div>
                     <div class="wp-flow-note" id="wpFlowNote">Data akan mengikuti nilai IN, OUT, BALANCE pada sheet. Sistem tidak membuat nilai WP IN/OUT sendiri karena sumber yang diberikan hanya menyediakan jumlah WP pada summary bulanan.</div>
@@ -3548,7 +3552,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
 
                     <div class="kpi-description">
-                        Problem yang telah selesai
+                        Jumlah problem yang telah selesai
                     </div>
 
                 </div>
@@ -3581,7 +3585,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
 
                     <div class="kpi-description">
-                        Customer yang memiliki problem
+                        Jumlah customer yang memiliki problem
                     </div>
 
                 </div>
@@ -3614,7 +3618,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
 
                     <div class="kpi-description">
-                        Total quantity minus
+                        Total QTY minus
                     </div>
 
                 </div>
@@ -5227,6 +5231,22 @@ function changeProgressPage(
    PROGRESS STATISTICS
 ========================================================= */
 
+function getUniqueUnitCounts(rows) {
+    const assy = new Set();
+    const wp = new Set();
+    (rows || []).forEach(row => {
+        const assyValue = String(getCellValue(row, 2) ?? "").trim();
+        const wpValue = String(getCellValue(row, 3) ?? "").trim();
+        if (assyValue) assy.add(assyValue);
+        if (wpValue) wp.add(wpValue);
+    });
+    return { assy: assy.size, wp: wp.size };
+}
+
+function formatAssyWp(assy, wp) {
+    return `${Number(assy || 0).toLocaleString("id-ID")} ASSY · ${Number(wp || 0).toLocaleString("id-ID")} WP`;
+}
+
 function updateStatistics(rows) {
     if (selectedProcessIndex === null) {
         const total = rows.length;
@@ -5333,25 +5353,35 @@ function updateKPIValues(
         );
 
     if (totalData) {
-        totalData.textContent =
-            total.toLocaleString("id-ID");
+        if (processMode) {
+            totalData.textContent = `${total.toLocaleString("id-ID")} QTY`;
+        } else {
+            const counts = getUniqueUnitCounts(rows);
+            totalData.innerHTML = `<span>${counts.assy.toLocaleString("id-ID")} ASSY</span><small>· ${counts.wp.toLocaleString("id-ID")} WP</small>`;
+        }
     }
 
     if (totalOpen) {
-        totalOpen.textContent =
-            open.toLocaleString("id-ID");
+        if (processMode) {
+            totalOpen.textContent = `${open.toLocaleString("id-ID")} QTY`;
+        } else {
+            const openCounts = getUniqueUnitCounts(rows.filter(row => getRowStatus(row) === "OPEN"));
+            totalOpen.innerHTML = `<span>${openCounts.assy.toLocaleString("id-ID")} ASSY</span><small>· ${openCounts.wp.toLocaleString("id-ID")} WP</small>`;
+        }
     }
 
     if (totalClose) {
-        totalClose.textContent =
-            close.toLocaleString("id-ID");
+        if (processMode) {
+            totalClose.textContent = `${close.toLocaleString("id-ID")} QTY`;
+        } else {
+            const closeCounts = getUniqueUnitCounts(rows.filter(row => getRowStatus(row) === "CLOSE"));
+            totalClose.innerHTML = `<span>${closeCounts.assy.toLocaleString("id-ID")} ASSY</span><small>· ${closeCounts.wp.toLocaleString("id-ID")} WP</small>`;
+        }
     }
 
     if (totalCustomer) {
         totalCustomer.textContent =
-            customers.size.toLocaleString(
-                "id-ID"
-            );
+            `${customers.size.toLocaleString("id-ID")} customer`;
     }
 
     const onTimeEl = document.getElementById("progressOnTimeDelivery");
@@ -5442,32 +5472,32 @@ function updateKPIValues(
     } else {
         if (totalDataLabel) {
             totalDataLabel.textContent =
-                "TOTAL ORDERS";
+                "TOTAL ASSY/WP";
         }
 
         if (totalOpenLabel) {
             totalOpenLabel.textContent =
-                "OPEN ORDERS";
+                "OPEN ASSY/WP";
         }
 
         if (totalCloseLabel) {
             totalCloseLabel.textContent =
-                "CLOSE ORDERS";
+                "CLOSE ASSY/WP";
         }
 
         if (totalDataDescription) {
             totalDataDescription.textContent =
-                "Total seluruh order";
+                "Jumlah seluruh ASSY/WP";
         }
 
         if (totalOpenDescription) {
             totalOpenDescription.textContent =
-                "Order yang masih berjalan";
+                "Jumlah ASSY/WP yang masih berjalan";
         }
 
         if (totalCloseDescription) {
             totalCloseDescription.textContent =
-                "Order yang telah selesai";
+                "Jumlah ASSY/WP yang telah selesai";
         }
     }
 
@@ -5492,13 +5522,21 @@ function updateKPIValues(
         );
 
     if (chartOpenValue) {
-        chartOpenValue.textContent =
-            open.toLocaleString("id-ID");
+        if (processMode) {
+            chartOpenValue.textContent = `${open.toLocaleString("id-ID")} QTY`;
+        } else {
+            const openCounts = getUniqueUnitCounts(rows.filter(row => getRowStatus(row) === "OPEN"));
+            chartOpenValue.textContent = formatAssyWp(openCounts.assy, openCounts.wp);
+        }
     }
 
     if (chartCloseValue) {
-        chartCloseValue.textContent =
-            close.toLocaleString("id-ID");
+        if (processMode) {
+            chartCloseValue.textContent = `${close.toLocaleString("id-ID")} QTY`;
+        } else {
+            const closeCounts = getUniqueUnitCounts(rows.filter(row => getRowStatus(row) === "CLOSE"));
+            chartCloseValue.textContent = formatAssyWp(closeCounts.assy, closeCounts.wp);
+        }
     }
 
     if (processMode) {
@@ -6083,24 +6121,24 @@ function updateProductionReading(rows) {
         }
     });
 
-    readingSet("readingETD3", readingFormatNumber(etd3));
-    readingSet("readingOverdue", readingFormatNumber(overdue));
-    readingSet("readingReschedule", readingFormatNumber(reschedule));
-    readingSet("readingNotStarted", readingFormatNumber(notStarted));
-    readingSet("readingTotalCCT", readingFormatNumber(totalCCT));
-    readingSet("readingTotalQTY", readingFormatNumber(totalQTY));
-    readingSet("readingOpenQTY", readingFormatNumber(openQTY));
-    readingSet("readingAvgCCT", readingFormatNumber(openRows.length ? totalCCT / openRows.length : 0, 1));
-    readingSet("readingStatusNotStarted", readingFormatNumber(statusNotStarted));
-    readingSet("readingStatusProgress", readingFormatNumber(statusProgress));
-    readingSet("readingStatusFinished", readingFormatNumber(statusFinished));
+    readingSet("readingETD3", `${readingFormatNumber(etd3)} ASSY/WP`);
+    readingSet("readingOverdue", `${readingFormatNumber(overdue)} ASSY/WP`);
+    readingSet("readingReschedule", `${readingFormatNumber(reschedule)} ASSY/WP`);
+    readingSet("readingNotStarted", `${readingFormatNumber(notStarted)} ASSY/WP`);
+    readingSet("readingTotalCCT", `${readingFormatNumber(totalCCT)} CCT`);
+    readingSet("readingTotalQTY", `${readingFormatNumber(totalQTY)} QTY`);
+    readingSet("readingOpenQTY", `${readingFormatNumber(openQTY)} QTY`);
+    readingSet("readingAvgCCT", `${readingFormatNumber(openRows.length ? totalCCT / openRows.length : 0, 1)} CCT`);
+    readingSet("readingStatusNotStarted", `${readingFormatNumber(statusNotStarted)} order`);
+    readingSet("readingStatusProgress", `${readingFormatNumber(statusProgress)} order`);
+    readingSet("readingStatusFinished", `${readingFormatNumber(statusFinished)} order`);
 
     const wpList = document.getElementById("readingWPList");
     if (wpList) {
         const items = Object.entries(wp).sort((a, b) => b[1] - a[1]).slice(0, 8);
         wpList.innerHTML = items.length ? items.map(([name, value]) => `
             <div class="production-reading-clickable" onclick='productionReadingDrilldown("wp", ${JSON.stringify(name)})' title="Klik untuk melihat OPEN order WP ini">
-                <span>${escapeHTML(name)}</span><strong>${readingFormatNumber(value)}</strong>
+                <span>${escapeHTML(name)}</span><strong>${readingFormatNumber(value)} QTY</strong>
             </div>`).join("") : `<span style="color:#7a8a91;">Tidak ada data OPEN.</span>`;
     }
 
@@ -6109,7 +6147,7 @@ function updateProductionReading(rows) {
         const items = Object.entries(processTotals).sort((a, b) => b[1] - a[1]);
         processList.innerHTML = items.map(([name, value]) => `
             <div class="production-reading-clickable" onclick='productionReadingDrilldown("process", ${JSON.stringify(name)})' title="Klik untuk melihat OPEN order proses ini">
-                <span>${escapeHTML(name)}</span><strong>${readingFormatNumber(value)}</strong>
+                <span>${escapeHTML(name)}</span><strong>${readingFormatNumber(value)} QTY</strong>
             </div>`).join("");
     }
 
@@ -6117,7 +6155,7 @@ function updateProductionReading(rows) {
     const allAttention = attention;
     if (attentionList) {
         if (!allAttention.length) {
-            attentionList.innerHTML = `<span class="reading-empty-attention">Tidak ada order OPEN yang perlu perhatian.</span>`;
+            attentionList.innerHTML = `<span class="reading-empty-attention">Tidak ada ASSY/WP OPEN yang perlu perhatian.</span>`;
         } else {
             const visibleAttention = allAttention.slice(0, 8);
             const remainingAttention = allAttention.slice(8);
@@ -6140,20 +6178,20 @@ function updateProductionReading(rows) {
             }
         }
     }
-    readingSet("readingAttentionCount", allAttention.length);
+    readingSet("readingAttentionCount", `${allAttention.length.toLocaleString("id-ID")} order`);
 
     const insight = document.getElementById("automaticProductionReading");
     if (insight) {
         if (!openRows.length) {
-            insight.textContent = "Tidak ada order OPEN yang sesuai dengan filter Progress saat ini.";
+            insight.textContent = "Tidak ada ASSY/WP OPEN yang sesuai dengan filter Progress saat ini.";
         } else {
             const parts = [];
-            if (overdue) parts.push(`${overdue} order OPEN sudah melewati ETD`);
-            if (notStarted) parts.push(`${notStarted} order OPEN belum memiliki Actual Start`);
-            if (etd3) parts.push(`${etd3} order OPEN memiliki ETD dalam 3 hari ke depan`);
-            if (reschedule) parts.push(`${reschedule} order OPEN mengalami perubahan ETD`);
-            if (!parts.length) parts.push("Tidak ada indikator deadline atau perubahan ETD yang menonjol pada order OPEN");
-            insight.textContent = `Production Reading OPEN: ${parts.join(" • ")}. Total ${readingFormatNumber(totalQTY)} QTY OPEN, dengan ${readingFormatNumber(openQTY)} OPEN QTY dari ${readingFormatNumber(openOrders)} order OPEN.`;
+            if (overdue) parts.push(`${overdue} ASSY/WP OPEN sudah melewati ETD`);
+            if (notStarted) parts.push(`${notStarted} ASSY/WP OPEN belum memiliki Actual Start`);
+            if (etd3) parts.push(`${etd3} ASSY/WP OPEN memiliki ETD dalam 3 hari ke depan`);
+            if (reschedule) parts.push(`${reschedule} ASSY/WP OPEN mengalami perubahan ETD`);
+            if (!parts.length) parts.push("Tidak ada indikator deadline atau perubahan ETD yang menonjol pada ASSY/WP OPEN");
+            insight.textContent = `Production Reading OPEN: ${parts.join(" • ")}. Total ${readingFormatNumber(totalQTY)} QTY OPEN, dengan ${readingFormatNumber(openQTY)} OPEN QTY dari ${readingFormatNumber(openOrders)} ASSY/WP OPEN.`;
         }
     }
 }
@@ -6481,7 +6519,7 @@ function updateCustomerChart(rows) {
                                     const unit =
                                         selectedProcessIndex !== null
                                             ? "QTY"
-                                            : "ORDERS";
+                                            : "ASSY/WP";
 
                                     return `Total: ${total.toLocaleString("id-ID")} ${unit}`;
                                 }
@@ -6713,7 +6751,7 @@ function updateStatusChart(rows) {
                                     const unit =
                                         selectedProcessIndex !== null
                                             ? "QTY"
-                                            : "ORDERS";
+                                            : "ASSY/WP";
 
                                     return `${context.label}: ${Number(value).toLocaleString("id-ID")} ${unit}`;
                                 }
@@ -8696,31 +8734,27 @@ function updateProblemKPIs(rows) {
 
     if (totalElement) {
         totalElement.textContent =
-            total.toLocaleString("id-ID");
+            `${total.toLocaleString("id-ID")} problem`;
     }
 
     if (openElement) {
         openElement.textContent =
-            open.toLocaleString("id-ID");
+            `${open.toLocaleString("id-ID")} problem`;
     }
 
     if (closeElement) {
         closeElement.textContent =
-            close.toLocaleString("id-ID");
+            `${close.toLocaleString("id-ID")} problem`;
     }
 
     if (customerElement) {
         customerElement.textContent =
-            customers.toLocaleString(
-                "id-ID"
-            );
+            `${customers.toLocaleString("id-ID")} customer`;
     }
 
     if (minusElement) {
         minusElement.textContent =
-            minus.toLocaleString(
-                "id-ID"
-            );
+            `${minus.toLocaleString("id-ID")} QTY`;
     }
     const ages = rows.map(problemAgeDays).filter(v => v !== null);
     const oldest = document.getElementById("problemOldestAge");
@@ -10415,7 +10449,22 @@ function monitoringMetrics() {
         if (!actualStart) { notStarted++; notStartedRows.push(row); }
     });
 
-    return { rows, etd3, overdue, reschedule, notStarted, etd3Rows, overdueRows, rescheduleRows, notStartedRows };
+    const openCounts = getUniqueUnitCounts(rows);
+    const etd3Counts = getUniqueUnitCounts(etd3Rows);
+    const overdueCounts = getUniqueUnitCounts(overdueRows);
+    const rescheduleCounts = getUniqueUnitCounts(rescheduleRows);
+    const notStartedCounts = getUniqueUnitCounts(notStartedRows);
+
+    return {
+        rows,
+        etd3, overdue, reschedule, notStarted,
+        etd3Rows, overdueRows, rescheduleRows, notStartedRows,
+        openAssy: openCounts.assy, openWp: openCounts.wp,
+        etd3Assy: etd3Counts.assy, etd3Wp: etd3Counts.wp,
+        overdueAssy: overdueCounts.assy, overdueWp: overdueCounts.wp,
+        rescheduleAssy: rescheduleCounts.assy, rescheduleWp: rescheduleCounts.wp,
+        notStartedAssy: notStartedCounts.assy, notStartedWp: notStartedCounts.wp
+    };
 }
 
 function monitoringAssy(row) { return getCellValue(row, 2) || "-"; }
@@ -10431,20 +10480,20 @@ function renderMonitoringAlerts() {
     if (!el) return;
     const m = monitoringMetrics();
     const alerts = [
-        ["OVERDUE", m.overdue, "Order OPEN melewati ETD", "overdueRows"],
-        ["ETD ≤ 3 HARI", m.etd3, "Order OPEN mendekati deadline", "etd3Rows"],
-        ["RESCHEDULE", m.reschedule, "Order OPEN mengalami perubahan ETD", "rescheduleRows"],
-        ["NOT STARTED", m.notStarted, "Order OPEN belum memiliki Actual Start", "notStartedRows"]
+        ["OVERDUE", m.overdue, "ASSY/WP OPEN melewati ETD", "overdueRows"],
+        ["ETD ≤ 3 HARI", m.etd3, "ASSY/WP OPEN mendekati deadline", "etd3Rows"],
+        ["RESCHEDULE", m.reschedule, "ASSY/WP OPEN mengalami perubahan ETD", "rescheduleRows"],
+        ["NOT STARTED", m.notStarted, "ASSY/WP OPEN belum memiliki Actual Start", "notStartedRows"]
     ];
     const active = alerts.filter(a => a[1] > 0);
     if (!active.length) {
-        el.innerHTML = `<div class="monitor-empty">Tidak ada alert pada order OPEN saat ini.</div>`;
+        el.innerHTML = `<div class="monitor-empty">Tidak ada alert pada ASSY/WP OPEN saat ini.</div>`;
         return;
     }
     el.innerHTML = active.map(a => `
         <div class="monitor-alert" onclick="monitorFilter('${a[3]}')">
             <div class="monitor-alert-main"><div class="monitor-alert-title">${escapeHTML(a[0])}</div><div class="monitor-alert-sub">${escapeHTML(a[2])}</div></div>
-            <span class="monitor-badge">${a[1]}</span>
+            <span class="monitor-badge">${a[1]} ASSY · ${getUniqueUnitCounts(m[a[3]]).wp} WP</span>
         </div>`).join("");
 }
 
@@ -10525,9 +10574,9 @@ function renderMonitoringLeadTime() {
     const avg = document.getElementById("monitorLeadAvg");
     const min = document.getElementById("monitorLeadMin");
     const max = document.getElementById("monitorLeadMax");
-    if (avg) avg.textContent = m.values.length ? m.avg.toFixed(1) : "0";
-    if (min) min.textContent = m.values.length ? String(m.min) : "0";
-    if (max) max.textContent = m.values.length ? String(m.max) : "0";
+    if (avg) avg.textContent = m.values.length ? `${m.avg.toFixed(1)} hari` : "0 hari";
+    if (min) min.textContent = m.values.length ? `${m.min} hari` : "0 hari";
+    if (max) max.textContent = m.values.length ? `${m.max} hari` : "0 hari";
     const box = document.getElementById("monitorLeadBuckets");
     if (!box) return;
     const maxBucket = Math.max(1, ...m.buckets.map(x => x[1]));
@@ -10535,7 +10584,7 @@ function renderMonitoringLeadTime() {
         <div class="monitor-bucket" onclick="monitorLeadBucketFilter('${label}')">
             <div class="monitor-bucket-label">${label} hari</div>
             <div class="monitor-bucket-track"><div class="monitor-bucket-fill" style="width:${(count/maxBucket)*100}%"></div></div>
-            <div class="monitor-bucket-value">${count}</div>
+            <div class="monitor-bucket-value">${count.toLocaleString("id-ID")} order</div>
         </div>`).join("");
     renderMonitoringLeadBreakdowns();
 }
@@ -10657,7 +10706,7 @@ function renderMonitoringCenter() {
     };
     const desc = document.getElementById("monitorBottleneckDesc");
     if (desc) desc.textContent = topProcess ? `${topProcess.name} · workload OPEN terbesar` : "Belum ada workload process OPEN";
-    Object.keys(map).forEach(id => { const el = document.getElementById(id); if (el) el.textContent = map[id]; });
+    Object.keys(map).forEach(id => { const el = document.getElementById(id); if (!el) return; const unit = {monitorOpen:"order",monitorNotStarted:"order",monitorBottleneckQty:"QTY",monitorProblemOpen:"problem",monitorQuickOverdue:"order",monitorQuickEtd3:"order",monitorQuickReschedule:"order"}[id]; el.textContent = `${Number(map[id]||0).toLocaleString("id-ID")} ${unit||""}`.trim(); });
     renderMonitoringAlerts();
     renderMonitoringCalendar();
     renderMonitoringStage2();
@@ -10791,7 +10840,7 @@ function showMonitoringDay(y,m,d) {
     const list = document.getElementById("monitorDayList");
     if (!detail || !title || !list) return;
     title.textContent = `ETD ${date.toLocaleDateString("id-ID", {day:"2-digit", month:"long", year:"numeric"})} — ${rows.length} OPEN`;
-    list.innerHTML = rows.length ? rows.map(row => `<div class="monitor-alert" onclick="openProgressRowFromMonitoring(${allProgressRows.indexOf(row)})"><div class="monitor-alert-main"><div class="monitor-alert-title">${escapeHTML(monitoringRowLabel(row))}</div><div class="monitor-alert-sub">QTY: ${escapeHTML(getCellValue(row,5)||"-")} · CCT: ${escapeHTML(getCellValue(row,4)||"-")}</div></div><span class="monitor-badge">OPEN</span></div>`).join("") : `<div class="monitor-empty">Tidak ada order OPEN dengan ETD pada tanggal ini.</div>`;
+    list.innerHTML = rows.length ? rows.map(row => `<div class="monitor-alert" onclick="openProgressRowFromMonitoring(${allProgressRows.indexOf(row)})"><div class="monitor-alert-main"><div class="monitor-alert-title">${escapeHTML(monitoringRowLabel(row))}</div><div class="monitor-alert-sub">QTY: ${escapeHTML(getCellValue(row,5)||"-")} · CCT: ${escapeHTML(getCellValue(row,4)||"-")}</div></div><span class="monitor-badge">OPEN</span></div>`).join("") : `<div class="monitor-empty">Tidak ada ASSY/WP OPEN dengan ETD pada tanggal ini.</div>`;
     detail.style.display = "block";
 }
 
@@ -10886,7 +10935,7 @@ function closeMonitoringJobModal() {
 function openMonitoringTimelineFirst() {
     const row = monitoringOpenRows()[0];
     if (row) openMonitoringJob(row);
-    else alert("Belum ada order OPEN untuk ditampilkan.");
+    else alert("Belum ada ASSY/WP OPEN untuk ditampilkan.");
 }
 
 function renderMonitoringJobList() {
@@ -10896,7 +10945,7 @@ function renderMonitoringJobList() {
     box.innerHTML = rows.length ? rows.map(row => {
         const idx = allProgressRows.indexOf(row);
         return `<div class="monitor-alert" onclick="openMonitoringJob(allProgressRows[${idx}])"><div class="monitor-alert-main"><div class="monitor-alert-title">${escapeHTML(monitoringRowLabel(row))}</div><div class="monitor-alert-sub">ETD: ${escapeHTML(getCellValue(row,7)||"-")} · QTY: ${escapeHTML(getCellValue(row,5)||"-")} · Lead Time: ${escapeHTML(getCellValue(row,11)||"-")}</div></div><span class="monitor-badge">DETAIL</span></div>`;
-    }).join("") : `<div class="monitor-empty">Tidak ada order OPEN.</div>`;
+    }).join("") : `<div class="monitor-empty">Tidak ada ASSY/WP OPEN.</div>`;
 }
 
 function printMonitoringReport() {
@@ -11124,7 +11173,7 @@ function stage6OpenFilter(type) {
     const m = monitoringMetrics();
     const rows = type === "open" ? m.rows : type === "overdue" ? m.overdueRows : m.etd3Rows;
     const label = type === "open" ? "OPEN" : type === "overdue" ? "OVERDUE" : "ETD ≤ 3 HARI";
-    stage6RowsPopup(rows, `Detail ${label}`, `${rows.length} job`);
+    stage6RowsPopup(rows, `Detail ${label}`, `${getUniqueUnitCounts(rows).assy} ASSY · ${getUniqueUnitCounts(rows).wp} WP`);
 }
 
 function stage6OpenProcess(processName) {
@@ -11221,9 +11270,8 @@ function printStage6Report() {
 <script>
 (function(){
 function greeting(){const h=new Date().getHours(),t=document.getElementById('dashboardGreetingTitle'),i=document.getElementById('dashboardGreetingIcon'),s=document.getElementById('dashboardGreetingSub');if(!t||!i||!s)return;if(h>=5&&h<11){i.textContent='☀️';t.textContent='Good Morning! 👋';s.textContent='Semoga monitoring hari ini berjalan lancar.'}else if(h<17){i.textContent='🌤️';t.textContent='Good Afternoon! 👋';s.textContent='Yuk, cek progress dan pekerjaan yang perlu perhatian.'}else{i.textContent='🌙';t.textContent='Good Evening! 👋';s.textContent='Saatnya memastikan semua pekerjaan tetap terpantau.'}}
-function assistant(){const b=document.getElementById('monitorAssistantBody');if(!b)return;const open=typeof monitoringOpenRows==='function'?monitoringOpenRows():[],probs=(typeof allProblemRows!=='undefined'?allProblemRows:[]).filter(r=>typeof getProblemValue==='function'&&typeof PROBLEM_COLUMNS!=='undefined'&&String(getProblemValue(r,PROBLEM_COLUMNS.STATUS)||'').trim().toUpperCase()==='OPEN');let overdue=0,etd3=0,res=0;if(typeof monitoringMetrics==='function'){const m=monitoringMetrics();overdue=+m.overdue||0;etd3=+m.etd3||0;res=+m.reschedule||0}const proc=typeof monitoringProcessWorkload==='function'?monitoringProcessWorkload().filter(x=>x.qty>0).sort((a,b)=>b.qty-a.qty)[0]:null;let a='🎯 Keep monitoring! Data masih memiliki pekerjaan yang perlu diperhatikan.';if(!open.length)a='🏆 ALL CLEAR! Tidak ada order OPEN saat ini.';else if(!probs.length)a='🏆 PROBLEM FREE! Tidak ada Problem OPEN saat ini.';else if(!overdue)a='✨ NO OVERDUE! Tidak ada order overdue saat ini.';b.innerHTML=`<div class="assistant-item">📦 <strong>${open.length.toLocaleString('id-ID')} order OPEN</strong> sedang dalam monitoring.</div><div class="assistant-item">⏰ <strong>${overdue.toLocaleString('id-ID')} overdue</strong> · ${etd3.toLocaleString('id-ID')} ETD ≤ 3 hari · ${res.toLocaleString('id-ID')} reschedule.</div><div class="assistant-item">⚠️ <strong>${probs.length.toLocaleString('id-ID')} problem OPEN</strong> terdeteksi.</div>${proc?`<div class="assistant-item">👀 Workload terbesar: <strong>${escapeHTML(proc.name)}</strong> (${(+proc.qty).toLocaleString('id-ID')} OPEN QTY).</div>`:''}<div class="assistant-achievement">${a}</div>`}
-function toast(){const x=document.getElementById('achievementToast'),tx=document.getElementById('achievementToastText');if(!x||!tx)return;const open=typeof monitoringOpenRows==='function'?monitoringOpenRows():[];const probs=(typeof allProblemRows!=='undefined'?allProblemRows:[]).filter(r=>typeof getProblemValue==='function'&&typeof PROBLEM_COLUMNS!=='undefined'&&String(getProblemValue(r,PROBLEM_COLUMNS.STATUS)||'').trim().toUpperCase()==='OPEN');tx.textContent=!open.length?'Semua order sudah aman — tidak ada OPEN job. 🏆':!probs.length?'Tidak ada Problem OPEN. Nice! 🏆':'Semua data live sudah siap dipantau. 🚀';x.classList.add('show');clearTimeout(window.__achievementTimer);window.__achievementTimer=setTimeout(()=>x.classList.remove('show'),3500)}
-function init(){greeting();const btn=document.getElementById('monitorAssistantButton'),p=document.getElementById('monitorAssistantPanel'),c=document.getElementById('monitorAssistantClose');btn&&btn.addEventListener('click',()=>{assistant();p.classList.toggle('open');btn.setAttribute('aria-expanded',p.classList.contains('open')?'true':'false')});c&&c.addEventListener('click',()=>{p.classList.remove('open');btn.setAttribute('aria-expanded','false')});document.addEventListener('click',e=>{if(p.classList.contains('open')&&!p.contains(e.target)&&e.target!==btn)p.classList.remove('open')});setInterval(greeting,60000);window.__cuteAchievement=toast;window.__cuteAssistant=assistant}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+function assistant(){const b=document.getElementById('monitorAssistantBody');if(!b)return;const open=typeof monitoringOpenRows==='function'?monitoringOpenRows():[],probs=(typeof allProblemRows!=='undefined'?allProblemRows:[]).filter(r=>typeof getProblemValue==='function'&&typeof PROBLEM_COLUMNS!=='undefined'&&String(getProblemValue(r,PROBLEM_COLUMNS.STATUS)||'').trim().toUpperCase()==='OPEN');let m={};if(typeof monitoringMetrics==='function'){m=monitoringMetrics()||{}}const openAssy=+m.openAssy||getUniqueUnitCounts(open).assy,openWp=+m.openWp||getUniqueUnitCounts(open).wp,overdueAssy=+m.overdueAssy||0,overdueWp=+m.overdueWp||0,etd3Assy=+m.etd3Assy||0,etd3Wp=+m.etd3Wp||0,resAssy=+m.rescheduleAssy||0,resWp=+m.rescheduleWp||0;const proc=typeof monitoringProcessWorkload==='function'?monitoringProcessWorkload().filter(x=>x.qty>0).sort((a,b)=>b.qty-a.qty)[0]:null;let a='🎯 Keep monitoring! Data masih memiliki pekerjaan yang perlu diperhatikan.';if(!open.length)a='🏆 ALL CLEAR! Tidak ada ASSY/WP OPEN saat ini.';else if(!probs.length)a='🏆 PROBLEM FREE! Tidak ada Problem OPEN saat ini.';else if(!overdueAssy&&!overdueWp)a='✨ NO OVERDUE! Tidak ada ASSY/WP overdue saat ini.';b.innerHTML=`<div class="assistant-item">📦 <strong>${openAssy.toLocaleString('id-ID')} ASSY · ${openWp.toLocaleString('id-ID')} WP OPEN</strong> sedang dalam monitoring.</div><div class="assistant-item">⏰ <strong>${overdueAssy.toLocaleString('id-ID')} ASSY · ${overdueWp.toLocaleString('id-ID')} WP overdue</strong> · ${etd3Assy.toLocaleString('id-ID')} ASSY · ${etd3Wp.toLocaleString('id-ID')} WP ETD ≤ 3 hari · ${resAssy.toLocaleString('id-ID')} ASSY · ${resWp.toLocaleString('id-ID')} WP reschedule.</div><div class="assistant-item">⚠️ <strong>${probs.length.toLocaleString('id-ID')} problem OPEN</strong> terdeteksi.</div>${proc?`<div class="assistant-item">👀 Workload terbesar: <strong>${escapeHTML(proc.name)}</strong> (${(+proc.qty).toLocaleString('id-ID')} OPEN QTY).</div>`:''}<div class="assistant-achievement">${a}</div>`;}
+window.__cuteAssistant=assistant;
 })();
 </script>
 
@@ -11578,16 +11626,16 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
 (function(){
   const q=id=>document.getElementById(id);
   function nums(){
-    let open=0,overdue=0,etd3=0,reschedule=0,problemOpen=0,bottleneck='-',bottleneckQty=0;
-    try{open=typeof monitoringOpenRows==='function'?monitoringOpenRows().length:0}catch(e){}
-    try{const m=typeof monitoringMetrics==='function'?monitoringMetrics():{};overdue=+m.overdue||0;etd3=+m.etd3||0;reschedule=+m.reschedule||0}catch(e){}
+    let open=0,openAssy=0,openWp=0,overdue=0,overdueAssy=0,overdueWp=0,etd3=0,etd3Assy=0,etd3Wp=0,reschedule=0,rescheduleAssy=0,rescheduleWp=0,problemOpen=0,bottleneck='-',bottleneckQty=0;
+    try{open=typeof monitoringOpenRows==='function'?monitoringOpenRows().length:0;const c=typeof getUniqueUnitCounts==='function'?getUniqueUnitCounts(monitoringOpenRows()):{assy:0,wp:0};openAssy=c.assy;openWp=c.wp}catch(e){}
+    try{const m=typeof monitoringMetrics==='function'?monitoringMetrics():{};overdue=+m.overdue||0;overdueAssy=+m.overdueAssy||0;overdueWp=+m.overdueWp||0;etd3=+m.etd3||0;etd3Assy=+m.etd3Assy||0;etd3Wp=+m.etd3Wp||0;reschedule=+m.reschedule||0;rescheduleAssy=+m.rescheduleAssy||0;rescheduleWp=+m.rescheduleWp||0}catch(e){}
     try{problemOpen=(typeof allProblemRows!=='undefined'?allProblemRows:[]).filter(r=>typeof getProblemValue==='function'&&typeof PROBLEM_COLUMNS!=='undefined'&&String(getProblemValue(r,PROBLEM_COLUMNS.STATUS)||'').trim().toUpperCase()==='OPEN').length}catch(e){}
     try{const a=(typeof monitoringProcessWorkload==='function'?monitoringProcessWorkload():[]).sort((x,y)=>(+y.qty||0)-(+x.qty||0))[0];if(a){bottleneck=a.name;bottleneckQty=+a.qty||0}}catch(e){}
-    return {open,overdue,etd3,reschedule,problemOpen,bottleneck,bottleneckQty};
+    return {open,openAssy,openWp,overdue,overdueAssy,overdueWp,etd3,etd3Assy,etd3Wp,reschedule,rescheduleAssy,rescheduleWp,problemOpen,bottleneck,bottleneckQty};
   }
   function updateClock(){const d=new Date();q('cuteClock')&&(q('cuteClock').textContent=d.toLocaleTimeString('id-ID',{hour12:false,timeZone:'Asia/Jakarta'}));q('cuteDate')&&(q('cuteDate').textContent=d.toLocaleDateString('id-ID',{weekday:'long',day:'2-digit',month:'long',year:'numeric',timeZone:'Asia/Jakarta'}));}
-  function updateStatus(){const n=nums(),icon=q('cuteStatusIcon'),title=q('cuteStatusTitle'),sub=q('cuteStatusSub');let type='normal';if(n.overdue>=10||n.problemOpen>=20)type='critical';else if(n.overdue>0||n.etd3>0||n.problemOpen>0)type='attention';const map={normal:['😊','SYSTEM NORMAL','Semua sistem siap dipantau.'],attention:['😐','NEEDS ATTENTION',`${n.overdue} overdue · ${n.problemOpen} problem OPEN perlu dicek.`],critical:['😰','CRITICAL ATTENTION',`${n.overdue} overdue dan ${n.problemOpen} problem OPEN terdeteksi.`]};[icon,title,sub].forEach((x,i)=>x&&(x.textContent=map[type][i]));}
-  function focusHTML(){const n=nums();return `<div class="cute-focus-item" data-focus="overdue" role="button" tabindex="0" onclick="window.__focusCardClick('overdue')" title="Klik untuk melihat detail OVERDUE"><div class="icon">⏰</div><div class="label">OVERDUE</div><div class="value">${n.overdue}</div><div class="note">OPEN melewati ETD · Klik untuk detail</div></div><div class="cute-focus-item" data-focus="etd3" role="button" tabindex="0" onclick="window.__focusCardClick('etd3')" title="Klik untuk melihat detail ETD ≤ 3 HARI"><div class="icon">📅</div><div class="label">ETD ≤ 3 HARI</div><div class="value">${n.etd3}</div><div class="note">Segera dipantau · Klik untuk detail</div></div><div class="cute-focus-item" data-focus="reschedule" role="button" tabindex="0" onclick="window.__focusCardClick('reschedule')" title="Klik untuk melihat detail RESCHEDULE"><div class="icon">🔄</div><div class="label">RESCHEDULE</div><div class="value">${n.reschedule}</div><div class="note">Perubahan ETD · Klik untuk detail</div></div><div class="cute-focus-item" data-focus="problem" role="button" tabindex="0" onclick="window.__focusCardClick('problem')" title="Klik untuk melihat Problem OPEN"><div class="icon">⚠️</div><div class="label">PROBLEM OPEN</div><div class="value">${n.problemOpen}</div><div class="note">Perlu perhatian · Klik untuk detail</div></div><div class="cute-focus-item" data-focus="bottleneck" role="button" tabindex="0" onclick="window.__focusCardClick('bottleneck')" title="Klik untuk melihat Bottleneck"><div class="icon">👀</div><div class="label">BOTTLENECK</div><div class="value">${n.bottleneckQty}</div><div class="note">${n.bottleneck} · Klik untuk detail</div></div>`}
+  function updateStatus(){const n=nums(),icon=q('cuteStatusIcon'),title=q('cuteStatusTitle'),sub=q('cuteStatusSub');let type='normal';if(n.overdue>=10||n.problemOpen>=20)type='critical';else if(n.overdue>0||n.etd3>0||n.problemOpen>0)type='attention';const map={normal:['😊','SYSTEM NORMAL','Semua sistem siap dipantau.'],attention:['😐','NEEDS ATTENTION',`${n.overdue} ASSY/WP overdue · ${n.problemOpen} problem OPEN perlu dicek.`],critical:['😰','CRITICAL ATTENTION',`${n.overdue} ASSY/WP overdue dan ${n.problemOpen} problem OPEN terdeteksi.`]};[icon,title,sub].forEach((x,i)=>x&&(x.textContent=map[type][i]));}
+  function focusHTML(){const n=nums();return `<div class="cute-focus-item" data-focus="overdue" role="button" tabindex="0" onclick="window.__focusCardClick('overdue')" title="Klik untuk melihat detail OVERDUE"><div class="icon">⏰</div><div class="label">OVERDUE</div><div class="value">${n.overdueAssy} ASSY · ${n.overdueWp} WP</div><div class="note">OPEN melewati ETD · Klik untuk detail</div></div><div class="cute-focus-item" data-focus="etd3" role="button" tabindex="0" onclick="window.__focusCardClick('etd3')" title="Klik untuk melihat detail ETD ≤ 3 HARI"><div class="icon">📅</div><div class="label">ETD ≤ 3 HARI</div><div class="value">${n.etd3Assy} ASSY · ${n.etd3Wp} WP</div><div class="note">Segera dipantau · Klik untuk detail</div></div><div class="cute-focus-item" data-focus="reschedule" role="button" tabindex="0" onclick="window.__focusCardClick('reschedule')" title="Klik untuk melihat detail RESCHEDULE"><div class="icon">🔄</div><div class="label">RESCHEDULE</div><div class="value">${n.rescheduleAssy} ASSY · ${n.rescheduleWp} WP</div><div class="note">Perubahan ETD · Klik untuk detail</div></div><div class="cute-focus-item" data-focus="problem" role="button" tabindex="0" onclick="window.__focusCardClick('problem')" title="Klik untuk melihat Problem OPEN"><div class="icon">⚠️</div><div class="label">PROBLEM OPEN</div><div class="value">${n.problemOpen} problem</div><div class="note">Perlu perhatian · Klik untuk detail</div></div><div class="cute-focus-item" data-focus="bottleneck" role="button" tabindex="0" onclick="window.__focusCardClick('bottleneck')" title="Klik untuk melihat Bottleneck"><div class="icon">👀</div><div class="label">BOTTLENECK</div><div class="value">${n.bottleneckQty} QTY</div><div class="note">${n.bottleneck} · Klik untuk detail</div></div>`}
   window.__focusCardClick = function(type){
     try{
       // PROBLEM OPEN already has its own dedicated detail flow.
@@ -11627,7 +11675,7 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
 
         // Primary action: open the existing detail modal used by Monitoring.
         if(typeof stage6RowsPopup==='function'){
-          stage6RowsPopup(rows, `Detail ${route.label}`, `${rows.length} job`);
+          stage6RowsPopup(rows, `Detail ${route.label}`, `${getUniqueUnitCounts(rows).assy} ASSY · ${getUniqueUnitCounts(rows).wp} WP`);
           return;
         }
 
@@ -11657,10 +11705,10 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
   // Compatibility alias: older Focus Today delegated handlers call focusCardClick directly.
   window.focusCardClick = window.__focusCardClick;
   function updateFocus(){const g=q('cuteFocusGrid');if(g)g.innerHTML=focusHTML();const n=nums();if(q('cuteNotificationCount'))q('cuteNotificationCount').textContent=Math.min(99,[n.overdue,n.reschedule,n.problemOpen,n.etd3,n.bottleneckQty].filter(v=>v>0).length);}
-  function notifications(){const n=nums();const arr=[];if(n.overdue>0)arr.push(['🔴','ALERT BARU',`${n.overdue} order sudah melewati ETD dan perlu ditindaklanjuti.`,n.overdue]);if(n.reschedule>0)arr.push(['🔄','PERUBAHAN JADWAL',`${n.reschedule} order mengalami perubahan ETD/reschedule.`,n.reschedule]);if(n.problemOpen>0)arr.push(['⚠️','PROBLEM AKTIF',`${n.problemOpen} problem masih OPEN dan belum ditutup.`,n.problemOpen]);if(n.etd3>0)arr.push(['🟠','DEADLINE MENDEKAT',`${n.etd3} order memiliki ETD dalam 3 hari ke depan.`,n.etd3]);if(n.bottleneckQty>0)arr.push(['📍','PROSES TERBEBANI',`${n.bottleneck} sedang memiliki ${n.bottleneckQty} OPEN QTY.`,n.bottleneckQty]);const body=q('cuteNotificationBody');if(body)body.innerHTML='<div class="cute-notif-intro"><strong>Update monitoring terbaru</strong><small>Notifikasi berisi alert/perubahan yang perlu diketahui, bukan daftar fokus kerja.</small></div>'+(arr.length?arr.map((x,i)=>`<div class="cute-notif-item is-clickable" data-notif-index="${i}" role="button" tabindex="0"><div class="ni">${x[0]}</div><div><strong>${x[1]}</strong><small>${x[2]}</small></div><b>${x[3]}</b></div>`).join(''):'<div class="cute-empty-state"><div class="big">✅</div><strong>Tidak ada notifikasi baru</strong><span>Belum ada perubahan atau alert yang perlu diberitahukan.</span></div>');}
+  function notifications(){const n=nums();const arr=[];if(n.overdue>0)arr.push(['🔴','ALERT BARU',`${n.overdueAssy} ASSY · ${n.overdueWp} WP sudah melewati ETD dan perlu ditindaklanjuti.`,`${n.overdueAssy} ASSY · ${n.overdueWp} WP`]);if(n.reschedule>0)arr.push(['🔄','PERUBAHAN JADWAL',`${n.rescheduleAssy} ASSY · ${n.rescheduleWp} WP mengalami perubahan ETD/reschedule.`,`${n.rescheduleAssy} ASSY · ${n.rescheduleWp} WP`]);if(n.problemOpen>0)arr.push(['⚠️','PROBLEM AKTIF',`${n.problemOpen} problem masih OPEN dan belum ditutup.`,`${n.problemOpen} problem`]);if(n.etd3>0)arr.push(['🟠','DEADLINE MENDEKAT',`${n.etd3Assy} ASSY · ${n.etd3Wp} WP memiliki ETD dalam 3 hari ke depan.`,`${n.etd3Assy} ASSY · ${n.etd3Wp} WP`]);if(n.bottleneckQty>0)arr.push(['📍','PROSES TERBEBANI',`${n.bottleneck} sedang memiliki ${n.bottleneckQty} QTY OPEN.`,`${n.bottleneckQty} QTY`]);const body=q('cuteNotificationBody');if(body)body.innerHTML='<div class="cute-notif-intro"><strong>Update monitoring terbaru</strong><small>Notifikasi berisi alert/perubahan yang perlu diketahui, bukan daftar fokus kerja.</small></div>'+(arr.length?arr.map((x,i)=>`<div class="cute-notif-item is-clickable" data-notif-index="${i}" role="button" tabindex="0"><div class="ni">${x[0]}</div><div><strong>${x[1]}</strong><small>${x[2]}</small></div><b>${x[3]}</b></div>`).join(''):'<div class="cute-empty-state"><div class="big">✅</div><strong>Tidak ada notifikasi baru</strong><span>Belum ada perubahan atau alert yang perlu diberitahukan.</span></div>');}
   function openModal(id){const x=q(id);if(x){x.classList.add('open');x.setAttribute('aria-hidden','false')}}
   function closeAll(){document.querySelectorAll('.cute-modal').forEach(x=>{x.classList.remove('open');x.setAttribute('aria-hidden','true')})}
-  function focusDetails(){const n=nums();const body=q('cuteFocusBody');if(!body)return;const items=[['⏰','OVERDUE',n.overdue+' order OPEN melewati ETD.','overdue'],['📅','ETD ≤ 3 HARI',n.etd3+' order perlu dipantau dalam waktu dekat.','etd3'],['🔄','RESCHEDULE',n.reschedule+' order mengalami perubahan ETD.','reschedule'],['⚠️','PROBLEM OPEN',n.problemOpen+' problem masih OPEN.','problem'],['👀','BOTTLENECK',(n.bottleneck==='-'?'Belum ada':n.bottleneck)+' · '+n.bottleneckQty+' OPEN QTY.','bottleneck']];body.innerHTML=items.map(x=>`<div class="cute-notif-item is-clickable" data-focus-detail="${x[3]}" role="button" tabindex="0" onclick="window.__focusCardClick('${x[3]}')" title="Klik untuk membuka detail"><div class="ni">${x[0]}</div><div><strong>${x[1]}</strong><small>${x[2]}</small></div><span class="focus-detail-badge">DETAIL</span></div>`).join('')+(items.every(x=>!String(x[2]).match(/\d+/)||Number((x[2].match(/\d+/)||['0'])[0])===0)?'<div class="cute-empty-state"><div class="big">🎉</div><strong>All clear!</strong><span>Tidak ada attention untuk hari ini.</span></div>':'')}
+  function focusDetails(){const n=nums();const body=q('cuteFocusBody');if(!body)return;const items=[['⏰','OVERDUE',n.overdueAssy+' ASSY · '+n.overdueWp+' WP OPEN melewati ETD.','overdue'],['📅','ETD ≤ 3 HARI',n.etd3Assy+' ASSY · '+n.etd3Wp+' WP perlu dipantau dalam waktu dekat.','etd3'],['🔄','RESCHEDULE',n.rescheduleAssy+' ASSY · '+n.rescheduleWp+' WP mengalami perubahan ETD.','reschedule'],['⚠️','PROBLEM OPEN',n.problemOpen+' problem masih OPEN.','problem'],['👀','BOTTLENECK',(n.bottleneck==='-'?'Belum ada':n.bottleneck)+' · '+n.bottleneckQty+' QTY OPEN.','bottleneck']];body.innerHTML=items.map(x=>`<div class="cute-notif-item is-clickable" data-focus-detail="${x[3]}" role="button" tabindex="0" onclick="window.__focusCardClick('${x[3]}')" title="Klik untuk membuka detail"><div class="ni">${x[0]}</div><div><strong>${x[1]}</strong><small>${x[2]}</small></div><span class="focus-detail-badge">DETAIL</span></div>`).join('')+(items.every(x=>!String(x[2]).match(/\d+/)||Number((x[2].match(/\d+/)||['0'])[0])===0)?'<div class="cute-empty-state"><div class="big">🎉</div><strong>All clear!</strong><span>Tidak ada attention untuk hari ini.</span></div>':'')}
   function openAssistant(){const btn=q('monitorAssistantButton'),panel=q('monitorAssistantPanel');if(typeof window.__cuteAssistant==='function')window.__cuteAssistant();if(panel){panel.classList.add('open');panel.setAttribute('aria-hidden','false')}if(btn)btn.setAttribute('aria-expanded','true')}
   function closeAssistant(){const panel=q('monitorAssistantPanel'),btn=q('monitorAssistantButton');if(panel)panel.classList.remove('open');if(btn)btn.setAttribute('aria-expanded','false')}
   function init(){updateClock();updateStatus();updateFocus();focusDetails();setInterval(updateClock,1000);setInterval(()=>{updateStatus();updateFocus();focusDetails()},5000);q('cuteNotificationBtn')?.addEventListener('click',()=>{notifications();openModal('cuteNotificationPanel')});q('cuteNotificationBody')?.addEventListener('click',e=>{const item=e.target.closest('.cute-notif-item[data-notif-index]');if(!item)return;const i=+item.dataset.notifIndex;const actions=['overdue','reschedule','problem','etd3','bottleneck'];const a=actions[i];closeAll();if(a==='problem'&&typeof stage6OpenProblem==='function')stage6OpenProblem();else if(a==='bottleneck'&&typeof monitorProcessBottleneck==='function')monitorProcessBottleneck();else if((a==='overdue'||a==='etd3'||a==='reschedule')&&typeof monitorFilter==='function')monitorFilter(a);});q('cuteFocusRefresh')?.addEventListener('click',()=>{updateStatus();updateFocus();focusDetails()});q('cuteQuickMain')?.addEventListener('click',()=>{q('cuteQuickMain').classList.toggle('open');q('cuteQuickMenu').classList.toggle('open')});document.querySelectorAll('[data-close-cute]').forEach(x=>x.addEventListener('click',closeAll));document.querySelectorAll('#cuteQuickMenu button').forEach(b=>b.addEventListener('click',()=>{const a=b.dataset.action;q('cuteQuickMain').classList.remove('open');q('cuteQuickMenu').classList.remove('open');if(a==='assistant')openAssistant();if(a==='focus'){if(typeof showPage==='function')showPage('progress');focusDetails();openModal('cuteFocusPanel')}if(a==='progress'&&typeof showPage==='function')showPage('progress');if(a==='problem'&&typeof showPage==='function')showPage('problem');if(a==='report'&&typeof showPage==='function')showPage('report')}));q('cuteFocusGrid')?.addEventListener('click',e=>{const item=e.target.closest('.cute-focus-item');if(!item)return;/* inline onclick handles the action */});q('cuteFocusGrid')?.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const item=e.target.closest('.cute-focus-item');if(!item)return;e.preventDefault();window.__focusCardClick(item.dataset.focus)});let clicks=0,last=0;q('dashboardGreeting')?.addEventListener('click',()=>{const now=Date.now();clicks=now-last<800?clicks+1:1;last=now;if(clicks>=5){clicks=0;document.body.classList.add('secret-monitor-mode');setTimeout(()=>document.body.classList.remove('secret-monitor-mode'),4000);alert('🎉 SECRET MONITORING MODE UNLOCKED! 🚀')}});}
@@ -11886,9 +11934,9 @@ function init(){greeting();const btn=document.getElementById('monitorAssistantBu
   }
   function fmt(n){return Number(n||0).toLocaleString('id-ID',{maximumFractionDigits:0});}
   function renderKpi(data){
-    const sum=k=>data.reduce((a,x)=>a+num(x[k]),0);q('wpKpiAssyIn').textContent=fmt(sum('assyIn'));q('wpKpiAssyOut').textContent=fmt(sum('assyOut'));q('wpKpiAssyBal').textContent=fmt(sum('assyBal'));q('wpKpiPcsBal').textContent=fmt(sum('pcsBal'));q('wpKpiCctBal').textContent=fmt(sum('cctBal'));
-    q('wpInsightActive').textContent=fmt(data.filter(x=>num(x.assyBal)||num(x.pcsBal)||num(x.cctBal)).length);
-    q('wpInsightBalance').textContent=fmt(data.filter(x=>num(x.assyBal)||num(x.pcsBal)||num(x.cctBal)).reduce((a,x)=>a+num(x.assyBal)+num(x.pcsBal)+num(x.cctBal),0));
+    const sum=k=>data.reduce((a,x)=>a+num(x[k]),0);q('wpKpiAssyIn').textContent=fmt(sum('assyIn'))+' ASSY';q('wpKpiAssyOut').textContent=fmt(sum('assyOut'))+' ASSY';q('wpKpiAssyBal').textContent=fmt(sum('assyBal'))+' ASSY';q('wpKpiPcsBal').textContent=fmt(sum('pcsBal'))+' PCS';q('wpKpiCctBal').textContent=fmt(sum('cctBal'))+' CCT';
+    q('wpInsightActive').textContent=fmt(data.filter(x=>num(x.assyBal)||num(x.pcsBal)||num(x.cctBal)).length)+' WP';
+    q('wpInsightBalance').textContent=fmt(data.filter(x=>num(x.assyBal)||num(x.pcsBal)||num(x.cctBal)).reduce((a,x)=>a+num(x.assyBal)+num(x.pcsBal)+num(x.cctBal),0))+' total';
     const open=data.filter(x=>x.status==='OPEN').length,close=data.filter(x=>x.status==='CLOSE').length;q('wpInsightStatus').textContent=open?`${open} OPEN / ${close} CLOSE`:'CLOSE';
   }
   function renderChart(){
@@ -13975,4 +14023,9 @@ body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-focus-body .cute-no
 body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-focus-body .cute-notif-item.is-clickable small,
 body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-focus-body .cute-notif-item.is-clickable .focus-detail-badge{color:#24343d!important;-webkit-text-fill-color:#24343d!important;}
 body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-focus-body .cute-notif-item.is-clickable:hover{background:#e5edf1!important;}
+</style>
+
+<style id="assyWpKpiValueFix">
+  .kpi-value small{font-size:.62em;font-weight:700;opacity:.78;margin-left:4px;}
+  .kpi-value span{font-weight:800;}
 </style>
