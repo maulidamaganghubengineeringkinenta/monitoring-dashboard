@@ -2614,11 +2614,13 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart{height:176px!important;display:block!important;position:relative!important;overflow:visible!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-axis{height:100%!important;padding-bottom:22px!important;box-sizing:border-box!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{bottom:22px!important;}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{position:absolute!important;left:38px!important;right:0!important;top:0!important;bottom:0!important;height:auto!important;display:flex!important;align-items:flex-end!important;gap:3px!important;padding:7px 3px 19px!important;box-sizing:border-box!important;overflow:visible!important;z-index:5!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{position:absolute!important;left:38px!important;right:0!important;top:0!important;bottom:0!important;height:auto!important;display:flex!important;align-items:flex-end!important;gap:3px!important;padding:7px 3px 38px!important;box-sizing:border-box!important;overflow:visible!important;z-index:5!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-month{height:100%!important;min-height:0!important;align-items:flex-end!important;position:relative!important;padding:0!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar{max-height:none!important;min-height:2px!important;margin-bottom:0!important;}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{position:absolute!important;bottom:-17px!important;left:50%!important;transform:translateX(-50%)!important;font-size:7px!important;line-height:9px!important;font-weight:900!important;color:#35586d!important;white-space:nowrap!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{position:absolute!important;bottom:-29px!important;left:50%!important;transform:translateX(-50%)!important;font-size:8px!important;line-height:11px!important;font-weight:900!important;color:#244b64!important;white-space:nowrap!important;background:#fff!important;border:1px solid #d7e6f0!important;border-radius:3px!important;padding:1px 3px!important;min-width:22px!important;text-align:center!important;box-sizing:border-box!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-insights{margin-top:4px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart:after{content:""!important;position:absolute!important;left:38px!important;right:0!important;bottom:27px!important;border-top:1px solid #9db8c8!important;pointer-events:none!important;}
+
 /* Export-safe donut rings: SVG renders reliably in Preview and html2canvas/PDF. */
 #prototypeReportPage .v21-donut,#prototypeReportPage .v21-ach-donut{position:relative!important;overflow:visible!important;}
 #prototypeReportPage .v21-donut-svg,#prototypeReportPage .v21-ach-svg{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;transform:rotate(-90deg)!important;}
@@ -14828,87 +14830,6 @@ body.dashboard-dark:not(.login-locked) .unified-popup-row strong,body.dashboard-
   window.fitDailyReportPreview=fitV26;
 })();
 </script>
-
-<style id="v32-detail-text-larger">
-/* V32: Feature 11 gets larger, more readable text while keeping the card fully inside its allocated space. */
-#prototypeReportPage .v21-detail-grid{
-  height:89px!important;
-  min-height:89px!important;
-  padding:5px!important;
-  gap:5px!important;
-  box-sizing:border-box!important;
-}
-#prototypeReportPage .v21-detail-grid>.v21-detail{
-  height:auto!important;
-  min-height:0!important;
-  width:auto!important;
-  box-sizing:border-box!important;
-  padding:6px!important;
-  overflow:hidden!important;
-}
-#prototypeReportPage .v21-detail-top b{
-  font-size:8.5px!important;
-  line-height:1.15!important;
-}
-#prototypeReportPage .v21-detail-top i{
-  font-size:6.2px!important;
-  line-height:1.1!important;
-  padding:2px 4px!important;
-}
-#prototypeReportPage .v21-detail-line{
-  margin-top:5px!important;
-  font-size:6.8px!important;
-  line-height:1.2!important;
-}
-#prototypeReportPage .v21-detail-line strong{
-  font-size:6.8px!important;
-}
-#prototypeReportPage .v21-detail-qty{
-  margin-top:5px!important;
-  font-size:9px!important;
-  line-height:1.1!important;
-}
-</style>
-
-<style id="v33-report-final-layout">
-/* V33: structural month labels + larger Feature 11 typography. */
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart{
-  height:150px!important; flex:none!important; position:relative!important; overflow:visible!important;
-}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{
-  position:relative!important; left:auto!important; right:auto!important; top:auto!important; bottom:auto!important;
-  height:100%!important; padding:5px 3px 17px!important; gap:3px!important;
-  display:flex!important; align-items:flex-end!important; box-sizing:border-box!important; overflow:visible!important;
-}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month{
-  position:relative!important; flex:1 1 0!important; min-width:0!important; height:100%!important;
-  display:flex!important; align-items:flex-end!important; justify-content:center!important; gap:2px!important;
-}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{display:none!important;}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{bottom:17px!important;}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar b{font-size:5.6px!important;}
-#prototypeReportPage .v21-month-label-row{
-  display:grid!important; grid-template-columns:repeat(12,minmax(0,1fr))!important; gap:3px!important;
-  margin-left:38px!important; height:20px!important; min-height:20px!important;
-  padding:0 3px 0 0!important; box-sizing:border-box!important; align-items:center!important;
-}
-#prototypeReportPage .v21-month-label-row span{
-  display:block!important; min-width:0!important; text-align:center!important; white-space:nowrap!important;
-  font-size:8.5px!important; line-height:12px!important; font-weight:900!important; color:#244b64!important;
-  background:#fff!important; border:1px solid #b9d2e2!important; border-radius:3px!important; padding:1px 2px!important;
-  box-sizing:border-box!important; overflow:hidden!important;
-}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-insights{margin-top:3px!important; gap:4px!important;}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-insights div{padding:4px 5px!important;font-size:6px!important;}
-
-#prototypeReportPage .v21-detail-grid{height:89px!important;min-height:89px!important;padding:5px!important;gap:5px!important;}
-#prototypeReportPage .v21-detail-grid>.v21-detail{height:auto!important;min-height:0!important;padding:6px!important;box-sizing:border-box!important;overflow:hidden!important;}
-#prototypeReportPage .v21-detail-top b{font-size:9.5px!important;line-height:1.15!important;}
-#prototypeReportPage .v21-detail-top i{font-size:7px!important;line-height:1.1!important;padding:2px 4px!important;}
-#prototypeReportPage .v21-detail-line{margin-top:5px!important;font-size:7.5px!important;line-height:1.2!important;}
-#prototypeReportPage .v21-detail-line strong{font-size:7.5px!important;}
-#prototypeReportPage .v21-detail-qty{margin-top:5px!important;font-size:11.5px!important;line-height:1.1!important;}
-</style>
 </body>
 
 
@@ -15460,7 +15381,7 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
     const months=[...monthlyMap.entries()].slice(-12);
     const maxMonth=Math.max(1,...months.flatMap(x=>[x[1].plan,x[1].out]));
     const monthBars=months.length?months.map(([label,x])=>{return `<div class="v21-month"><div class="v21-bar plan" style="height:${Math.max(3,x.plan/maxMonth*100)}%"><b>${fmt(x.plan)}</b></div><div class="v21-bar out" style="height:${Math.max(3,x.out/maxMonth*100)}%"><b>${fmt(x.out)}</b></div></div>`}).join(''):'<div class="v21-empty">Belum ada data Loading EXP.</div>';
-    const monthLabels=months.length?months.map(([label])=>{const lab=String(label).replace(/\s+2026/i,'').slice(0,3);return `<span>${esc(lab)}</span>`}).join(''):'';
+    const monthLabels=months.map(([label])=>{const lab=String(label).replace(/\s+2026/i,'').slice(0,3);return `<span>${esc(lab)}</span>`}).join('');
     const ageTotal=Math.max(1,d.aging.reduce((s,x)=>s+x[1],0));
     const agePct=d.aging.map(x=>Math.round(x[1]/ageTotal*100));
     const a1=agePct[0]||0,a2=a1+(agePct[1]||0),a3=a2+(agePct[2]||0);
@@ -15949,4 +15870,130 @@ body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-focus-body .cute-no
 #prototypeReportPage .v21-detail{height:120px!important;min-height:120px!important;}
 #prototypeReportPage .v21-detail-grid{height:89px!important;}
 #prototypeReportPage .v21-footer{height:5px!important;min-height:5px!important;font-size:5.5px!important;}
+</style>
+
+<style id="v31-daily-report-chart-month-final">
+/* V31: month labels are a distinct readable row below the bars, never overlaid on them. */
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart{height:176px!important;overflow:visible!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{padding:7px 3px 38px!important;align-items:flex-end!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{bottom:-29px!important;font-size:8px!important;line-height:11px!important;background:#ffffff!important;border:1px solid #b9d2e2!important;border-radius:3px!important;padding:1px 3px!important;z-index:20!important;color:#244b64!important;display:block!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar b{font-size:5.5px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{bottom:28px!important;}
+</style>
+
+<style id="v32-daily-report-final-layout">
+/* V32 — unify readable typography across report cards and keep No.1 chart bars separate from month labels. */
+#prototypeReportPage .v21-report{
+  grid-template-rows:72px 96px 277px 190px 140px 115px 10px!important;
+  height:960px!important;
+  overflow:hidden!important;
+}
+/* Shared readable type scale for feature bodies. */
+#prototypeReportPage .v21-card-body{font-size:7px!important;}
+#prototypeReportPage .v21-legend{font-size:7px!important;}
+#prototypeReportPage .v21-note,
+#prototypeReportPage .v21-action,
+#prototypeReportPage .v21-callout,
+#prototypeReportPage .v21-trend-legend,
+#prototypeReportPage .v21-empty{font-size:7px!important;line-height:1.3!important;}
+#prototypeReportPage .v21-bars span{font-size:7px!important;}
+#prototypeReportPage .v21-bars strong{font-size:7.5px!important;}
+#prototypeReportPage .v21-problem b{font-size:7.5px!important;}
+#prototypeReportPage .v21-problem span,
+#prototypeReportPage .v21-problem small{font-size:6.8px!important;}
+#prototypeReportPage .v21-load-row{font-size:7px!important;}
+#prototypeReportPage .v21-load-row b{font-size:7.5px!important;}
+#prototypeReportPage .v21-load-row span{font-size:6.8px!important;}
+#prototypeReportPage .v21-att-grid{font-size:7px!important;}
+#prototypeReportPage .v21-att-grid span{font-size:7px!important;}
+#prototypeReportPage .v21-detail-grid{font-size:7px!important;}
+#prototypeReportPage .v21-detail-grid>.v21-detail{height:74px!important;min-height:74px!important;padding:5px!important;}
+#prototypeReportPage .v21-detail-top b{font-size:7.5px!important;line-height:1.15!important;}
+#prototypeReportPage .v21-detail-top i{font-size:5.8px!important;padding:2px 3px!important;}
+#prototypeReportPage .v21-detail-line{margin-top:3px!important;font-size:6.8px!important;line-height:1.2!important;}
+#prototypeReportPage .v21-detail-qty{margin-top:3px!important;font-size:8px!important;line-height:1!important;}
+#prototypeReportPage .v21-insights{font-size:7px!important;line-height:1.25!important;}
+#prototypeReportPage .v21-insights div{font-size:7px!important;}
+
+/* No.1 — the chart owns only the bars; labels get their own row, so bars never get pushed down/tenggelam. */
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart{
+  height:145px!important;
+  display:block!important;
+  position:relative!important;
+  overflow:hidden!important;
+  flex:none!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-axis{
+  height:145px!important;
+  padding-bottom:0!important;
+  box-sizing:border-box!important;
+  font-size:6.5px!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{
+  bottom:0!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{
+  position:absolute!important;
+  left:38px!important;
+  right:0!important;
+  top:0!important;
+  bottom:0!important;
+  height:auto!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  gap:3px!important;
+  padding:4px 3px 0!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  z-index:4!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month{
+  height:100%!important;
+  min-height:0!important;
+  align-items:flex-end!important;
+  overflow:hidden!important;
+  position:relative!important;
+  padding:0!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar{
+  max-height:140px!important;
+  min-height:2px!important;
+  margin-bottom:0!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar b{font-size:6px!important;}
+#prototypeReportPage .v21-month-label-row{
+  margin-left:38px!important;
+  display:grid!important;
+  grid-template-columns:repeat(12,minmax(0,1fr))!important;
+  gap:3px!important;
+  height:20px!important;
+  min-height:20px!important;
+  align-items:center!important;
+  padding:0 3px!important;
+  box-sizing:border-box!important;
+}
+#prototypeReportPage .v21-month-label-row span{
+  display:block!important;
+  min-width:0!important;
+  font-size:8px!important;
+  line-height:12px!important;
+  font-weight:900!important;
+  color:#244b64!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  background:#fff!important;
+  border:1px solid #b9d2e2!important;
+  border-radius:3px!important;
+  padding:1px 2px!important;
+  box-sizing:border-box!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-insights{
+  margin-top:4px!important;
+  gap:4px!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-insights div{padding:4px 5px!important;}
+
+/* Keep No.11 comfortably readable without changing its card geometry. */
+#prototypeReportPage .v21-detail{height:115px!important;min-height:115px!important;overflow:hidden!important;}
+#prototypeReportPage .v21-detail-grid{height:84px!important;min-height:84px!important;padding:4px!important;gap:4px!important;overflow:hidden!important;}
 </style>
