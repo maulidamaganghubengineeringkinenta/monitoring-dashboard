@@ -14371,6 +14371,94 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
 .pr-footer{height:14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #d5e1e7;margin-top:1px;padding-top:4px;font-size:5.5px;color:#7a8c96}
 .pr-small-title{font-size:6px;color:#71828c;margin:4px 0 6px}.pr-empty{font-size:6.5px;color:#71828c;padding:10px;text-align:center;border:1px dashed #cbd9e0;border-radius:6px}
 @media(max-width:900px){.prototype-report-stage{padding:8px}.prototype-report-modal{width:100vw;height:100vh;border-radius:0}.prototype-report-page{transform-origin:top left}}
+
+/* DAILY REPORT READABILITY PASS V4 — larger, clearer typography while preserving one-page layout */
+.prototype-report-page .pr-brand{font-size:12px!important;letter-spacing:2.8px!important}
+.prototype-report-page .pr-title{font-size:31px!important;line-height:.98!important}
+.prototype-report-page .pr-sub{font-size:10px!important;line-height:1.25!important}
+.prototype-report-page .pr-meta{grid-template-columns:repeat(2,190px)!important;gap:5px 7px!important}
+.prototype-report-page .pr-meta div{font-size:8px!important;padding:5px 7px!important}
+.prototype-report-page .pr-meta strong{font-size:9px!important}
+.prototype-report-page .pr-kpi{padding:8px 10px!important}
+.prototype-report-page .pr-kpi-label{font-size:8.5px!important;letter-spacing:.55px!important}
+.prototype-report-page .pr-kpi-value{font-size:30px!important;margin-top:5px!important}
+.prototype-report-page .pr-kpi-sub{font-size:8px!important;margin-top:5px!important}
+.prototype-report-page .pr-box-head{height:29px!important;padding:0 10px!important;font-size:11px!important}
+.prototype-report-page .pr-box-head small{font-size:8px!important}
+.prototype-report-page .pr-box-body{height:calc(100% - 29px)!important;padding:9px 10px!important}
+.prototype-report-page .pr-open-big{font-size:35px!important}
+.prototype-report-page .pr-open-caption{font-size:8px!important}
+.prototype-report-page .pr-chip{min-width:58px!important;padding:5px 7px!important}
+.prototype-report-page .pr-chip b{font-size:14px!important}
+.prototype-report-page .pr-chip span{font-size:7px!important}
+.prototype-report-page .pr-priority-list{gap:6px!important}
+.prototype-report-page .pr-priority{padding:6px 7px!important}
+.prototype-report-page .pr-priority strong{font-size:9px!important}
+.prototype-report-page .pr-status{font-size:7px!important;padding:2px 5px!important}
+.prototype-report-page .pr-priority-line{font-size:7px!important;margin-top:3px!important}
+.prototype-report-page .pr-bar-list{gap:7px!important}
+.prototype-report-page .pr-bar-row{grid-template-columns:94px 1fr 30px!important;gap:7px!important}
+.prototype-report-page .pr-bar-label{font-size:8px!important}
+.prototype-report-page .pr-bar-track{height:9px!important}
+.prototype-report-page .pr-bar-value{font-size:8.5px!important}
+.prototype-report-page .pr-note{font-size:8px!important;line-height:1.35!important}
+.prototype-report-page .pr-aging-chart{grid-template-columns:1fr 82px!important;gap:9px!important}
+.prototype-report-page .pr-donut{width:82px!important;height:82px!important}
+.prototype-report-page .pr-donut-inner{width:55px!important;height:55px!important}
+.prototype-report-page .pr-donut-inner b{font-size:14px!important}
+.prototype-report-page .pr-donut-inner span{font-size:6px!important}
+.prototype-report-page .pr-aging-legend{gap:6px!important}
+.prototype-report-page .pr-aging-legend div{font-size:7.5px!important}
+.prototype-report-page .pr-aging-summary{gap:5px!important;margin-top:8px!important}
+.prototype-report-page .pr-aging-summary span{padding:6px 4px!important;font-size:7px!important}
+.prototype-report-page .pr-aging-summary b{font-size:10px!important}
+.prototype-report-page .pr-alert-grid{gap:6px!important}
+.prototype-report-page .pr-alert{padding:6px!important}
+.prototype-report-page .pr-alert strong{font-size:19px!important}
+.prototype-report-page .pr-alert span{font-size:7px!important;margin-top:4px!important}
+.prototype-report-page .pr-attention-list{gap:6px!important;margin-top:8px!important}
+.prototype-report-page .pr-attention-item{font-size:8px!important;padding:6px 7px!important}
+.prototype-report-page .pr-problem-list{gap:6px!important}
+.prototype-report-page .pr-problem-card{padding:7px 8px!important}
+.prototype-report-page .pr-problem-card strong{font-size:9px!important}
+.prototype-report-page .pr-problem-card span,.prototype-report-page .pr-problem-card p{font-size:7px!important}
+.prototype-report-page .pr-problem-card p{margin:3px 0!important;line-height:1.3!important}
+.prototype-report-page .pr-loading-kpis{gap:6px!important;margin-bottom:8px!important}
+.prototype-report-page .pr-load-kpi{padding:6px!important}
+.prototype-report-page .pr-load-kpi b{font-size:19px!important}
+.prototype-report-page .pr-load-kpi span{font-size:7px!important}
+.prototype-report-page .pr-loading-months{gap:5px!important}
+.prototype-report-page .pr-loading-month{padding:5px 6px!important}
+.prototype-report-page .pr-loading-month-head{font-size:7px!important}
+.prototype-report-page .pr-loading-month-values{gap:4px!important;margin-top:4px!important}
+.prototype-report-page .pr-loading-month-values div{padding:4px!important}
+.prototype-report-page .pr-loading-month-values b{font-size:10px!important}
+.prototype-report-page .pr-loading-month-values span{font-size:6px!important}
+.prototype-report-page .pr-month-chart{height:148px!important;gap:8px!important;padding-bottom:18px!important}
+.prototype-report-page .pr-month-bar{width:15px!important}
+.prototype-report-page .pr-month-bar em{font-size:7px!important}
+.prototype-report-page .pr-month-label{font-size:7px!important;bottom:-15px!important}
+.prototype-report-page .pr-chart-legend{gap:14px!important;margin-bottom:6px!important;font-size:7.5px!important}
+.prototype-report-page .pr-dot{width:8px!important;height:8px!important}
+.prototype-report-page .pr-achievement-grid{gap:6px!important}
+.prototype-report-page .pr-achievement{padding:10px 5px!important}
+.prototype-report-page .pr-achievement strong{font-size:24px!important}
+.prototype-report-page .pr-achievement span{font-size:7px!important;margin-top:4px!important}
+.prototype-report-page .pr-achievement-main{grid-template-columns:94px 1fr!important;gap:12px!important}
+.prototype-report-page .pr-achievement-donut{width:90px!important;height:90px!important}
+.prototype-report-page .pr-achievement-donut>div{width:62px!important;height:62px!important}
+.prototype-report-page .pr-achievement-donut b{font-size:16px!important}
+.prototype-report-page .pr-achievement-donut span{font-size:6px!important}
+.prototype-report-page .pr-detail-grid-list{gap:6px!important}
+.prototype-report-page .pr-detail-card{padding:7px 8px!important}
+.prototype-report-page .pr-detail-head strong{font-size:8.5px!important}
+.prototype-report-page .pr-detail-head span{font-size:7px!important}
+.prototype-report-page .pr-detail-grid{gap:4px!important;margin-top:5px!important}
+.prototype-report-page .pr-detail-grid span{font-size:6.5px!important;padding:4px 5px!important}
+.prototype-report-page .pr-detail-grid b{font-size:7.5px!important}
+.prototype-report-page .pr-tag{font-size:6px!important;padding:2px 5px!important}
+.prototype-report-page .pr-footer{font-size:6.5px!important}
+
 </style>
 
 
