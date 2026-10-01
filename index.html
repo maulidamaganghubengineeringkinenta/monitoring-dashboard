@@ -14649,6 +14649,64 @@ body.dashboard-dark:not(.login-locked) .unified-popup-row strong,body.dashboard-
   window.fitDailyReportPreview=fitV25;
 })();
 </script>
+
+<style id="v26-daily-report-final-fit">
+/* V26: final report geometry. Keep every section inside the 1440x960 canvas and give rows 5/6 enough height. */
+#prototypeReportPage .v21-report{
+  width:1440px!important;min-width:1440px!important;max-width:1440px!important;
+  height:960px!important;min-height:960px!important;max-height:960px!important;
+  box-sizing:border-box!important;overflow:hidden!important;
+  grid-template-rows:72px 96px 292px 175px 145px 112px 10px!important;
+  gap:6px!important;padding:10px!important;
+}
+#prototypeReportOverlay .prototype-report-page{
+  width:1440px!important;min-width:1440px!important;max-width:1440px!important;
+  height:960px!important;min-height:960px!important;max-height:960px!important;
+}
+/* Chart #1: reserve a little more room for the month labels and make them readable in PDF. */
+#prototypeReportPage .v21-chart{height:188px!important;}
+#prototypeReportPage .v21-months{padding-bottom:20px!important;gap:5px!important;}
+#prototypeReportPage .v21-month>span{font-size:7px!important;font-weight:800!important;bottom:1px!important;}
+#prototypeReportPage .v21-bar b{font-size:6px!important;}
+/* Features 5–7: prevent list content from being clipped. */
+#prototypeReportPage .v21-row-second{min-height:175px!important;}
+#prototypeReportPage .v21-row-second .v21-card{height:175px!important;}
+#prototypeReportPage .v21-row-second .v21-card-body{height:calc(100% - 31px)!important;overflow:hidden!important;}
+#prototypeReportPage .v21-problem-list{gap:6px!important;}
+#prototypeReportPage .v21-problem{padding:7px!important;}
+#prototypeReportPage .v21-load-row{padding:7px!important;}
+/* Feature 8–10 row gets enough vertical room too. */
+#prototypeReportPage .v21-row-third{min-height:145px!important;}
+#prototypeReportPage .v21-row-third .v21-card{height:145px!important;}
+/* Use the full report canvas; no artificial empty strip below. */
+#prototypeReportPage .v21-footer{min-height:10px!important;height:10px!important;}
+</style>
+<script>
+(function(){
+  const W=1440,H=960;
+  function fitV26(){
+    const overlay=document.getElementById('prototypeReportOverlay');
+    const stage=document.getElementById('prototypeReportStage');
+    const page=document.getElementById('prototypeReportPage');
+    if(!overlay||!stage||!page||!overlay.classList.contains('show')) return;
+    page.style.width=W+'px'; page.style.height=H+'px';
+    page.style.minWidth=W+'px'; page.style.maxWidth=W+'px';
+    page.style.minHeight=H+'px'; page.style.maxHeight=H+'px';
+    const sw=Math.max(1,stage.clientWidth-20), sh=Math.max(1,stage.clientHeight-20);
+    const scale=Math.min(1,sw/W,sh/H);
+    page.style.transform='scale('+scale+')';
+    page.style.transformOrigin='center center';
+    page.style.margin='0';
+    stage.scrollTop=0; stage.scrollLeft=0;
+  }
+  window.addEventListener('resize',fitV26);
+  const oldOpen=window.openReportPreview;
+  if(oldOpen) window.openReportPreview=async function(){await oldOpen();requestAnimationFrame(()=>requestAnimationFrame(fitV26));};
+  const oldFmt=window.setPrototypeReportFormat;
+  if(oldFmt) window.setPrototypeReportFormat=function(v){oldFmt(v);requestAnimationFrame(fitV26);};
+  window.fitDailyReportPreview=fitV26;
+})();
+</script>
 </body>
 
 
@@ -15300,10 +15358,12 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
       if(reportFormat==='image'){
         const a=document.createElement('a');a.download=filename+'.png';a.href=canvas.toDataURL('image/png');a.click();
       }else{
-        const {jsPDF}=window.jspdf;const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});
-        const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),margin=2;
-        const w=pw-margin*2,h=canvas.height*(w/canvas.width),scale=Math.min(1,(ph-margin*2)/h),dw=w*scale,dh=h*scale,x=(pw-dw)/2,y=(ph-dh)/2;
-        pdf.addImage(canvas.toDataURL('image/jpeg',.96),'JPEG',x,y,dw,dh);pdf.save(filename+'.pdf');
+        const {jsPDF}=window.jspdf;
+        /* V26: use a page with the exact report aspect ratio so the PDF has no bottom/side letterboxing. */
+        const pageWmm=360, pageHmm=240;
+        const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:[pageWmm,pageHmm],compress:true});
+        pdf.addImage(canvas.toDataURL('image/jpeg',.96),'JPEG',0,0,pageWmm,pageHmm);
+        pdf.save(filename+'.pdf');
       }
     }catch(e){console.error('Prototype Report download',e);alert('Report gagal dibuat. Pastikan koneksi internet tersedia untuk memuat engine export PDF/Image.');}
     finally{if(btn){btn.disabled=false;btn.textContent='⬇ Download Report'}}
