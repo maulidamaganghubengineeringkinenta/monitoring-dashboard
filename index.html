@@ -2404,6 +2404,94 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 @media(max-width:900px){#prototypeReportOverlay .prototype-report-page{width:100%!important;height:auto!important;min-height:990px!important;overflow:visible!important}.pr-reference-grid{grid-template-columns:1fr 1fr!important}.pr-open-grid{grid-template-columns:repeat(3,1fr)!important}.pr-detail-grid-list{grid-template-columns:repeat(3,1fr)!important}.pr-kpis{grid-template-columns:repeat(3,1fr)!important}}
 
 </style>
+<style id="prototypeReportFinalCleanLandscape">
+/* FINAL CLEAN LANDSCAPE — no clipped cards, no artificial empty gaps */
+#prototypeReportOverlay .prototype-report-stage{
+  padding:14px!important; overflow:auto!important; display:flex!important;
+  align-items:flex-start!important; justify-content:center!important;
+  background:#d7e2ee!important;
+}
+#prototypeReportOverlay .prototype-report-page{
+  width:1400px!important;height:990px!important;min-height:990px!important;max-height:990px!important;
+  padding:12px!important; margin:0 auto!important; box-sizing:border-box!important;
+  overflow:hidden!important; transform:none!important;
+  border-radius:10px!important;
+}
+#prototypeReportPage .pr-head{height:62px!important;margin:0 0 6px!important;padding:8px 14px!important;box-sizing:border-box!important}
+#prototypeReportPage .pr-brand{font-size:11px!important;letter-spacing:1.5px!important}
+#prototypeReportPage .pr-title{font-size:26px!important;line-height:1!important;margin:1px 0 3px!important}
+#prototypeReportPage .pr-sub{font-size:8.5px!important}
+#prototypeReportPage .pr-meta{gap:4px!important}
+#prototypeReportPage .pr-meta div{padding:4px 7px!important;min-width:105px!important}
+#prototypeReportPage .pr-meta strong{font-size:7.5px!important}
+#prototypeReportOverlay .pr-section{margin:0 0 6px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+#prototypeReportOverlay .pr-kpis{height:78px!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:6px!important}
+#prototypeReportOverlay .pr-kpi{height:78px!important;min-height:78px!important;padding:8px 10px!important;border-radius:8px!important}
+#prototypeReportOverlay .pr-kpi-label{font-size:8px!important}
+#prototypeReportOverlay .pr-kpi-value{font-size:27px!important;margin-top:4px!important;line-height:1!important}
+#prototypeReportOverlay .pr-kpi-sub{font-size:7px!important;margin-top:3px!important}
+/* Main four-column row */
+#prototypeReportOverlay .pr-reference-grid{height:292px!important;grid-template-columns:1.18fr 1fr 1fr 1.08fr!important;gap:6px!important}
+#prototypeReportOverlay .pr-reference-card{height:292px!important;min-height:292px!important;overflow:hidden!important;border-radius:8px!important}
+#prototypeReportOverlay .pr-reference-card .rh{font-size:10px!important;padding:6px 8px!important;height:26px!important;box-sizing:border-box!important}
+#prototypeReportOverlay .pr-reference-card .rb{padding:7px!important;box-sizing:border-box!important}
+#prototypeReportOverlay .pr-reference-card .big{font-size:23px!important;line-height:1!important}
+#prototypeReportOverlay .pr-reference-card .small{font-size:6.5px!important}
+#prototypeReportOverlay .pr-open-card{height:39px!important;min-height:39px!important;padding:4px 6px!important;margin-bottom:3px!important;border-radius:6px!important;box-sizing:border-box!important}
+#prototypeReportOverlay .pr-open-top strong{font-size:8px!important}
+#prototypeReportOverlay .pr-open-main{font-size:6.8px!important;margin-top:2px!important;line-height:1!important}
+#prototypeReportOverlay .pr-open-meta{font-size:5.8px!important;margin-top:2px!important;line-height:1!important}
+#prototypeReportOverlay .pr-alerts{grid-template-columns:repeat(4,1fr)!important;gap:4px!important}
+#prototypeReportOverlay .pr-alert{min-height:47px!important;padding:5px!important;border-radius:6px!important}
+#prototypeReportOverlay .pr-alert strong{font-size:20px!important}.pr-alert span{font-size:5.8px!important}
+#prototypeReportOverlay .pr-action{font-size:6.5px!important;margin:5px 0!important;gap:5px!important;line-height:1.2!important}
+#prototypeReportOverlay .pr-action i{width:17px!important;height:17px!important;flex:0 0 17px!important}
+#prototypeReportOverlay .pr-note{font-size:6.5px!important;padding:4px 5px!important;margin-top:4px!important;line-height:1.2!important}
+#prototypeReportOverlay .pr-bar-list{gap:5px!important}
+#prototypeReportOverlay .pr-bar-row{grid-template-columns:78px 1fr 24px!important;gap:5px!important}
+#prototypeReportOverlay .pr-bar-label{font-size:6.5px!important}.pr-bar-value{font-size:7px!important}.pr-bar-track{height:8px!important}
+/* Second row */
+#prototypeReportOverlay .pr-grid-3{grid-template-columns:1fr 1fr 1.15fr!important;gap:6px!important;height:158px!important}
+#prototypeReportOverlay .pr-grid-3>.pr-box{height:158px!important;min-height:158px!important;overflow:hidden!important;padding:7px!important;box-sizing:border-box!important;border-radius:8px!important}
+#prototypeReportOverlay .pr-box h4{font-size:8.5px!important;margin:0 0 5px!important}
+#prototypeReportOverlay .pr-problem-list,#prototypeReportOverlay .pr-loading-list{gap:3px!important;max-height:112px!important;overflow:hidden!important}
+#prototypeReportOverlay .pr-problem-card,#prototypeReportOverlay .pr-loading-card{padding:4px 5px!important;border-radius:5px!important}
+#prototypeReportOverlay .pr-problem-card strong,#prototypeReportOverlay .pr-loading-card strong{font-size:7px!important}
+#prototypeReportOverlay .pr-problem-card span,#prototypeReportOverlay .pr-problem-card p{font-size:5.7px!important}
+#prototypeReportOverlay .pr-problem-card p{margin:1px 0!important;line-height:1.15!important}
+#prototypeReportOverlay .pr-mini-grid{grid-template-columns:repeat(4,1fr)!important;gap:3px!important}
+#prototypeReportOverlay .pr-mini-grid .pr-kpi{height:44px!important;min-height:44px!important;padding:4px!important}
+#prototypeReportOverlay .pr-mini-grid .pr-kpi-value{font-size:16px!important}
+#prototypeReportOverlay .pr-loading-values{gap:3px!important;margin-top:3px!important}.pr-loading-values span{padding:3px!important}.pr-loading-values b{font-size:12px!important}.pr-loading-values small{font-size:5px!important}
+/* Third row */
+#prototypeReportOverlay .pr-grid-3:nth-of-type(2){height:140px!important}
+#prototypeReportOverlay .pr-grid-3:nth-of-type(2)>.pr-box{height:140px!important;min-height:140px!important}
+#prototypeReportOverlay .pr-spark{height:44px!important}
+#prototypeReportOverlay .pr-spark-labels span{font-size:5px!important}
+#prototypeReportOverlay .pr-donut{width:62px!important;height:62px!important}.pr-donut-inner{width:43px!important;height:43px!important}.pr-donut-inner b{font-size:13px!important}.pr-donut-inner span{font-size:5px!important}
+#prototypeReportOverlay .pr-achievement-grid{grid-template-columns:repeat(4,1fr)!important;gap:3px!important}.pr-achievement{min-height:52px!important;padding:4px!important}.pr-achievement strong{font-size:18px!important}.pr-achievement span{font-size:5.5px!important}
+/* Detail row */
+#prototypeReportOverlay .pr-section-title{height:21px!important;margin:0 0 4px!important;padding:0 7px!important;background:linear-gradient(90deg,#0757b8,#1688e8)!important;border-radius:5px!important}
+#prototypeReportOverlay .pr-section-title h3{font-size:10px!important}.pr-section-title span{font-size:6px!important}
+#prototypeReportOverlay .pr-detail-grid-list{grid-template-columns:repeat(6,1fr)!important;gap:4px!important;height:145px!important;overflow:hidden!important}
+#prototypeReportOverlay .pr-detail-card{height:145px!important;min-height:145px!important;padding:5px!important;border-radius:6px!important;box-sizing:border-box!important}
+#prototypeReportOverlay .pr-detail-head{font-size:6px!important}.pr-detail-head strong{font-size:8px!important}
+#prototypeReportOverlay .pr-detail-grid{font-size:5px!important;gap:3px!important;margin-top:3px!important}.pr-detail-grid span{padding:3px!important}.pr-detail-grid b{font-size:6px!important}.pr-tag{font-size:5px!important;padding:2px 3px!important}
+#prototypeReportOverlay .pr-footer{font-size:5.5px!important;margin-top:2px!important;padding-top:2px!important}
+/* Prevent internal chart/list overflow from cutting visible content. */
+#prototypeReportOverlay .pr-reference-card .rb,#prototypeReportOverlay .pr-box{min-width:0}
+#prototypeReportOverlay .pr-open-card,#prototypeReportOverlay .pr-problem-card,#prototypeReportOverlay .pr-loading-card,#prototypeReportOverlay .pr-detail-card{overflow:hidden!important}
+/* Dark mode remains saturated */
+#prototypeReportPage.dark{background:linear-gradient(135deg,#071426,#111b34 52%,#251326)!important}
+#prototypeReportPage.dark .pr-kpi{box-shadow:0 3px 10px rgba(0,0,0,.25)!important}
+@media print{
+  @page{size:A4 landscape;margin:0}
+  #prototypeReportOverlay{position:static!important;background:#fff!important}
+  #prototypeReportOverlay .prototype-report-modal{width:1400px!important;height:990px!important}
+  #prototypeReportOverlay .prototype-report-stage{padding:0!important;overflow:visible!important}
+  #prototypeReportOverlay .prototype-report-page{width:1400px!important;height:990px!important;min-height:990px!important;max-height:990px!important;transform:none!important;box-shadow:none!important}
+}
+</style>
 </head>
 
 <body class="login-locked">
@@ -14739,9 +14827,9 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
   function reportHtml(d){
     const t=d.t, closeU=units(d.closeToday), openU=units(d.open), overdueU=units(d.overdue), due7U=units(d.due7);
     const probCloseToday=d.probs.filter(r=>problemStatus(r)==='CLOSE'&&sameDay(dateOnly(cell(r,13)),t)).length;
-    const openRows=[...d.open].sort((a,b)=>{const da=dateOnly(cell(a,7)),db=dateOnly(cell(b,7));return (da?da.getTime():Infinity)-(db?db.getTime():Infinity)}).slice(0,12);
-    const problemRows=[...d.openProblems].sort((a,b)=>(problemAge(b)||0)-(problemAge(a)||0)).slice(0,6);
-    const loadRows=d.loadOpen.slice(0,4);
+    const openRows=[...d.open].sort((a,b)=>{const da=dateOnly(cell(a,7)),db=dateOnly(cell(b,7));return (da?da.getTime():Infinity)-(db?db.getTime():Infinity)}).slice(0,8);
+    const problemRows=[...d.openProblems].sort((a,b)=>(problemAge(b)||0)-(problemAge(a)||0)).slice(0,3);
+    const loadRows=d.loadOpen.slice(0,2);
     const maxProc=Math.max(1,...d.proc.map(x=>x.qty)), maxAge=Math.max(1,...d.aging.map(x=>x[1]));
     const todayLabel=t.toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'});
     const filters=activeFilters();
