@@ -15227,10 +15227,17 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
       exportNode.style.margin='0';
       exportNode.style.width='1440px';
       exportNode.style.height='960px';
+      exportNode.style.minWidth='1440px';
+      exportNode.style.minHeight='960px';
+      exportNode.style.maxWidth='1440px';
+      exportNode.style.maxHeight='960px';
       exportNode.style.zIndex='-99999';
       exportNode.style.pointerEvents='none';
       exportNode.setAttribute('data-export-clone','1');
       const host=document.createElement('div');
+      // IMPORTANT: the report styling is scoped to #prototypeReportPage .v21-report.
+      // Keep that exact selector context in the export clone so PDF/PNG matches Preview.
+      host.id='prototypeReportPage';
       host.style.cssText='position:fixed;left:0;top:0;width:1440px;height:960px;overflow:hidden;z-index:-99998;pointer-events:none;background:#f7fbff;';
       host.appendChild(exportNode);
       document.body.appendChild(host);
