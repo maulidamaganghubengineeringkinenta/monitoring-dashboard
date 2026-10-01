@@ -2510,7 +2510,36 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 #prototypeReportPage .v14-row3{grid-template-columns:1.18fr .95fr 1.12fr!important;gap:6px!important;height:145px!important}.v14-row3 .v14-box{height:145px!important;border:2px solid #a9cce7!important;border-radius:9px!important;background:#fff!important}.v14-trend-labels{padding:7px 10px 0!important;font-size:6px!important}.v14-trend{height:67px!important;margin:4px 10px 0!important;gap:7px!important}.v14-trend i{min-width:10px!important}.v14-note{font-size:6.5px!important;margin:5px 10px 0!important;padding:5px 7px!important}.v14-ach{gap:24px!important;height:110px!important;padding:0 16px!important}.v14-donut{width:78px!important;height:78px!important}.v14-donut:after{inset:10px!important}.v14-donut span{font-size:15px!important}.v14-ach>div:last-child b{font-size:27px!important}.v14-ach>div:last-child span,.v14-ach>div:last-child small{font-size:7px!important}.v14-today{gap:5px!important;padding:9px!important}.v14-today>div{padding:10px 3px!important}.v14-today b{font-size:24px!important}.v14-today span{font-size:5.8px!important}
 #prototypeReportPage .v14-detail{height:94px!important;border:2px solid #a9cce7!important;border-radius:9px!important;background:#fff!important}.v14-detail h4{height:28px!important;padding:6px 9px!important;font-size:10px!important;background:linear-gradient(90deg,#075bbd,#168ce1)!important}.v14-detail-grid{grid-template-columns:repeat(6,1fr)!important;gap:5px!important;padding:6px!important}.v14-detail-card{min-height:50px!important;padding:6px!important;border-radius:7px!important}.v14-detail-card b{font-size:7.5px!important}.v14-detail-card span{font-size:6px!important}.v14-footer{font-size:6.5px!important;padding:1px 3px!important;color:#698094!important;display:flex!important;justify-content:space-between!important;align-items:center!important}
 #prototypeReportOverlay .dark .prototype-report-page,#prototypeReportOverlay .dark .v14-report{background:#071522!important;color:#eaf5ff!important}#prototypeReportOverlay .dark .v14-kpi,#prototypeReportOverlay .dark .v14-panel,#prototypeReportOverlay .dark .v14-box,#prototypeReportOverlay .dark .v14-detail{background:linear-gradient(145deg,#10263a,#0b1b2a)!important;border-color:#2d648e!important;box-shadow:0 3px 10px rgba(0,0,0,.28)!important}#prototypeReportOverlay .dark .v14-kpi strong,#prototypeReportOverlay .dark .v14-big,#prototypeReportOverlay .dark .v14-ach>div:last-child b{color:#74b9ff!important}#prototypeReportOverlay .dark .v14-kpi small,#prototypeReportOverlay .dark .v14-kpi span,#prototypeReportOverlay .dark .v14-panel-body>small,#prototypeReportOverlay .dark .v14-open-meta,#prototypeReportOverlay .dark .v14-open-sub,#prototypeReportOverlay .dark .v14-footer{color:#a8c2d5!important}#prototypeReportOverlay .dark .v14-open-item{background:#102a40!important;border-color:#3d7396!important}#prototypeReportOverlay .dark .v14-open-item.danger{background:#2b1820!important}#prototypeReportOverlay .dark .v14-att-grid>div,#prototypeReportOverlay .dark .v14-load-kpis>div,#prototypeReportOverlay .dark .v14-today>div{background:#0d2233!important;border-color:#315b76!important}#prototypeReportOverlay .dark .v14-problem{background:#2c2119!important;border-color:#895b32!important}#prototypeReportOverlay .dark .v14-load-row{background:#17253b!important;border-color:#395978!important}#prototypeReportOverlay .dark .v14-donut:after{background:#0b1b2a!important}.dark .v14-donut span{color:#eaf5ff!important}
-</style></head>
+</style>
+<style id="v28-daily-report-layout-fix">
+/* V28: give feature 11 enough height while bringing month labels into the chart baseline. */
+#prototypeReportPage .v21-report{
+  grid-template-rows:70px 92px 270px 180px 130px 157px 5px!important;
+  gap:6px!important;
+  height:960px!important;
+  overflow:hidden!important;
+}
+/* Feature 1 — chart/months must occupy one visual baseline. */
+#prototypeReportPage .v21-row-main{height:270px!important;min-height:270px!important;}
+#prototypeReportPage .v21-row-main>.v21-card{height:270px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-card-body{height:calc(100% - 31px)!important;padding:6px 8px 5px!important;overflow:hidden!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-legend{height:12px!important;font-size:6px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart{height:160px!important;flex:none!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-axis{padding-bottom:9px!important;font-size:5.8px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{bottom:10px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{padding:4px 2px 7px!important;gap:3px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month{height:100%!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{font-size:6px!important;bottom:-1px!important;white-space:nowrap!important;line-height:8px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar b{font-size:5.3px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-insights{margin-top:3px!important;gap:4px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-insights div{padding:4px 5px!important;font-size:6px!important;}
+/* Feature 11 — restore a real bottom detail area; do not let it be squeezed. */
+#prototypeReportPage .v21-detail{height:157px!important;min-height:157px!important;overflow:hidden!important;}
+#prototypeReportPage .v21-detail-grid{height:126px!important;min-height:126px!important;padding:5px!important;gap:5px!important;}
+#prototypeReportPage .v21-detail-grid>.v21-detail{height:115px!important;min-height:115px!important;}
+#prototypeReportPage .v21-footer{height:5px!important;min-height:5px!important;font-size:5.5px!important;}
+</style>
+</head>
 
 <body class="login-locked">
 
