@@ -15880,80 +15880,61 @@ body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-focus-body .cute-no
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{bottom:28px!important;}
 </style>
 
-<style id="v32-daily-report-text-readable">
-/* V32: perbesar tipografi fitur 2–11 tanpa mengubah layout No.1. */
-#prototypeReportPage .v21-card-head{font-size:11.5px!important;}
-#prototypeReportPage .v21-card-head em{font-size:7.5px!important;}
-
-/* KPI 1–6 */
-#prototypeReportPage .v21-kpi small{font-size:8px!important;}
-#prototypeReportPage .v21-kpi strong{font-size:27px!important;}
-#prototypeReportPage .v21-kpi b{font-size:9px!important;}
-#prototypeReportPage .v21-kpi span{font-size:7.5px!important;}
-
-/* No.2 Open WIP Aging */
-#prototypeReportPage .aging .v21-donut strong{font-size:28px!important;}
-#prototypeReportPage .aging .v21-donut small{font-size:8px!important;}
-#prototypeReportPage .aging .v21-age-list>div{font-size:8px!important;margin:5px 0!important;}
-#prototypeReportPage .aging .v21-age-list b{font-size:8px!important;}
-#prototypeReportPage .aging .v21-callout{font-size:7.5px!important;padding:5px 6px!important;}
-#prototypeReportPage .aging .v21-callout b{font-size:9px!important;}
-
-/* No.3 Open by Process */
-#prototypeReportPage .process .v21-bars span{font-size:8px!important;}
-#prototypeReportPage .process .v21-bars strong{font-size:8.5px!important;}
-#prototypeReportPage .process .v21-note{font-size:7.2px!important;line-height:1.35!important;}
-
-/* No.4 Attention Required */
-#prototypeReportPage .attention .v21-att-grid span{font-size:6.5px!important;}
-#prototypeReportPage .attention .v21-alert>b{font-size:9px!important;}
-#prototypeReportPage .attention .v21-alert li{font-size:7px!important;line-height:1.35!important;}
-#prototypeReportPage .attention .v21-action{font-size:7.2px!important;}
-#prototypeReportPage .attention .v21-action b{font-size:8px!important;}
-
-/* No.5 Open by Customer */
-#prototypeReportPage .customer .customer-bars>div{margin:4px 0!important;height:11px!important;}
-#prototypeReportPage .customer .customer-bars span{font-size:7.5px!important;line-height:11px!important;}
-#prototypeReportPage .customer .customer-bars strong{font-size:7.5px!important;}
-#prototypeReportPage .customer .customer-bars i{height:9px!important;}
-
-/* No.6 Open Problem */
-#prototypeReportPage .problem .v21-problem{padding:5px 6px!important;}
-#prototypeReportPage .problem .v21-problem b{font-size:8.2px!important;}
-#prototypeReportPage .problem .v21-problem em{font-size:7px!important;}
-#prototypeReportPage .problem .v21-problem span,
-#prototypeReportPage .problem .v21-problem small{font-size:6.8px!important;line-height:1.25!important;}
-
-/* No.7 Open Loading EXP */
-#prototypeReportPage .loading .v21-load-kpis b{font-size:19px!important;}
-#prototypeReportPage .loading .v21-load-kpis span{font-size:6.8px!important;}
-#prototypeReportPage .loading .v21-load-row{font-size:7px!important;}
-#prototypeReportPage .loading .v21-load-row b{font-size:8px!important;}
-
-/* No.8 Trend */
-#prototypeReportPage .trend .v21-trend-legend{font-size:7px!important;}
-#prototypeReportPage .trend .v21-trend small{font-size:6.5px!important;}
-#prototypeReportPage .trend .v21-trend .tv,
-#prototypeReportPage .trend .v21-trend b{font-size:6.5px!important;}
-
-/* No.9 Loading Achievement */
-#prototypeReportPage .achievement .v21-ach-donut strong{font-size:21px!important;}
-#prototypeReportPage .achievement .v21-ach-donut small{font-size:7px!important;}
-#prototypeReportPage .achievement .v21-ach-copy strong{font-size:30px!important;}
-#prototypeReportPage .achievement .v21-ach-copy span,
-#prototypeReportPage .achievement .v21-ach-copy b,
-#prototypeReportPage .achievement .v21-ach-copy em{font-size:7.5px!important;}
-
-/* No.10 Today's Achievement */
-#prototypeReportPage .today .v21-today strong{font-size:26px!important;}
-#prototypeReportPage .today .v21-today span{font-size:6.8px!important;}
-
-/* No.11 Open Detail Snapshot — kartu cukup besar, jadi teks dinaikkan nyata. */
-#prototypeReportPage .v21-detail-head b{font-size:11px!important;}
-#prototypeReportPage .v21-detail-head span{font-size:7px!important;}
-#prototypeReportPage .v21-detail-grid>.v21-detail{padding:6px!important;}
-#prototypeReportPage .v21-detail-top b{font-size:8.5px!important;}
-#prototypeReportPage .v21-detail-top i{font-size:6.5px!important;padding:2px 4px!important;}
-#prototypeReportPage .v21-detail-line{font-size:6.8px!important;margin-top:4px!important;}
-#prototypeReportPage .v21-detail-qty{font-size:9px!important;margin-top:4px!important;}
+<style id="v32-daily-report-global-readable-type">
+/* V32: increase typography across the whole Daily Report, not only No.11. */
+#prototypeReportPage .v21-brand{font-size:11px!important}
+#prototypeReportPage .v21-sub{font-size:9px!important}
+#prototypeReportPage .v21-meta div{font-size:7.5px!important}
+#prototypeReportPage .v21-meta strong{font-size:8.5px!important}
+#prototypeReportPage .v21-kpi small{font-size:8px!important}
+#prototypeReportPage .v21-kpi strong{font-size:27px!important}
+#prototypeReportPage .v21-kpi b{font-size:9px!important}
+#prototypeReportPage .v21-kpi span{font-size:7.5px!important}
+#prototypeReportPage .v21-card-head{font-size:11px!important}
+#prototypeReportPage .v21-card-head em{font-size:7.5px!important}
+#prototypeReportPage .v21-legend{font-size:8px!important}
+#prototypeReportPage .v21-axis{font-size:7px!important}
+#prototypeReportPage .v21-bar b{font-size:6.5px!important}
+#prototypeReportPage .v21-month>span{font-size:8px!important}
+#prototypeReportPage .v21-insights div{font-size:8px!important;line-height:1.25!important;padding:4px 5px!important}
+#prototypeReportPage .v21-donut strong{font-size:26px!important}
+#prototypeReportPage .v21-donut small{font-size:8px!important}
+#prototypeReportPage .v21-age-list>div{font-size:8px!important}
+#prototypeReportPage .v21-callout{font-size:8px!important;line-height:1.3!important}
+#prototypeReportPage .v21-callout b{font-size:9px!important}
+#prototypeReportPage .v21-bars span{font-size:8px!important}
+#prototypeReportPage .v21-bars strong{font-size:8px!important}
+#prototypeReportPage .v21-note{font-size:7.5px!important}
+#prototypeReportPage .v21-att-grid span{font-size:7px!important}
+#prototypeReportPage .v21-alert>b{font-size:9px!important}
+#prototypeReportPage .v21-alert li{font-size:7px!important}
+#prototypeReportPage .v21-action{font-size:7px!important}
+#prototypeReportPage .v21-action b{font-size:8px!important}
+#prototypeReportPage .v21-problem b{font-size:9px!important}
+#prototypeReportPage .v21-problem em{font-size:7px!important}
+#prototypeReportPage .v21-problem span,#prototypeReportPage .v21-problem small{font-size:7px!important}
+#prototypeReportPage .v21-load-kpis b{font-size:19px!important}
+#prototypeReportPage .v21-load-kpis span{font-size:7px!important}
+#prototypeReportPage .v21-load-row{font-size:7px!important}
+#prototypeReportPage .v21-load-row b{font-size:8px!important}
+#prototypeReportPage .v21-trend-legend{font-size:7px!important}
+#prototypeReportPage .v21-trend small{font-size:6px!important}
+#prototypeReportPage .v21-trend .tv,#prototypeReportPage .v21-trend b{font-size:6px!important}
+#prototypeReportPage .v21-ach-donut strong{font-size:21px!important}
+#prototypeReportPage .v21-ach-donut small{font-size:7px!important}
+#prototypeReportPage .v21-ach-copy strong{font-size:30px!important}
+#prototypeReportPage .v21-ach-copy span,#prototypeReportPage .v21-ach-copy b,#prototypeReportPage .v21-ach-copy em{font-size:7.5px!important}
+#prototypeReportPage .v21-today strong{font-size:26px!important}
+#prototypeReportPage .v21-today span{font-size:7px!important}
+#prototypeReportPage .v21-detail-head b{font-size:11px!important}
+#prototypeReportPage .v21-detail-head span{font-size:7px!important}
+#prototypeReportPage .v21-detail-top b{font-size:7.5px!important}
+#prototypeReportPage .v21-detail-top i{font-size:6px!important}
+#prototypeReportPage .v21-detail-line{font-size:7px!important}
+#prototypeReportPage .v21-footer{font-size:6.5px!important}
+/* Use the available card space instead of increasing gaps. */
+#prototypeReportPage .v21-kpi{padding:7px 9px!important}
+#prototypeReportPage .v21-row-second .v21-problem{padding:4px 5px!important}
+#prototypeReportPage .v21-load-row{padding:5px!important}
+#prototypeReportPage .v21-today>div{padding:8px 2px!important}
 </style>
