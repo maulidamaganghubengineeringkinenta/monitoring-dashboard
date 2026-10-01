@@ -14830,6 +14830,77 @@ body.dashboard-dark:not(.login-locked) .unified-popup-row strong,body.dashboard-
   window.fitDailyReportPreview=fitV26;
 })();
 </script>
+
+<style id="v32-no6-no11-text-larger">
+/* V32: enlarge text in No.6 OPEN PROBLEM and No.11 OPEN DETAIL SNAPSHOT without changing the page structure */
+#prototypeReportPage .v21-row-second .v21-card.problem .v21-problem-list{
+  gap:6px!important;
+  padding:1px 0!important;
+}
+#prototypeReportPage .v21-row-second .v21-card.problem .v21-problem{
+  padding:7px 8px!important;
+  border-radius:7px!important;
+}
+#prototypeReportPage .v21-row-second .v21-card.problem .v21-problem b{
+  font-size:9px!important;
+  line-height:1.2!important;
+}
+#prototypeReportPage .v21-row-second .v21-card.problem .v21-problem em{
+  font-size:7px!important;
+  line-height:1.2!important;
+}
+#prototypeReportPage .v21-row-second .v21-card.problem .v21-problem span,
+#prototypeReportPage .v21-row-second .v21-card.problem .v21-problem small{
+  font-size:7px!important;
+  line-height:1.3!important;
+}
+
+#prototypeReportPage .v21-detail-head{
+  height:27px!important;
+  padding:0 9px!important;
+}
+#prototypeReportPage .v21-detail-head b{
+  font-size:12px!important;
+  line-height:1!important;
+}
+#prototypeReportPage .v21-detail-head span{
+  font-size:7px!important;
+  padding:3px 8px!important;
+}
+#prototypeReportPage .v21-detail-grid{
+  height:89px!important;
+  padding:6px!important;
+  gap:6px!important;
+}
+#prototypeReportPage .v21-detail-grid>.v21-detail{
+  padding:7px!important;
+  border-top-width:4px!important;
+}
+#prototypeReportPage .v21-detail-top{
+  gap:4px!important;
+}
+#prototypeReportPage .v21-detail-top b{
+  font-size:8.5px!important;
+  line-height:1.2!important;
+}
+#prototypeReportPage .v21-detail-top i{
+  font-size:6px!important;
+  padding:2px 5px!important;
+}
+#prototypeReportPage .v21-detail-line{
+  margin-top:4px!important;
+  font-size:7px!important;
+  line-height:1.25!important;
+}
+#prototypeReportPage .v21-detail-line strong{
+  font-size:7px!important;
+}
+#prototypeReportPage .v21-detail-qty{
+  margin-top:5px!important;
+  font-size:9.5px!important;
+  line-height:1.1!important;
+}
+</style>
 </body>
 
 
@@ -15878,44 +15949,4 @@ body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-focus-body .cute-no
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{bottom:-29px!important;font-size:8px!important;line-height:11px!important;background:#ffffff!important;border:1px solid #b9d2e2!important;border-radius:3px!important;padding:1px 3px!important;z-index:20!important;color:#244b64!important;display:block!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar b{font-size:5.5px!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{bottom:28px!important;}
-</style>
-
-<style id="v32-daily-report-text-larger">
-/* V32: scale up report typography; No.11 is intentionally enlarged significantly. */
-#prototypeReportPage .v21-card-head{font-size:11.5px!important;}
-#prototypeReportPage .v21-card-head>span{font-size:11px!important;}
-#prototypeReportPage .v21-card-head em{font-size:7.5px!important;}
-#prototypeReportPage .v21-legend{font-size:7.5px!important;}
-#prototypeReportPage .v21-axis{font-size:6.8px!important;}
-#prototypeReportPage .v21-bar b{font-size:6.5px!important;}
-#prototypeReportPage .v21-insights div{font-size:7.2px!important;padding:5px 6px!important;}
-#prototypeReportPage .v21-bars>div span{font-size:7px!important;}
-#prototypeReportPage .v21-bars>div strong{font-size:7px!important;}
-#prototypeReportPage .v21-note{font-size:7px!important;line-height:1.35!important;}
-#prototypeReportPage .v21-problem b{font-size:8.5px!important;}
-#prototypeReportPage .v21-problem em{font-size:7px!important;}
-#prototypeReportPage .v21-problem span,#prototypeReportPage .v21-problem small{font-size:6.8px!important;}
-#prototypeReportPage .v21-load-kpis b{font-size:19px!important;}
-#prototypeReportPage .v21-load-kpis span{font-size:6.5px!important;}
-#prototypeReportPage .v21-load-row{font-size:7px!important;}
-#prototypeReportPage .v21-load-row b{font-size:8px!important;}
-#prototypeReportPage .v21-trend-legend{font-size:7px!important;}
-#prototypeReportPage .v21-trend small,#prototypeReportPage .v21-trend .tv,#prototypeReportPage .v21-trend b{font-size:6px!important;}
-#prototypeReportPage .v21-ach-copy span,#prototypeReportPage .v21-ach-copy b,#prototypeReportPage .v21-ach-copy em{font-size:7.2px!important;}
-#prototypeReportPage .v21-today span{font-size:6.5px!important;}
-#prototypeReportPage .v21-footer{font-size:6.5px!important;}
-
-/* No.11 — OPEN DETAIL SNAPSHOT: use the available card space instead of tiny micro-text. */
-#prototypeReportPage .v21-detail{height:120px!important;min-height:120px!important;}
-#prototypeReportPage .v21-detail-head{height:29px!important;padding:0 10px!important;}
-#prototypeReportPage .v21-detail-head b{font-size:12.5px!important;line-height:1!important;}
-#prototypeReportPage .v21-detail-head span{font-size:7.5px!important;padding:4px 8px!important;}
-#prototypeReportPage .v21-detail-grid{height:89px!important;min-height:89px!important;padding:6px!important;gap:6px!important;}
-#prototypeReportPage .v21-detail-grid>.v21-detail{height:77px!important;min-height:77px!important;padding:7px!important;border-top-width:5px!important;border-radius:7px!important;}
-#prototypeReportPage .v21-detail-top{gap:4px!important;}
-#prototypeReportPage .v21-detail-top b{font-size:9.5px!important;line-height:1.15!important;}
-#prototypeReportPage .v21-detail-top i{font-size:6.8px!important;padding:3px 5px!important;border-radius:7px!important;}
-#prototypeReportPage .v21-detail-line{margin-top:5px!important;font-size:7.2px!important;line-height:1.2!important;gap:4px!important;}
-#prototypeReportPage .v21-detail-line strong{font-size:7.2px!important;}
-#prototypeReportPage .v21-detail-qty{margin-top:6px!important;font-size:10.5px!important;line-height:1!important;}
 </style>
