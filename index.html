@@ -14605,6 +14605,50 @@ body.dashboard-dark:not(.login-locked) .unified-popup-row strong,body.dashboard-
   const oldFmt=window.setPrototypeReportFormat;window.setPrototypeReportFormat=function(v){oldFmt(v);requestAnimationFrame(fit);};window.addEventListener('resize',fit);window.fitDailyReportPreview=fit;
 })();
 </script>
+
+<style id="prototypeReportInnerNoClipV25">
+/* V25: inner report was still 1440px inside a 1400px preview canvas. Keep the exact report canvas at 1400x990. */
+#prototypeReportPage .v21-report{
+  width:1400px!important;
+  max-width:1400px!important;
+  min-width:1400px!important;
+  height:990px!important;
+  max-height:990px!important;
+  min-height:990px!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+#prototypeReportOverlay .prototype-report-page{
+  width:1400px!important;height:990px!important;
+  max-width:1400px!important;min-width:1400px!important;
+  max-height:990px!important;min-height:990px!important;
+}
+</style>
+<script>
+(function(){
+  const W=1400,H=990;
+  function fitV25(){
+    const overlay=document.getElementById('prototypeReportOverlay');
+    const stage=document.getElementById('prototypeReportStage');
+    const page=document.getElementById('prototypeReportPage');
+    if(!overlay||!stage||!page||!overlay.classList.contains('show')) return;
+    page.style.width=W+'px'; page.style.height=H+'px';
+    page.style.minWidth=W+'px'; page.style.minHeight=H+'px';
+    page.style.maxWidth=W+'px'; page.style.maxHeight=H+'px';
+    const sw=Math.max(1,stage.clientWidth-20), sh=Math.max(1,stage.clientHeight-20);
+    const scale=Math.min(1,sw/W,sh/H);
+    page.style.transform='scale('+scale+')';
+    page.style.transformOrigin='center center';
+    page.style.margin='0';
+  }
+  window.addEventListener('resize',fitV25);
+  const oldOpen=window.openReportPreview;
+  if(oldOpen){ window.openReportPreview=async function(){ await oldOpen(); requestAnimationFrame(()=>requestAnimationFrame(fitV25)); }; }
+  const oldFmt=window.setPrototypeReportFormat;
+  if(oldFmt){ window.setPrototypeReportFormat=function(v){ oldFmt(v); requestAnimationFrame(fitV25); }; }
+  window.fitDailyReportPreview=fitV25;
+})();
+</script>
 </body>
 
 
