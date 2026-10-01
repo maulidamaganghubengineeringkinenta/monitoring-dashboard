@@ -2614,11 +2614,13 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart{height:176px!important;display:block!important;position:relative!important;overflow:visible!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-axis{height:100%!important;padding-bottom:22px!important;box-sizing:border-box!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{bottom:22px!important;}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{position:absolute!important;left:38px!important;right:0!important;top:0!important;bottom:0!important;height:auto!important;display:flex!important;align-items:flex-end!important;gap:3px!important;padding:7px 3px 19px!important;box-sizing:border-box!important;overflow:visible!important;z-index:5!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{position:absolute!important;left:38px!important;right:0!important;top:0!important;bottom:0!important;height:auto!important;display:flex!important;align-items:flex-end!important;gap:3px!important;padding:7px 3px 38px!important;box-sizing:border-box!important;overflow:visible!important;z-index:5!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-month{height:100%!important;min-height:0!important;align-items:flex-end!important;position:relative!important;padding:0!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar{max-height:none!important;min-height:2px!important;margin-bottom:0!important;}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{position:absolute!important;bottom:-17px!important;left:50%!important;transform:translateX(-50%)!important;font-size:7px!important;line-height:9px!important;font-weight:900!important;color:#35586d!important;white-space:nowrap!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{position:absolute!important;bottom:-29px!important;left:50%!important;transform:translateX(-50%)!important;font-size:8px!important;line-height:11px!important;font-weight:900!important;color:#244b64!important;white-space:nowrap!important;background:#fff!important;border:1px solid #d7e6f0!important;border-radius:3px!important;padding:1px 3px!important;min-width:22px!important;text-align:center!important;box-sizing:border-box!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-insights{margin-top:4px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart:after{content:""!important;position:absolute!important;left:38px!important;right:0!important;bottom:27px!important;border-top:1px solid #9db8c8!important;pointer-events:none!important;}
+
 /* Export-safe donut rings: SVG renders reliably in Preview and html2canvas/PDF. */
 #prototypeReportPage .v21-donut,#prototypeReportPage .v21-ach-donut{position:relative!important;overflow:visible!important;}
 #prototypeReportPage .v21-donut-svg,#prototypeReportPage .v21-ach-svg{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;transform:rotate(-90deg)!important;}
@@ -2630,65 +2632,6 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 #prototypeReportPage .v21-donut-svg .seg4{stroke:#19934c!important;}
 #prototypeReportPage .v21-ach-svg .ach-bg{stroke:#dce8ef!important;}
 #prototypeReportPage .v21-ach-svg .ach-seg{stroke:#08b97a!important;}
-</style>
-
-<style id="v31-feature1-month-label-final">
-/* V31: Feature 1 — month labels are physically below the plot area, never over the bars. */
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart{
-  height:186px!important;
-  position:relative!important;
-  display:block!important;
-  overflow:visible!important;
-  padding-bottom:24px!important;
-  box-sizing:border-box!important;
-}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-axis{
-  height:162px!important;
-  padding-bottom:0!important;
-  box-sizing:border-box!important;
-}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{
-  bottom:24px!important;
-}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{
-  position:absolute!important;
-  left:38px!important;
-  right:0!important;
-  top:0!important;
-  bottom:24px!important;
-  height:auto!important;
-  display:flex!important;
-  align-items:flex-end!important;
-  gap:3px!important;
-  padding:4px 3px 0!important;
-  box-sizing:border-box!important;
-  overflow:visible!important;
-  z-index:5!important;
-}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month{
-  position:relative!important;
-  height:100%!important;
-  min-height:0!important;
-  overflow:visible!important;
-}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{
-  position:absolute!important;
-  left:50%!important;
-  bottom:-22px!important;
-  transform:translateX(-50%)!important;
-  display:block!important;
-  width:max-content!important;
-  min-width:16px!important;
-  text-align:center!important;
-  font-size:7px!important;
-  line-height:10px!important;
-  font-weight:900!important;
-  white-space:nowrap!important;
-  color:#35586d!important;
-  margin:0!important;
-  z-index:30!important;
-}
-#prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar{max-height:145px!important;}
 </style>
 </head>
 
@@ -15926,4 +15869,13 @@ body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-focus-body .cute-no
 #prototypeReportPage .v21-detail{height:120px!important;min-height:120px!important;}
 #prototypeReportPage .v21-detail-grid{height:89px!important;}
 #prototypeReportPage .v21-footer{height:5px!important;min-height:5px!important;font-size:5.5px!important;}
+</style>
+
+<style id="v31-daily-report-chart-month-final">
+/* V31: month labels are a distinct readable row below the bars, never overlaid on them. */
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart{height:176px!important;overflow:visible!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{padding:7px 3px 38px!important;align-items:flex-end!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{bottom:-29px!important;font-size:8px!important;line-height:11px!important;background:#ffffff!important;border:1px solid #b9d2e2!important;border-radius:3px!important;padding:1px 3px!important;z-index:20!important;color:#244b64!important;display:block!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar b{font-size:5.5px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{bottom:28px!important;}
 </style>
