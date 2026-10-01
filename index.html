@@ -14751,6 +14751,218 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
 #prototypeReportOverlay .prototype-report-page.dark .pr-box h4{color:#8bd8ff!important}
 </style>
 
+
+<style id="prototypeReportCompactLandscapeV13">
+/* V13 — compact true-landscape composition: no forced tall empty panels */
+#prototypeReportOverlay .prototype-report-stage{
+  background:#dbe7f1!important;
+  padding:18px!important;
+  overflow:auto!important;
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+}
+#prototypeReportOverlay .prototype-report-page{
+  width:1400px!important;
+  height:990px!important;
+  min-height:990px!important;
+  max-height:990px!important;
+  padding:10px!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  border-radius:10px!important;
+}
+#prototypeReportOverlay .pr-head{
+  height:64px!important;
+  margin:0 0 5px!important;
+  padding:8px 14px!important;
+  box-sizing:border-box!important;
+}
+#prototypeReportOverlay .pr-title{font-size:28px!important;line-height:1.02!important}
+#prototypeReportOverlay .pr-brand{font-size:10px!important}
+#prototypeReportOverlay .pr-sub{font-size:9px!important}
+#prototypeReportOverlay .pr-section{margin:0 0 5px!important;padding:0!important}
+#prototypeReportOverlay .pr-kpis{
+  height:78px!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:6px!important;
+}
+#prototypeReportOverlay .pr-kpi{
+  height:78px!important;
+  min-height:78px!important;
+  padding:8px 10px!important;
+  border-radius:10px!important;
+}
+#prototypeReportOverlay .pr-kpi-value{font-size:28px!important;margin-top:3px!important}
+#prototypeReportOverlay .pr-kpi-label{font-size:8px!important}
+#prototypeReportOverlay .pr-kpi-sub{font-size:7px!important;margin-top:2px!important}
+
+/* Row 1: four balanced panels */
+#prototypeReportOverlay .pr-reference-grid{
+  height:244px!important;
+  grid-template-columns:1.18fr 1fr 1fr 1.08fr!important;
+  gap:6px!important;
+}
+#prototypeReportOverlay .pr-reference-card{
+  height:244px!important;
+  min-height:244px!important;
+  border-radius:9px!important;
+  overflow:hidden!important;
+}
+#prototypeReportOverlay .pr-reference-card .rh{
+  height:24px!important;
+  box-sizing:border-box!important;
+  padding:5px 8px!important;
+  font-size:9px!important;
+}
+#prototypeReportOverlay .pr-reference-card .rb{
+  height:220px!important;
+  box-sizing:border-box!important;
+  padding:7px!important;
+  overflow:hidden!important;
+}
+#prototypeReportOverlay .pr-reference-card .big{font-size:25px!important}
+#prototypeReportOverlay .pr-reference-card .small{font-size:7px!important}
+#prototypeReportOverlay .pr-open-card{
+  height:30px!important;
+  min-height:30px!important;
+  padding:3px 5px!important;
+  margin-bottom:2px!important;
+  border-radius:7px!important;
+}
+#prototypeReportOverlay .pr-open-top strong{font-size:7.5px!important}
+#prototypeReportOverlay .pr-open-main{font-size:6.3px!important;margin-top:1px!important}
+#prototypeReportOverlay .pr-open-meta{font-size:5.8px!important;margin-top:1px!important}
+#prototypeReportOverlay .pr-status{font-size:5.5px!important;padding:2px 4px!important}
+#prototypeReportOverlay .pr-reference-card:nth-child(2) .pr-bar-list,
+#prototypeReportOverlay .pr-reference-card:nth-child(3) .pr-bar-list{padding-top:10px!important}
+#prototypeReportOverlay .pr-reference-card:nth-child(2) .pr-bar-row,
+#prototypeReportOverlay .pr-reference-card:nth-child(3) .pr-bar-row{
+  grid-template-columns:68px 1fr 24px!important;
+  gap:5px!important;
+  margin-bottom:8px!important;
+}
+#prototypeReportOverlay .pr-reference-card .pr-bar-label{font-size:6.5px!important}
+#prototypeReportOverlay .pr-reference-card .pr-bar-value{font-size:7px!important}
+#prototypeReportOverlay .pr-reference-card .pr-bar-track{height:8px!important}
+#prototypeReportOverlay .pr-reference-card .pr-note{
+  font-size:6.5px!important;
+  padding:5px!important;
+  margin-top:7px!important;
+}
+#prototypeReportOverlay .pr-alerts{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:5px!important;
+}
+#prototypeReportOverlay .pr-alert{
+  min-height:48px!important;
+  height:48px!important;
+  padding:5px!important;
+  border-radius:7px!important;
+}
+#prototypeReportOverlay .pr-alert strong{font-size:20px!important;margin-bottom:3px!important}
+#prototypeReportOverlay .pr-alert span{font-size:5.8px!important}
+#prototypeReportOverlay .pr-action{font-size:6.3px!important;margin:6px 0!important}
+#prototypeReportOverlay .pr-action i{width:16px!important;height:16px!important;font-size:7px!important}
+
+/* Row 2 */
+#prototypeReportOverlay .pr-grid-3{
+  height:165px!important;
+  grid-template-columns:1fr 1.08fr 1.1fr!important;
+  gap:6px!important;
+}
+#prototypeReportOverlay .pr-grid-3>.pr-box{
+  height:165px!important;
+  min-height:165px!important;
+  padding:7px!important;
+  border-radius:9px!important;
+  overflow:hidden!important;
+}
+#prototypeReportOverlay .pr-box h4{font-size:9px!important;margin:0 0 7px!important}
+#prototypeReportOverlay .pr-bar-list{gap:5px!important}
+#prototypeReportOverlay .pr-bar-row{
+  grid-template-columns:72px 1fr 22px!important;
+  gap:5px!important;
+}
+#prototypeReportOverlay .pr-bar-label{font-size:6.5px!important}
+#prototypeReportOverlay .pr-bar-value{font-size:7px!important}
+#prototypeReportOverlay .pr-bar-track{height:8px!important}
+#prototypeReportOverlay .pr-problem-list,#prototypeReportOverlay .pr-loading-list{
+  max-height:118px!important;
+  gap:3px!important;
+  overflow:hidden!important;
+}
+#prototypeReportOverlay .pr-problem-card,#prototypeReportOverlay .pr-loading-card{
+  padding:5px 6px!important;
+  border-radius:6px!important;
+}
+#prototypeReportOverlay .pr-problem-card strong,#prototypeReportOverlay .pr-loading-card strong{font-size:7.5px!important}
+#prototypeReportOverlay .pr-problem-card span,#prototypeReportOverlay .pr-problem-card p{font-size:5.8px!important}
+#prototypeReportOverlay .pr-mini-grid{gap:4px!important}
+#prototypeReportOverlay .pr-mini-grid .pr-kpi{
+  height:43px!important;min-height:43px!important;padding:4px!important;border-radius:7px!important;
+}
+#prototypeReportOverlay .pr-mini-grid .pr-kpi-value{font-size:15px!important}
+#prototypeReportOverlay .pr-mini-grid .pr-kpi-label{font-size:6px!important}
+
+/* Row 3 */
+#prototypeReportOverlay .pr-grid-3:nth-of-type(2){
+  height:138px!important;
+  grid-template-columns:1fr 1.08fr 1.1fr!important;
+  gap:6px!important;
+}
+#prototypeReportOverlay .pr-grid-3:nth-of-type(2)>.pr-box{
+  height:138px!important;min-height:138px!important;padding:7px!important;
+}
+#prototypeReportOverlay .pr-spark{height:38px!important}
+#prototypeReportOverlay .pr-spark-labels span{font-size:5px!important}
+#prototypeReportOverlay .pr-donut{width:66px!important;height:66px!important}
+#prototypeReportOverlay .pr-donut-inner{width:46px!important;height:46px!important}
+#prototypeReportOverlay .pr-donut-inner b{font-size:14px!important}
+#prototypeReportOverlay .pr-donut-inner span{font-size:6px!important}
+#prototypeReportOverlay .pr-achievement-grid{grid-template-columns:repeat(4,1fr)!important;gap:4px!important}
+#prototypeReportOverlay .pr-achievement{
+  min-height:52px!important;height:52px!important;padding:4px!important;border-radius:7px!important;
+}
+#prototypeReportOverlay .pr-achievement strong{font-size:19px!important}
+#prototypeReportOverlay .pr-achievement span{font-size:5.5px!important}
+
+/* Detail row: six cards, compact but readable */
+#prototypeReportOverlay .pr-section-title{
+  height:20px!important;margin:0 0 3px!important;padding:0!important;
+}
+#prototypeReportOverlay .pr-section-title h3{font-size:10px!important}
+#prototypeReportOverlay .pr-section-title span{font-size:6px!important}
+#prototypeReportOverlay .pr-detail-grid-list{
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:5px!important;
+  height:105px!important;
+  overflow:hidden!important;
+}
+#prototypeReportOverlay .pr-detail-card{
+  height:105px!important;min-height:105px!important;padding:6px!important;border-radius:7px!important;
+}
+#prototypeReportOverlay .pr-detail-head{font-size:6px!important}
+#prototypeReportOverlay .pr-detail-head strong{font-size:7.5px!important}
+#prototypeReportOverlay .pr-detail-grid{font-size:5.5px!important;gap:4px!important;margin-top:3px!important}
+#prototypeReportOverlay .pr-detail-grid span{padding:3px!important;border-radius:5px!important}
+#prototypeReportOverlay .pr-detail-grid b{font-size:6.3px!important}
+#prototypeReportOverlay .pr-tag{font-size:5px!important;padding:2px 4px!important}
+#prototypeReportOverlay .pr-footer{
+  font-size:6px!important;
+  margin-top:3px!important;
+  padding-top:3px!important;
+}
+
+/* Keep color hierarchy strong in both themes */
+#prototypeReportOverlay .prototype-report-page:not(.dark) .pr-reference-card .rb,
+#prototypeReportOverlay .prototype-report-page:not(.dark) .pr-box,
+#prototypeReportOverlay .prototype-report-page:not(.dark) .pr-detail-card{background:#fff!important}
+#prototypeReportOverlay .prototype-report-page.dark .pr-reference-card .rb,
+#prototypeReportOverlay .prototype-report-page.dark .pr-box,
+#prototypeReportOverlay .prototype-report-page.dark .pr-detail-card{background:#0e2234!important}
+</style>
+
 <div id="prototypeReportOverlay" aria-hidden="true">
   <div class="prototype-report-modal" role="dialog" aria-modal="true" aria-label="Preview Download Report">
     <div class="prototype-report-toolbar">
