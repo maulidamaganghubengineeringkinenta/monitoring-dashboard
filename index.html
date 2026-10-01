@@ -2539,6 +2539,76 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 #prototypeReportPage .v21-detail-grid>.v21-detail{height:115px!important;min-height:115px!important;}
 #prototypeReportPage .v21-footer{height:5px!important;min-height:5px!important;font-size:5.5px!important;}
 </style>
+
+<style id="v29-daily-report-real-fix">
+/* V29: final geometry fix. Do not shrink the content to make it fit; give the affected areas explicit internal space. */
+#prototypeReportPage .v21-report{
+  grid-template-rows:72px 96px 277px 190px 140px 115px 10px!important;
+  height:960px!important;
+  overflow:hidden!important;
+}
+/* 1 — Open Production: month labels are part of the chart, directly under the bars. */
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart{
+  height:171px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:visible!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{
+  flex:0 0 25px!important;
+  height:25px!important;
+  min-height:25px!important;
+  padding:0 2px!important;
+  margin:0!important;
+  align-items:flex-end!important;
+  overflow:visible!important;
+  position:relative!important;
+  z-index:20!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month{
+  height:25px!important;
+  min-height:25px!important;
+  align-items:flex-end!important;
+  overflow:visible!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{
+  position:static!important;
+  display:block!important;
+  transform:none!important;
+  font-size:7px!important;
+  line-height:12px!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+  color:#35586d!important;
+  margin:0 0 2px!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar{
+  max-height:145px!important;
+}
+/* 11 — Open Detail Snapshot: the previous CSS made each card 115px inside an 89px grid, guaranteeing clipping. */
+#prototypeReportPage .v21-detail{
+  height:115px!important;
+  min-height:115px!important;
+  overflow:hidden!important;
+}
+#prototypeReportPage .v21-detail-grid{
+  height:84px!important;
+  min-height:84px!important;
+  padding:4px!important;
+  gap:4px!important;
+  overflow:hidden!important;
+}
+#prototypeReportPage .v21-detail-grid>.v21-detail{
+  height:74px!important;
+  min-height:74px!important;
+  padding:5px!important;
+  overflow:hidden!important;
+}
+#prototypeReportPage .v21-detail-top b{font-size:6.5px!important}
+#prototypeReportPage .v21-detail-top i{font-size:4.8px!important;padding:2px 3px!important}
+#prototypeReportPage .v21-detail-line{margin-top:3px!important;font-size:5.2px!important}
+#prototypeReportPage .v21-detail-qty{margin-top:3px!important;font-size:6.8px!important}
+</style>
 </head>
 
 <body class="login-locked">
