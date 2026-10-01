@@ -14869,6 +14869,46 @@ body.dashboard-dark:not(.login-locked) .unified-popup-row strong,body.dashboard-
   line-height:1.1!important;
 }
 </style>
+
+<style id="v33-report-final-layout">
+/* V33: structural month labels + larger Feature 11 typography. */
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart{
+  height:150px!important; flex:none!important; position:relative!important; overflow:visible!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{
+  position:relative!important; left:auto!important; right:auto!important; top:auto!important; bottom:auto!important;
+  height:100%!important; padding:5px 3px 17px!important; gap:3px!important;
+  display:flex!important; align-items:flex-end!important; box-sizing:border-box!important; overflow:visible!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month{
+  position:relative!important; flex:1 1 0!important; min-width:0!important; height:100%!important;
+  display:flex!important; align-items:flex-end!important; justify-content:center!important; gap:2px!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{display:none!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{bottom:17px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar b{font-size:5.6px!important;}
+#prototypeReportPage .v21-month-label-row{
+  display:grid!important; grid-template-columns:repeat(12,minmax(0,1fr))!important; gap:3px!important;
+  margin-left:38px!important; height:20px!important; min-height:20px!important;
+  padding:0 3px 0 0!important; box-sizing:border-box!important; align-items:center!important;
+}
+#prototypeReportPage .v21-month-label-row span{
+  display:block!important; min-width:0!important; text-align:center!important; white-space:nowrap!important;
+  font-size:8.5px!important; line-height:12px!important; font-weight:900!important; color:#244b64!important;
+  background:#fff!important; border:1px solid #b9d2e2!important; border-radius:3px!important; padding:1px 2px!important;
+  box-sizing:border-box!important; overflow:hidden!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-insights{margin-top:3px!important; gap:4px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-insights div{padding:4px 5px!important;font-size:6px!important;}
+
+#prototypeReportPage .v21-detail-grid{height:89px!important;min-height:89px!important;padding:5px!important;gap:5px!important;}
+#prototypeReportPage .v21-detail-grid>.v21-detail{height:auto!important;min-height:0!important;padding:6px!important;box-sizing:border-box!important;overflow:hidden!important;}
+#prototypeReportPage .v21-detail-top b{font-size:9.5px!important;line-height:1.15!important;}
+#prototypeReportPage .v21-detail-top i{font-size:7px!important;line-height:1.1!important;padding:2px 4px!important;}
+#prototypeReportPage .v21-detail-line{margin-top:5px!important;font-size:7.5px!important;line-height:1.2!important;}
+#prototypeReportPage .v21-detail-line strong{font-size:7.5px!important;}
+#prototypeReportPage .v21-detail-qty{margin-top:5px!important;font-size:11.5px!important;line-height:1.1!important;}
+</style>
 </body>
 
 
@@ -15419,7 +15459,8 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
     (d.loading||[]).forEach(r=>{const key=String(r.period||'').trim()||'Period';const x=monthlyMap.get(key)||{plan:0,out:0};x.plan+=num(r.planCct);x.out+=num(r.outCct);monthlyMap.set(key,x)});
     const months=[...monthlyMap.entries()].slice(-12);
     const maxMonth=Math.max(1,...months.flatMap(x=>[x[1].plan,x[1].out]));
-    const monthBars=months.length?months.map(([label,x])=>{const lab=String(label).replace(/\s+2026/i,'').slice(0,3);return `<div class="v21-month"><div class="v21-bar plan" style="height:${Math.max(3,x.plan/maxMonth*100)}%"><b>${fmt(x.plan)}</b></div><div class="v21-bar out" style="height:${Math.max(3,x.out/maxMonth*100)}%"><b>${fmt(x.out)}</b></div><span>${esc(lab)}</span></div>`}).join(''):'<div class="v21-empty">Belum ada data Loading EXP.</div>';
+    const monthBars=months.length?months.map(([label,x])=>{return `<div class="v21-month"><div class="v21-bar plan" style="height:${Math.max(3,x.plan/maxMonth*100)}%"><b>${fmt(x.plan)}</b></div><div class="v21-bar out" style="height:${Math.max(3,x.out/maxMonth*100)}%"><b>${fmt(x.out)}</b></div></div>`}).join(''):'<div class="v21-empty">Belum ada data Loading EXP.</div>';
+    const monthLabels=months.length?months.map(([label])=>{const lab=String(label).replace(/\s+2026/i,'').slice(0,3);return `<span>${esc(lab)}</span>`}).join(''):'';
     const ageTotal=Math.max(1,d.aging.reduce((s,x)=>s+x[1],0));
     const agePct=d.aging.map(x=>Math.round(x[1]/ageTotal*100));
     const a1=agePct[0]||0,a2=a1+(agePct[1]||0),a3=a2+(agePct[2]||0);
@@ -15453,7 +15494,7 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
         <div class="v21-kpi orange"><div class="v21-icon">🚚</div><div><small>6 · DELIVERY RELIABILITY</small><strong>${closeOnTime.length?ontime.toFixed(0)+'%':'—'}</strong><b>ON-TIME</b><span>${fmt(overdueCct)} CCT overdue · ${fmt(d.overdue.length)} ASSY</span></div></div>
       </section>
       <section class="v21-row-main">
-        <article class="v21-card wide"><header class="v21-card-head blue-head"><span>1</span> OPEN PRODUCTION <em>${fmt(openU.assy)} ASSY · ${fmt(d.loadS.openQty)} PCS · ${fmt(openCct)} CCT</em></header><div class="v21-card-body"><div class="v21-legend"><b><i class="lb"></i> Loading / Plan</b><b><i class="lo"></i> Completion / Actual</b><span>Unit: CCT</span></div><div class="v21-chart"><div class="v21-axis"><span>${fmt(maxMonth)}</span><span>${fmt(maxMonth*.75)}</span><span>${fmt(maxMonth*.5)}</span><span>${fmt(maxMonth*.25)}</span><span>0</span></div><div class="v21-gridlines"></div><div class="v21-months">${monthBars}</div></div><div class="v21-insights"><div><b>⚠ ${fmt(overdueU.assy)} ASSY</b> overdue terhadap ETD.</div><div><b>⏱ ${fmt(d.oldestOpen)} hari</b> oldest OPEN berdasarkan aging.</div></div></div></article>
+        <article class="v21-card wide"><header class="v21-card-head blue-head"><span>1</span> OPEN PRODUCTION <em>${fmt(openU.assy)} ASSY · ${fmt(d.loadS.openQty)} PCS · ${fmt(openCct)} CCT</em></header><div class="v21-card-body"><div class="v21-legend"><b><i class="lb"></i> Loading / Plan</b><b><i class="lo"></i> Completion / Actual</b><span>Unit: CCT</span></div><div class="v21-chart"><div class="v21-axis"><span>${fmt(maxMonth)}</span><span>${fmt(maxMonth*.75)}</span><span>${fmt(maxMonth*.5)}</span><span>${fmt(maxMonth*.25)}</span><span>0</span></div><div class="v21-gridlines"></div><div class="v21-months">${monthBars}</div></div><div class="v21-month-label-row">${monthLabels}</div><div class="v21-insights"><div><b>⚠ ${fmt(overdueU.assy)} ASSY</b> overdue terhadap ETD.</div><div><b>⏱ ${fmt(d.oldestOpen)} hari</b> oldest OPEN berdasarkan aging.</div></div></div></article>
         <article class="v21-card aging"><header class="v21-card-head purple-head"><span>2</span> OPEN WIP AGING</header><div class="v21-card-body"><div class="v21-donut"><svg class="v21-donut-svg" viewBox="0 0 42 42" aria-hidden="true"><circle class="donut-bg" cx="21" cy="21" r="16"></circle><circle class="donut-seg seg1" cx="21" cy="21" r="16" pathLength="100" style="stroke-dasharray:${a1} ${100-a1};stroke-dashoffset:0"></circle><circle class="donut-seg seg2" cx="21" cy="21" r="16" pathLength="100" style="stroke-dasharray:${Math.max(0,a2-a1)} ${100-Math.max(0,a2-a1)};stroke-dashoffset:-${a1}"></circle><circle class="donut-seg seg3" cx="21" cy="21" r="16" pathLength="100" style="stroke-dasharray:${Math.max(0,a3-a2)} ${100-Math.max(0,a3-a2)};stroke-dashoffset:-${a2}"></circle><circle class="donut-seg seg4" cx="21" cy="21" r="16" pathLength="100" style="stroke-dasharray:${Math.max(0,100-a3)} ${Math.min(100,a3)};stroke-dashoffset:-${a3}"></circle></svg><div><strong>${fmt(d.open.length)}</strong><small>OPEN</small></div></div><div class="v21-age-list"><div><i class="c1"></i><span>0–3 hari</span><b>${fmt(d.aging[0][1])}</b></div><div><i class="c2"></i><span>4–7 hari</span><b>${fmt(d.aging[1][1])}</b></div><div><i class="c3"></i><span>8–14 hari</span><b>${fmt(d.aging[2][1])}</b></div><div><i class="c4"></i><span>&gt;14 hari</span><b>${fmt(d.aging[3][1])}</b></div></div><div class="v21-callout">OLDEST OPEN <b>${fmt(d.oldestOpen)} HARI</b></div></div></article>
         <article class="v21-card process"><header class="v21-card-head cyan-head"><span>3</span> OPEN BY PROCESS</header><div class="v21-card-body"><div class="v21-bars">${proc.map(x=>`<div><span>${esc(x.name)}</span><i><b style="width:${Math.max(5,x.qty/maxProc*100)}%"></b></i><strong>${fmt(x.qty)}</strong></div>`).join('')||'<div class="v21-empty">Tidak ada data.</div>'}</div><div class="v21-note">Qty proses terbuka berdasarkan data Progress. Prioritaskan proses dengan volume tertinggi.</div></div></article>
         <article class="v21-card attention"><header class="v21-card-head orange-head"><span>4</span> ATTENTION REQUIRED</header><div class="v21-card-body"><div class="v21-att-grid"><div><strong>${fmt(overdueU.assy)}</strong><span>OVERDUE ASSY</span></div><div><strong>${fmt(due7U.assy)}</strong><span>ETD ≤ 7 HARI</span></div><div><strong>${fmt(d.p7)}</strong><span>PROBLEM &gt; 7D</span></div><div><strong>${fmt(d.oldestOpen)}</strong><span>OLDEST OPEN</span></div></div><div class="v21-alert"><b>⚠ TEMUAN UTAMA</b><ul><li>${fmt(overdueU.assy)} ASSY sudah overdue terhadap ETD.</li><li>${fmt(d.due7.length)} OPEN perlu diprioritaskan berdasarkan ETD.</li><li>${fmt(d.p7)} problem sudah berumur &gt; 7 hari.</li></ul></div><div class="v21-action"><b>FOCUS ACTION</b><span>Percepat overdue &gt; 7 hari · review blocker · dorong closing.</span></div></div></article>
