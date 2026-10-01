@@ -2631,6 +2631,65 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 #prototypeReportPage .v21-ach-svg .ach-bg{stroke:#dce8ef!important;}
 #prototypeReportPage .v21-ach-svg .ach-seg{stroke:#08b97a!important;}
 </style>
+
+<style id="v31-feature1-month-label-final">
+/* V31: Feature 1 — month labels are physically below the plot area, never over the bars. */
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart{
+  height:186px!important;
+  position:relative!important;
+  display:block!important;
+  overflow:visible!important;
+  padding-bottom:24px!important;
+  box-sizing:border-box!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-axis{
+  height:162px!important;
+  padding-bottom:0!important;
+  box-sizing:border-box!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{
+  bottom:24px!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{
+  position:absolute!important;
+  left:38px!important;
+  right:0!important;
+  top:0!important;
+  bottom:24px!important;
+  height:auto!important;
+  display:flex!important;
+  align-items:flex-end!important;
+  gap:3px!important;
+  padding:4px 3px 0!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+  z-index:5!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month{
+  position:relative!important;
+  height:100%!important;
+  min-height:0!important;
+  overflow:visible!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{
+  position:absolute!important;
+  left:50%!important;
+  bottom:-22px!important;
+  transform:translateX(-50%)!important;
+  display:block!important;
+  width:max-content!important;
+  min-width:16px!important;
+  text-align:center!important;
+  font-size:7px!important;
+  line-height:10px!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+  color:#35586d!important;
+  margin:0!important;
+  z-index:30!important;
+}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar{max-height:145px!important;}
+</style>
 </head>
 
 <body class="login-locked">
