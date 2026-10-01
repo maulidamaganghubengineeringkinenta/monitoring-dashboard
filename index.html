@@ -10868,22 +10868,25 @@ function monitoringNumber(value) {
 }
 
 function monitoringCalculatedLeadTime(row) {
-    // Lead Time Monitoring dihitung dari ACTUAL START -> ACTUAL FINISH.
-    // Kolom LEAD TIME di sheet tetap dipakai sebagai fallback jika nilainya
-    // memang sudah tersedia, tetapi nilai 0 dari sheet tidak lagi dianggap
-    // sebagai lead time yang valid ketika kedua tanggal tersedia.
+    // LEAD TIME pada sheet PROGRESS 2026 adalah nilai utama.
+    // Jangan menghitung ulang dari selisih ACTUAL START/FINISH karena nilai
+    // source tidak selalu sama dengan selisih hari kalender (lead time source
+    // mengikuti pencatatan lead time di data operasional).
+    // Nilai 0 dari source tetap valid dan tidak boleh dibuang.
+    const sourceLead = monitoringNumber(getCellValue(row, 11));
+    if (sourceLead !== null && sourceLead >= 0) return sourceLead;
+
+    // Fallback hanya jika kolom LEAD TIME benar-benar kosong/tidak numerik.
+    // Fallback memakai hari kalender dan hanya dipakai jika kedua tanggal ada.
     const start = monitoringDateOnly(getCellValue(row, 9));
     const finish = monitoringDateOnly(getCellValue(row, 10));
-
     if (start && finish) {
         const a = new Date(start.getFullYear(), start.getMonth(), start.getDate());
         const b = new Date(finish.getFullYear(), finish.getMonth(), finish.getDate());
         const days = Math.round((b - a) / 86400000);
         if (Number.isFinite(days) && days >= 0) return days;
     }
-
-    const sourceLead = monitoringNumber(getCellValue(row, 11));
-    return sourceLead !== null && sourceLead > 0 ? sourceLead : null;
+    return null;
 }
 
 function monitoringCompletedRows() {
@@ -10902,7 +10905,7 @@ function monitoringLeadMetrics() {
     const min = values.length ? Math.min(...values) : 0;
     const max = values.length ? Math.max(...values) : 0;
     const buckets = [
-        ["0–3", values.filter(v => v <= 7).length],
+        ["0–3", values.filter(v => v >= 0 && v <= 3).length],
         ["4–7", values.filter(v => v >= 4 && v <= 7).length],
         ["8–14", values.filter(v => v >= 8 && v <= 14).length],
         [">14", values.filter(v => v > 14).length]
