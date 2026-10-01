@@ -15704,3 +15704,46 @@ body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-focus-body .cute-no
 #prototypeReportOverlay .prototype-report-stage{overflow:hidden!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:10px!important;box-sizing:border-box!important}
 #prototypeReportOverlay .prototype-report-page{flex:0 0 1400px!important;width:1400px!important;height:990px!important;min-height:990px!important;max-height:990px!important;margin:0!important;transform-origin:center center!important}
 </style>
+
+<style id="v27-daily-report-no-clip">
+/* V27: rebalance the fixed 1440x960 report so sections 1, 5 and 6 have enough room. */
+#prototypeReportPage .v21-report{
+  grid-template-rows:72px 96px 277px 190px 140px 120px 5px!important;
+  gap:6px!important;
+  height:960px!important;
+  overflow:hidden!important;
+}
+/* 1 — Open Production: keep the chart and month labels inside its card. */
+#prototypeReportPage .v21-row-main{min-height:0!important;height:277px!important;}
+#prototypeReportPage .v21-row-main>.v21-card{height:277px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-card-body{height:calc(100% - 31px)!important;padding:7px 8px 6px!important;overflow:hidden!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-legend{height:13px!important;font-size:6px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-chart{height:166px!important;flex:none!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-axis{padding-bottom:15px!important;font-size:5.8px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{bottom:17px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-months{padding:5px 2px 16px!important;gap:3px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-month>span{font-size:6px!important;bottom:0!important;white-space:nowrap!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar b{font-size:5.3px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-insights{margin-top:4px!important;gap:4px!important;}
+#prototypeReportPage .v21-row-main>.v21-card.wide .v21-insights div{padding:4px 5px!important;font-size:6px!important;}
+/* 5–6 — give the second row real vertical room and compact its repeating items. */
+#prototypeReportPage .v21-row-second{height:190px!important;min-height:190px!important;}
+#prototypeReportPage .v21-row-second .v21-card{height:190px!important;min-height:190px!important;}
+#prototypeReportPage .v21-row-second .v21-card-body{height:calc(100% - 31px)!important;overflow:hidden!important;padding:6px 7px!important;}
+#prototypeReportPage .v21-row-second .customer-bars{padding:1px 3px!important;}
+#prototypeReportPage .v21-row-second .customer-bars>div{grid-template-columns:65px 1fr 17px!important;gap:4px!important;margin:4px 0!important;height:10px!important;}
+#prototypeReportPage .v21-row-second .customer-bars span{font-size:6px!important;line-height:10px!important;}
+#prototypeReportPage .v21-row-second .customer-bars i{height:8px!important;}
+#prototypeReportPage .v21-row-second .customer-bars strong{font-size:6.3px!important;}
+#prototypeReportPage .v21-row-second .v21-problem-list{gap:4px!important;padding:0!important;}
+#prototypeReportPage .v21-row-second .v21-problem{padding:5px 6px!important;min-height:0!important;}
+#prototypeReportPage .v21-row-second .v21-problem b{font-size:7px!important;}
+#prototypeReportPage .v21-row-second .v21-problem em{font-size:5.8px!important;}
+#prototypeReportPage .v21-row-second .v21-problem span,#prototypeReportPage .v21-row-second .v21-problem small{font-size:5.8px!important;line-height:1.25!important;}
+/* Keep the lower row and footer inside the same 960px canvas. */
+#prototypeReportPage .v21-row-third{height:140px!important;min-height:140px!important;}
+#prototypeReportPage .v21-row-third .v21-card{height:140px!important;}
+#prototypeReportPage .v21-detail{height:120px!important;min-height:120px!important;}
+#prototypeReportPage .v21-detail-grid{height:89px!important;}
+#prototypeReportPage .v21-footer{height:5px!important;min-height:5px!important;font-size:5.5px!important;}
+</style>
