@@ -15193,6 +15193,54 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
   document.getElementById('prototypeReportOverlay')?.addEventListener('click',e=>{if(e.target.id==='prototypeReportOverlay')closeReportPreview()});
 })();
 </script>
+
+<style id="v18-daily-report-fit-fix">
+/* V18: fit the complete landscape report inside the preview viewport. */
+#prototypeReportOverlay .prototype-report-stage{
+  padding:10px!important;
+  overflow:hidden!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+}
+#prototypeReportOverlay .prototype-report-page{
+  flex:0 0 auto!important;
+  transform-origin:center center!important;
+  margin:0!important;
+}
+@media(max-width:900px){
+  #prototypeReportOverlay .prototype-report-stage{overflow:auto!important;align-items:flex-start!important}
+}
+</style>
+<script>
+(function(){
+  const PAGE_W=1440, PAGE_H=960;
+  function fitDailyReportPreview(){
+    const stage=document.getElementById('prototypeReportStage');
+    const page=document.getElementById('prototypeReportPage');
+    if(!stage||!page||!document.getElementById('prototypeReportOverlay')?.classList.contains('show')) return;
+    const sw=Math.max(1,stage.clientWidth-16), sh=Math.max(1,stage.clientHeight-16);
+    const scale=Math.min(1,sw/PAGE_W,sh/PAGE_H);
+    page.style.transform='scale('+scale+')';
+    page.style.transformOrigin='center center';
+    stage.scrollTop=0; stage.scrollLeft=0;
+  }
+  const oldOpen=window.openReportPreview;
+  window.openReportPreview=async function(){
+    await oldOpen();
+    const stage=document.getElementById('prototypeReportStage');
+    if(stage) stage.scrollTop=0;
+    requestAnimationFrame(()=>requestAnimationFrame(fitDailyReportPreview));
+  };
+  const oldTheme=window.setPrototypeReportTheme;
+  window.setPrototypeReportTheme=function(v){ oldTheme(v); requestAnimationFrame(fitDailyReportPreview); };
+  const oldFormat=window.setPrototypeReportFormat;
+  window.setPrototypeReportFormat=function(v){ oldFormat(v); requestAnimationFrame(fitDailyReportPreview); };
+  window.addEventListener('resize',fitDailyReportPreview);
+  window.fitDailyReportPreview=fitDailyReportPreview;
+})();
+</script>
 </html>
 <style id="finalSmartNotificationDarkReadabilityFix">
 /* SMART NOTIFICATION — FINAL DARK MODE CONTRAST FIX */
