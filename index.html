@@ -14749,9 +14749,7 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
 #prototypeReportOverlay .pr-alert{min-height:46px!important;padding:5px!important}
 #prototypeReportOverlay .pr-alert strong{font-size:20px!important}
 #prototypeReportOverlay .pr-action{font-size:7px!important;margin:5px 0!important}
-#prototypeReportOverlay .pr-grid-3{
-  height:175px!important;grid-template-columns:1fr 1.1fr 1.15fr!important;gap:6px!important;
-}
+#prototypeReportOverlay .pr-grid-3{grid-template-columns:1fr 1.1fr 1.15fr!important;gap:6px!important}
 #prototypeReportOverlay .pr-grid-3>.pr-box{
   height:175px!important;min-height:175px!important;padding:8px!important;overflow:hidden!important;
 }
@@ -15019,7 +15017,7 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
 <style id="v17-daily-report-final">
 #prototypeReportOverlay .prototype-report-stage{background:#dfeaf4!important;padding:12px!important;align-items:flex-start!important;justify-content:center!important;overflow:auto!important}
 #prototypeReportOverlay .prototype-report-page{width:1440px!important;height:960px!important;min-height:960px!important;max-height:960px!important;padding:8px!important;box-sizing:border-box!important;overflow:hidden!important;border-radius:12px!important;background:#f7fbff!important;box-shadow:0 16px 38px rgba(12,58,99,.18)!important}
-#prototypeReportPage .v17-report{width:100%!important;height:100%!important;box-sizing:border-box!important;display:grid!important;grid-template-rows:76px 108px 292px 154px 138px 88px 16px!important;gap:6px!important;font-family:Arial,Helvetica,sans-serif!important;color:#163d5d!important}
+#prototypeReportPage .v17-report{width:100%!important;height:100%!important;box-sizing:border-box!important;display:grid!important;grid-template-rows:76px 108px 285px 175px 140px 125px 15px!important;gap:6px!important;font-family:Arial,Helvetica,sans-serif!important;color:#163d5d!important}
 #prototypeReportPage .v17-head{display:flex!important;justify-content:space-between!important;align-items:stretch!important;padding:9px 14px!important;border-radius:10px!important;background:linear-gradient(100deg,#0755bd 0%,#146fe1 38%,#6636e9 70%,#e73d91 100%)!important;color:#fff!important;box-shadow:0 4px 12px rgba(12,79,170,.18)!important}
 #prototypeReportPage .v17-brand{font-size:12px!important;letter-spacing:2.8px!important;font-weight:1000!important;line-height:1!important}.v17-title{font-size:31px!important;line-height:1!important;font-weight:1000!important;letter-spacing:.3px!important;margin-top:3px!important}.v17-sub{font-size:9px!important;font-weight:800!important;margin-top:4px!important}
 #prototypeReportPage .v17-meta{display:grid!important;grid-template-columns:repeat(2,176px)!important;gap:4px!important;align-content:center!important}.v17-meta div{border:1px solid rgba(255,255,255,.35)!important;background:rgba(255,255,255,.12)!important;border-radius:6px!important;padding:4px 7px!important;font-size:6.5px!important;text-transform:uppercase!important;letter-spacing:.4px!important}.v17-meta b{display:block!important;font-size:8px!important;margin-top:2px!important;letter-spacing:0!important;text-transform:none!important}
@@ -15054,8 +15052,6 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
     <div class="prototype-report-toolbar">
       <div class="prototype-report-toolbar-left">
         <div><div class="prototype-report-toolbar-title">📊 Preview Report</div><div class="prototype-report-toolbar-sub">Preview ini adalah tampilan yang akan diekspor.</div></div>
-        <button class="prototype-report-pill active" id="prototypeReportLightBtn" type="button" onclick="setPrototypeReportTheme('light')">☀️ Light</button>
-        <button class="prototype-report-pill" id="prototypeReportDarkBtn" type="button" onclick="setPrototypeReportTheme('dark')">🌙 Dark</button>
       </div>
       <div class="prototype-report-toolbar-right">
         <button class="prototype-report-pill active" id="prototypeReportPdfBtn" type="button" onclick="setPrototypeReportFormat('pdf')">📄 PDF</button>
@@ -15142,7 +15138,8 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
     const trendOpen=[...Array(7)].map((_,i)=>{const day=new Date(t);day.setDate(day.getDate()-(6-i));return d.open.filter(r=>{const e=dateOnly(cell(r,7));return e&&sameDay(e,day)}).length});
     const trendClose=[...Array(7)].map((_,i)=>{const day=new Date(t);day.setDate(day.getDate()-(6-i));return d.close.filter(r=>{const e=dateOnly(cell(r,10));return e&&sameDay(e,day)}).length});
     const maxTrend=Math.max(1,...trendOpen,...trendClose);
-    return `<div class="v17-report">
+    const dayTheme=((t.getDate()-1)%7)+1;
+    return `<div class="v17-report" data-day-theme="${dayTheme}">
       <header class="v17-head"><div><div class="v17-brand">PROTOTYPE</div><div class="v17-title">DAILY MONITORING REPORT</div><div class="v17-sub">OPEN production · problem · Loading EXP · today's achievement</div></div><div class="v17-meta"><div>REPORT DATE<b>${esc(todayLabel)}</b></div><div>GENERATED<b>${esc(new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}))}</b></div><div>FILTER<b>${esc(filters)}</b></div><div>DATA SOURCE<b>Progress · Problem · Loading EXP</b></div></div></header>
       <section class="v17-kpis">
         <div class="v17-kpi"><div class="v17-kpi-icon">◉</div><div><small>OPEN ASSY</small><strong>${fmt(openU.assy)}</strong><span>${fmt(openU.wp)} ACTIVE WP</span></div></div>
@@ -15172,13 +15169,13 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
       <footer class="v17-footer"><span>PROTOTYPE · Daily Monitoring Report</span><span>OPEN production · Problem · Loading EXP · Today's achievement</span><span>On Time · On Quality · Higher Productivity</span></footer>
     </div>`;
   }
-  function render(){const page=document.getElementById('prototypeReportPage');if(!page)return;page.classList.toggle('dark',reportTheme==='dark');page.innerHTML=reportHtml(getData());document.getElementById('prototypeReportLightBtn')?.classList.toggle('active',reportTheme==='light');document.getElementById('prototypeReportDarkBtn')?.classList.toggle('active',reportTheme==='dark');document.getElementById('prototypeReportPdfBtn')?.classList.toggle('active',reportFormat==='pdf');document.getElementById('prototypeReportImageBtn')?.classList.toggle('active',reportFormat==='image');}
+  function render(){const page=document.getElementById('prototypeReportPage');if(!page)return;reportTheme='light';page.classList.remove('dark');page.innerHTML=reportHtml(getData());document.getElementById('prototypeReportPdfBtn')?.classList.toggle('active',reportFormat==='pdf');document.getElementById('prototypeReportImageBtn')?.classList.toggle('active',reportFormat==='image');}
   function loadScript(src,global){return new Promise((resolve,reject)=>{if(window[global])return resolve();const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=()=>reject(new Error('Gagal memuat '+src));document.head.appendChild(s)})}
   async function ensureLibs(){if(!window.html2canvas)await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js','html2canvas');if(!window.jspdf)await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js','jspdf');}
   async function download(){
     const page=document.getElementById('prototypeReportPage');if(!page)return;
     const btn=document.querySelector('.prototype-report-download');if(btn){btn.disabled=true;btn.textContent='⏳ Menyiapkan...'}
-    try{await ensureLibs();const canvas=await html2canvas(page,{scale:2,useCORS:true,backgroundColor:reportTheme==='dark'?'#111827':'#ffffff',logging:false});const filename=`PROTOTYPE_Daily_Report_${new Date().toISOString().slice(0,10)}`;
+    try{await ensureLibs();const canvas=await html2canvas(page,{scale:2,useCORS:true,backgroundColor:'#f7fbff',logging:false});const filename=`PROTOTYPE_Daily_Report_${new Date().toISOString().slice(0,10)}`;
       if(reportFormat==='image'){const a=document.createElement('a');a.download=filename+'.png';a.href=canvas.toDataURL('image/png');a.click();}
       else{const {jsPDF}=window.jspdf;const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight();const margin=5,w=pw-margin*2,h=canvas.height*(w/canvas.width),pageH=ph-margin*2;let y=0,idx=0;while(y<h-0.1){if(idx>0)pdf.addPage();const srcY=Math.round(y/(w/canvas.width));const sliceH=Math.min(canvas.height-srcY,Math.round(pageH/(w/canvas.width)));const slice=document.createElement('canvas');slice.width=canvas.width;slice.height=sliceH;slice.getContext('2d').drawImage(canvas,0,srcY,canvas.width,sliceH,0,0,canvas.width,sliceH);pdf.addImage(slice.toDataURL('image/jpeg',.92),'JPEG',margin,margin,w,sliceH*(w/canvas.width));y+=pageH;idx++;}pdf.save(filename+'.pdf');}
     }catch(e){console.error('Prototype Report download',e);alert('Report gagal dibuat. Pastikan koneksi internet tersedia untuk memuat engine export PDF/Image.');}
@@ -15186,7 +15183,6 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
   }
   window.openReportPreview=async()=>{document.getElementById('prototypeReportOverlay')?.classList.add('show');document.getElementById('prototypeReportOverlay')?.setAttribute('aria-hidden','false');render();try{if(typeof window.refreshLoadingExp==='function' && typeof window.getLoadingExpReportRows==='function' && !window.getLoadingExpReportRows().length)await window.refreshLoadingExp();}catch(e){}render();};
   window.closeReportPreview=()=>{document.getElementById('prototypeReportOverlay')?.classList.remove('show');document.getElementById('prototypeReportOverlay')?.setAttribute('aria-hidden','true');};
-  window.setPrototypeReportTheme=v=>{reportTheme=v==='dark'?'dark':'light';render()};
   window.setPrototypeReportFormat=v=>{reportFormat=v==='image'?'image':'pdf';render()};
   window.downloadPrototypeReport=download;
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeReportPreview()});
@@ -15194,6 +15190,55 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
 })();
 </script>
 
+
+<style id="v19-daily-report-layout-fix">
+/* V19: fit every section inside the fixed landscape canvas without clipping. */
+#prototypeReportPage .v17-main{height:285px!important}
+#prototypeReportPage .v17-main>.v17-card{height:285px!important;overflow:visible!important}
+#prototypeReportPage .v17-row2{height:175px!important}
+#prototypeReportPage .v17-row2 .v17-box{height:175px!important;overflow:visible!important}
+#prototypeReportPage .v17-row3{height:140px!important}
+#prototypeReportPage .v17-row3 .v17-box{height:140px!important;overflow:visible!important}
+#prototypeReportPage .v17-detail{height:125px!important;overflow:visible!important}
+#prototypeReportPage .v17-detail-grid{height:91px!important;overflow:visible!important}
+#prototypeReportPage .v17-detail-card{height:86px!important;min-height:0!important;overflow:visible!important;padding:6px!important}
+#prototypeReportPage .v17-detail-card span{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+#prototypeReportPage .v17-problem-list{height:132px!important;max-height:none!important;overflow:visible!important;padding:7px!important}
+#prototypeReportPage .v17-problem{min-height:34px!important;box-sizing:border-box!important}
+#prototypeReportPage .v17-load-rows{max-height:none!important;overflow:visible!important}
+#prototypeReportPage .v17-bars-list{padding:7px 10px!important}
+#prototypeReportPage .v17-bars-list .v17-process-row{margin:6px 0!important}
+#prototypeReportPage .v17-trend-chart{height:70px!important}
+#prototypeReportPage .v17-achievement{height:100px!important}
+#prototypeReportPage .v17-footer{min-height:15px!important}
+#prototypeReportOverlay .prototype-report-page{overflow:visible!important}
+#prototypeReportOverlay .prototype-report-stage{overflow:hidden!important}
+
+/* Daily color rotation: status colors remain meaningful; the dashboard accent changes by day. */
+#prototypeReportPage .v17-report[data-day-theme="1"]{--day1:#075fc5;--day2:#1588e2;--day3:#6d32dd;--day4:#079ab5}
+#prototypeReportPage .v17-report[data-day-theme="2"]{--day1:#00695c;--day2:#00a88a;--day3:#0077b6;--day4:#00a6a6}
+#prototypeReportPage .v17-report[data-day-theme="3"]{--day1:#7b2cbf;--day2:#c23ab8;--day3:#2563eb;--day4:#0891b2}
+#prototypeReportPage .v17-report[data-day-theme="4"]{--day1:#b45309;--day2:#f59e0b;--day3:#0f766e;--day4:#0284c7}
+#prototypeReportPage .v17-report[data-day-theme="5"]{--day1:#be123c;--day2:#e11d48;--day3:#7c3aed;--day4:#0891b2}
+#prototypeReportPage .v17-report[data-day-theme="6"]{--day1:#166534;--day2:#16a34a;--day3:#0369a1;--day4:#0891b2}
+#prototypeReportPage .v17-report[data-day-theme="7"]{--day1:#4338ca;--day2:#6366f1;--day3:#c026d3;--day4:#0891b2}
+#prototypeReportPage .v17-report .v17-head{background:linear-gradient(100deg,var(--day1),var(--day2) 42%,var(--day3) 72%,var(--day4))!important}
+#prototypeReportPage .v17-report .blue-head{background:linear-gradient(90deg,var(--day1),var(--day2))!important}
+#prototypeReportPage .v17-report .cyan-head{background:linear-gradient(90deg,var(--day4),var(--day2))!important}
+#prototypeReportPage .v17-report .purple-head{background:linear-gradient(90deg,var(--day3),var(--day2))!important}
+#prototypeReportPage .v17-report .v17-detail-head{background:linear-gradient(90deg,var(--day1),var(--day2))!important}
+#prototypeReportPage .v17-report .v17-kpi{border-top-color:var(--day1)!important}
+#prototypeReportPage .v17-report .v17-kpi-icon{background:var(--day1)!important}
+#prototypeReportPage .v17-report .v17-kpi.green{border-top-color:#0aa957!important}.v17-report .v17-kpi.green .v17-kpi-icon{background:#079b4b!important}
+#prototypeReportPage .v17-report .v17-kpi.red{border-top-color:#ef3035!important}.v17-report .v17-kpi.red .v17-kpi-icon{background:#ed292d!important}
+#prototypeReportPage .v17-report .v17-kpi.orange{border-top-color:#f19a00!important}.v17-report .v17-kpi.orange .v17-kpi-icon{background:#f08a00!important}
+#prototypeReportPage .v17-report .v17-kpi.purple{border-top-color:var(--day3)!important}.v17-report .v17-kpi.purple .v17-kpi-icon{background:var(--day3)!important}
+#prototypeReportPage .v17-report .v17-kpi.teal{border-top-color:var(--day4)!important}.v17-report .v17-kpi.teal .v17-kpi-icon{background:var(--day4)!important}
+#prototypeReportPage .v17-report .v17-main-number,#prototypeReportPage .v17-report .v17-kpi strong,#prototypeReportPage .v17-report .v17-process-row b{color:var(--day1)!important}
+#prototypeReportPage .v17-report .v17-detail-card:nth-child(3n+1){border-top-color:var(--day4)!important}
+#prototypeReportPage .v17-report .v17-detail-card:nth-child(3n+2){border-top-color:var(--day3)!important}
+#prototypeReportPage .v17-report .v17-detail-card:nth-child(3n){border-top-color:#f97316!important}
+</style>
 <style id="v18-daily-report-fit-fix">
 /* V18: fit the complete landscape report inside the preview viewport. */
 #prototypeReportOverlay .prototype-report-stage{
@@ -15233,8 +15278,6 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
     if(stage) stage.scrollTop=0;
     requestAnimationFrame(()=>requestAnimationFrame(fitDailyReportPreview));
   };
-  const oldTheme=window.setPrototypeReportTheme;
-  window.setPrototypeReportTheme=function(v){ oldTheme(v); requestAnimationFrame(fitDailyReportPreview); };
   const oldFormat=window.setPrototypeReportFormat;
   window.setPrototypeReportFormat=function(v){ oldFormat(v); requestAnimationFrame(fitDailyReportPreview); };
   window.addEventListener('resize',fitDailyReportPreview);
