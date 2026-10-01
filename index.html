@@ -15121,7 +15121,7 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
   function reportHtml(d){
     const t=d.t, closeU=units(d.closeToday), openU=units(d.open), overdueU=units(d.overdue), due7U=units(d.due7);
     const probCloseToday=d.probs.filter(r=>problemStatus(r)==='CLOSE'&&sameDay(dateOnly(cell(r,13)),t)).length;
-    const openRows=[...d.open].sort((a,b)=>{const da=dateOnly(cell(a,7)),db=dateOnly(cell(b,7));return (da?da.getTime():Infinity)-(db?db.getTime():Infinity)}).slice(0,12);
+    const openRows=[...d.open].sort((a,b)=>{const da=dateOnly(cell(a,7)),db=dateOnly(cell(b,7));return (da?da.getTime():Infinity)-(db?db.getTime():Infinity)}).slice(0,6);
     const problemRows=[...d.openProblems].sort((a,b)=>(problemAge(b)||0)-(problemAge(a)||0)).slice(0,3);
     const monthlyMap=new Map();
     (d.loading||[]).forEach(r=>{const key=String(r.period||'').trim()||'Period';const x=monthlyMap.get(key)||{plan:0,out:0};x.plan+=num(r.planCct);x.out+=num(r.outCct);monthlyMap.set(key,x)});
@@ -15139,7 +15139,7 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
     const trendClose=[...Array(7)].map((_,i)=>{const day=new Date(t);day.setDate(day.getDate()-(6-i));return d.close.filter(r=>{const e=dateOnly(cell(r,10));return e&&sameDay(e,day)}).length});
     const maxTrend=Math.max(1,...trendOpen,...trendClose);
     const dayTheme=((t.getDate()-1)%7)+1;
-    return `<div class="v17-report-book" data-day-theme="${dayTheme}"><section class="v17-report v17-page-one">
+    return `<div class="v17-report" data-day-theme="${dayTheme}">
       <header class="v17-head"><div><div class="v17-brand">PROTOTYPE</div><div class="v17-title">DAILY MONITORING REPORT</div><div class="v17-sub">OPEN production · problem · Loading EXP · today's achievement</div></div><div class="v17-meta"><div>REPORT DATE<b>${esc(todayLabel)}</b></div><div>GENERATED<b>${esc(new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}))}</b></div><div>FILTER<b>${esc(filters)}</b></div><div>DATA SOURCE<b>Progress · Problem · Loading EXP</b></div></div></header>
       <section class="v17-kpis">
         <div class="v17-kpi"><div class="v17-kpi-icon">◉</div><div><small>OPEN ASSY</small><strong>${fmt(openU.assy)}</strong><span>${fmt(openU.wp)} ACTIVE WP</span></div></div>
@@ -15160,40 +15160,24 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
         <section class="v17-card v17-box"><div class="v17-card-head orange-head"><span class="num">6</span> OPEN PROBLEM</div><div class="v17-problem-list">${problemCards}</div></section>
         <section class="v17-card v17-box"><div class="v17-card-head purple-head"><span class="num">7</span> OPEN LOADING EXP</div><div class="v17-load-kpis"><div class="v17-load-kpi"><b>${fmt(d.loadS.openAssy)}</b><span>ASSY</span></div><div class="v17-load-kpi"><b>${fmt(d.loadS.openQty)}</b><span>PCS</span></div><div class="v17-load-kpi"><b>${fmt(d.loadS.openCct)}</b><span>CCT</span></div><div class="v17-load-kpi"><b>${fmt(achievement)}%</b><span>ACHV</span></div></div><div class="v17-load-rows">${loadingCards}</div></section>
       </section>
-      </section><section class="v17-report v17-page-two"><div class="v17-cont-head"><div><b>PROTOTYPE</b><strong>DAILY MONITORING REPORT · CONTINUED</strong><span>Open monitoring detail · trend · achievement · priority snapshot</span></div><div><b>REPORT DATE</b><span>${esc(todayLabel)}</span></div></div>
       <section class="v17-row3">
         <section class="v17-card v17-box"><div class="v17-card-head blue-head"><span class="num">8</span> 7-DAY OPEN / CLOSE TREND</div><div class="v17-trend-chart">${trendOpen.map((v,i)=>`<div class="v17-trend-col"><i class="o" style="height:${Math.max(3,v/maxTrend*100)}%"></i><i class="c" style="height:${Math.max(3,trendClose[i]/maxTrend*100)}%"></i><span>${(() => {const x=new Date(t);x.setDate(x.getDate()-(6-i));return x.toLocaleDateString('id-ID',{day:'2-digit',month:'short'})})()}</span></div>`).join('')}</div><div class="v17-note">Blue = OPEN · Orange = CLOSE</div></section>
         <section class="v17-card v17-box"><div class="v17-card-head green-head"><span class="num">9</span> LOADING ACHIEVEMENT</div><div class="v17-achievement"><div class="v17-ach-donut" style="background:conic-gradient(#09b77a 0 ${achievement}%,#d9e8ef ${achievement}% 100%)"><div>${fmt(achievement)}%<small>PCS</small></div></div><div><strong>${fmt(d.loadS.outQty)}</strong><span>Actual OUT PCS</span><small>Plan ${fmt(d.loadS.planQty)} PCS</small></div></div></section>
         <section class="v17-card v17-box"><div class="v17-card-head cyan-head"><span class="num">10</span> TODAY'S ACHIEVEMENT</div><div class="v17-today-grid"><div class="v17-today-card"><b>${fmt(closeU.assy)}</b><span>ASSY CLOSED</span></div><div class="v17-today-card"><b>${fmt(closeU.wp)}</b><span>WP COMPLETED</span></div><div class="v17-today-card"><b>${fmt(probCloseToday)}</b><span>PROBLEM CLOSED</span></div><div class="v17-today-card"><b>${fmt(d.loadS.outQty)}</b><span>PCS LOADING OUT</span></div></div></section>
       </section>
       <section class="v17-detail"><div class="v17-detail-head"><span>11 · OPEN DETAIL SNAPSHOT</span><span>${fmt(openRows.length)} priority records</span></div><div class="v17-detail-grid">${detailCards}</div></section>
-      <footer class="v17-footer"><span>PROTOTYPE · Daily Monitoring Report · Page 2</span><span>OPEN production · Problem · Loading EXP · Today's achievement</span><span>On Time · On Quality · Higher Productivity</span></footer>
-      </section></div>`;
+      <footer class="v17-footer"><span>PROTOTYPE · Daily Monitoring Report</span><span>OPEN production · Problem · Loading EXP · Today's achievement</span><span>On Time · On Quality · Higher Productivity</span></footer>
+    </div>`;
   }
   function render(){const page=document.getElementById('prototypeReportPage');if(!page)return;reportTheme='light';page.classList.remove('dark');page.innerHTML=reportHtml(getData());document.getElementById('prototypeReportPdfBtn')?.classList.toggle('active',reportFormat==='pdf');document.getElementById('prototypeReportImageBtn')?.classList.toggle('active',reportFormat==='image');}
   function loadScript(src,global){return new Promise((resolve,reject)=>{if(window[global])return resolve();const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=()=>reject(new Error('Gagal memuat '+src));document.head.appendChild(s)})}
   async function ensureLibs(){if(!window.html2canvas)await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js','html2canvas');if(!window.jspdf)await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js','jspdf');}
   async function download(){
-    const book=document.querySelector('#prototypeReportPage .v17-report-book');if(!book)return;
-    const pages=[...book.querySelectorAll('.v17-report')];
+    const page=document.getElementById('prototypeReportPage');if(!page)return;
     const btn=document.querySelector('.prototype-report-download');if(btn){btn.disabled=true;btn.textContent='⏳ Menyiapkan...'}
-    try{
-      await ensureLibs();
-      const canvases=[];
-      for(const pg of pages){
-        canvases.push(await html2canvas(pg,{scale:2,useCORS:true,backgroundColor:'#f7fbff',logging:false}));
-      }
-      const filename=`PROTOTYPE_Daily_Report_${new Date().toISOString().slice(0,10)}`;
-      if(reportFormat==='image'){
-        const gap=24,w=Math.max(...canvases.map(c=>c.width)),h=canvases.reduce((a,c)=>a+c.height,0)+gap*(canvases.length-1);
-        const out=document.createElement('canvas');out.width=w;out.height=h;const ctx=out.getContext('2d');ctx.fillStyle='#eef4f8';ctx.fillRect(0,0,w,h);let y=0;
-        canvases.forEach((c,i)=>{ctx.drawImage(c,0,y);y+=c.height;if(i<canvases.length-1)y+=gap});
-        const a=document.createElement('a');a.download=filename+'_2_PAGES.png';a.href=out.toDataURL('image/png');a.click();
-      }else{
-        const {jsPDF}=window.jspdf;const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});
-        canvases.forEach((canvas,i)=>{if(i>0)pdf.addPage();const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),margin=4,w=pw-margin*2,h=canvas.height*(w/canvas.width);const scale=Math.min(1,(ph-margin*2)/h);const dw=w*scale,dh=h*scale;const x=(pw-dw)/2,y=(ph-dh)/2;pdf.addImage(canvas.toDataURL('image/jpeg',.94),'JPEG',x,y,dw,dh)});
-        pdf.save(filename+'_2_PAGES.pdf');
-      }
+    try{await ensureLibs();const canvas=await html2canvas(page,{scale:2,useCORS:true,backgroundColor:'#f7fbff',logging:false});const filename=`PROTOTYPE_Daily_Report_${new Date().toISOString().slice(0,10)}`;
+      if(reportFormat==='image'){const a=document.createElement('a');a.download=filename+'.png';a.href=canvas.toDataURL('image/png');a.click();}
+      else{const {jsPDF}=window.jspdf;const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4',compress:true});const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight();const margin=5,w=pw-margin*2,h=canvas.height*(w/canvas.width),pageH=ph-margin*2;let y=0,idx=0;while(y<h-0.1){if(idx>0)pdf.addPage();const srcY=Math.round(y/(w/canvas.width));const sliceH=Math.min(canvas.height-srcY,Math.round(pageH/(w/canvas.width)));const slice=document.createElement('canvas');slice.width=canvas.width;slice.height=sliceH;slice.getContext('2d').drawImage(canvas,0,srcY,canvas.width,sliceH,0,0,canvas.width,sliceH);pdf.addImage(slice.toDataURL('image/jpeg',.92),'JPEG',margin,margin,w,sliceH*(w/canvas.width));y+=pageH;idx++;}pdf.save(filename+'.pdf');}
     }catch(e){console.error('Prototype Report download',e);alert('Report gagal dibuat. Pastikan koneksi internet tersedia untuk memuat engine export PDF/Image.');}
     finally{if(btn){btn.disabled=false;btn.textContent='⬇ Download Report'}}
   }
@@ -15298,66 +15282,6 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
   window.setPrototypeReportFormat=function(v){ oldFormat(v); requestAnimationFrame(fitDailyReportPreview); };
   window.addEventListener('resize',fitDailyReportPreview);
   window.fitDailyReportPreview=fitDailyReportPreview;
-})();
-</script>
-<style id="v20-two-page-daily-report">
-/* V20 — two-page landscape report: no clipping, balanced composition. */
-#prototypeReportOverlay .prototype-report-stage{
-  padding:16px!important;overflow:auto!important;display:flex!important;align-items:flex-start!important;justify-content:center!important;box-sizing:border-box!important;
-  background:#dfe7ef!important;
-}
-#prototypeReportOverlay .prototype-report-page{
-  width:1440px!important;min-height:0!important;height:auto!important;padding:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;
-}
-#prototypeReportPage .v17-report-book{width:1440px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box;}
-#prototypeReportPage .v17-report{width:1440px;height:960px;min-height:960px;max-height:960px;box-sizing:border-box;overflow:hidden;background:#f7fbff;padding:12px;border-radius:10px;box-shadow:0 10px 28px rgba(30,70,110,.16);font-family:Arial,Helvetica,sans-serif;}
-#prototypeReportPage .v17-page-one{display:grid;grid-template-rows:76px 88px 310px 1fr 16px;gap:7px;}
-#prototypeReportPage .v17-page-two{display:grid;grid-template-rows:64px 220px 1fr 16px;gap:8px;}
-#prototypeReportPage .v17-page-one .v17-head{height:76px!important;margin:0!important;}
-#prototypeReportPage .v17-page-one .v17-kpis{height:88px!important;}
-#prototypeReportPage .v17-page-one .v17-main{height:310px!important;min-height:310px!important;}
-#prototypeReportPage .v17-page-one .v17-main>.v17-card{height:310px!important;min-height:310px!important;}
-#prototypeReportPage .v17-page-one .v17-row2{height:auto!important;min-height:0!important;}
-#prototypeReportPage .v17-page-one .v17-row2 .v17-box{height:auto!important;min-height:0!important;}
-#prototypeReportPage .v17-page-one .v17-problem-list{height:auto!important;max-height:none!important;overflow:visible!important;}
-#prototypeReportPage .v17-page-one .v17-bars-list{height:auto!important;overflow:visible!important;}
-#prototypeReportPage .v17-page-one .v17-load-rows{height:auto!important;overflow:visible!important;}
-#prototypeReportPage .v17-cont-head{height:64px;border-radius:10px;background:linear-gradient(100deg,var(--day1,#075fc5),var(--day2,#1588e2) 42%,var(--day3,#6d32dd) 72%,var(--day4,#079ab5));color:#fff;display:flex;justify-content:space-between;align-items:center;padding:9px 18px;box-sizing:border-box;}
-#prototypeReportPage .v17-cont-head b{display:block;font-size:9px;letter-spacing:2px;opacity:.9;}
-#prototypeReportPage .v17-cont-head strong{display:block;font-size:22px;line-height:1.05;margin-top:3px;}
-#prototypeReportPage .v17-cont-head span{display:block;font-size:8px;margin-top:4px;opacity:.9;}
-#prototypeReportPage .v17-cont-head>div:last-child{display:grid;grid-template-columns:110px;gap:2px;text-align:right;}
-#prototypeReportPage .v17-page-two .v17-row3{height:220px!important;min-height:220px!important;}
-#prototypeReportPage .v17-page-two .v17-row3 .v17-box{height:220px!important;min-height:220px!important;}
-#prototypeReportPage .v17-page-two .v17-trend-chart{height:145px!important;}
-#prototypeReportPage .v17-page-two .v17-achievement{height:160px!important;}
-#prototypeReportPage .v17-page-two .v17-today-grid{height:160px!important;}
-#prototypeReportPage .v17-page-two .v17-detail{height:auto!important;min-height:0!important;overflow:hidden!important;}
-#prototypeReportPage .v17-page-two .v17-detail-grid{height:auto!important;min-height:0!important;display:grid!important;grid-template-columns:repeat(4,1fr)!important;grid-auto-rows:1fr!important;gap:8px!important;padding:8px!important;overflow:hidden!important;}
-#prototypeReportPage .v17-page-two .v17-detail-card{height:auto!important;min-height:92px!important;overflow:hidden!important;padding:8px!important;}
-#prototypeReportPage .v17-page-two .v17-detail-card b{font-size:8px!important;}
-#prototypeReportPage .v17-page-two .v17-detail-card span{font-size:6.5px!important;}
-#prototypeReportPage .v17-page-two .v17-detail-card em{font-size:6px!important;}
-#prototypeReportPage .v17-page-two .v17-footer{height:16px!important;}
-@media(max-width:900px){#prototypeReportOverlay .prototype-report-stage{justify-content:flex-start!important;}#prototypeReportOverlay .prototype-report-page{width:1440px!important;transform-origin:top left!important;} }
-@media print{ @page{size:A4 landscape;margin:0} #prototypeReportOverlay .prototype-report-stage{padding:0!important;overflow:visible!important;background:#fff!important} #prototypeReportOverlay .prototype-report-page{width:1440px!important;transform:none!important} #prototypeReportPage .v17-report{box-shadow:none!important;break-after:page!important;page-break-after:always!important} }
-</style>
-<script>
-(function(){
-  const W=1440;
-  function fitTwoPageReport(){
-    const stage=document.getElementById('prototypeReportStage'), page=document.getElementById('prototypeReportPage');
-    if(!stage||!page||!document.getElementById('prototypeReportOverlay')?.classList.contains('show')) return;
-    const scale=Math.min(1,Math.max(.35,(stage.clientWidth-24)/W));
-    page.style.transform='scale('+scale+')';page.style.transformOrigin='top center';
-    page.style.marginBottom=((page.scrollHeight*scale)-page.scrollHeight)+'px';
-  }
-  const oldOpen=window.openReportPreview;
-  window.openReportPreview=async function(){await oldOpen();requestAnimationFrame(()=>requestAnimationFrame(fitTwoPageReport));};
-  const oldFormat=window.setPrototypeReportFormat;
-  window.setPrototypeReportFormat=function(v){oldFormat(v);requestAnimationFrame(fitTwoPageReport)};
-  window.addEventListener('resize',fitTwoPageReport);
-  window.fitTwoPageReport=fitTwoPageReport;
 })();
 </script>
 </html>
