@@ -3473,6 +3473,20 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
 
             <!-- =================================================
+                 PROGRESS VIEW MODE
+            ================================================== -->
+
+            <div class="progress-view-mode" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;padding:14px 16px;border:1px solid #dce9ee;border-radius:12px;background:#fff;">
+                <div style="font-weight:800;font-size:13px;letter-spacing:.04em;">TAMPILAN BERDASARKAN</div>
+                <select id="progressViewMode" onchange="changeProgressViewMode(this.value)" style="min-width:180px;padding:9px 12px;border:1px solid #cfdde2;border-radius:9px;background:#fff;font-weight:700;">
+                    <option value="assywp">ASSY / WP</option>
+                    <option value="cct">CCT</option>
+                </select>
+                <small id="progressViewModeHint" style="color:#71838a;">Tampilan default tetap berdasarkan jumlah ASSY dan WP.</small>
+            </div>
+
+
+            <!-- =================================================
                  FILTER
             ================================================== -->
 
@@ -5704,6 +5718,31 @@ function changeProgressPage(
    PROGRESS STATISTICS
 ========================================================= */
 
+let progressViewMode = "assywp";
+
+function getProgressCctTotal(rows) {
+    return (rows || []).reduce((sum, row) => {
+        const value = Number(String(getCellValue(row, 6) ?? "").replace(/[^0-9.,-]/g, "").replace(/\.(?=.*\.)/g, "").replace(",", "."));
+        return sum + (Number.isFinite(value) ? value : 0);
+    }, 0);
+}
+
+function formatProgressMetric(value) {
+    return Number(value || 0).toLocaleString("id-ID", { maximumFractionDigits: 2 });
+}
+
+function changeProgressViewMode(mode) {
+    progressViewMode = mode === "cct" ? "cct" : "assywp";
+    const hint = document.getElementById("progressViewModeHint");
+    if (hint) {
+        hint.textContent = progressViewMode === "cct"
+            ? "Tampilan KPI berdasarkan TOTAL CCT; filter ASSY/WP tetap dapat digunakan."
+            : "Tampilan default tetap berdasarkan jumlah ASSY dan WP.";
+    }
+    const rows = typeof getFilteredRows === "function" ? getFilteredRows() : [];
+    if (typeof updateStatistics === "function") updateStatistics(rows);
+}
+
 function getUniqueUnitCounts(rows) {
     const assy = new Set();
     const wp = new Set();
@@ -5828,6 +5867,8 @@ function updateKPIValues(
     if (totalData) {
         if (processMode) {
             totalData.textContent = `${total.toLocaleString("id-ID")} QTY`;
+        } else if (progressViewMode === "cct") {
+            totalData.innerHTML = `<span>${formatProgressMetric(getProgressCctTotal(rows))} CCT</span>`;
         } else {
             const counts = getUniqueUnitCounts(rows);
             totalData.innerHTML = `<span>${counts.assy.toLocaleString("id-ID")} ASSY</span><small>· ${counts.wp.toLocaleString("id-ID")} WP</small>`;
@@ -5837,6 +5878,9 @@ function updateKPIValues(
     if (totalOpen) {
         if (processMode) {
             totalOpen.textContent = `${open.toLocaleString("id-ID")} QTY`;
+        } else if (progressViewMode === "cct") {
+            const openRows = rows.filter(row => getRowStatus(row) === "OPEN");
+            totalOpen.innerHTML = `<span>${formatProgressMetric(getProgressCctTotal(openRows))} CCT</span>`;
         } else {
             const openCounts = getUniqueUnitCounts(rows.filter(row => getRowStatus(row) === "OPEN"));
             totalOpen.innerHTML = `<span>${openCounts.assy.toLocaleString("id-ID")} ASSY</span><small>· ${openCounts.wp.toLocaleString("id-ID")} WP</small>`;
@@ -5846,6 +5890,9 @@ function updateKPIValues(
     if (totalClose) {
         if (processMode) {
             totalClose.textContent = `${close.toLocaleString("id-ID")} QTY`;
+        } else if (progressViewMode === "cct") {
+            const closeRows = rows.filter(row => getRowStatus(row) === "CLOSE");
+            totalClose.innerHTML = `<span>${formatProgressMetric(getProgressCctTotal(closeRows))} CCT</span>`;
         } else {
             const closeCounts = getUniqueUnitCounts(rows.filter(row => getRowStatus(row) === "CLOSE"));
             totalClose.innerHTML = `<span>${closeCounts.assy.toLocaleString("id-ID")} ASSY</span><small>· ${closeCounts.wp.toLocaleString("id-ID")} WP</small>`;
@@ -5945,17 +5992,17 @@ function updateKPIValues(
     } else {
         if (totalDataLabel) {
             totalDataLabel.textContent =
-                "TOTAL ASSY/WP";
+                progressViewMode === "cct" ? "TOTAL CCT" : "TOTAL ASSY/WP";
         }
 
         if (totalOpenLabel) {
             totalOpenLabel.textContent =
-                "OPEN ASSY/WP";
+                progressViewMode === "cct" ? "OPEN CCT" : "OPEN ASSY/WP";
         }
 
         if (totalCloseLabel) {
             totalCloseLabel.textContent =
-                "CLOSE ASSY/WP";
+                progressViewMode === "cct" ? "CLOSE CCT" : "CLOSE ASSY/WP";
         }
 
         if (totalDataDescription) {
@@ -6983,6 +7030,11 @@ function progressCustomerKpiAction(){ progressUnifiedKpi("customer"); }
 ========================================================= */
 
 function resetFilters() {
+    progressViewMode = "assywp";
+    const viewMode = document.getElementById("progressViewMode");
+    if (viewMode) viewMode.value = "assywp";
+    const viewHint = document.getElementById("progressViewModeHint");
+    if (viewHint) viewHint.textContent = "Tampilan default tetap berdasarkan jumlah ASSY dan WP.";
     const ids = [
         "customerFilter",
         "progressAssyFilter",
