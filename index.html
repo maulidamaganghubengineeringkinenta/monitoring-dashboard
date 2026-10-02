@@ -16315,3 +16315,23 @@ body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-focus-body .cute-no
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-bar b{font-size:5.5px!important;}
 #prototypeReportPage .v21-row-main>.v21-card.wide .v21-gridlines{bottom:28px!important;}
 </style>
+<style id="fix-download-report-feature-6">
+/* Fix feature 6 — OPEN PROBLEM: give the card enough vertical room so all items are visible. */
+#prototypeReportPage .v21-row-second{min-height:188px!important;}
+#prototypeReportPage .v21-row-second .v21-card{height:188px!important;}
+#prototypeReportPage .v21-row-second .v21-card-body{height:calc(100% - 31px)!important;overflow:hidden!important;}
+#prototypeReportPage .v21-row-second .v21-problem-list{gap:4px!important;height:100%!important;}
+#prototypeReportPage .v21-row-second .v21-problem{padding:5px!important;}
+#prototypeReportPage .v21-row-second .v21-problem b{font-size:7px!important;}
+#prototypeReportPage .v21-row-second .v21-problem em{font-size:5.7px!important;}
+#prototypeReportPage .v21-row-second .v21-problem span,
+#prototypeReportPage .v21-row-second .v21-problem small{font-size:5.5px!important;margin-top:1px!important;}
+/* Keep the fixed 960px report canvas balanced after giving feature 6 more room. */
+#prototypeReportPage .v21-row-third{min-height:132px!important;}
+#prototypeReportPage .v21-row-third .v21-card{height:132px!important;}
+</style>
+<style id="fix-download-report-feature-6-grid">
+#prototypeReportPage .v21-report{
+  grid-template-rows:72px 96px 292px 188px 132px 112px 10px!important;
+}
+</style>
