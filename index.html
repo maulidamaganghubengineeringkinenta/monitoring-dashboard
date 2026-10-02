@@ -1636,11 +1636,15 @@ body:not(.dashboard-dark):not(.login-locked) .cute-status-label{
 
 /* Compact Production Reading summary */
 .production-reading-summary-card{min-width:0;}
-.production-reading-mini{border:1px solid #dce9ee;background:#f8fbfc;border-radius:10px;padding:10px 8px;text-align:left;cursor:pointer;transition:.18s ease;min-width:0;}
+.production-reading-schedule-card{background:linear-gradient(180deg,#ffffff 0%,#fbfdfe 100%);}
+.production-reading-schedule-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px;}
+.production-reading-mini{border:1px solid #dce9ee;background:#f8fbfc;border-radius:11px;padding:13px 14px;text-align:left;cursor:pointer;transition:.18s ease;min-width:0;}
 .production-reading-mini:hover{transform:translateY(-1px);border-color:#b9cdd4;background:#fff;}
 .production-reading-mini span{display:block;font-size:10px;font-weight:800;letter-spacing:.04em;color:#71838a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.production-reading-mini strong{display:block;margin-top:5px;font-size:20px;line-height:1.1;color:#263238;}
-@media(max-width:800px){.production-reading-summary-card>div:nth-child(3){grid-template-columns:1fr!important;}}
+.production-reading-mini strong{display:block;margin-top:7px;font-size:22px;line-height:1.15;color:#263238;}
+.production-reading-status-card{min-height:78px;}
+.production-reading-mode-badge{display:inline-flex;align-items:center;min-height:30px;padding:6px 11px;border:1px solid #cbdde3;border-radius:999px;background:#f4f9fb;color:#51666f;font-size:11px;font-weight:800;letter-spacing:.04em;}
+@media(max-width:800px){.production-reading-schedule-grid{grid-template-columns:1fr;}}
 
 /* ---------- PROGRESS: PRODUCTION READING ---------- */
 body.dashboard-dark:not(.login-locked) #progress #automaticProductionReading{
@@ -3580,29 +3584,28 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                     </div>
                 </div>
 
-                <!-- Ringkasan dibuat lebih ringkas karena detail ASSY/CCT sudah bisa dipersempit lewat filter Progress. -->
-                <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:16px;">
-                    <div class="chart-card production-reading-summary-card" style="padding:16px;">
-                        <div class="panel-kicker">DEADLINE & SCHEDULE</div>
-                        <h3 style="margin:4px 0 12px;">Status Jadwal OPEN</h3>
-                        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
-                            <button type="button" class="production-reading-mini" onclick="productionReadingDrilldown('etd3')"><span>ETD ≤ 7 HARI</span><strong id="readingETD3">0</strong></button>
-                            <button type="button" class="production-reading-mini" onclick="productionReadingDrilldown('overdue')"><span>OVERDUE</span><strong id="readingOverdue">0</strong></button>
-                            <button type="button" class="production-reading-mini" onclick="productionReadingDrilldown('reschedule')"><span>RESCHEDULE</span><strong id="readingReschedule">0</strong></button>
+                <!-- Status Jadwal OPEN menjadi satu-satunya ringkasan utama Production Reading. -->
+                <div class="chart-card production-reading-summary-card production-reading-schedule-card" style="padding:18px;margin-bottom:16px;">
+                    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+                        <div>
+                            <div class="panel-kicker">DEADLINE & SCHEDULE</div>
+                            <h3 style="margin:4px 0 2px;">Status Jadwal OPEN</h3>
+                            <small id="productionReadingModeLabel" style="color:#71838a;">Berdasarkan ASSY / WP</small>
                         </div>
-                        <small style="display:block;margin-top:9px;color:#74858d;">Jumlah dihitung berdasarkan ASSY dan WP pada data OPEN yang sedang difilter.</small>
+                        <span id="productionReadingModeBadge" class="production-reading-mode-badge">ASSY / WP</span>
                     </div>
-
-                    <div class="chart-card production-reading-summary-card" style="padding:16px;">
-                        <div class="panel-kicker">OPEN PRODUCTION</div>
-                        <h3 style="margin:4px 0 12px;">Beban Produksi</h3>
-                        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
-                            <button type="button" class="production-reading-mini" onclick="productionReadingDrilldown('openqty')"><span>OPEN PCS</span><strong id="readingOpenQTY">0</strong></button>
-                            <button type="button" class="production-reading-mini" onclick="productionReadingDrilldown('cct')"><span>TOTAL CCT</span><strong id="readingTotalCCT">0</strong></button>
-                            <button type="button" class="production-reading-mini" onclick="productionReadingDrilldown('avgcct')"><span>AVG CCT</span><strong id="readingAvgCCT">0</strong></button>
-                        </div>
-                        <small style="display:block;margin-top:9px;color:#74858d;">QTY diperlakukan sebagai PCS. Detail dapat dipersempit dengan filter ASSY, WP, CCT, dan QTY.</small>
+                    <div class="production-reading-schedule-grid">
+                        <button type="button" class="production-reading-mini production-reading-status-card" onclick="productionReadingDrilldown('etd3')">
+                            <span>ETD ≤ 7 HARI</span><strong id="readingETD3">0</strong>
+                        </button>
+                        <button type="button" class="production-reading-mini production-reading-status-card" onclick="productionReadingDrilldown('overdue')">
+                            <span>OVERDUE</span><strong id="readingOverdue">0</strong>
+                        </button>
+                        <button type="button" class="production-reading-mini production-reading-status-card" onclick="productionReadingDrilldown('reschedule')">
+                            <span>RESCHEDULE</span><strong id="readingReschedule">0</strong>
+                        </button>
                     </div>
+                    <small id="productionReadingScheduleNote" style="display:block;margin-top:10px;color:#74858d;">Jumlah dihitung berdasarkan ASSY dan WP pada data OPEN yang sedang difilter.</small>
                 </div>
 
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
@@ -5817,9 +5820,9 @@ function updateProgressViewModeSummary(rows) {
     }, 0);
 
     if (progressViewMode === "cct") {
-        summary.textContent = `WP: ${assyWp.wp.toLocaleString("id-ID")} · ASSY: ${assyWp.assy.toLocaleString("id-ID")} · PCS: ${formatProgressMetric(pcs)}`;
+        summary.textContent = `TOTAL CCT: ${formatProgressMetric(cct)} · PCS: ${formatProgressMetric(pcs)}`;
     } else {
-        summary.textContent = `CCT: ${formatProgressMetric(cct)} · PCS: ${formatProgressMetric(pcs)}`;
+        summary.textContent = `ASSY: ${assyWp.assy.toLocaleString("id-ID")} · WP: ${assyWp.wp.toLocaleString("id-ID")} · PCS: ${formatProgressMetric(pcs)}`;
     }
 }
 
@@ -6905,6 +6908,16 @@ function closeProductionReadingPopup(){const x=document.getElementById("producti
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeProductionReadingPopup()});
 function readingDualMetric(assy,wp){return `<span class="metric-dual metric-assy-wp"><span class="metric-primary"><span class="metric-number">${readingFormatNumber(assy)}</span><span class="metric-unit">ASSY</span></span><span class="metric-secondary"><span class="metric-number">${readingFormatNumber(wp)}</span><span class="metric-unit">WP</span></span></span>`}
 function readingMetricCounts(rows){const a=new Set(),w=new Set();(rows||[]).forEach(r=>{const av=String(getCellValue(r,2)||"").trim(),wv=String(getCellValue(r,3)||"").trim();if(av)a.add(av);if(wv)w.add(wv)});return{assy:a.size,wp:w.size}}
+function readingStatusMetric(rows){
+    const rs=rows||[];
+    const cctMode=(typeof progressViewMode!=='undefined' && progressViewMode==='cct') || document.getElementById('progressViewMode')?.value==='cct';
+    if(cctMode){
+        const total=getProgressCctTotal(rs);
+        return `${readingFormatNumber(total)} CCT`;
+    }
+    const counts=readingMetricCounts(rs);
+    return readingDualMetric(counts.assy,counts.wp);
+}
 
 function updateProductionReading(rows) {
     const section = document.getElementById("productionReadingSection");
@@ -6994,8 +7007,18 @@ function updateProductionReading(rows) {
     const overdueRows=openRows.filter(row=>{const d=parseReadingDate(getCellValue(row,7));return d&&readingDateDiffDays(d,startOfToday)<0});
     const rescheduleRows=openRows.filter(row=>{const a=parseReadingDate(getCellValue(row,7)),b=parseReadingDate(getCellValue(row,8));return a&&b&&a.getTime()!==b.getTime()});
     const notStartedRows=openRows.filter(row=>!String(getCellValue(row,9)||"").trim());
-    const c1=readingMetricCounts(etd3Rows),c2=readingMetricCounts(overdueRows),c3=readingMetricCounts(rescheduleRows),c4=readingMetricCounts(notStartedRows);
-    readingSet("readingETD3",readingDualMetric(c1.assy,c1.wp));readingSet("readingOverdue",readingDualMetric(c2.assy,c2.wp));readingSet("readingReschedule",readingDualMetric(c3.assy,c3.wp));readingSet("readingNotStarted",readingDualMetric(c4.assy,c4.wp));
+    readingSet("readingETD3",readingStatusMetric(etd3Rows));
+    readingSet("readingOverdue",readingStatusMetric(overdueRows));
+    readingSet("readingReschedule",readingStatusMetric(rescheduleRows));
+    readingSet("readingNotStarted",readingStatusMetric(notStartedRows));
+
+    const cctMode=(typeof progressViewMode!=='undefined' && progressViewMode==='cct') || document.getElementById('progressViewMode')?.value==='cct';
+    const modeLabel=document.getElementById("productionReadingModeLabel");
+    const modeBadge=document.getElementById("productionReadingModeBadge");
+    const modeNote=document.getElementById("productionReadingScheduleNote");
+    if(modeLabel) modeLabel.textContent=cctMode ? "Berdasarkan total CCT pada data OPEN" : "Berdasarkan jumlah unik ASSY dan WP pada data OPEN";
+    if(modeBadge) modeBadge.textContent=cctMode ? "CCT" : "ASSY / WP";
+    if(modeNote) modeNote.textContent=cctMode ? "Saat tampilan CCT aktif, setiap indikator jadwal dihitung dari TOTAL CCT pada data OPEN yang sedang difilter." : "Saat tampilan ASSY / WP aktif, setiap indikator jadwal dihitung dari jumlah unik ASSY dan WP pada data OPEN yang sedang difilter.";
     readingSet("readingTotalCCT", `${readingFormatNumber(totalCCT)} CCT`);
     readingSet("readingTotalQTY", `${readingFormatNumber(totalQTY)} PCS`);
     readingSet("readingOpenQTY", `${readingFormatNumber(openQTY)} PCS`);
