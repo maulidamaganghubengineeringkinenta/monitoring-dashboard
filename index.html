@@ -1652,7 +1652,8 @@ body:not(.dashboard-dark):not(.login-locked) .cute-status-label{
 .production-reading-status-card .metric-number{font-size:31px!important;line-height:1!important;font-weight:900!important;color:#263238!important;}
 .production-reading-status-card .metric-unit{font-size:12px!important;font-weight:900!important;color:#61747c!important;letter-spacing:.03em;}
 .production-reading-status-card .metric-separator{font-size:18px;color:#9aabb1;font-weight:800;padding-bottom:2px;}
-.production-reading-status-card .status-card-help{position:relative;z-index:1;display:block!important;margin-top:10px;font-size:11px;color:#71838a;line-height:1.35;}
+.production-reading-status-card .status-card-meta{position:relative;z-index:1;display:block!important;margin-top:5px;font-size:12px;font-weight:800;color:#52666e;line-height:1.25;letter-spacing:.01em;}
+.production-reading-status-card .status-card-help{position:relative;z-index:1;display:block!important;margin-top:8px;font-size:11px;color:#71838a;line-height:1.35;}
 .status-etd{--status-color:#2878d0;--status-soft:#dcebff;background:linear-gradient(135deg,#f8fbff 0%,#eef6ff 100%);}
 .status-overdue{--status-color:#d84b4b;--status-soft:#ffe1e1;background:linear-gradient(135deg,#fffafa 0%,#fff0f0 100%);}
 .status-reschedule{--status-color:#d98916;--status-soft:#ffedc9;background:linear-gradient(135deg,#fffdf8 0%,#fff6e5 100%);}
@@ -1661,6 +1662,7 @@ body:not(.dashboard-dark):not(.login-locked) .cute-status-label{
 .schedule-note-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#4c8c9e;}
 @media(max-width:800px){.production-reading-schedule-grid{grid-template-columns:1fr;}.production-reading-status-card{min-height:112px;}}
 body.dashboard-dark:not(.login-locked) .production-reading-status-card strong,body.dashboard-dark:not(.login-locked) .production-reading-status-card .metric-number{color:#f5f8fa!important;}
+body.dashboard-dark:not(.login-locked) .production-reading-status-card .status-card-meta{color:#c4d0d5!important;}
 body.dashboard-dark:not(.login-locked) .production-reading-schedule-note{background:#252b30;color:#c2ccd1;}
 body.dashboard-dark:not(.login-locked) .production-reading-mode-badge{background:#25343a;color:#d8e9ed;border-color:#41565e;}
 
@@ -3616,16 +3618,19 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         <button type="button" class="production-reading-mini production-reading-status-card status-etd" onclick="productionReadingDrilldown('etd3')">
                             <span class="status-card-label">ETD ≤ 7 HARI</span>
                             <strong id="readingETD3">0</strong>
+                            <small id="readingETD3Meta" class="status-card-meta">0 CCT</small>
                             <small class="status-card-help">Jadwal mendekati ETD</small>
                         </button>
                         <button type="button" class="production-reading-mini production-reading-status-card status-overdue" onclick="productionReadingDrilldown('overdue')">
                             <span class="status-card-label">OVERDUE</span>
                             <strong id="readingOverdue">0</strong>
+                            <small id="readingOverdueMeta" class="status-card-meta">0 CCT</small>
                             <small class="status-card-help">Sudah melewati ETD</small>
                         </button>
                         <button type="button" class="production-reading-mini production-reading-status-card status-reschedule" onclick="productionReadingDrilldown('reschedule')">
                             <span class="status-card-label">RESCHEDULE</span>
                             <strong id="readingReschedule">0</strong>
+                            <small id="readingRescheduleMeta" class="status-card-meta">0 CCT</small>
                             <small class="status-card-help">ETD mengalami perubahan</small>
                         </button>
                     </div>
@@ -7040,6 +7045,21 @@ function updateProductionReading(rows) {
     readingSet("readingNotStarted",readingStatusMetric(notStartedRows));
 
     const cctMode=(typeof progressViewMode!=='undefined' && progressViewMode==='cct') || document.getElementById('progressViewMode')?.value==='cct';
+    const setStatusMeta=(id,rows)=>{
+        const el=document.getElementById(id); if(!el)return;
+        if(cctMode){
+            // Mode CCT: angka utama = TOTAL CCT, keterangan kecil = ASSY + WP.
+            const counts=readingMetricCounts(rows||[]);
+            el.textContent=`${readingFormatNumber(counts.assy)} ASSY · ${readingFormatNumber(counts.wp)} WP`;
+        }else{
+            // Mode ASSY / WP: angka utama = jumlah ASSY + WP, keterangan kecil = TOTAL CCT.
+            const total=getProgressCctTotal(rows||[]);
+            el.textContent=`${readingFormatNumber(total)} CCT`;
+        }
+    };
+    setStatusMeta("readingETD3Meta",etd3Rows);
+    setStatusMeta("readingOverdueMeta",overdueRows);
+    setStatusMeta("readingRescheduleMeta",rescheduleRows);
     const modeLabel=document.getElementById("productionReadingModeLabel");
     const modeBadge=document.getElementById("productionReadingModeBadge");
     const modeNote=document.getElementById("productionReadingScheduleNote");
