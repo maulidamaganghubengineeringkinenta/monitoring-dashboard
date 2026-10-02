@@ -1634,6 +1634,14 @@ body:not(.dashboard-dark):not(.login-locked) .cute-status-label{
   color:#596970!important;
 }
 
+/* Compact Production Reading summary */
+.production-reading-summary-card{min-width:0;}
+.production-reading-mini{border:1px solid #dce9ee;background:#f8fbfc;border-radius:10px;padding:10px 8px;text-align:left;cursor:pointer;transition:.18s ease;min-width:0;}
+.production-reading-mini:hover{transform:translateY(-1px);border-color:#b9cdd4;background:#fff;}
+.production-reading-mini span{display:block;font-size:10px;font-weight:800;letter-spacing:.04em;color:#71838a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.production-reading-mini strong{display:block;margin-top:5px;font-size:20px;line-height:1.1;color:#263238;}
+@media(max-width:800px){.production-reading-summary-card>div:nth-child(3){grid-template-columns:1fr!important;}}
+
 /* ---------- PROGRESS: PRODUCTION READING ---------- */
 body.dashboard-dark:not(.login-locked) #progress #automaticProductionReading{
   background:#272b31!important;
@@ -3572,15 +3580,29 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                     </div>
                 </div>
 
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px;">
-                    <div class="kpi-card kpi-blue" onclick="productionReadingDrilldown('etd3')"><div class="kpi-label">ETD ≤ 7 HARI</div><div class="kpi-value" id="readingETD3">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
-                    <div class="kpi-card kpi-orange" onclick="productionReadingDrilldown('overdue')"><div class="kpi-label">OVERDUE</div><div class="kpi-value" id="readingOverdue">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
-                    <div class="kpi-card kpi-yellow" onclick="productionReadingDrilldown('reschedule')"><div class="kpi-label">RESCHEDULE</div><div class="kpi-value" id="readingReschedule">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
-                    
-                    <div class="kpi-card kpi-green" onclick="productionReadingDrilldown('cct')"><div class="kpi-label">TOTAL CCT</div><div class="kpi-value" id="readingTotalCCT">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
-                    <div class="kpi-card kpi-purple" onclick="productionReadingDrilldown('qty')"><div class="kpi-label">TOTAL QTY (PCS)</div><div class="kpi-value" id="readingTotalQTY">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
-                    <div class="kpi-card kpi-blue" onclick="productionReadingDrilldown('openqty')"><div class="kpi-label">OPEN QTY (PCS)</div><div class="kpi-value" id="readingOpenQTY">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
-                    <div class="kpi-card kpi-green" onclick="productionReadingDrilldown('avgcct')"><div class="kpi-label">AVG CCT</div><div class="kpi-value" id="readingAvgCCT">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
+                <!-- Ringkasan dibuat lebih ringkas karena detail ASSY/CCT sudah bisa dipersempit lewat filter Progress. -->
+                <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:16px;">
+                    <div class="chart-card production-reading-summary-card" style="padding:16px;">
+                        <div class="panel-kicker">DEADLINE & SCHEDULE</div>
+                        <h3 style="margin:4px 0 12px;">Status Jadwal OPEN</h3>
+                        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+                            <button type="button" class="production-reading-mini" onclick="productionReadingDrilldown('etd3')"><span>ETD ≤ 7 HARI</span><strong id="readingETD3">0</strong></button>
+                            <button type="button" class="production-reading-mini" onclick="productionReadingDrilldown('overdue')"><span>OVERDUE</span><strong id="readingOverdue">0</strong></button>
+                            <button type="button" class="production-reading-mini" onclick="productionReadingDrilldown('reschedule')"><span>RESCHEDULE</span><strong id="readingReschedule">0</strong></button>
+                        </div>
+                        <small style="display:block;margin-top:9px;color:#74858d;">Jumlah dihitung berdasarkan ASSY dan WP pada data OPEN yang sedang difilter.</small>
+                    </div>
+
+                    <div class="chart-card production-reading-summary-card" style="padding:16px;">
+                        <div class="panel-kicker">OPEN PRODUCTION</div>
+                        <h3 style="margin:4px 0 12px;">Beban Produksi</h3>
+                        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+                            <button type="button" class="production-reading-mini" onclick="productionReadingDrilldown('openqty')"><span>OPEN PCS</span><strong id="readingOpenQTY">0</strong></button>
+                            <button type="button" class="production-reading-mini" onclick="productionReadingDrilldown('cct')"><span>TOTAL CCT</span><strong id="readingTotalCCT">0</strong></button>
+                            <button type="button" class="production-reading-mini" onclick="productionReadingDrilldown('avgcct')"><span>AVG CCT</span><strong id="readingAvgCCT">0</strong></button>
+                        </div>
+                        <small style="display:block;margin-top:9px;color:#74858d;">QTY diperlakukan sebagai PCS. Detail dapat dipersempit dengan filter ASSY, WP, CCT, dan QTY.</small>
+                    </div>
                 </div>
 
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
