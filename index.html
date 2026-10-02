@@ -3062,6 +3062,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                     <option value="cct">CCT</option>
                 </select>
                 <small id="progressViewModeHint" style="color:#71838a;">Tampilan default tetap berdasarkan jumlah ASSY dan WP.</small>
+                <small id="progressViewModeSummary" style="display:block;width:100%;color:#71838a;font-size:11px;">CCT: 0 · PCS: 0</small>
             </div>
 
 
@@ -5736,6 +5737,25 @@ function formatProgressMetric(value) {
     return Number(value || 0).toLocaleString("id-ID", { maximumFractionDigits: 2 });
 }
 
+function updateProgressViewModeSummary(rows) {
+    const summary = document.getElementById("progressViewModeSummary");
+    if (!summary) return;
+
+    const dataRows = rows || [];
+    const assyWp = getUniqueUnitCounts(dataRows);
+    const cct = getProgressCctTotal(dataRows);
+    const pcs = dataRows.reduce((sum, row) => {
+        const value = Number(String(getCellValue(row, 5) ?? "").replace(/[^0-9.,-]/g, "").replace(/\.(?=.*\.)/g, "").replace(",", "."));
+        return sum + (Number.isFinite(value) ? value : 0);
+    }, 0);
+
+    if (progressViewMode === "cct") {
+        summary.textContent = `WP: ${assyWp.wp.toLocaleString("id-ID")} · ASSY: ${assyWp.assy.toLocaleString("id-ID")} · PCS: ${formatProgressMetric(pcs)}`;
+    } else {
+        summary.textContent = `CCT: ${formatProgressMetric(cct)} · PCS: ${formatProgressMetric(pcs)}`;
+    }
+}
+
 function changeProgressViewMode(mode) {
     progressViewMode = mode === "cct" ? "cct" : "assywp";
     const hint = document.getElementById("progressViewModeHint");
@@ -5745,6 +5765,7 @@ function changeProgressViewMode(mode) {
             : "Tampilan default tetap berdasarkan jumlah ASSY dan WP.";
     }
     const rows = typeof getFilteredRows === "function" ? getFilteredRows() : [];
+    updateProgressViewModeSummary(rows);
     if (typeof updateStatistics === "function") updateStatistics(rows);
 }
 
@@ -5765,6 +5786,7 @@ function formatAssyWp(assy, wp) {
 }
 
 function updateStatistics(rows) {
+    updateProgressViewModeSummary(rows);
     if (selectedProcessIndex === null) {
         const total = rows.length;
 
