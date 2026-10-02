@@ -15898,18 +15898,40 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
     });
     return {all,etd3,overdue,resched};
   }
+  function productionReadingMetaText(rows,id){
+    const rs=rows||[];
+    const counts=getUniqueUnitCounts(rs);
+    const cct=getProgressCctTotal(rs);
+    const pcs=getProgressPcsTotal(rs);
+    const cctMode=(typeof progressViewMode!=='undefined' && progressViewMode==='cct') || document.getElementById('progressViewMode')?.value==='cct';
+    const f=v=>Number(v||0).toLocaleString('id-ID',{maximumFractionDigits:2});
+    // Do not repeat the unit that is already displayed prominently in the card.
+    if(id==='readingETD3'||id==='readingOverdue'||id==='readingReschedule') return `CCT: ${f(cct)} · PCS: ${f(pcs)}`;
+    if(id==='readingTotalCCT') return cctMode ? `WP: ${f(counts.wp)} · ASSY: ${f(counts.assy)} · PCS: ${f(pcs)}` : `PCS: ${f(pcs)}`;
+    if(id==='readingTotalQTY'||id==='readingOpenQTY') return cctMode ? `WP: ${f(counts.wp)} · ASSY: ${f(counts.assy)}` : `CCT: ${f(cct)}`;
+    if(id==='readingAvgCCT') return cctMode ? `WP: ${f(counts.wp)} · ASSY: ${f(counts.assy)} · PCS: ${f(pcs)}` : `PCS: ${f(pcs)}`;
+    return '';
+  }
+  function putProductionReadingMeta(parent,rows,id){
+    if(!parent)return;
+    let el=parent.querySelector(`:scope > .progress-feature-meta[data-meta-key="production-reading"]`);
+    if(!el){el=document.createElement('small');el.className='progress-feature-meta';el.dataset.metaKey='production-reading';parent.appendChild(el);}
+    el.textContent=productionReadingMetaText(rows,id);
+    el.dataset.metaEmpty=el.textContent?'0':'1';
+  }
   function refresh(rows){
     const r=root(); if(!r)return;
     const data=rows||rowsNow();
     // Every KPI box on Progress, including Production Reading cards.
+    const pm=productionMetaRows(data);
     const special={
-      readingETD3: productionMetaRows(data).etd3,
-      readingOverdue: productionMetaRows(data).overdue,
-      readingReschedule: productionMetaRows(data).resched,
-      readingTotalCCT: productionMetaRows(data).all,
-      readingTotalQTY: productionMetaRows(data).all,
-      readingOpenQTY: productionMetaRows(data).all,
-      readingAvgCCT: productionMetaRows(data).all
+      readingETD3: pm.etd3,
+      readingOverdue: pm.overdue,
+      readingReschedule: pm.resched,
+      readingTotalCCT: pm.all,
+      readingTotalQTY: pm.all,
+      readingOpenQTY: pm.all,
+      readingAvgCCT: pm.all
     };
     r.querySelectorAll('.kpi-card').forEach(card=>{
       const value=card.querySelector('.kpi-value');
@@ -15917,7 +15939,11 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
       const existing=card.querySelector('.kpi-secondary-metrics');
       if(existing){existing.classList.add('progress-feature-meta'); return;}
       const id=value.id;
-      putAfter(card,special[id]||data,'kpi');
+      if(Object.prototype.hasOwnProperty.call(special,id)){
+        putProductionReadingMeta(card,special[id],id);
+      } else {
+        putAfter(card,data,'kpi');
+      }
     });
 
     // Customer / distribution chart cards.
