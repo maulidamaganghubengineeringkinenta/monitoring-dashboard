@@ -357,6 +357,8 @@ body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage2-card canvas{f
 .progress-status-card .kpi-description{font-size:9px!important;color:#6f7d84!important;line-height:1.35!important;}
 .problem-part-count{font-weight:900;display:inline-block;}
 .unified-popup-detail-block{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #e7eef1}.unified-popup-detail-block-title{font-weight:900;font-size:12px;margin-bottom:9px;color:#314650}
+
+.kpi-secondary-metrics { margin-top:-7px; margin-bottom:8px; font-size:11px; line-height:1.25; font-weight:700; color:#71838a; letter-spacing:.01em; }
 </style>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -3209,6 +3211,8 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                     </div>
 
+                    <div class="kpi-secondary-metrics" id="totalDataSecondary">CCT: 0 · PCS: 0</div>
+
 
                     <div
                         class="kpi-description"
@@ -3252,6 +3256,8 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         0
 
                     </div>
+
+                    <div class="kpi-secondary-metrics" id="totalOpenSecondary">CCT: 0 · PCS: 0</div>
 
 
                     <div
@@ -3297,6 +3303,8 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                     </div>
 
+                    <div class="kpi-secondary-metrics" id="totalCloseSecondary">CCT: 0 · PCS: 0</div>
+
 
                     <div
                         class="kpi-description"
@@ -3337,6 +3345,8 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                     </div>
 
+                    <div class="kpi-secondary-metrics" id="totalCustomerSecondary">CCT: 0 · PCS: 0</div>
+
 
                     <div class="kpi-description">
                         Jumlah customer (CUSTOMER)
@@ -3344,8 +3354,8 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 </div>
 
-                <div class="kpi-card kpi-green" onclick="progressUnifiedKpi('ontime')"><div class="kpi-top"><div class="kpi-label">ON-TIME DELIVERY</div><div class="kpi-icon">🎯</div></div><div class="kpi-value" id="progressOnTimeDelivery">0%</div><div class="kpi-description">CLOSE order selesai sesuai ETD · Klik untuk detail</div></div>
-                <div class="kpi-card kpi-orange" onclick="progressUnifiedKpi('reschedule')"><div class="kpi-top"><div class="kpi-label">RESCHEDULE RATE</div><div class="kpi-icon">🔄</div></div><div class="kpi-value" id="progressRescheduleRate">0%</div><div class="kpi-description">Order dengan perubahan ETD · Klik untuk detail</div></div>
+                <div class="kpi-card kpi-green" onclick="progressUnifiedKpi('ontime')"><div class="kpi-top"><div class="kpi-label">ON-TIME DELIVERY</div><div class="kpi-icon">🎯</div></div><div class="kpi-value" id="progressOnTimeDelivery">0%</div><div class="kpi-secondary-metrics" id="progressOnTimeSecondary">CCT: 0 · PCS: 0</div><div class="kpi-description">CLOSE order selesai sesuai ETD · Klik untuk detail</div></div>
+                <div class="kpi-card kpi-orange" onclick="progressUnifiedKpi('reschedule')"><div class="kpi-top"><div class="kpi-label">RESCHEDULE RATE</div><div class="kpi-icon">🔄</div></div><div class="kpi-value" id="progressRescheduleRate">0%</div><div class="kpi-secondary-metrics" id="progressRescheduleSecondary">CCT: 0 · PCS: 0</div><div class="kpi-description">Order dengan perubahan ETD · Klik untuk detail</div></div>
 
             </div>
 
@@ -5737,6 +5747,39 @@ function formatProgressMetric(value) {
     return Number(value || 0).toLocaleString("id-ID", { maximumFractionDigits: 2 });
 }
 
+function getProgressPcsTotal(rows) {
+    return (rows || []).reduce((sum, row) => {
+        const value = Number(String(getCellValue(row, 5) ?? "").replace(/[^0-9.,-]/g, "").replace(/\.(?=.*\.)/g, "").replace(",", "."));
+        return sum + (Number.isFinite(value) ? value : 0);
+    }, 0);
+}
+
+function setProgressSecondaryMetric(elementId, rows) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const dataRows = rows || [];
+    const counts = getUniqueUnitCounts(dataRows);
+    const cct = getProgressCctTotal(dataRows);
+    const pcs = getProgressPcsTotal(dataRows);
+    if (progressViewMode === "cct") {
+        el.textContent = `WP: ${counts.wp.toLocaleString("id-ID")} · ASSY: ${counts.assy.toLocaleString("id-ID")} · PCS: ${formatProgressMetric(pcs)}`;
+    } else {
+        el.textContent = `CCT: ${formatProgressMetric(cct)} · PCS: ${formatProgressMetric(pcs)}`;
+    }
+}
+
+function updateAllProgressSecondaryMetrics(rows, onTimeRows, rescheduleRows) {
+    const dataRows = rows || [];
+    const openRows = dataRows.filter(row => getRowStatus(row) === "OPEN");
+    const closeRows = dataRows.filter(row => getRowStatus(row) === "CLOSE");
+    setProgressSecondaryMetric("totalDataSecondary", dataRows);
+    setProgressSecondaryMetric("totalOpenSecondary", openRows);
+    setProgressSecondaryMetric("totalCloseSecondary", closeRows);
+    setProgressSecondaryMetric("totalCustomerSecondary", dataRows);
+    setProgressSecondaryMetric("progressOnTimeSecondary", onTimeRows || closeRows);
+    setProgressSecondaryMetric("progressRescheduleSecondary", rescheduleRows || []);
+}
+
 function updateProgressViewModeSummary(rows) {
     const summary = document.getElementById("progressViewModeSummary");
     if (!summary) return;
@@ -5949,6 +5992,20 @@ function updateKPIValues(
     });
     if (onTimeEl) onTimeEl.textContent = onTimeEligible ? `${((onTimeCount/onTimeEligible)*100).toFixed(1)}%` : "0%";
     if (rescheduleRateEl) rescheduleRateEl.textContent = rows.length ? `${((rescheduleCount/rows.length)*100).toFixed(1)}%` : "0%";
+
+    const onTimeRows = closeRows.filter(r => {
+        const etd = monitoringDateOnly(getCellValue(r, 7));
+        const revised = monitoringDateOnly(getCellValue(r, 8));
+        const finish = monitoringDateOnly(getCellValue(r, 10));
+        const due = revised || etd;
+        return !!(due && finish && finish <= due);
+    });
+    const rescheduleRows = rows.filter(r => {
+        const etd = monitoringDateOnly(getCellValue(r, 7));
+        const revised = monitoringDateOnly(getCellValue(r, 8));
+        return !!(etd && revised && etd.getTime() !== revised.getTime());
+    });
+    updateAllProgressSecondaryMetrics(rows, onTimeRows, rescheduleRows);
 
     const totalDataLabel =
         document.getElementById(
