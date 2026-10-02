@@ -1634,17 +1634,35 @@ body:not(.dashboard-dark):not(.login-locked) .cute-status-label{
   color:#596970!important;
 }
 
-/* Compact Production Reading summary */
+/* Production Reading — Status Jadwal OPEN */
 .production-reading-summary-card{min-width:0;}
-.production-reading-schedule-card{background:linear-gradient(180deg,#ffffff 0%,#fbfdfe 100%);}
-.production-reading-schedule-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px;}
-.production-reading-mini{border:1px solid #dce9ee;background:#f8fbfc;border-radius:11px;padding:13px 14px;text-align:left;cursor:pointer;transition:.18s ease;min-width:0;}
-.production-reading-mini:hover{transform:translateY(-1px);border-color:#b9cdd4;background:#fff;}
-.production-reading-mini span{display:block;font-size:10px;font-weight:800;letter-spacing:.04em;color:#71838a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.production-reading-mini strong{display:block;margin-top:7px;font-size:22px;line-height:1.15;color:#263238;}
-.production-reading-status-card{min-height:78px;}
-.production-reading-mode-badge{display:inline-flex;align-items:center;min-height:30px;padding:6px 11px;border:1px solid #cbdde3;border-radius:999px;background:#f4f9fb;color:#51666f;font-size:11px;font-weight:800;letter-spacing:.04em;}
-@media(max-width:800px){.production-reading-schedule-grid{grid-template-columns:1fr;}}
+.production-reading-schedule-card{background:linear-gradient(135deg,#ffffff 0%,#f7fbfc 100%);overflow:hidden;}
+.production-reading-schedule-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.production-reading-mode-label{color:#71838a;line-height:1.45;}
+.production-reading-schedule-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px;}
+.production-reading-status-card{position:relative;display:block;width:100%;min-height:126px;padding:18px 18px 15px!important;border:1px solid #dce7ec;border-radius:14px;text-align:left;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;overflow:hidden;}
+.production-reading-status-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;border-radius:14px 0 0 14px;background:var(--status-color);}
+.production-reading-status-card::after{content:"";position:absolute;right:-28px;top:-38px;width:110px;height:110px;border-radius:50%;background:var(--status-soft);opacity:.8;}
+.production-reading-status-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(35,62,72,.10);border-color:var(--status-color);}
+.production-reading-status-card .status-card-label{position:relative;z-index:1;display:block!important;font-size:11px!important;font-weight:900!important;letter-spacing:.07em;color:var(--status-color)!important;white-space:nowrap;overflow:visible;text-overflow:clip;}
+.production-reading-status-card strong{position:relative;z-index:1;display:block;margin-top:11px;font-size:32px;line-height:1.05;font-weight:900;color:#263238;letter-spacing:-.03em;}
+.production-reading-status-card strong .metric-dual{display:flex;align-items:flex-end;gap:12px;}
+.production-reading-status-card .metric-dual{position:relative;z-index:1;display:flex;align-items:flex-end;gap:10px;}
+.production-reading-status-card .metric-primary,.production-reading-status-card .metric-secondary{display:flex;align-items:baseline;gap:5px;}
+.production-reading-status-card .metric-number{font-size:31px!important;line-height:1!important;font-weight:900!important;color:#263238!important;}
+.production-reading-status-card .metric-unit{font-size:12px!important;font-weight:900!important;color:#61747c!important;letter-spacing:.03em;}
+.production-reading-status-card .metric-separator{font-size:18px;color:#9aabb1;font-weight:800;padding-bottom:2px;}
+.production-reading-status-card .status-card-help{position:relative;z-index:1;display:block!important;margin-top:10px;font-size:11px;color:#71838a;line-height:1.35;}
+.status-etd{--status-color:#2878d0;--status-soft:#dcebff;background:linear-gradient(135deg,#f8fbff 0%,#eef6ff 100%);}
+.status-overdue{--status-color:#d84b4b;--status-soft:#ffe1e1;background:linear-gradient(135deg,#fffafa 0%,#fff0f0 100%);}
+.status-reschedule{--status-color:#d98916;--status-soft:#ffedc9;background:linear-gradient(135deg,#fffdf8 0%,#fff6e5 100%);}
+.production-reading-mode-badge{display:inline-flex;align-items:center;min-height:32px;padding:7px 13px;border:1px solid #cbdde3;border-radius:999px;background:#edf7fa;color:#315763;font-size:11px;font-weight:900;letter-spacing:.05em;}
+.production-reading-schedule-note{display:flex;align-items:center;gap:8px;margin-top:13px;padding:9px 11px;border-radius:9px;background:#f2f7f9;color:#667980;font-size:11px;line-height:1.45;}
+.schedule-note-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#4c8c9e;}
+@media(max-width:800px){.production-reading-schedule-grid{grid-template-columns:1fr;}.production-reading-status-card{min-height:112px;}}
+body.dashboard-dark:not(.login-locked) .production-reading-status-card strong,body.dashboard-dark:not(.login-locked) .production-reading-status-card .metric-number{color:#f5f8fa!important;}
+body.dashboard-dark:not(.login-locked) .production-reading-schedule-note{background:#252b30;color:#c2ccd1;}
+body.dashboard-dark:not(.login-locked) .production-reading-mode-badge{background:#25343a;color:#d8e9ed;border-color:#41565e;}
 
 /* ---------- PROGRESS: PRODUCTION READING ---------- */
 body.dashboard-dark:not(.login-locked) #progress #automaticProductionReading{
@@ -3585,27 +3603,36 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                 </div>
 
                 <!-- Status Jadwal OPEN menjadi satu-satunya ringkasan utama Production Reading. -->
-                <div class="chart-card production-reading-summary-card production-reading-schedule-card" style="padding:18px;margin-bottom:16px;">
-                    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+                <div class="chart-card production-reading-summary-card production-reading-schedule-card" style="padding:20px;margin-bottom:16px;">
+                    <div class="production-reading-schedule-head">
                         <div>
                             <div class="panel-kicker">DEADLINE & SCHEDULE</div>
-                            <h3 style="margin:4px 0 2px;">Status Jadwal OPEN</h3>
-                            <small id="productionReadingModeLabel" style="color:#71838a;">Berdasarkan ASSY / WP</small>
+                            <h3 style="margin:4px 0 3px;">Status Jadwal OPEN</h3>
+                            <small id="productionReadingModeLabel" class="production-reading-mode-label">Berdasarkan ASSY / WP</small>
                         </div>
                         <span id="productionReadingModeBadge" class="production-reading-mode-badge">ASSY / WP</span>
                     </div>
                     <div class="production-reading-schedule-grid">
-                        <button type="button" class="production-reading-mini production-reading-status-card" onclick="productionReadingDrilldown('etd3')">
-                            <span>ETD ≤ 7 HARI</span><strong id="readingETD3">0</strong>
+                        <button type="button" class="production-reading-mini production-reading-status-card status-etd" onclick="productionReadingDrilldown('etd3')">
+                            <span class="status-card-label">ETD ≤ 7 HARI</span>
+                            <strong id="readingETD3">0</strong>
+                            <small class="status-card-help">Jadwal mendekati ETD</small>
                         </button>
-                        <button type="button" class="production-reading-mini production-reading-status-card" onclick="productionReadingDrilldown('overdue')">
-                            <span>OVERDUE</span><strong id="readingOverdue">0</strong>
+                        <button type="button" class="production-reading-mini production-reading-status-card status-overdue" onclick="productionReadingDrilldown('overdue')">
+                            <span class="status-card-label">OVERDUE</span>
+                            <strong id="readingOverdue">0</strong>
+                            <small class="status-card-help">Sudah melewati ETD</small>
                         </button>
-                        <button type="button" class="production-reading-mini production-reading-status-card" onclick="productionReadingDrilldown('reschedule')">
-                            <span>RESCHEDULE</span><strong id="readingReschedule">0</strong>
+                        <button type="button" class="production-reading-mini production-reading-status-card status-reschedule" onclick="productionReadingDrilldown('reschedule')">
+                            <span class="status-card-label">RESCHEDULE</span>
+                            <strong id="readingReschedule">0</strong>
+                            <small class="status-card-help">ETD mengalami perubahan</small>
                         </button>
                     </div>
-                    <small id="productionReadingScheduleNote" style="display:block;margin-top:10px;color:#74858d;">Jumlah dihitung berdasarkan ASSY dan WP pada data OPEN yang sedang difilter.</small>
+                    <div class="production-reading-schedule-note">
+                        <span class="schedule-note-dot"></span>
+                        <span id="productionReadingScheduleNote">Jumlah dihitung berdasarkan ASSY dan WP pada data OPEN yang sedang difilter.</span>
+                    </div>
                 </div>
 
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
@@ -6906,7 +6933,7 @@ function productionReadingOpenPairDetail(index){
 function openProductionReadingPopup(title, rows){window.__productionReadingPopupTitle=title||'Production Reading';window.__productionReadingPopupRows=rows||[];productionReadingShowUnitSummary(rows||[]);}
 function closeProductionReadingPopup(){const x=document.getElementById("productionReadingPopup");if(x)x.classList.remove("open")}
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeProductionReadingPopup()});
-function readingDualMetric(assy,wp){return `<span class="metric-dual metric-assy-wp"><span class="metric-primary"><span class="metric-number">${readingFormatNumber(assy)}</span><span class="metric-unit">ASSY</span></span><span class="metric-secondary"><span class="metric-number">${readingFormatNumber(wp)}</span><span class="metric-unit">WP</span></span></span>`}
+function readingDualMetric(assy,wp){return `<span class="metric-dual metric-assy-wp"><span class="metric-primary"><span class="metric-number">${readingFormatNumber(assy)}</span><span class="metric-unit">ASSY</span></span><span class="metric-separator">•</span><span class="metric-secondary"><span class="metric-number">${readingFormatNumber(wp)}</span><span class="metric-unit">WP</span></span></span>`}
 function readingMetricCounts(rows){const a=new Set(),w=new Set();(rows||[]).forEach(r=>{const av=String(getCellValue(r,2)||"").trim(),wv=String(getCellValue(r,3)||"").trim();if(av)a.add(av);if(wv)w.add(wv)});return{assy:a.size,wp:w.size}}
 function readingStatusMetric(rows){
     const rs=rows||[];
