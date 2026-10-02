@@ -3047,11 +3047,11 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
                     <div>
                         <h3 style="margin:0;">🔎 Global Search</h3>
-                        <p style="margin:5px 0 0;color:#78858f;font-size:13px;">Cari data Progress dengan ASSY NO, WP, CUSTOMER, CCT, QTY, ETD, status, atau kata kunci lainnya.</p>
+                        <p style="margin:5px 0 0;color:#78858f;font-size:13px;">Cari data Progress dengan ASSY NO, WP, CUSTOMER, CCT, QTY (PCS), ETD, status, atau kata kunci lainnya.</p>
                     </div>
                 </div>
                 <div class="monitor-search" style="margin-top:12px;">
-                    <input id="monitorGlobalSearch" type="search" placeholder="Cari ASSY NO, WP, CUSTOMER, CCT, QTY, ETD, STATUS..." autocomplete="off">
+                    <input id="monitorGlobalSearch" type="search" placeholder="Cari ASSY NO, WP, CUSTOMER, CCT, QTY (PCS), ETD, STATUS..." autocomplete="off">
                     <button type="button" onclick="runGlobalSearch()">Cari</button>
                 </div>
                 <div id="monitorSearchResults" class="monitor-results"><div class="monitor-empty">Ketik kata kunci untuk mencari data Progress.</div></div>
@@ -3117,8 +3117,9 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                     </div>
 
                     <div class="filter-group">
-                        <label for="progressQtyFilter">QTY</label>
-                        <input type="text" id="progressQtyFilter" class="searchable-filter" list="progressQtyOptions" inputmode="decimal" placeholder="Pilih atau ketik QTY..." autocomplete="off">
+                        <label for="progressQtyFilter">QTY (PCS)</label>
+                        <input type="text" id="progressQtyFilter" class="searchable-filter" list="progressQtyOptions" inputmode="decimal" placeholder="Pilih atau ketik QTY (PCS)..." autocomplete="off">
+                        <small id="progressQtyUnitNote" style="display:block;margin-top:4px;color:#71838a;">QTY pada dashboard dihitung dalam PCS.</small>
                         <datalist id="progressQtyOptions"></datalist>
                     </div>
 
@@ -3164,7 +3165,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                 </div>
 
                 <div class="progress-filter-hint">
-                    ASSY NO dan WP menggunakan pencarian teks. CCT, QTY, TOTAL CCT, dan LEAD TIME dicocokkan berdasarkan nilai. Filter tanggal menggunakan tanggal yang dipilih. Semua filter dapat digunakan bersamaan.
+                    ASSY NO dan WP menggunakan pencarian teks. CCT, QTY (PCS), TOTAL CCT, dan LEAD TIME dicocokkan berdasarkan nilai. Filter tanggal menggunakan tanggal yang dipilih. Semua filter dapat digunakan bersamaan.
                 </div>
 
                 <div class="progress-filter-actions">
@@ -3380,7 +3381,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                     </strong>
 
                     <span>
-                        Dashboard menampilkan seluruh order dan QTY proses
+                        Dashboard menampilkan seluruh order dan QTY proses (PCS)
                     </span>
 
                 </div>
@@ -3536,7 +3537,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         </h2>
 
                         <p>
-                            Total <strong>QTY OPEN</strong> pada setiap proses produksi
+                            Total <strong>QTY OPEN (PCS)</strong> pada setiap proses produksi
                         </p>
 
                     </div>
@@ -3577,8 +3578,8 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                     <div class="kpi-card kpi-yellow" onclick="productionReadingDrilldown('reschedule')"><div class="kpi-label">RESCHEDULE</div><div class="kpi-value" id="readingReschedule">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
                     
                     <div class="kpi-card kpi-green" onclick="productionReadingDrilldown('cct')"><div class="kpi-label">TOTAL CCT</div><div class="kpi-value" id="readingTotalCCT">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
-                    <div class="kpi-card kpi-purple" onclick="productionReadingDrilldown('qty')"><div class="kpi-label">TOTAL QTY</div><div class="kpi-value" id="readingTotalQTY">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
-                    <div class="kpi-card kpi-blue" onclick="productionReadingDrilldown('openqty')"><div class="kpi-label">OPEN QTY</div><div class="kpi-value" id="readingOpenQTY">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
+                    <div class="kpi-card kpi-purple" onclick="productionReadingDrilldown('qty')"><div class="kpi-label">TOTAL QTY (PCS)</div><div class="kpi-value" id="readingTotalQTY">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
+                    <div class="kpi-card kpi-blue" onclick="productionReadingDrilldown('openqty')"><div class="kpi-label">OPEN QTY (PCS)</div><div class="kpi-value" id="readingOpenQTY">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
                     <div class="kpi-card kpi-green" onclick="productionReadingDrilldown('avgcct')"><div class="kpi-label">AVG CCT</div><div class="kpi-value" id="readingAvgCCT">0</div><div class="kpi-subtitle">Klik untuk detail</div></div>
                 </div>
 
@@ -3669,7 +3670,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                                 <th>ACTUAL FINISH</th>
                                 <th>LEAD TIME</th>
                                 <th>STATUS</th>
-                                <th>OPEN QTY</th>
+                                <th>OPEN QTY (PCS)</th>
                                 <th>KETERANGAN</th>
 
                             </tr>
@@ -5937,7 +5938,7 @@ function updateKPIValues(
 
     if (totalData) {
         if (processMode) {
-            totalData.textContent = `${total.toLocaleString("id-ID")} QTY`;
+            totalData.textContent = `${total.toLocaleString("id-ID")} PCS`;
         } else if (progressViewMode === "cct") {
             totalData.innerHTML = `<span>${formatProgressMetric(getProgressCctTotal(rows))} CCT</span>`;
         } else {
@@ -5948,7 +5949,7 @@ function updateKPIValues(
 
     if (totalOpen) {
         if (processMode) {
-            totalOpen.textContent = `${open.toLocaleString("id-ID")} QTY`;
+            totalOpen.textContent = `${open.toLocaleString("id-ID")} PCS`;
         } else if (progressViewMode === "cct") {
             const openRows = rows.filter(row => getRowStatus(row) === "OPEN");
             totalOpen.innerHTML = `<span>${formatProgressMetric(getProgressCctTotal(openRows))} CCT</span>`;
@@ -5960,7 +5961,7 @@ function updateKPIValues(
 
     if (totalClose) {
         if (processMode) {
-            totalClose.textContent = `${close.toLocaleString("id-ID")} QTY`;
+            totalClose.textContent = `${close.toLocaleString("id-ID")} PCS`;
         } else if (progressViewMode === "cct") {
             const closeRows = rows.filter(row => getRowStatus(row) === "CLOSE");
             totalClose.innerHTML = `<span>${formatProgressMetric(getProgressCctTotal(closeRows))} CCT</span>`;
@@ -6046,32 +6047,32 @@ function updateKPIValues(
 
         if (totalDataLabel) {
             totalDataLabel.textContent =
-                `${processName} QTY`;
+                `${processName} QTY (PCS)`;
         }
 
         if (totalOpenLabel) {
             totalOpenLabel.textContent =
-                `OPEN ${processName} QTY`;
+                `OPEN ${processName} QTY (PCS)`;
         }
 
         if (totalCloseLabel) {
             totalCloseLabel.textContent =
-                `CLOSE ${processName} QTY`;
+                `CLOSE ${processName} QTY (PCS)`;
         }
 
         if (totalDataDescription) {
             totalDataDescription.textContent =
-                `Total QTY pada proses ${processName}`;
+                `Total QTY (PCS) pada proses ${processName}`;
         }
 
         if (totalOpenDescription) {
             totalOpenDescription.textContent =
-                `QTY ${processName} yang masih OPEN`;
+                `QTY (PCS) ${processName} yang masih OPEN`;
         }
 
         if (totalCloseDescription) {
             totalCloseDescription.textContent =
-                `QTY ${processName} yang CLOSE`;
+                `QTY (PCS) ${processName} yang CLOSE`;
         }
 
     } else {
@@ -6128,7 +6129,7 @@ function updateKPIValues(
 
     if (chartOpenValue) {
         if (processMode) {
-            chartOpenValue.textContent = `${open.toLocaleString("id-ID")} QTY`;
+            chartOpenValue.textContent = `${open.toLocaleString("id-ID")} PCS`;
         } else {
             const openCounts = getUniqueUnitCounts(rows.filter(row => getRowStatus(row) === "OPEN"));
             chartOpenValue.textContent = formatAssyWp(openCounts.assy, openCounts.wp);
@@ -6137,7 +6138,7 @@ function updateKPIValues(
 
     if (chartCloseValue) {
         if (processMode) {
-            chartCloseValue.textContent = `${close.toLocaleString("id-ID")} QTY`;
+            chartCloseValue.textContent = `${close.toLocaleString("id-ID")} PCS`;
         } else {
             const closeCounts = getUniqueUnitCounts(rows.filter(row => getRowStatus(row) === "CLOSE"));
             chartCloseValue.textContent = formatAssyWp(closeCounts.assy, closeCounts.wp);
@@ -6152,12 +6153,12 @@ function updateKPIValues(
 
         if (chartOpenLabel) {
             chartOpenLabel.textContent =
-                `Open ${processName} QTY`;
+                `Open ${processName} QTY (PCS)`;
         }
 
         if (chartCloseLabel) {
             chartCloseLabel.textContent =
-                `Close ${processName} QTY`;
+                `Close ${processName} QTY (PCS)`;
         }
 
     } else {
@@ -6959,11 +6960,11 @@ function updateProductionReading(rows) {
         });
 
         if (etd && readingDateDiffDays(etd, startOfToday) < 0) {
-            attention.push(`${assy} — overdue${rowOpenQty ? ` (${readingFormatNumber(rowOpenQty)} QTY)` : ""}`);
+            attention.push(`${assy} — overdue${rowOpenQty ? ` (${readingFormatNumber(rowOpenQty)} PCS)` : ""}`);
         } else if (!actualStart) {
-            attention.push(`${assy} — belum mulai${rowOpenQty ? ` (${readingFormatNumber(rowOpenQty)} QTY)` : ""}`);
+            attention.push(`${assy} — belum mulai${rowOpenQty ? ` (${readingFormatNumber(rowOpenQty)} PCS)` : ""}`);
         } else if (etd && readingDateDiffDays(etd, startOfToday) <= 7) {
-            attention.push(`${assy} — ETD dekat${rowOpenQty ? ` (${readingFormatNumber(rowOpenQty)} QTY)` : ""}`);
+            attention.push(`${assy} — ETD dekat${rowOpenQty ? ` (${readingFormatNumber(rowOpenQty)} PCS)` : ""}`);
         }
     });
 
@@ -6974,8 +6975,8 @@ function updateProductionReading(rows) {
     const c1=readingMetricCounts(etd3Rows),c2=readingMetricCounts(overdueRows),c3=readingMetricCounts(rescheduleRows),c4=readingMetricCounts(notStartedRows);
     readingSet("readingETD3",readingDualMetric(c1.assy,c1.wp));readingSet("readingOverdue",readingDualMetric(c2.assy,c2.wp));readingSet("readingReschedule",readingDualMetric(c3.assy,c3.wp));readingSet("readingNotStarted",readingDualMetric(c4.assy,c4.wp));
     readingSet("readingTotalCCT", `${readingFormatNumber(totalCCT)} CCT`);
-    readingSet("readingTotalQTY", `${readingFormatNumber(totalQTY)} QTY`);
-    readingSet("readingOpenQTY", `${readingFormatNumber(openQTY)} QTY`);
+    readingSet("readingTotalQTY", `${readingFormatNumber(totalQTY)} PCS`);
+    readingSet("readingOpenQTY", `${readingFormatNumber(openQTY)} PCS`);
     readingSet("readingAvgCCT", `${readingFormatNumber(openRows.length ? totalCCT / openRows.length : 0, 1)} CCT`);
 
     const wpList = document.getElementById("readingWPList");
@@ -6983,7 +6984,7 @@ function updateProductionReading(rows) {
         const items = Object.entries(wp).sort((a, b) => b[1] - a[1]).slice(0, 8);
         wpList.innerHTML = items.length ? items.map(([name, value]) => `
             <div class="production-reading-clickable" onclick='productionReadingDrilldown("wp", ${JSON.stringify(name)})' title="Klik untuk melihat OPEN order WP ini">
-                <span>${escapeHTML(name)}</span><strong>${readingFormatNumber(value)} QTY</strong>
+                <span>${escapeHTML(name)}</span><strong>${readingFormatNumber(value)} PCS</strong>
             </div>`).join("") : `<span style="color:#7a8a91;">Tidak ada data OPEN.</span>`;
     }
 
@@ -6992,7 +6993,7 @@ function updateProductionReading(rows) {
         const items = Object.entries(processTotals).sort((a, b) => b[1] - a[1]);
         processList.innerHTML = items.map(([name, value]) => `
             <div class="production-reading-clickable" onclick='productionReadingDrilldown("process", ${JSON.stringify(name)})' title="Klik untuk melihat OPEN order proses ini">
-                <span>${escapeHTML(name)}</span><strong>${readingFormatNumber(value)} QTY</strong>
+                <span>${escapeHTML(name)}</span><strong>${readingFormatNumber(value)} PCS</strong>
             </div>`).join("");
     }
 
@@ -7036,7 +7037,7 @@ function updateProductionReading(rows) {
             if (etd3) parts.push(`${etd3} ASSY/WP OPEN memiliki ETD dalam 7 hari ke depan`);
             if (reschedule) parts.push(`${reschedule} ASSY/WP OPEN mengalami perubahan ETD`);
             if (!parts.length) parts.push("Tidak ada indikator deadline atau perubahan ETD yang menonjol pada ASSY/WP OPEN");
-            insight.textContent = `Production Reading OPEN: ${parts.join(" • ")}. Total ${readingFormatNumber(totalQTY)} QTY OPEN, dengan ${readingFormatNumber(openQTY)} OPEN QTY dari ${readingFormatNumber(openOrders)} ASSY/WP OPEN.`;
+            insight.textContent = `Production Reading OPEN: ${parts.join(" • ")}. Total ${readingFormatNumber(totalQTY)} PCS OPEN, dengan ${readingFormatNumber(openQTY)} OPEN QTY (PCS) dari ${readingFormatNumber(openOrders)} ASSY/WP OPEN.`;
         }
     }
 }
@@ -7270,10 +7271,10 @@ function updateCustomerChart(rows) {
             );
 
         openLabel =
-            `OPEN ${processName} QTY`;
+            `OPEN ${processName} QTY (PCS)`;
 
         closeLabel =
-            `CLOSE ${processName} QTY`;
+            `CLOSE ${processName} QTY (PCS)`;
 
         if (title) {
             title.textContent =
