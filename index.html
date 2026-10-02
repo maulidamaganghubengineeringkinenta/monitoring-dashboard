@@ -3940,7 +3940,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         class="kpi-value"
                         id="totalProblem">
 
-                        0
+                        0 PART
 
                     </div>
 
@@ -3973,7 +3973,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         class="kpi-value"
                         id="openProblem">
 
-                        0
+                        0 PART
 
                     </div>
 
@@ -4006,7 +4006,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         class="kpi-value"
                         id="closeProblem">
 
-                        0
+                        0 PART
 
                     </div>
 
@@ -4081,7 +4081,7 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                 </div>
 
-                <div class="kpi-card kpi-purple problem-clickable" id="oldestOpenProblemCard" onclick="problemOldestCardClick(this)" ondblclick="problemOldestCardDoubleClick(this)" title="Klik 1x untuk filter Problem > 3 hari · Klik 2x untuk popup"><div class="kpi-top"><div class="kpi-label">PROBLEM > 3 HARI</div><div class="kpi-icon">⏳</div></div><div class="kpi-value" id="problemOldestAge">0</div><div class="kpi-description">Klik 1x: filter · Klik 2x: popup</div></div>
+                <div class="kpi-card kpi-purple problem-clickable" id="oldestOpenProblemCard" onclick="problemOldestCardClick(this)" ondblclick="problemOldestCardDoubleClick(this)" title="Klik 1x untuk filter Problem > 3 hari · Klik 2x untuk popup"><div class="kpi-top"><div class="kpi-label">PROBLEM > 3 HARI</div><div class="kpi-icon">⏳</div></div><div class="kpi-value" id="problemOldestAge">0 PART</div><div class="kpi-description">Klik 1x: filter · Klik 2x: popup</div></div>
 
             </div>
 
@@ -9644,11 +9644,11 @@ function updateProblemKPIs(rows) {
     const metric=(a,w)=>`<span class="metric-dual"><span class="metric-number">${a.toLocaleString("id-ID")}</span><span class="metric-unit">ASSY</span><span class="metric-number">${w.toLocaleString("id-ID")}</span><span class="metric-unit">WP</span></span>`;
     const te=document.getElementById("totalProblem"),oe=document.getElementById("openProblem"),ce=document.getElementById("closeProblem"),cu=document.getElementById("problemCustomerCount"),me=document.getElementById("problemMinusTotal");
     // Setiap record Problem dihitung satu per satu. PART NAME yang sama tidak digabung.
-    if(te)te.innerHTML=`<span class="problem-part-count">${total.length.toLocaleString("id-ID")} PROBLEM</span>`;
-    if(oe)oe.innerHTML=`<span class="problem-part-count">${open.length.toLocaleString("id-ID")} PROBLEM</span>`;
-    if(ce)ce.innerHTML=`<span class="problem-part-count">${close.length.toLocaleString("id-ID")} PROBLEM</span>`;
+    if(te)te.innerHTML=`<span class="problem-part-count">${total.length.toLocaleString("id-ID")} PART</span>`;
+    if(oe)oe.innerHTML=`<span class="problem-part-count">${open.length.toLocaleString("id-ID")} PART</span>`;
+    if(ce)ce.innerHTML=`<span class="problem-part-count">${close.length.toLocaleString("id-ID")} PART</span>`;
     if(cu)cu.textContent=`${customers.toLocaleString("id-ID")} customer`; if(me)me.textContent=`${minus.toLocaleString("id-ID")} QTY`;
-    const over3=total.filter(r=>getProblemStatus(r)==="OPEN").filter(r=>{const a=problemAgeDays(r);return a!==null&&a>3;}).length,oldest=document.getElementById("problemOldestAge"); if(oldest)oldest.textContent=over3.toLocaleString("id-ID");
+    const over3=total.filter(r=>getProblemStatus(r)==="OPEN").filter(r=>{const a=problemAgeDays(r);return a!==null&&a>3;}).length,oldest=document.getElementById("problemOldestAge"); if(oldest)oldest.innerHTML=`${over3.toLocaleString("id-ID")} <span class="metric-unit">PART</span>`;
 }
 
 
