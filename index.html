@@ -358,7 +358,12 @@ body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage2-card canvas{f
 .problem-part-count{font-weight:900;display:inline-block;}
 .unified-popup-detail-block{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #e7eef1}.unified-popup-detail-block-title{font-weight:900;font-size:12px;margin-bottom:9px;color:#314650}
 
-.kpi-secondary-metrics { margin-top:-7px; margin-bottom:8px; font-size:11px; line-height:1.25; font-weight:700; color:#71838a; letter-spacing:.01em; }
+.kpi-secondary-metrics { margin-top:8px; margin-bottom:0; font-size:9px; line-height:1.25; font-weight:700; color:#71838a; letter-spacing:.01em; }
+.progress-feature-meta{display:block;margin-top:8px;font-size:9px;line-height:1.3;color:#71838a;font-weight:700;letter-spacing:.01em;}
+.progress-chart-meta{display:block;margin-top:6px;font-size:9px;line-height:1.3;color:#71838a;font-weight:700;}
+.process-card .progress-feature-meta{margin-top:7px;font-size:8px;}
+.production-reading-section .progress-feature-meta{margin-top:7px;font-size:8px;}
+.progress-feature-meta[data-meta-empty="1"]{display:none;}
 </style>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -3211,9 +3216,6 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                     </div>
 
-                    <div class="kpi-secondary-metrics" id="totalDataSecondary">CCT: 0 · PCS: 0</div>
-
-
                     <div
                         class="kpi-description"
                         id="totalDataDescription">
@@ -3221,6 +3223,8 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         Klik 1x = tampilkan semua data · Klik 2x = popup detail
 
                     </div>
+
+                    <div class="kpi-secondary-metrics" id="totalDataSecondary">CCT: 0 · PCS: 0</div>
 
                 </div>
 
@@ -3257,9 +3261,6 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                     </div>
 
-                    <div class="kpi-secondary-metrics" id="totalOpenSecondary">CCT: 0 · PCS: 0</div>
-
-
                     <div
                         class="kpi-description"
                         id="totalOpenDescription">
@@ -3267,6 +3268,8 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         Klik 1x = filter seluruh dashboard ke OPEN · Klik 2x = popup detail
 
                     </div>
+
+                    <div class="kpi-secondary-metrics" id="totalOpenSecondary">CCT: 0 · PCS: 0</div>
 
                 </div>
 
@@ -3303,9 +3306,6 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                     </div>
 
-                    <div class="kpi-secondary-metrics" id="totalCloseSecondary">CCT: 0 · PCS: 0</div>
-
-
                     <div
                         class="kpi-description"
                         id="totalCloseDescription">
@@ -3313,6 +3313,8 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                         Klik 1x = filter seluruh dashboard ke CLOSE · Klik 2x = popup detail
 
                     </div>
+
+                    <div class="kpi-secondary-metrics" id="totalCloseSecondary">CCT: 0 · PCS: 0</div>
 
                 </div>
 
@@ -3345,17 +3347,16 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
 
                     </div>
 
-                    <div class="kpi-secondary-metrics" id="totalCustomerSecondary">CCT: 0 · PCS: 0</div>
-
-
                     <div class="kpi-description">
                         Jumlah customer (CUSTOMER)
                     </div>
 
+                    <div class="kpi-secondary-metrics" id="totalCustomerSecondary">CCT: 0 · PCS: 0</div>
+
                 </div>
 
-                <div class="kpi-card kpi-green" onclick="progressUnifiedKpi('ontime')"><div class="kpi-top"><div class="kpi-label">ON-TIME DELIVERY</div><div class="kpi-icon">🎯</div></div><div class="kpi-value" id="progressOnTimeDelivery">0%</div><div class="kpi-secondary-metrics" id="progressOnTimeSecondary">CCT: 0 · PCS: 0</div><div class="kpi-description">CLOSE order selesai sesuai ETD · Klik untuk detail</div></div>
-                <div class="kpi-card kpi-orange" onclick="progressUnifiedKpi('reschedule')"><div class="kpi-top"><div class="kpi-label">RESCHEDULE RATE</div><div class="kpi-icon">🔄</div></div><div class="kpi-value" id="progressRescheduleRate">0%</div><div class="kpi-secondary-metrics" id="progressRescheduleSecondary">CCT: 0 · PCS: 0</div><div class="kpi-description">Order dengan perubahan ETD · Klik untuk detail</div></div>
+                <div class="kpi-card kpi-green" onclick="progressUnifiedKpi('ontime')"><div class="kpi-top"><div class="kpi-label">ON-TIME DELIVERY</div><div class="kpi-icon">🎯</div></div><div class="kpi-value" id="progressOnTimeDelivery">0%</div><div class="kpi-description">CLOSE order selesai sesuai ETD · Klik untuk detail</div><div class="kpi-secondary-metrics" id="progressOnTimeSecondary">CCT: 0 · PCS: 0</div></div>
+                <div class="kpi-card kpi-orange" onclick="progressUnifiedKpi('reschedule')"><div class="kpi-top"><div class="kpi-label">RESCHEDULE RATE</div><div class="kpi-icon">🔄</div></div><div class="kpi-value" id="progressRescheduleRate">0%</div><div class="kpi-description">Order dengan perubahan ETD · Klik untuk detail</div><div class="kpi-secondary-metrics" id="progressRescheduleSecondary">CCT: 0 · PCS: 0</div></div>
 
             </div>
 
@@ -15859,6 +15860,104 @@ body.dashboard-dark .reading-popup-back{background:#2b3138;border-color:#46505a;
   window.setPrototypeReportFormat=function(v){oldFormat(v);requestAnimationFrame(fitTwoPageReport)};
   window.addEventListener('resize',fitTwoPageReport);
   window.fitTwoPageReport=fitTwoPageReport;
+})();
+</script>
+
+<script id="progress-all-features-unit-meta-v2">
+(function(){
+  function root(){return document.getElementById('progress');}
+  function rowsNow(){try{return typeof getFilteredRows==='function' ? (getFilteredRows()||[]) : [];}catch(e){return [];}}
+  function n(v){return Number(v||0).toLocaleString('id-ID',{maximumFractionDigits:2});}
+  function unitMeta(rows){
+    const rs=rows||[];
+    const counts=typeof getUniqueUnitCounts==='function' ? getUniqueUnitCounts(rs) : {assy:0,wp:0};
+    const cct=typeof getProgressCctTotal==='function' ? getProgressCctTotal(rs) : 0;
+    const pcs=typeof getProgressPcsTotal==='function' ? getProgressPcsTotal(rs) : 0;
+    if((typeof progressViewMode!=='undefined' && progressViewMode==='cct') || document.getElementById('progressViewMode')?.value==='cct') return `WP: ${n(counts.wp)} · ASSY: ${n(counts.assy)} · PCS: ${n(pcs)}`;
+    return `CCT: ${n(cct)} · PCS: ${n(pcs)}`;
+  }
+  function put(el, rows){
+    if(!el) return;
+    el.textContent=unitMeta(rows);
+    el.classList.add('progress-feature-meta');
+  }
+  function putAfter(parent, rows, key){
+    if(!parent) return;
+    let el=parent.querySelector(`:scope > .progress-feature-meta[data-meta-key="${key}"]`);
+    if(!el){el=document.createElement('small');el.className='progress-feature-meta';el.dataset.metaKey=key;parent.appendChild(el);}
+    put(el,rows);
+  }
+  function productionMetaRows(rows){
+    const all=(rows||[]).filter(r=>getRowStatus(r)==='OPEN');
+    const today=new Date(); const start=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    const etd3=[],overdue=[],resched=[];
+    all.forEach(r=>{
+      const d=parseReadingDate(getCellValue(r,7)); const rev=parseReadingDate(getCellValue(r,8));
+      if(d){const diff=readingDateDiffDays(d,start); if(diff>=0&&diff<=7)etd3.push(r); if(diff<0)overdue.push(r);}
+      if(d&&rev&&d.getTime()!==rev.getTime())resched.push(r);
+    });
+    return {all,etd3,overdue,resched};
+  }
+  function refresh(rows){
+    const r=root(); if(!r)return;
+    const data=rows||rowsNow();
+    // Every KPI box on Progress, including Production Reading cards.
+    const special={
+      readingETD3: productionMetaRows(data).etd3,
+      readingOverdue: productionMetaRows(data).overdue,
+      readingReschedule: productionMetaRows(data).resched,
+      readingTotalCCT: productionMetaRows(data).all,
+      readingTotalQTY: productionMetaRows(data).all,
+      readingOpenQTY: productionMetaRows(data).all,
+      readingAvgCCT: productionMetaRows(data).all
+    };
+    r.querySelectorAll('.kpi-card').forEach(card=>{
+      const value=card.querySelector('.kpi-value');
+      if(!value)return;
+      const existing=card.querySelector('.kpi-secondary-metrics');
+      if(existing){existing.classList.add('progress-feature-meta'); return;}
+      const id=value.id;
+      putAfter(card,special[id]||data,'kpi');
+    });
+
+    // Customer / distribution chart cards.
+    r.querySelectorAll('.chart-card').forEach(card=>{
+      const isCustomer=!!card.querySelector('#customerChart');
+      const isDistribution=!!card.querySelector('#statusChart');
+      if(isCustomer||isDistribution) putAfter(card,data,isCustomer?'customer-chart':'distribution-chart');
+    });
+
+    // Focus Today cards (if present).
+    r.querySelectorAll('.cute-focus-item').forEach(card=>putAfter(card,data,'focus'));
+
+    // Process Overview: metrics are calculated from OPEN rows for that process.
+    r.querySelectorAll('#processOverview .process-card').forEach(card=>{
+      const idx=Number(card.getAttribute('data-process-index'));
+      const pr=data.filter(row=>getRowStatus(row)==='OPEN' && Number(getProcessQty(row,idx)||0)>0);
+      putAfter(card,pr,'process');
+    });
+  }
+
+  // Move/refresh all Progress secondary metrics after the existing renderers run.
+  const oldCharts=window.updateCharts;
+  if(typeof oldCharts==='function') window.updateCharts=function(rows){oldCharts.apply(this,arguments);refresh(rows);};
+  const oldProcess=window.updateProcessOverview;
+  if(typeof oldProcess==='function') window.updateProcessOverview=function(rows){oldProcess.apply(this,arguments);refresh(rows);};
+  const oldReading=window.updateProductionReading;
+  if(typeof oldReading==='function') window.updateProductionReading=function(rows){oldReading.apply(this,arguments);refresh(rows);};
+  const oldMode=window.changeProgressViewMode;
+  if(typeof oldMode==='function') window.changeProgressViewMode=function(mode){oldMode.apply(this,arguments);refresh(rowsNow());};
+
+  // Keep the metadata synced whenever filters/initial data refresh the dashboard.
+  document.addEventListener('change',function(e){
+    if(e.target && e.target.closest('#progress')) setTimeout(()=>refresh(rowsNow()),30);
+  },true);
+  document.addEventListener('input',function(e){
+    if(e.target && e.target.closest('#progress')) setTimeout(()=>refresh(rowsNow()),30);
+  },true);
+
+  // Initial pass for the currently rendered page.
+  setTimeout(()=>refresh(rowsNow()),100);
 })();
 </script>
 </html>
