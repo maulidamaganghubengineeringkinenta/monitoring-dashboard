@@ -144,10 +144,12 @@
         .monitor-bucket-fill{height:100%;border-radius:999px;background:#7d99ad;}
         .monitor-bucket-value{width:34px;text-align:right;font-size:11px;font-weight:800;color:#46545d;}
         /* Monitoring Process chart contrast */
+/* Monitoring Process chart: use the unused vertical space more effectively. */
+.monitor-stage2-grid > .monitor-stage2-card:nth-child(2) .monitor-chart-wrap{height:390px;}
 .monitor-chart-wrap{position:relative;height:285px;}
 body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage2-card canvas{filter:none;}
 
-        @media(max-width:850px){.monitor-stage2-grid{grid-template-columns:1fr;}.monitor-chart-wrap{height:250px;}}
+        @media(max-width:850px){.monitor-stage2-grid{grid-template-columns:1fr;}.monitor-chart-wrap{height:250px;}.monitor-stage2-grid > .monitor-stage2-card:nth-child(2) .monitor-chart-wrap{height:300px;}}
         @media(max-width:500px){.monitor-lead-summary{grid-template-columns:1fr 1fr;}.monitor-mini-stat:last-child{grid-column:1/-1;}}
 
 
@@ -197,7 +199,8 @@ body.dashboard-dark:not(.login-locked) #monitoring .monitor-stage2-card canvas{f
 .monitor-tab.active{background:#fff;color:#35596a;border-color:#cfe0e8;box-shadow:0 2px 7px rgba(40,70,85,.07);}
 @media(max-width:640px){.monitor-tabs{display:grid;grid-template-columns:repeat(3,1fr);}.monitor-tab{padding:10px 8px;font-size:12px;}}
 /* Monitoring Center */
-        .monitor-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px;}
+        /* Three Monitoring KPI cards are centered instead of leaving an empty fourth slot on the right. */
+.monitor-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0 auto 18px;max-width:1180px;}
         .monitor-card{background:#fff;border:1px solid #e4e9ee;border-radius:12px;padding:18px;cursor:pointer;transition:.18s;}
         .monitor-card:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(15,23,42,.08);}
         .monitor-card .mc-label{font-size:12px;font-weight:700;color:#6b7b87;text-transform:uppercase;letter-spacing:.4px;}
@@ -11612,8 +11615,8 @@ function renderMonitoringTrendChart() {
     monitorTrendChart = new Chart(canvas, {
         type:"line",
         data:{labels,datasets:[
-            {label:"OPEN berdasarkan ETD",data:openCounts,tension:.25,borderWidth:2,fill:false},
-            {label:"Finished berdasarkan Actual Finish",data:finishedCounts,tension:.25,borderWidth:2,fill:false}
+            {label:"OPEN berdasarkan ETD",data:openCounts,tension:.25,borderWidth:3,fill:false,borderColor:"#3B82F6",backgroundColor:"#3B82F6",pointBackgroundColor:"#3B82F6",pointBorderColor:"#FFFFFF",pointBorderWidth:2,pointRadius:3},
+            {label:"Finished berdasarkan Actual Finish",data:finishedCounts,tension:.25,borderWidth:3,fill:false,borderColor:"#F59E0B",backgroundColor:"#F59E0B",pointBackgroundColor:"#F59E0B",pointBorderColor:"#FFFFFF",pointBorderWidth:2,pointRadius:3}
         ]},
         options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:true},onClick:(evt,elements)=>{
             if(!elements.length) return;
