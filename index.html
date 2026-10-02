@@ -3051,6 +3051,124 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
             </div>
 
 
+            <!-- =================================================
+                 PROGRESS VIEW MODE
+            ================================================== -->
+
+            <div class="progress-view-mode" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;padding:14px 16px;border:1px solid #dce9ee;border-radius:12px;background:#fff;">
+                <div style="font-weight:800;font-size:13px;letter-spacing:.04em;">TAMPILAN BERDASARKAN</div>
+                <select id="progressViewMode" onchange="changeProgressViewMode(this.value)" style="min-width:180px;padding:9px 12px;border:1px solid #cfdde2;border-radius:9px;background:#fff;font-weight:700;">
+                    <option value="assywp">ASSY / WP</option>
+                    <option value="cct">CCT</option>
+                </select>
+                <small id="progressViewModeHint" style="color:#71838a;">Tampilan default tetap berdasarkan jumlah ASSY dan WP.</small>
+            </div>
+
+
+
+
+            <!-- =================================================
+                 FILTER
+            ================================================== -->
+
+            <div class="filter-panel progress-filter-panel">
+
+                <div class="filter-title">
+                    <div class="filter-icon">☷</div>
+                    <div>
+                        <strong>Filter Dashboard</strong>
+                        <small>Filter data Progress berdasarkan kolom yang dipilih</small>
+                    </div>
+                </div>
+
+                <div class="progress-filter-grid">
+
+                    <div class="filter-group">
+                        <label for="customerFilter">CUSTOMER</label>
+                        <select id="customerFilter">
+                            <option value="">Semua Customer</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="progressAssyFilter">ASSY NO</label>
+                        <input type="text" id="progressAssyFilter" class="searchable-filter" list="progressAssyOptions" placeholder="Pilih atau ketik ASSY NO..." autocomplete="off">
+                        <datalist id="progressAssyOptions"></datalist>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="progressWpFilter">WP</label>
+                        <input type="text" id="progressWpFilter" class="searchable-filter" list="progressWpOptions" placeholder="Pilih atau ketik WP..." autocomplete="off">
+                        <datalist id="progressWpOptions"></datalist>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="progressCctFilter">CCT</label>
+                        <input type="text" id="progressCctFilter" class="searchable-filter" list="progressCctOptions" inputmode="decimal" placeholder="Pilih atau ketik CCT..." autocomplete="off">
+                        <datalist id="progressCctOptions"></datalist>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="progressQtyFilter">QTY</label>
+                        <input type="text" id="progressQtyFilter" class="searchable-filter" list="progressQtyOptions" inputmode="decimal" placeholder="Pilih atau ketik QTY..." autocomplete="off">
+                        <datalist id="progressQtyOptions"></datalist>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="progressTotalCctFilter">TOTAL CCT</label>
+                        <input type="text" id="progressTotalCctFilter" class="searchable-filter" list="progressTotalCctOptions" inputmode="decimal" placeholder="Pilih atau ketik TOTAL CCT..." autocomplete="off">
+                        <datalist id="progressTotalCctOptions"></datalist>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="progressEtdFilter">ETD</label>
+                        <input type="date" id="progressEtdFilter">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="progressRescheduleFilter">RESCHEDULE ETD</label>
+                        <input type="date" id="progressRescheduleFilter">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="progressActualStartFilter">ACTUAL START</label>
+                        <input type="date" id="progressActualStartFilter">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="progressActualFinishFilter">ACTUAL FINISH</label>
+                        <input type="date" id="progressActualFinishFilter">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="progressLeadTimeFilter">LEAD TIME</label>
+                        <input type="text" id="progressLeadTimeFilter" class="searchable-filter" list="progressLeadTimeOptions" inputmode="decimal" placeholder="Pilih atau ketik Lead Time..." autocomplete="off">
+                        <datalist id="progressLeadTimeOptions"></datalist>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="statusFilter">STATUS</label>
+                        <select id="statusFilter">
+                            <option value="">Semua Status</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="progress-filter-hint">
+                    ASSY NO dan WP menggunakan pencarian teks. CCT, QTY, TOTAL CCT, dan LEAD TIME dicocokkan berdasarkan nilai. Filter tanggal menggunakan tanggal yang dipilih. Semua filter dapat digunakan bersamaan.
+                </div>
+
+                <div class="progress-filter-actions">
+                    <button class="reset-filter" onclick="resetFilters()">↻ Reset Semua Filter</button>
+                </div>
+
+            </div>
+
+
+
+
+
 
             <!-- =================================================
                  KPI
@@ -3469,119 +3587,6 @@ body.dashboard-dark:not(.login-locked) #progress .reading-empty-attention{
                 </div>
 
                 <div id="automaticProductionReading" style="margin-top:14px;padding:14px 16px;border-radius:12px;background:#f4f8fa;border:1px solid #dce9ee;font-weight:600;line-height:1.6;">Menyiapkan production reading...</div>
-            </div>
-
-
-            <!-- =================================================
-                 PROGRESS VIEW MODE
-            ================================================== -->
-
-            <div class="progress-view-mode" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;padding:14px 16px;border:1px solid #dce9ee;border-radius:12px;background:#fff;">
-                <div style="font-weight:800;font-size:13px;letter-spacing:.04em;">TAMPILAN BERDASARKAN</div>
-                <select id="progressViewMode" onchange="changeProgressViewMode(this.value)" style="min-width:180px;padding:9px 12px;border:1px solid #cfdde2;border-radius:9px;background:#fff;font-weight:700;">
-                    <option value="assywp">ASSY / WP</option>
-                    <option value="cct">CCT</option>
-                </select>
-                <small id="progressViewModeHint" style="color:#71838a;">Tampilan default tetap berdasarkan jumlah ASSY dan WP.</small>
-            </div>
-
-
-            <!-- =================================================
-                 FILTER
-            ================================================== -->
-
-            <div class="filter-panel progress-filter-panel">
-
-                <div class="filter-title">
-                    <div class="filter-icon">☷</div>
-                    <div>
-                        <strong>Filter Dashboard</strong>
-                        <small>Filter data Progress berdasarkan kolom yang dipilih</small>
-                    </div>
-                </div>
-
-                <div class="progress-filter-grid">
-
-                    <div class="filter-group">
-                        <label for="customerFilter">CUSTOMER</label>
-                        <select id="customerFilter">
-                            <option value="">Semua Customer</option>
-                        </select>
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="progressAssyFilter">ASSY NO</label>
-                        <input type="text" id="progressAssyFilter" class="searchable-filter" list="progressAssyOptions" placeholder="Pilih atau ketik ASSY NO..." autocomplete="off">
-                        <datalist id="progressAssyOptions"></datalist>
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="progressWpFilter">WP</label>
-                        <input type="text" id="progressWpFilter" class="searchable-filter" list="progressWpOptions" placeholder="Pilih atau ketik WP..." autocomplete="off">
-                        <datalist id="progressWpOptions"></datalist>
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="progressCctFilter">CCT</label>
-                        <input type="text" id="progressCctFilter" class="searchable-filter" list="progressCctOptions" inputmode="decimal" placeholder="Pilih atau ketik CCT..." autocomplete="off">
-                        <datalist id="progressCctOptions"></datalist>
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="progressQtyFilter">QTY</label>
-                        <input type="text" id="progressQtyFilter" class="searchable-filter" list="progressQtyOptions" inputmode="decimal" placeholder="Pilih atau ketik QTY..." autocomplete="off">
-                        <datalist id="progressQtyOptions"></datalist>
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="progressTotalCctFilter">TOTAL CCT</label>
-                        <input type="text" id="progressTotalCctFilter" class="searchable-filter" list="progressTotalCctOptions" inputmode="decimal" placeholder="Pilih atau ketik TOTAL CCT..." autocomplete="off">
-                        <datalist id="progressTotalCctOptions"></datalist>
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="progressEtdFilter">ETD</label>
-                        <input type="date" id="progressEtdFilter">
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="progressRescheduleFilter">RESCHEDULE ETD</label>
-                        <input type="date" id="progressRescheduleFilter">
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="progressActualStartFilter">ACTUAL START</label>
-                        <input type="date" id="progressActualStartFilter">
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="progressActualFinishFilter">ACTUAL FINISH</label>
-                        <input type="date" id="progressActualFinishFilter">
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="progressLeadTimeFilter">LEAD TIME</label>
-                        <input type="text" id="progressLeadTimeFilter" class="searchable-filter" list="progressLeadTimeOptions" inputmode="decimal" placeholder="Pilih atau ketik Lead Time..." autocomplete="off">
-                        <datalist id="progressLeadTimeOptions"></datalist>
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="statusFilter">STATUS</label>
-                        <select id="statusFilter">
-                            <option value="">Semua Status</option>
-                        </select>
-                    </div>
-
-                </div>
-
-                <div class="progress-filter-hint">
-                    ASSY NO dan WP menggunakan pencarian teks. CCT, QTY, TOTAL CCT, dan LEAD TIME dicocokkan berdasarkan nilai. Filter tanggal menggunakan tanggal yang dipilih. Semua filter dapat digunakan bersamaan.
-                </div>
-
-                <div class="progress-filter-actions">
-                    <button class="reset-filter" onclick="resetFilters()">↻ Reset Semua Filter</button>
-                </div>
-
             </div>
 
 
