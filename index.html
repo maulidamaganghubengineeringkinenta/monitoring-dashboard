@@ -16453,3 +16453,60 @@ body.dashboard-dark:not(.login-locked) #cuteFocusPanel .cute-focus-body .cute-no
   line-height:1.1!important;
 }
 </style>
+
+<style id="v34-fix-download-report-9-10-11-clip">
+/* V34: rebalance the report so features 9 and 10 are fully visible without clipping,
+   while keeping the enlarged features readable. */
+#prototypeReportPage .v21-report{
+  grid-template-rows:72px 96px 292px 188px 125px 122px 5px!important;
+  gap:6px!important;
+  height:960px!important;
+  overflow:hidden!important;
+}
+
+/* 9 — LOADING ACHIEVEMENT and 10 — TODAY'S ACHIEVEMENT */
+#prototypeReportPage .v21-row-third{
+  height:125px!important;
+  min-height:125px!important;
+}
+#prototypeReportPage .v21-row-third .v21-card{
+  height:125px!important;
+  min-height:125px!important;
+  overflow:hidden!important;
+}
+#prototypeReportPage .v21-ach{
+  height:82px!important;
+}
+#prototypeReportPage .v21-today{
+  height:93px!important;
+  box-sizing:border-box!important;
+}
+#prototypeReportPage .v21-today>div{
+  padding:8px 2px!important;
+}
+#prototypeReportPage .v21-today strong{
+  font-size:22px!important;
+}
+
+/* 11 — keep the enlarged detail text, but fit its header + six cards inside the row. */
+#prototypeReportPage .v21-detail{
+  height:122px!important;
+  min-height:122px!important;
+  overflow:hidden!important;
+}
+#prototypeReportPage .v21-detail-head{
+  height:28px!important;
+  min-height:28px!important;
+}
+#prototypeReportPage .v21-detail-grid{
+  height:88px!important;
+  min-height:88px!important;
+  padding:6px!important;
+  gap:6px!important;
+}
+#prototypeReportPage .v21-detail-grid>.v21-detail{
+  height:auto!important;
+  min-height:0!important;
+  padding:7px!important;
+}
+</style>
